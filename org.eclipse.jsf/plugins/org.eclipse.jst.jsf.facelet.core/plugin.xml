@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+    <extension
+       id="org.eclipse.jst.jsf.project.facet"
+       name="%plugin.facet.extension.name"
+       point="org.eclipse.wst.common.project.facet.core.facets">
+
+    <project-facet id="jsf.facelet">
+      <label>Facelet</label>
+      <description>%plugin.facet.description</description>
+      <default-version
+            provider="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacetDefaultVersionProvider">
+      </default-version>
+    </project-facet>
+
+    <project-facet-version facet="jsf.facelet" version="1.0">
+       <constraint>
+        <and>
+          <requires
+                facet="jst.jsf"
+                version="[1.0">
+          </requires>
+        </and>
+      </constraint>
+    </project-facet-version> 
+
+    <action id="jsf.facelet.v10.install" facet="jsf.facelet" type="INSTALL" version="1.0">
+        <delegate class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletInstallDelegate"/>
+        <config-factory
+              class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacetDataModelProvider">
+        </config-factory>
+    </action>  
+<!--<action id="jsf.facelet.v10.uninstall" facet="jsf.facelet" type="UNINSTALL" version="1.0" >
+        <delegate
+        class="org.eclipse.jst.jsf.core.internal.project.facet.JSFFacetUninstallDelegate"/>
+    </action>-->
+    
+  </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    <supported>
+        <runtime-component any="true"/>
+            <facet id="jsf.facelet" version="1.0"/> 
+    </supported>
+    </extension>
+    <extension
+          point="org.eclipse.jst.jsf.core.tagregistry">
+       <tagRegistry
+             class="org.eclipse.jst.jsf.facelet.core.internal.registry.FaceletRegistryManager$MyRegistryFactory"
+             description="Facelet Tag Registry"
+             id="FaceletRegistry">
+          <content-type
+                contentTypeId="org.eclipse.wst.html.core.htmlsource">
+          </content-type>
+       </tagRegistry>
+    </extension>
+    <extension point="org.eclipse.wst.xml.core.documentFactories">
+        <factory
+            type="xhtml"
+            class="org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory">
+        </factory>
+    </extension>
+    <extension
+          point="org.eclipse.jst.jsf.core.viewhandler">
+       <viewhandler
+             class="org.eclipse.jst.jsf.facelet.core.internal.view.DTFaceletViewHandler"
+             id="org.eclipse.jst.jsf.facelet.core.html.viewhandler">
+       </viewhandler>
+    </extension>
+
+</plugin>
