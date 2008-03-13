@@ -67,5 +67,22 @@
              id="org.eclipse.jst.jsf.facelet.core.html.viewhandler">
        </viewhandler>
     </extension>
+    <extension
+          point="org.eclipse.wst.common.project.facet.core.presets">
+       <static-preset
+             extends="preset.jst.jsf.v1_2"
+             id="org.eclipse.jst.jsf.facelet.core.preset">
+          <facet
+                id="jsf.facelet"
+                version="1.0">
+          </facet>
+          <label>
+             %Facelet_1_0_Project
+          </label>
+          <description>
+             %Facelet_1_0_PresetDesc
+          </description>
+       </static-preset>
+    </extension>
 
 </plugin>

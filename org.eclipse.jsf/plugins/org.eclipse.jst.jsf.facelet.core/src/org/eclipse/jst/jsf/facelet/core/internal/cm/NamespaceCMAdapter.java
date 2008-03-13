@@ -6,18 +6,24 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jst.jsf.common.internal.managedobject.IManagedObject;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.Namespace;
+import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
+import org.eclipse.jst.jsp.core.internal.contentmodel.tld.provisional.TLDDocument;
+import org.eclipse.jst.jsp.core.taglib.ITaglibRecord;
+import org.eclipse.jst.jsp.core.taglib.TaglibIndex;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNamedNodeMap;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNamespace;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
-/*package*/class NamespaceCMAdapter implements CMNamedNodeMap, CMDocument
+/*package*/class NamespaceCMAdapter implements CMNamedNodeMap, CMDocument, IManagedObject
 {
     private final Namespace                     _ns;
     private final Map<String, ElementCMAdapter> _elements;
     private final IProject                      _project;
+    private ExtraTagInfo                        _extraTagInfo;
 
     public NamespaceCMAdapter(final Namespace ns, final IProject project)
     {
@@ -37,6 +43,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
     public CMNode getNamedItem(final String name)
     {
+        final long startTime = System.nanoTime();
         String localname = name;
 
         if (name != null && name.indexOf(':') > -1)
@@ -55,13 +62,42 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
             final ITagElement tagElement = _ns.getViewElement(localname);
             if (tagElement != null)
             {
-                element = new ElementCMAdapter(tagElement, new ExtraTagInfo(_project, _ns.getNSUri()));
+                System.out.println("NamespaceCMAdapter.getNamedItem_1: "+(System.nanoTime() - startTime)/1000);
+                ExtraTagInfo tagInfo = getOrCreateExtraTagInfo();
+                System.out.println("NamespaceCMAdapter.getNamedItem_2: "+(System.nanoTime() - startTime)/1000);
+                element = new ElementCMAdapter(tagElement, tagInfo);
+                System.out.println("NamespaceCMAdapter.getNamedItem_3: "+(System.nanoTime() - startTime)/1000);
                 _elements.put(localname, element);
             }
         }
         return element; 
     }
 
+    private ExtraTagInfo getOrCreateExtraTagInfo()
+    {
+        if (_extraTagInfo == null)
+        {
+            _extraTagInfo = ExtraTagInfo.NULL_EXTRATAGINFO;
+            final long startTime = System.nanoTime();
+            final ITaglibRecord[] tldrecs = TaglibIndex
+                    .getAvailableTaglibRecords(_project.getFullPath());
+            System.out.println("NamespaceCMAdapter.getOrCreateTLDDocument_total_1: "+(System.nanoTime() - startTime)/1000);
+            FIND_TLDRECORD: for (final ITaglibRecord rec : tldrecs)
+            {
+                final String matchUri = rec.getDescriptor().getURI();
+                if (_ns.getNSUri().equals(matchUri))
+                {
+                    final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
+                    _extraTagInfo  = new ExtraTagInfo((TLDDocument) factory.createCMDocument(rec));
+                    break FIND_TLDRECORD;
+                }
+            }
+
+            System.out.println("NamespaceCMAdapter.getOrCreateTLDDocument_total: "+(System.nanoTime() - startTime)/1000);
+        }
+        return _extraTagInfo;
+    }
+    
     // TODO: optimize
     public CMNode item(int index)
     {
@@ -78,7 +114,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
                     
                     if (element == null)
                     {
-                        element = new ElementCMAdapter(tagElement, new ExtraTagInfo(_project, _ns.getNSUri()));
+                        element = new ElementCMAdapter(tagElement, getOrCreateExtraTagInfo());
                         _elements.put(tagElement.getName(), element);
                         return element;
                     }
@@ -110,8 +146,12 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
         public CMNode next()
         {
+            final long startTime = System.nanoTime();
             ITagElement nextElement = (ITagElement) _viewElementIterator.next();
-            return getNamedItem(nextElement.getName());
+            System.out.println("NamespaceCMAdapter.WrappingIterator.next_1: "+(System.nanoTime() - startTime)/1000);
+            CMNode node = getNamedItem(nextElement.getName());
+            System.out.println("NamespaceCMAdapter.WrappingIterator.next_2: "+(System.nanoTime() - startTime)/1000);
+            return node;
         }
 
         public void remove()
@@ -198,6 +238,10 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
             // TODO Auto-generated method stub
             return false;
         }
+    }
+    public void dispose()
+    {
+        _elements.clear();
     }
 
 }

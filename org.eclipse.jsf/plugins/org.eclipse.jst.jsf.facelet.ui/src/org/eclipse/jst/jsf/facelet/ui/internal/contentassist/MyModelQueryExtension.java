@@ -44,7 +44,7 @@ public class MyModelQueryExtension extends ModelQueryExtension
             {
                 final IProject project = resolver.getProject();
                 final FaceletDocumentFactory factory = 
-                    new FaceletDocumentFactory();
+                    new FaceletDocumentFactory(project);
                 final Map<String, PrefixEntry> map = 
                     factory.getDocumentNamespaces(parentElement.getOwnerDocument());
                 String prefix = null;
@@ -60,7 +60,7 @@ public class MyModelQueryExtension extends ModelQueryExtension
                 if (prefix != null)
                 {
                     CMDocument document = 
-                        factory.createCMDocumentForContext(project, namespace, prefix);
+                        factory.createCMDocumentForContext(namespace, prefix);
                     if (document != null)
                     {
                         List<CMNode>  nodes = new ArrayList<CMNode>();

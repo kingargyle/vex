@@ -117,7 +117,7 @@ public class FaceletHover implements ITextHover
                     && node.getPrefix() != null)
             {
                 final Element element = (Element) node;
-                final FaceletDocumentFactory factory = new FaceletDocumentFactory();
+                final FaceletDocumentFactory factory = new FaceletDocumentFactory(_project);
 
                 final CMElementDeclaration elementDecl = factory
                         .createCMElementDeclaration(_project, element);

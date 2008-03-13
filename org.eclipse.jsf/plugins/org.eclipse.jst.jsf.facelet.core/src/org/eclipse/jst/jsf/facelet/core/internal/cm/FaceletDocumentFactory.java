@@ -11,32 +11,31 @@ import org.eclipse.jst.jsf.designtime.internal.view.model.TagRegistryFactory.Tag
 import org.eclipse.jst.jsf.facelet.core.internal.registry.FaceletRegistryManager.MyRegistryFactory;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
-import org.eclipse.wst.xml.core.internal.contentmodel.factory.CMDocumentFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
-public class FaceletDocumentFactory implements CMDocumentFactory
+public class FaceletDocumentFactory
 {
+    private  final IProject _project;
+    private final Map<String, NamespaceCMAdapter> _cmDocuments;
 
-    //private final Map<String, NamespaceCMAdapter> _cmDocuments;
-
-    public FaceletDocumentFactory()
+    public FaceletDocumentFactory(final IProject project)
     {
-        //_cmDocuments = new HashMap<String, NamespaceCMAdapter>();
+        _project = project;
+        _cmDocuments = new HashMap<String, NamespaceCMAdapter>(8);
     }
 
-    public CMDocument createCMDocument(String uri)
+    public CMDocument createCMDocument(final String uri)
     {
         return getNamespace(uri);
     }
-    
-    public CMDocument createCMDocumentForContext(final IProject project,
-            final String uri, final String prefix)
+
+    public CMDocument createCMDocumentForContext(final String uri, final String prefix)
     {
-        NamespaceCMAdapter cmDoc = getOrCreateCMDocument(project, uri);
-        
+        final NamespaceCMAdapter cmDoc = getOrCreateCMDocument(_project, uri);
+
         if (cmDoc != null)
         {
             return new DocumentNamespaceCMAdapter(cmDoc, prefix);
@@ -54,7 +53,7 @@ public class FaceletDocumentFactory implements CMDocumentFactory
 
         if (prefixEntry != null)
         {
-            final CMDocument cmDoc = createCMDocumentForContext(project,
+            final CMDocument cmDoc = createCMDocumentForContext(
                     prefixEntry.getUri(), prefixEntry.getPrefix());
 
             if (cmDoc != null)
@@ -66,7 +65,7 @@ public class FaceletDocumentFactory implements CMDocumentFactory
 
         return null;
     }
-    
+
     public Map<String, PrefixEntry> getDocumentNamespaces(final Document doc)
     {
         final Map<String, PrefixEntry> namespaces = new HashMap<String, PrefixEntry>();
@@ -147,15 +146,15 @@ public class FaceletDocumentFactory implements CMDocumentFactory
 
     private NamespaceCMAdapter getNamespace(final String uri)
     {
-      IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-                .getProjects();
-          NamespaceCMAdapter ns = null;
+        final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+        .getProjects();
+        NamespaceCMAdapter ns = null;
 
         FIND_PROJECT: for (final IProject project : projects)
         {
             if (project.isAccessible())
             {
-                ns = 
+                ns =
                     getOrCreateCMDocument(project, uri);
                 if (ns != null)
                 {
@@ -165,63 +164,70 @@ public class FaceletDocumentFactory implements CMDocumentFactory
         }
         return ns;
     }
-//    private synchronized NamespaceCMAdapter getOrCreateCMDocument(final String uri)
-//    {
-//        NamespaceCMAdapter doc = _cmDocuments.get(uri);
-//
-//        if (doc == null)
-//        {
-//            IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-//                    .getProjects();
-//            Namespace ns = null;
-//
-//            IProject foundProject = null;
-//            FIND_PROJECT: for (final IProject project : projects)
-//            {
-//                if (project.isAccessible())
-//                {
-//                    try
-//                    {
-//                        
-//                        if (ns != null)
-//                        {
-//                            foundProject = project;
-//                            break FIND_PROJECT;
-//                        }
-//                    }
-//                    catch (TagRegistryFactoryException e)
-//                    {
-//                        // do nothing
-//                    }
-//                }
-//            }
-//            if (ns != null)
-//            {
-//                doc = getOrCreateD
-//            }
-//        }
-//        return doc;
-//    }
-    
-    private synchronized NamespaceCMAdapter getOrCreateCMDocument(final IProject project, final String uri)
+    //    private synchronized NamespaceCMAdapter getOrCreateCMDocument(final String uri)
+    //    {
+    //        NamespaceCMAdapter doc = _cmDocuments.get(uri);
+    //
+    //        if (doc == null)
+    //        {
+    //            IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+    //                    .getProjects();
+    //            Namespace ns = null;
+    //
+    //            IProject foundProject = null;
+    //            FIND_PROJECT: for (final IProject project : projects)
+    //            {
+    //                if (project.isAccessible())
+    //                {
+    //                    try
+    //                    {
+    //
+    //                        if (ns != null)
+    //                        {
+    //                            foundProject = project;
+    //                            break FIND_PROJECT;
+    //                        }
+    //                    }
+    //                    catch (TagRegistryFactoryException e)
+    //                    {
+    //                        // do nothing
+    //                    }
+    //                }
+    //            }
+    //            if (ns != null)
+    //            {
+    //                doc = getOrCreateD
+    //            }
+    //        }
+    //        return doc;
+    //    }
+
+    private NamespaceCMAdapter getOrCreateCMDocument(final IProject project, final String uri)
     {
-        final MyRegistryFactory factory = new MyRegistryFactory();
-
-        ITagRegistry registry;
-        try
+        NamespaceCMAdapter       adapter = _cmDocuments.get(uri);
+        
+        if (adapter == null)
         {
-            registry = factory.createTagRegistry(project);
-            Namespace ns = registry.getTagLibrary(uri);
-
-            if (ns != null)
+            final MyRegistryFactory factory = new MyRegistryFactory();
+    
+            ITagRegistry registry;
+            try
             {
-                return new NamespaceCMAdapter(ns, project);
+                registry = factory.createTagRegistry(project);
+                final Namespace ns = registry.getTagLibrary(uri);
+    
+                if (ns != null)
+                {
+                    adapter = new NamespaceCMAdapter(ns, project);
+                    _cmDocuments.put(uri, adapter);
+                }
+            }
+            catch (final TagRegistryFactoryException e)
+            {
+                // fall-through
             }
         }
-        catch (TagRegistryFactoryException e)
-        {
-            // fall-through
-        }
-        return null;
+        return adapter;
     }
+    
 }

@@ -1,35 +1,18 @@
 package org.eclipse.jst.jsf.facelet.core.internal.cm;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.provisional.TLDDocument;
-import org.eclipse.jst.jsp.core.taglib.ITaglibRecord;
-import org.eclipse.jst.jsp.core.taglib.TaglibIndex;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNamedNodeMap;
 
-public class ExtraTagInfo
+/*package*/ class ExtraTagInfo
 {
-    private final IProject _project;
-    private final String   _uri;
-    private TLDDocument    _doc = null;
+    private final TLDDocument _doc;
 
-    public ExtraTagInfo(final IProject project, final String uri)
+    final static ExtraTagInfo NULL_EXTRATAGINFO = new ExtraTagInfo(null);
+    
+    public ExtraTagInfo(final TLDDocument doc)
     {
-        _project = project;
-        _uri = uri;
-        final ITaglibRecord[] tldrecs = TaglibIndex
-                .getAvailableTaglibRecords(_project.getFullPath());
-        for (final ITaglibRecord rec : tldrecs)
-        {
-            final String matchUri = rec.getDescriptor().getURI();
-            if (_uri.equals(matchUri))
-            {
-                final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
-                _doc = (TLDDocument) factory.createCMDocument(rec);
-                break;
-            }
-        }
+        _doc = doc;
     }
 
     /**
