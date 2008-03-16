@@ -69,11 +69,8 @@ class DocumentNamespaceCMAdapter implements CMNamedNodeMap, CMDocument
 
         public CMNode next()
         {
-            final long startTime = System.nanoTime();
             CMNode node = (CMNode) _it.next();
-            System.out.println("DocumentNamespaceCMAdapter.WrappingIterator.next_1: "+(System.nanoTime() - startTime)/1000);
             node = getNamedItem(node.getNodeName());
-            System.out.println("DocumentNamespaceCMAdapter.WrappingIterator.next_2: "+(System.nanoTime() - startTime)/1000);
             return node;
         }
 

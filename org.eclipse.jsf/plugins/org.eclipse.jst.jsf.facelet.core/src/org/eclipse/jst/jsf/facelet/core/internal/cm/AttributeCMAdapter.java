@@ -11,6 +11,7 @@ public class AttributeCMAdapter implements CMAttributeDeclaration
 {
     private int     _usage;
     private String _name;
+    private String _description;
 
     public AttributeCMAdapter(final String name, final int usage)
     {
@@ -56,9 +57,18 @@ public class AttributeCMAdapter implements CMAttributeDeclaration
 
     public Object getProperty(String propertyName)
     {
+        if ("description".equals(propertyName))
+        {
+            return _description;
+        }
         return null;
     }
 
+    public void setDescription(final String description)
+    {
+        _description = description;
+    }
+    
     public boolean supports(String propertyName)
     {
         return false;

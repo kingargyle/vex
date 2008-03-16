@@ -19,9 +19,9 @@ import org.eclipse.jst.jsf.context.structureddocument.IStructuredDocumentContext
 import org.eclipse.jst.jsf.context.structureddocument.IStructuredDocumentContextFactory;
 import org.eclipse.jst.jsf.designtime.internal.view.model.ITagRegistry;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
-import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory.PrefixEntry;
 import org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacet;
 import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil;
+import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil.PrefixEntry;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
@@ -215,7 +215,7 @@ public class XHTMLContentAssistProcessor extends AbstractContentAssistProcessor
                 return Collections.EMPTY_MAP;
             }
         }
-        return factory.getDocumentNamespaces(doc);
+        return ViewUtil.getDocumentNamespaces(doc);
     }
 
     @Override

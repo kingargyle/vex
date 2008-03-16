@@ -10,7 +10,6 @@ import org.eclipse.jst.jsf.core.internal.JSFCorePlugin;
 import org.eclipse.jst.jsf.designtime.context.DTFacesContext;
 import org.eclipse.jst.jsf.designtime.internal.view.AbstractDTViewHandler;
 import org.eclipse.jst.jsf.designtime.internal.view.DTUIViewRoot;
-import org.eclipse.jst.jsf.designtime.internal.view.DefaultDTUIViewRoot;
 import org.eclipse.jst.jsf.designtime.internal.view.IViewDefnAdapter;
 import org.eclipse.jst.jsf.designtime.internal.view.IViewDefnAdapterFactory;
 import org.eclipse.jst.jsf.designtime.internal.view.XMLViewDefnAdapter;
@@ -79,7 +78,7 @@ public class DTFaceletViewHandler extends AbstractDTViewHandler
                     factory.createAdapter(facesContext, viewId);
                 if (adapter instanceof XMLViewDefnAdapter)
                 {
-                    return new DefaultDTUIViewRoot(facesContext, this, (XMLViewDefnAdapter) adapter);
+                    return new FaceletUIViewRoot(facesContext, this, (XMLViewDefnAdapter) adapter);
                 }
             }
         }
@@ -109,9 +108,7 @@ public class DTFaceletViewHandler extends AbstractDTViewHandler
         {
             return true;
         }
-
         return false;
-
     }
 
 }

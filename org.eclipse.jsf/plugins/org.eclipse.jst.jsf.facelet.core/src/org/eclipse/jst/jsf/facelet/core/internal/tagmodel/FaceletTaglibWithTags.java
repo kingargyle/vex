@@ -13,16 +13,16 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement
  */
 public class FaceletTaglibWithTags extends FaceletTaglib
 {
-    private final Map<String, FaceletTag> _tags;
+    private final Map<String, ITagElement> _tags;
 
-    protected FaceletTaglibWithTags(final String namespace, final Map<String, FaceletTag> tags/*, List<FaceletFunction> functions*/)
+    protected FaceletTaglibWithTags(final String namespace, final Map<String, ITagElement> tags/*, List<FaceletFunction> functions*/)
     {
         super(namespace);
         _tags = tags;
     }
 
     @Override
-    public Map<String, FaceletTag> getTags()
+    public Map<String, ITagElement> getTags()
     {
         return internalGetTags();
     }
@@ -32,7 +32,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
         _tags.put(name, tag);
     }
 
-    private Map<String, FaceletTag> internalGetTags()
+    private Map<String, ITagElement> internalGetTags()
     {
         return _tags;
     }
@@ -40,7 +40,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     static class WorkingCopy extends FaceletTaglibWithTags
     {
         protected WorkingCopy(final String namespace) {
-            super(namespace, new HashMap<String, FaceletTag>());
+            super(namespace, new HashMap<String, ITagElement>());
         }
 
         public void addFaceletTag(final FaceletTag tag)
@@ -64,7 +64,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     {
         String toString =  super.toString();
 
-        for (final FaceletTag tag : getTags().values())
+        for (final ITagElement tag : getTags().values())
         {
             toString += tag.toString();
         }

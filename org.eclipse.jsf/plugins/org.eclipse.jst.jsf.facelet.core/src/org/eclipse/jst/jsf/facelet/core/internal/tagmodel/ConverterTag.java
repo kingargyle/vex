@@ -1,12 +1,15 @@
 package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
+import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ConverterTypeInfo;
+import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IConverterTagElement;
 
-public class ConverterTag extends FaceletTag
+
+public class ConverterTag extends FaceletTag implements IConverterTagElement
 {
-    private final String    _converter;
-    private final String    _handler; // may be null
+    private final ConverterTypeInfo _converter;
+    private final String            _handler;  // may be null
 
-    public ConverterTag(final String uri, final String name, final String converter, final String handler)
+    public ConverterTag(final String uri, final String name, final ConverterTypeInfo converter, final String handler)
     {
         super(uri, name, TagType.CONVERTER, null);
         _converter = converter;
@@ -16,7 +19,7 @@ public class ConverterTag extends FaceletTag
     /**
      * @return the converter id
      */
-    public String getConverter()
+    public ConverterTypeInfo getConverter()
     {
         return _converter;
     }

@@ -11,6 +11,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jst.jsf.common.runtime.internal.model.component.ComponentTypeInfo;
+import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ConverterTypeInfo;
+import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ValidatorTypeInfo;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglibWithTags.WorkingCopy;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -152,7 +155,7 @@ public class TagModelParser
             node = children.get("handler-class");
 
             if (node != null) {
-                return new HandlerTag(namespace,name, node.getTextContent());
+                return new HandlerTag(namespace,name, null, node.getTextContent());
             }
 
             node = children.get("component");
@@ -211,8 +214,8 @@ public class TagModelParser
             if (node != null) {
                 handlerClass = node.getTextContent();
             }
-            return new ComponentTag(uri, tagName, componentType, rendererType,
-                    handlerClass, null);
+            ComponentTypeInfo typeInfo = new ComponentTypeInfo(componentType, handlerClass, rendererType,null);
+            return new ComponentTag(uri, tagName, typeInfo);
         }
         return null;
     }
@@ -222,14 +225,15 @@ public class TagModelParser
         node = converterChildren.get("converter-id");
 
         if (node != null) {
-            final String converterId = node.getTextContent();
+            //final String converterId = node.getTextContent();
             String handlerClass = null;
 
             node = converterChildren.get("handler-class");
             if (node != null) {
                 handlerClass = node.getTextContent();
             }
-            return new ConverterTag(uri, tagName, converterId, handlerClass);
+            // for now, all converters are unknown
+            return new ConverterTag(uri, tagName, ConverterTypeInfo.UNKNOWN, handlerClass);
         }
         return null;
     }
@@ -239,14 +243,14 @@ public class TagModelParser
         node = converterChildren.get("validator-id");
 
         if (node != null) {
-            final String validatorId = node.getTextContent();
+            //final String validatorId = node.getTextContent();
             String handlerClass = null;
 
             node = converterChildren.get("handler-class");
             if (node != null) {
                 handlerClass = node.getTextContent();
             }
-            return new ValidatorTag(uri, tagName, validatorId, handlerClass);
+            return new ValidatorTag(uri, tagName, ValidatorTypeInfo.UNKNOWN, handlerClass);
         }
         return null;
     }

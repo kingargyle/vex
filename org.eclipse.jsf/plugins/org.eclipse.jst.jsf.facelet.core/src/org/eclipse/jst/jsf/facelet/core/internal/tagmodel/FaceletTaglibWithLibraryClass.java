@@ -18,11 +18,11 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement
 public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
 {
     private final String                    _libraryClassName;
-    private final Map<String, FaceletTag>   _tags;
+    private final Map<String, ITagElement>   _tags;
 
     public FaceletTaglibWithLibraryClass(final String namespace,
             final String libraryClassName,
-            final Map<String, FaceletTag> tags) {
+            final Map<String, ITagElement> tags) {
         super(namespace);
         _libraryClassName = libraryClassName;
 
@@ -44,7 +44,7 @@ public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
             final String namespace) {
         super(namespace);
         _libraryClassName = copyMe._libraryClassName;
-        _tags = new HashMap<String, FaceletTag>(copyMe._tags);
+        _tags = new HashMap<String, ITagElement>(copyMe._tags);
     }
 
     public final String getLibraryClassName() {
@@ -64,7 +64,7 @@ public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
     }
 
     @Override
-    public Map<String, FaceletTag> getTags() {
+    public Map<String, ITagElement> getTags() {
         return Collections.unmodifiableMap(_tags);
     }
 

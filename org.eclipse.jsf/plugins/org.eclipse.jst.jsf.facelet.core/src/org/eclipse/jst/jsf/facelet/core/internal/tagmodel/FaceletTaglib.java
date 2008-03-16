@@ -55,7 +55,7 @@ public abstract class FaceletTaglib extends org.eclipse.jst.jsf.common.runtime.i
      * @return a map of tags indexed by name.  Map should be regarded
      * as unmodifiable and may throw exceptions on modification
      */
-    public abstract Map<String, FaceletTag>  getTags();
+    public abstract Map<String, ITagElement>  getTags();
 
 
     public abstract ITagElement getViewElement(String name);

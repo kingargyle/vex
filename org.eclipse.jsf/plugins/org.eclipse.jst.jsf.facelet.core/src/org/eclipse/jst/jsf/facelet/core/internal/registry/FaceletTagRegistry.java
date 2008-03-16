@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -43,24 +44,20 @@ import org.eclipse.jem.internal.proxy.core.ProxyFactoryRegistry;
 import org.eclipse.jem.internal.proxy.core.ThrowableProxy;
 import org.eclipse.jem.internal.proxy.ide.IDERegistration;
 import org.eclipse.jst.jsf.common.internal.managedobject.IManagedObject;
-import org.eclipse.jst.jsf.common.runtime.internal.model.component.ComponentTypeInfo;
+import org.eclipse.jst.jsf.common.internal.policy.IdentifierOrderedIteratorPolicy;
+import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.Namespace;
 import org.eclipse.jst.jsf.core.JSFVersion;
 import org.eclipse.jst.jsf.core.internal.jem.BeanProxyUtil;
 import org.eclipse.jst.jsf.core.internal.jem.BeanProxyUtil.BeanProxyWrapper;
 import org.eclipse.jst.jsf.core.internal.jem.BeanProxyUtil.ProxyException;
-import org.eclipse.jst.jsf.designtime.internal.view.DTComponentIntrospector;
 import org.eclipse.jst.jsf.designtime.internal.view.model.AbstractTagRegistry;
+import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.CompositeTagResolvingStrategy;
 import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
-import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ComponentTag;
-import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ConverterTag;
-import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglib;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglibWithLibraryClass;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglibWithTags;
-import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.NoArchetypeFaceletTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.TagModelParser;
-import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -76,6 +73,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     private final IProject                   _project;
     private final Map<String, FaceletTaglib> _nsResolved;
     private final Set<FaceletTaglib>         _unResolved;
+    private final CompositeTagResolvingStrategy<FaceletTagElement> _resolver;
     private ProxyFactoryRegistry             _registry;
     private boolean                          _isInitialized;
 
@@ -83,6 +81,27 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         _project = project;
         _nsResolved = new HashMap<String, FaceletTaglib>();
         _unResolved = new HashSet<FaceletTaglib>();
+        
+        final List<String> ids = new ArrayList<String>();
+        ids.add(VeryTemporaryDefaultFaceletResolver.ID);
+        ids.add(FaceletTagResolvingStrategy.ID);
+        final IdentifierOrderedIteratorPolicy<String> policy =
+            new IdentifierOrderedIteratorPolicy<String>(ids);
+
+        // exclude things that are not explicitly listed in the policy.  That
+        // way preference-based disablement will cause those strategies to
+        // be excluded.
+        policy.setExcludeNonExplicitValues(true);
+        _resolver = new CompositeTagResolvingStrategy<FaceletTagElement>(
+                policy);
+
+        // add the strategies
+        _resolver.addStrategy(new FaceletTagResolvingStrategy(_project));
+        _resolver.addStrategy(new VeryTemporaryDefaultFaceletResolver(_project));
+        //_resolver.addStrategy(new DefaultJSPTagResolver(_project));
+        // makes sure that a tag element will always be created for any
+        // given tag definition even if other methods fail
+        //_resolver.addStrategy(new UnresolvedJSPTagResolvingStrategy());
     }
 
     /**
@@ -324,7 +343,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         System.out.println(namespace);
         if (namespace != null)
         {
-            final Map<String, FaceletTag> tags = resolveTags(namespace,
+            final Map<String, ITagElement> tags = resolveTags(namespace,
                     typeProxy, classTypeWrapper);
 
             return new FaceletTaglibWithLibraryClass(namespace, className, tags);
@@ -333,11 +352,11 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         return null;
     }
 
-    private Map<String, FaceletTag> resolveTags(final String uri,
+    private Map<String, ITagElement> resolveTags(final String uri,
             final IBeanTypeProxy typeProxy,
             final BeanProxyWrapper beanProxy) 
     {
-        final Map<String, FaceletTag> tags = new HashMap<String, FaceletTag>();
+        final Map<String, ITagElement> tags = new HashMap<String, ITagElement>();
 
         // if the tag factory is a child of AbstractTagFactory, then we
         // can try to get our hands on its private parts ...
@@ -423,10 +442,12 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                                                     .invoke(entryProxy);
 
                                                     if (value != null) {
-                                                        final FaceletTag tag = createFaceletTag(
-                                                                uri, name, value);
+                                                        final FaceletTagElement input =
+                                                            new FaceletTagElement(uri, name, value, _registry);
+                                                        final ITagElement tag = 
+                                                            _resolver.resolve(input);
 
-                                                        if (tag != null) {
+                                                        if (tag != _resolver.getNoResult()) {
                                                             tags.put(name, tag);
                                                         }
                                                     }
@@ -479,154 +500,6 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         catch (ProxyException e)
         {
             // fall through
-        }
-        return null;
-    }
-
-    private FaceletTag createFaceletTag(final String uri, final String name, final IBeanProxy factory) {
-        final IBeanTypeProxy componentHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$ComponentHandlerFactory");
-        final IBeanTypeProxy userComponentHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$UserComponentHandlerFactory");
-        final IBeanTypeProxy validatorHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$ValidatorHandlerFactory");
-        final IBeanTypeProxy userValidatorHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$UserValidatorHandlerFactory");
-        final IBeanTypeProxy converterHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$ConverterHandlerFactory");
-        final IBeanTypeProxy userConverterHandlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$UserConverterHandlerFactory");
-        final IBeanTypeProxy handlerFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$HandlerFactory");
-        final IBeanTypeProxy userTagFactory = _registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        "com.sun.facelets.tag.AbstractTagLibrary$HandlerFactory");
-
-        if (factory.getTypeProxy().isKindOf(componentHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userComponentHandlerFactory))
-        {
-            final IFieldProxy componentTypeProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy("componentType");
-            final IFieldProxy rendererTypeProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy("renderType");
-
-            try
-            {
-                if (componentTypeProxy != null)
-                {
-                    componentTypeProxy.setAccessible(true);
-                    rendererTypeProxy.setAccessible(true);
-                    final IBeanProxy componentType = componentTypeProxy.get(factory);
-
-                    // render type is optional, but must have component type
-                    if (componentType instanceof IStringBeanProxy)
-                    {
-                        final String componentTypeValue =
-                            ((IStringBeanProxy) componentType).stringValue();
-
-                        if (componentTypeValue != null)
-                        {
-                            final IBeanProxy renderType = rendererTypeProxy
-                            .get(factory);
-                            String renderTypeValue = null;
-
-                            if (renderType instanceof IStringBeanProxy)
-                            {
-                                renderTypeValue = ((IStringBeanProxy) renderType)
-                                .stringValue();
-                            }
-
-                            final String componentClass =
-                                DTComponentIntrospector.findComponentClass(componentTypeValue, _project);
-
-                            ComponentTypeInfo typeInfo = null;
-
-                            if (componentClass != null)
-                            {
-                                typeInfo = DTComponentIntrospector
-                                        .getComponent(componentTypeValue,
-                                                componentClass, _project,
-                                                new IConfigurationContributor[] {new ELProxyContributor(_project)});
-                            }
-                            return new ComponentTag(uri, name,
-                                    componentTypeValue, renderTypeValue, null,
-                                    typeInfo);
-                        }
-                    }
-                }
-            } catch (final ThrowableProxy e) {
-                FaceletCorePlugin.log("Error get component info", e);
-            }
-        }
-        else if (factory.getTypeProxy().isKindOf(validatorHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userValidatorHandlerFactory))
-        {
-            final IFieldProxy validatorIdProxy = factory.getTypeProxy()
-            .getDeclaredFieldProxy("validatorId");
-
-            try
-            {
-                validatorIdProxy.setAccessible(true);
-                if (validatorIdProxy != null)
-                {
-                    final IBeanProxy validatorId = validatorIdProxy.get(factory);
-
-                    // render type is optional, but must have component type
-                    if (validatorId instanceof IStringBeanProxy)
-                    {
-                        return new ValidatorTag(uri, name, ((IStringBeanProxy)validatorId).stringValue(), null);
-                    }
-                }
-            }
-            catch (final ThrowableProxy e)
-            {
-                FaceletCorePlugin.log("Error getting validator info", e);
-            }
-        }
-        else if (factory.getTypeProxy().isKindOf(converterHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userConverterHandlerFactory))
-        {
-            final IFieldProxy converterIdProxy = factory.getTypeProxy()
-            .getDeclaredFieldProxy("converterId");
-
-            try
-            {
-                converterIdProxy.setAccessible(true);
-                if (converterIdProxy != null)
-                {
-                    final IBeanProxy converterId = converterIdProxy.get(factory);
-
-                    // render type is optional, but must have component type
-                    if (converterId instanceof IStringBeanProxy)
-                    {
-                        return new ConverterTag(uri, name, ((IStringBeanProxy)converterId).stringValue(), null);
-                    }
-                }
-            }
-            catch (final ThrowableProxy e)
-            {
-                FaceletCorePlugin.log("Error getting validator info", e);
-            }
-        }
-        else if (factory.getTypeProxy().isKindOf(handlerFactory)
-                || factory.getTypeProxy().isKindOf(userTagFactory))
-        {
-            return new NoArchetypeFaceletTag(uri, name);
         }
         return null;
     }

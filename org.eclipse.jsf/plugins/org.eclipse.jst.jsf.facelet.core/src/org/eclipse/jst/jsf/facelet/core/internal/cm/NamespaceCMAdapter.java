@@ -23,7 +23,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
     private final Namespace                     _ns;
     private final Map<String, ElementCMAdapter> _elements;
     private final IProject                      _project;
-    private ExtraTagInfo                        _extraTagInfo;
+    private ExternalTagInfo                     _tldTagInfo;
 
     public NamespaceCMAdapter(final Namespace ns, final IProject project)
     {
@@ -43,7 +43,6 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
     public CMNode getNamedItem(final String name)
     {
-        final long startTime = System.nanoTime();
         String localname = name;
 
         if (name != null && name.indexOf(':') > -1)
@@ -62,42 +61,44 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
             final ITagElement tagElement = _ns.getViewElement(localname);
             if (tagElement != null)
             {
-                System.out.println("NamespaceCMAdapter.getNamedItem_1: "+(System.nanoTime() - startTime)/1000);
-                ExtraTagInfo tagInfo = getOrCreateExtraTagInfo();
-                System.out.println("NamespaceCMAdapter.getNamedItem_2: "+(System.nanoTime() - startTime)/1000);
+                ExternalTagInfo tagInfo = getOrCreateExtraTagInfo();
                 element = new ElementCMAdapter(tagElement, tagInfo);
-                System.out.println("NamespaceCMAdapter.getNamedItem_3: "+(System.nanoTime() - startTime)/1000);
                 _elements.put(localname, element);
             }
         }
         return element; 
     }
 
-    private ExtraTagInfo getOrCreateExtraTagInfo()
+    private ExternalTagInfo getOrCreateExtraTagInfo()
     {
-        if (_extraTagInfo == null)
+        if (_tldTagInfo == null)
         {
-            _extraTagInfo = ExtraTagInfo.NULL_EXTRATAGINFO;
-            final long startTime = System.nanoTime();
-            final ITaglibRecord[] tldrecs = TaglibIndex
-                    .getAvailableTaglibRecords(_project.getFullPath());
-            System.out.println("NamespaceCMAdapter.getOrCreateTLDDocument_total_1: "+(System.nanoTime() - startTime)/1000);
-            FIND_TLDRECORD: for (final ITaglibRecord rec : tldrecs)
-            {
-                final String matchUri = rec.getDescriptor().getURI();
-                if (_ns.getNSUri().equals(matchUri))
-                {
-                    final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
-                    _extraTagInfo  = new ExtraTagInfo((TLDDocument) factory.createCMDocument(rec));
-                    break FIND_TLDRECORD;
-                }
-            }
-
-            System.out.println("NamespaceCMAdapter.getOrCreateTLDDocument_total: "+(System.nanoTime() - startTime)/1000);
+            _tldTagInfo = createExternalTagInfo();
         }
-        return _extraTagInfo;
+        return _tldTagInfo;
     }
-    
+
+    /**
+     * @return a new external tag info for this namespace
+     */
+    protected ExternalTagInfo createExternalTagInfo()
+    {
+        ExternalTagInfo tldTagInfo = new MetadataTagInfo(_ns.getNSUri());
+        final ITaglibRecord[] tldrecs = TaglibIndex
+                .getAvailableTaglibRecords(_project.getFullPath());
+        FIND_TLDRECORD: for (final ITaglibRecord rec : tldrecs)
+        {
+            final String matchUri = rec.getDescriptor().getURI();
+            if (_ns.getNSUri().equals(matchUri))
+            {
+                final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
+                tldTagInfo  = new MetadataTagInfo((TLDDocument) factory.createCMDocument(rec));
+                break FIND_TLDRECORD;
+            }
+        }
+        return tldTagInfo;
+    }
+
     // TODO: optimize
     public CMNode item(int index)
     {
@@ -146,11 +147,8 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
         public CMNode next()
         {
-            final long startTime = System.nanoTime();
             ITagElement nextElement = (ITagElement) _viewElementIterator.next();
-            System.out.println("NamespaceCMAdapter.WrappingIterator.next_1: "+(System.nanoTime() - startTime)/1000);
             CMNode node = getNamedItem(nextElement.getName());
-            System.out.println("NamespaceCMAdapter.WrappingIterator.next_2: "+(System.nanoTime() - startTime)/1000);
             return node;
         }
 

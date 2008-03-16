@@ -9,12 +9,11 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.Namespace;
 import org.eclipse.jst.jsf.designtime.internal.view.model.ITagRegistry;
 import org.eclipse.jst.jsf.designtime.internal.view.model.TagRegistryFactory.TagRegistryFactoryException;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.FaceletRegistryManager.MyRegistryFactory;
+import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil;
+import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil.PrefixEntry;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 
 public class FaceletDocumentFactory
 {
@@ -47,7 +46,7 @@ public class FaceletDocumentFactory
             final IProject project, final Element element)
     {
         final String prefix = element.getPrefix();
-        final Map<String, PrefixEntry> namespaces = getDocumentNamespaces(element
+        final Map<String, PrefixEntry> namespaces = ViewUtil.getDocumentNamespaces(element
                 .getOwnerDocument());
         final PrefixEntry prefixEntry = namespaces.get(prefix);
 
@@ -66,83 +65,6 @@ public class FaceletDocumentFactory
         return null;
     }
 
-    public Map<String, PrefixEntry> getDocumentNamespaces(final Document doc)
-    {
-        final Map<String, PrefixEntry> namespaces = new HashMap<String, PrefixEntry>();
-
-        final Element rootElement = doc.getDocumentElement();
-
-        if (rootElement != null)
-        {
-            final NamedNodeMap attrs = rootElement.getAttributes();
-            for (int i = 0; i < attrs.getLength(); i++)
-            {
-                final Attr a = (Attr) attrs.item(i);
-                final PrefixEntry ns = PrefixEntry.parseNamespace(a);
-                if (ns != null)
-                {
-                    namespaces.put(ns._prefix, ns);
-                }
-            }
-        }
-        return namespaces;
-    }
-
-
-    public static class PrefixEntry
-    {
-        private final String _uri;
-        private final String _prefix;
-
-        public static PrefixEntry parseNamespace(final Attr attr)
-        {
-            final String prefix = attr.getPrefix();
-
-            if ("xmlns".equals(prefix))
-            {
-                final String prefixName = attr.getLocalName();
-                if (prefixName != null)
-                {
-                    final String uri = attr.getNodeValue();
-
-                    if (uri != null)
-                    {
-                        return new PrefixEntry(uri, prefixName);
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public PrefixEntry(final String uri, final String prefix)
-        {
-            _uri = uri;
-            _prefix = prefix;
-        }
-
-        public final String getUri()
-        {
-            return _uri;
-        }
-
-        public final String getPrefix()
-        {
-            return _prefix;
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return _uri.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object obj)
-        {
-            return _uri.equals(obj);
-        }
-    }
 
     private NamespaceCMAdapter getNamespace(final String uri)
     {

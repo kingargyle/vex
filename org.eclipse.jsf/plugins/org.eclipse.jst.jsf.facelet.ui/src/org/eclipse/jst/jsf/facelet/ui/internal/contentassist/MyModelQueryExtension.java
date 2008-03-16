@@ -11,7 +11,8 @@ import org.eclipse.jst.jsf.context.resolver.structureddocument.IWorkspaceContext
 import org.eclipse.jst.jsf.context.structureddocument.IStructuredDocumentContext;
 import org.eclipse.jst.jsf.context.structureddocument.IStructuredDocumentContextFactory2;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
-import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory.PrefixEntry;
+import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil;
+import org.eclipse.jst.jsf.facelet.core.internal.util.ViewUtil.PrefixEntry;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtension;
@@ -46,7 +47,7 @@ public class MyModelQueryExtension extends ModelQueryExtension
                 final FaceletDocumentFactory factory = 
                     new FaceletDocumentFactory(project);
                 final Map<String, PrefixEntry> map = 
-                    factory.getDocumentNamespaces(parentElement.getOwnerDocument());
+                    ViewUtil.getDocumentNamespaces(parentElement.getOwnerDocument());
                 String prefix = null;
                 for (final Map.Entry<String, PrefixEntry> entry : map.entrySet())
                 {

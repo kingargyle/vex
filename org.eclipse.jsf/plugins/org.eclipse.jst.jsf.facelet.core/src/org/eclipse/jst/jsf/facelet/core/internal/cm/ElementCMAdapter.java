@@ -16,12 +16,12 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 class ElementCMAdapter implements CMElementDeclaration, CMNamedNodeMap
 {
     private final ITagElement  _tagElement;
-    private final ExtraTagInfo _extraTagInfo;
+    private final ExternalTagInfo _tLDTagInfo;
 
-    ElementCMAdapter(final ITagElement tagElement, ExtraTagInfo extraTagInfo)
+    ElementCMAdapter(final ITagElement tagElement, final ExternalTagInfo tldTagInfo)
     {
         _tagElement = tagElement;
-        _extraTagInfo = extraTagInfo;
+        _tLDTagInfo = tldTagInfo;
     }
 
     public CMNamedNodeMap getAttributes()
@@ -77,18 +77,18 @@ class ElementCMAdapter implements CMElementDeclaration, CMNamedNodeMap
         return CMNode.ELEMENT_DECLARATION;
     }
 
-    public Object getProperty(String propertyName)
+    public Object getProperty(final String propertyName)
     {
-        return null;
+        return _tLDTagInfo.getTagProperty(_tagElement.getName(), propertyName);
     }
 
-    public boolean supports(String propertyName)
+    public boolean supports(final String propertyName)
     {
         return false;
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(final Object obj)
     {
         if (obj instanceof ElementCMAdapter)
         {
@@ -106,19 +106,19 @@ class ElementCMAdapter implements CMElementDeclaration, CMNamedNodeMap
 
     public int getLength()
     {
-        CMNamedNodeMap map = _extraTagInfo.getAttributes(_tagElement.getName());
+        final CMNamedNodeMap map = _tLDTagInfo.getAttributes(_tagElement.getName());
 
         if (map != null)
         {
             return map.getLength();
         }
-        
+
         return 0;
     }
 
-    public CMNode getNamedItem(String name)
+    public CMNode getNamedItem(final String name)
     {
-        CMNamedNodeMap map = _extraTagInfo.getAttributes(_tagElement.getName());
+        final CMNamedNodeMap map = _tLDTagInfo.getAttributes(_tagElement.getName());
 
         if (map != null)
         {
@@ -127,9 +127,9 @@ class ElementCMAdapter implements CMElementDeclaration, CMNamedNodeMap
         return null;
     }
 
-    public CMNode item(int index)
+    public CMNode item(final int index)
     {
-        CMNamedNodeMap map = _extraTagInfo.getAttributes(_tagElement.getName());
+        final CMNamedNodeMap map = _tLDTagInfo.getAttributes(_tagElement.getName());
 
         if (map != null)
         {
@@ -140,7 +140,7 @@ class ElementCMAdapter implements CMElementDeclaration, CMNamedNodeMap
 
     public Iterator<?> iterator()
     {
-        CMNamedNodeMap map = _extraTagInfo.getAttributes(_tagElement.getName());
+        final CMNamedNodeMap map = _tLDTagInfo.getAttributes(_tagElement.getName());
         return map.iterator();
     }
 
