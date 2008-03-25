@@ -15,7 +15,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
     private final IValidator            _validator;
     private final IReporter             _reporter;
     private final IFile                 _file;
-    private final ValidationPreferences _prefs;
+    private final ValidationMessageFactory  _factory;
+
 
     public ValidationReporter(final IValidator validator,
             final IReporter reporter, final IFile file,
@@ -24,14 +25,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
         _validator = validator;
         _reporter = reporter;
         _file = file;
-        _prefs = prefs;
+        _factory = new ValidationMessageFactory(prefs);
     }
 
     public void report(final Diagnostic problem, final int start,
             final int length)
     {
-        final IMessage message = ValidationMessageFactory.createFromDiagnostic(
-                problem, start, length, _file, _prefs);
+        final IMessage message = _factory.createFromDiagnostic(
+                problem, start, length, _file);
 
         if ((message.getSeverity() & IMessage.ALL_MESSAGES) != 0)
         {
