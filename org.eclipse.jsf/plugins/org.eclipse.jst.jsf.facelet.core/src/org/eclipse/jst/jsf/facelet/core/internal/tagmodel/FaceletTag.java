@@ -57,4 +57,15 @@ public abstract class FaceletTag implements IJSFTagElement
     {
         return "Tag Name: " + getName() + "Tag Type: " + getType();
     }
+
+    public boolean isLocked()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public void setLocked()
+    {
+        // TODO Auto-generated method stub
+    }
 }
