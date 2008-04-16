@@ -9,6 +9,11 @@ package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
  */
 public final class NoArchetypeFaceletTag extends FaceletTag {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4810723162936027305L;
+
     public NoArchetypeFaceletTag(final String uri, final String name) {
         super(uri, name, TagType.HANDLER, null);
     }

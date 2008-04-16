@@ -10,6 +10,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IJSFTagElem
  */
 public abstract class FaceletTag implements IJSFTagElement
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3027895246947365781L;
     private final String  _uri;
     private final String  _name;
     private final TagType _type;

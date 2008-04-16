@@ -1,21 +1,26 @@
 package org.eclipse.jst.jsf.facelet.core.internal.view;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
-import org.eclipse.jst.jsf.core.internal.JSFCorePlugin;
+import org.eclipse.jst.jsf.common.runtime.internal.model.component.ComponentInfo;
 import org.eclipse.jst.jsf.designtime.context.DTFacesContext;
-import org.eclipse.jst.jsf.designtime.internal.view.AbstractDTViewHandler;
 import org.eclipse.jst.jsf.designtime.internal.view.DTUIViewRoot;
-import org.eclipse.jst.jsf.designtime.internal.view.IViewDefnAdapter;
+import org.eclipse.jst.jsf.designtime.internal.view.DefaultDTViewHandler;
 import org.eclipse.jst.jsf.designtime.internal.view.IViewDefnAdapterFactory;
+import org.eclipse.jst.jsf.designtime.internal.view.XMLComponentTreeConstructionStrategy;
 import org.eclipse.jst.jsf.designtime.internal.view.XMLViewDefnAdapter;
+import org.eclipse.jst.jsf.designtime.internal.view.DTUIViewRoot.VersionStamp;
 import org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacet;
 
-public class DTFaceletViewHandler extends AbstractDTViewHandler
+public class DTFaceletViewHandler extends DefaultDTViewHandler
 {
 
     @Override
@@ -65,30 +70,42 @@ public class DTFaceletViewHandler extends AbstractDTViewHandler
     }
 
     @Override
-    protected DTUIViewRoot internalCreateView(DTFacesContext facesContext,
-            String viewId)
+    protected DTUIViewRoot newView(DTFacesContext facesContext, String viewId)
     {
-        IViewDefnAdapterFactory factory;
-        try
+        return new FaceletUIViewRoot();
+    }
+
+    @Override
+    protected XMLComponentTreeConstructionStrategy createTreeConstructionStrategy(
+            XMLViewDefnAdapter adapter, IProject project)
+    {
+        return new XMLComponentTreeConstructionStrategy(adapter, project)
         {
-            factory = getViewMetadataAdapterFactory(facesContext);
-            if (factory != null)
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void populateViewRoot(DTUIViewRoot viewRoot, List children)
             {
-                IViewDefnAdapter<?, ?> adapter = 
-                    factory.createAdapter(facesContext, viewId);
-                if (adapter instanceof XMLViewDefnAdapter)
+                // facelets effectively ignores view roots created by the view
+                // defn.  So we simply need to loop through all of children
+                // and add them to viewRoot unless they are view roots, in which
+                // case we add their children
+                for (final Iterator<?> it = children.iterator(); it.hasNext();)
                 {
-                    return new FaceletUIViewRoot(facesContext, this, (XMLViewDefnAdapter) adapter);
+                    final ComponentInfo child = (ComponentInfo) it.next();
+                    
+                    if (child instanceof DTUIViewRoot ||
+                            "javax.faces.ViewRoot".equals(child.getComponentTypeInfo().getComponentType()))
+                    {
+                        // add recursively
+                        populateViewRoot(viewRoot, child.getChildren());
+                    }
+                    else
+                    {
+                        viewRoot.addChild(child);
+                    }
                 }
             }
-        }
-        catch (ViewHandlerException e)
-        {
-            JSFCorePlugin.log(e, "While acquiring view defn adapter factory");
-            // fall-through
-        }
-        
-        return null;
+        };
     }
 
     @Override
@@ -111,4 +128,10 @@ public class DTFaceletViewHandler extends AbstractDTViewHandler
         return false;
     }
 
+    @Override
+    protected VersionStamp createVersionStamp(DTFacesContext facesContext,
+            String viewId)
+    {
+        return new TimeBasedVersionStamp();
+    }
 }

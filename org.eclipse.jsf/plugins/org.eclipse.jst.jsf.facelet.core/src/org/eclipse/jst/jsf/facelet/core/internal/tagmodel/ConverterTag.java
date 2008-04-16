@@ -6,6 +6,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IConverterT
 
 public class ConverterTag extends FaceletTag implements IConverterTagElement
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5310748504219020605L;
     private final ConverterTypeInfo _converter;
     private final String            _handler;  // may be null
 

@@ -620,4 +620,17 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    protected void cleanupPersistentState()
+    {
+        // TODO ??
+        
+    }
+
+    public void checkpoint()
+    {
+        // TODO ??
+        
+    }
 }

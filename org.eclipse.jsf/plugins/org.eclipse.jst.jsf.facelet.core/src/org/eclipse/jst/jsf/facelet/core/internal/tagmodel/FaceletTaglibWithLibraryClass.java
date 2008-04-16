@@ -17,6 +17,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement
  */
 public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7747289728027784505L;
     private final String                    _libraryClassName;
     private final Map<String, ITagElement>   _tags;
 

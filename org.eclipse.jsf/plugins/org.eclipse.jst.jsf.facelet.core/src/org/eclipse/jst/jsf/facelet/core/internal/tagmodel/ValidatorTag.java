@@ -9,6 +9,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ValidatorType
  */
 public class ValidatorTag extends FaceletTag
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3898280066837027347L;
     private final ValidatorTypeInfo _validatorTypeInfo;
 
     /**

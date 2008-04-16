@@ -5,6 +5,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IHandlerTag
 
 public class HandlerTag extends FaceletTag
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8882557774865456522L;
     private final IHandlerTagElement.TagHandlerType _handlerType;
     public HandlerTag(final String uri, final String name, final IHandlerTagElement.TagHandlerType handlerType,
             final String handlerClassName) {

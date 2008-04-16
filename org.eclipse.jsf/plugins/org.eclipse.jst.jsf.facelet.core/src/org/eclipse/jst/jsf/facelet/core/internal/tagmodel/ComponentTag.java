@@ -8,6 +8,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IComponentT
 
 public class ComponentTag extends FaceletTag implements IComponentTagElement
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7457091811357699617L;
     private final ComponentTypeInfo _typeInfo;
 
 //    public ComponentTag(final String uri, final String name, final String componentType)

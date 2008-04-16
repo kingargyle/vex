@@ -13,6 +13,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement
  */
 public class FaceletTaglibWithTags extends FaceletTaglib
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5754003734420972494L;
     private final Map<String, ITagElement> _tags;
 
     protected FaceletTaglibWithTags(final String namespace, final Map<String, ITagElement> tags/*, List<FaceletFunction> functions*/)
@@ -39,6 +43,11 @@ public class FaceletTaglibWithTags extends FaceletTaglib
 
     static class WorkingCopy extends FaceletTaglibWithTags
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -6792400224772536931L;
+
         protected WorkingCopy(final String namespace) {
             super(namespace, new HashMap<String, ITagElement>());
         }

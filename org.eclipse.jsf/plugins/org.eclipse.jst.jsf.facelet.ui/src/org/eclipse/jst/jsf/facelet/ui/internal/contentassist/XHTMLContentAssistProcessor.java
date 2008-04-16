@@ -48,7 +48,6 @@ public class XHTMLContentAssistProcessor extends AbstractContentAssistProcessor
     public ICompletionProposal[] computeCompletionProposals(
             final ITextViewer textViewer, final int documentPosition)
     {
-        final long startTime = System.nanoTime();
         ICompletionProposal[] proposals = new ICompletionProposal[0];
         _project = getProject(textViewer, documentPosition);
 
@@ -58,7 +57,6 @@ public class XHTMLContentAssistProcessor extends AbstractContentAssistProcessor
             proposals =  super.computeCompletionProposals(textViewer,
                     documentPosition);
         }
-        System.out.printf("computeCompletionProposals time: %d\n", (System.nanoTime()-startTime)/1000);
         return proposals;
     }
 

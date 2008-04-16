@@ -17,6 +17,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement
 public abstract class FaceletTaglib extends org.eclipse.jst.jsf.common.runtime.internal.view.model.common.Namespace
 {
     /**
+     * 
+     */
+    private static final long serialVersionUID = 2133853120220947741L;
+    /**
      * The namespace that this tag library is associated with
      */
     private final String  _namespace;

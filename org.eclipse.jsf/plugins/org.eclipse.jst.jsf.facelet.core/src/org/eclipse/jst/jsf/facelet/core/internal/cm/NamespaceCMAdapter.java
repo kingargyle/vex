@@ -242,4 +242,16 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
         _elements.clear();
     }
 
+    public void checkpoint()
+    {
+        // TODO: ??
+        
+    }
+
+    public void destroy()
+    {
+        // TODO: ??
+        
+    }
+
 }
