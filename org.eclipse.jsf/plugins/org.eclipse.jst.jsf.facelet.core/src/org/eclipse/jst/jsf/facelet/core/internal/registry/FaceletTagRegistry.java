@@ -258,8 +258,8 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                             final FaceletTaglib tagLib = TagModelParser
                             .processDocument(doc);
                             if (tagLib.getNSUri() != null) {
-                                System.out.println("Namespace found: "
-                                        + tagLib.getNSUri());
+//                                System.out.println("Namespace found: "
+//                                        + tagLib.getNSUri());
                             }
                             tagLibsFound.add(tagLib);
                         } catch (final ParserConfigurationException e) {
@@ -572,7 +572,8 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         return _nsResolved.get(uri);
     }
 
-    public Job getRefreshJob()
+    @Override
+    public Job getRefreshJob(final boolean flushCaches)
     {
         return new Job("Refreshing Facelet tag registry for "
                 + _project.getName())
