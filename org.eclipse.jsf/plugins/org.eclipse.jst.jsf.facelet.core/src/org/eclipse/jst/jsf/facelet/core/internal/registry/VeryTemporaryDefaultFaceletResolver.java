@@ -93,7 +93,7 @@ public class VeryTemporaryDefaultFaceletResolver extends
             return new HandlerTag(tagId.getUri(), tagId.getTagName(),
                     (TagHandlerType) typeInfo, null);
         }
-        else if (_coreHtmlTypeInfo.isDefaultLib(tagId.getUri()))
+        else if (DefaultTagTypeInfo.isDefaultLib(tagId.getUri()))
         {
             return new NoArchetypeFaceletTag(tagId.getUri(), tagId.getTagName());
         }

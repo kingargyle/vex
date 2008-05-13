@@ -1,5 +1,7 @@
 package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
+import java.util.Map;
+
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IJSFTagElement;
 
 /**
@@ -58,14 +60,10 @@ public abstract class FaceletTag implements IJSFTagElement
         return "Tag Name: " + getName() + "Tag Type: " + getType();
     }
 
-    public boolean isLocked()
+    public Map<?, ?> getAttributeHandlers()
     {
-        // TODO Auto-generated method stub
-        return false;
+        throw new IllegalStateException("TO DO");
     }
 
-    public void setLocked()
-    {
-        // TODO Auto-generated method stub
-    }
+
 }
