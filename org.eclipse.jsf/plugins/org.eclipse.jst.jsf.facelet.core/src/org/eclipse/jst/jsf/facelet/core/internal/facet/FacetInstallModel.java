@@ -9,13 +9,13 @@ public class FacetInstallModel
     private boolean _addViewHandler;
     private boolean _addConfigureListener;
     private boolean _addWebAppLifecycleListener;
-    
+
     public boolean isAddViewHandler()
     {
         return _addViewHandler;
     }
 
-    public void setAddViewHandler(boolean addViewHandler)
+    public void setAddViewHandler(final boolean addViewHandler)
     {
         _addViewHandler = addViewHandler;
     }
@@ -25,7 +25,7 @@ public class FacetInstallModel
         return _addDefaultSuffix;
     }
 
-    public void setAddDefaultSuffix(boolean addDefaultSuffix)
+    public void setAddDefaultSuffix(final boolean addDefaultSuffix)
     {
         _addDefaultSuffix = addDefaultSuffix;
     }
@@ -35,7 +35,7 @@ public class FacetInstallModel
         return _addConfigureListener;
     }
 
-    public void setAddConfigureListener(boolean addConfigureListener)
+    public void setAddConfigureListener(final boolean addConfigureListener)
     {
         _addConfigureListener = addConfigureListener;
     }
@@ -45,23 +45,24 @@ public class FacetInstallModel
         return _addWebAppLifecycleListener;
     }
 
-    public void setAddWebAppLifecycleListener(boolean addWebAppLifecycleListener)
+    public void setAddWebAppLifecycleListener(
+            final boolean addWebAppLifecycleListener)
     {
         _addWebAppLifecycleListener = addWebAppLifecycleListener;
     }
 
     // default bean listeners
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(
-                                                        this);
+    private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(
+                                                              this);
 
-    public void addPropertyChangeListener(String propertyName,
-            PropertyChangeListener listener)
+    public void addPropertyChangeListener(final String propertyName,
+            final PropertyChangeListener listener)
     {
         changeSupport.addPropertyChangeListener(propertyName, listener);
     }
 
-    public void removePropertyChangeListener(String propertyName,
-            PropertyChangeListener listener)
+    public void removePropertyChangeListener(final String propertyName,
+            final PropertyChangeListener listener)
     {
         changeSupport.removePropertyChangeListener(propertyName, listener);
     }

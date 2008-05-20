@@ -1,8 +1,13 @@
 package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
+import java.util.Collections;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IJSFTagElement;
+import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.TagElement;
+import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
 
 /**
  * A description of the a facelet tag
@@ -10,7 +15,7 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IJSFTagElem
  * @author cbateman
  *
  */
-public abstract class FaceletTag implements IJSFTagElement
+public abstract class FaceletTag extends TagElement implements IJSFTagElement
 {
     /**
      * 
@@ -28,11 +33,6 @@ public abstract class FaceletTag implements IJSFTagElement
         _type = type;
         _tagHandlerClass = tagHandlerClassName;
     }
-
-    //    protected FaceletTag(final String name, final TagType type)
-    //    {
-    //        this(name, type, null);
-    //    }
 
     /**
      * @return the name of the tag
@@ -62,8 +62,9 @@ public abstract class FaceletTag implements IJSFTagElement
 
     public Map<?, ?> getAttributeHandlers()
     {
-        throw new IllegalStateException("TO DO");
+        FaceletCorePlugin.getDefault().getLog().log
+            (new Status(IStatus.WARNING, FaceletCorePlugin.PLUGIN_ID, -1
+                    , "Don't forget to implement this", null));
+        return Collections.emptyMap();
     }
-
-
 }

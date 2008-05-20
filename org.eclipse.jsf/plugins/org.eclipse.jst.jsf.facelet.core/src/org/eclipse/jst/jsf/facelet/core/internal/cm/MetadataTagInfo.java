@@ -57,7 +57,10 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
         {
             final CMElementDeclaration element = (CMElementDeclaration) _doc
                     .getElements().getNamedItem(tagName);
-            return element.getProperty(key);
+            if (element != null)
+            {
+                return element.getProperty(key);
+            }
         }
         return null;
     }

@@ -19,7 +19,7 @@ public class FaceletFacetDataModelProvider extends
         {
             _beanInfo = Introspector.getBeanInfo(FacetInstallModel.class);
         }
-        catch (IntrospectionException e)
+        catch (final IntrospectionException e)
         {
         }
     }
@@ -27,19 +27,20 @@ public class FaceletFacetDataModelProvider extends
     @Override
     public Object create()
     {
-        FacetInstallModel model = new FacetInstallModel();
+        final FacetInstallModel model = new FacetInstallModel();
         model
                 .setAddDefaultSuffix((Boolean) getDefaultProperty("addDefaultSuffix"));
         model.setAddViewHandler((Boolean) getDefaultProperty("addViewHandler"));
         model
                 .setAddConfigureListener((Boolean) getDefaultProperty("addConfigureListener"));
-        model.setAddWebAppLifecycleListener((Boolean) getDefaultProperty("addWebAppLifecycleListener"));
+        model
+                .setAddWebAppLifecycleListener((Boolean) getDefaultProperty("addWebAppLifecycleListener"));
 
         return model;
     }
 
     @Override
-    public Object getDefaultProperty(String propertyName)
+    public Object getDefaultProperty(final String propertyName)
     {
         if (propertyName.equals("addDefaultSuffix"))
         {
@@ -64,8 +65,8 @@ public class FaceletFacetDataModelProvider extends
     @Override
     public Set getPropertyNames()
     {
-        Set<String> propSet = super.getPropertyNames();
-        PropertyDescriptor[] props = _beanInfo.getPropertyDescriptors();
+        final Set<String> propSet = super.getPropertyNames();
+        final PropertyDescriptor[] props = _beanInfo.getPropertyDescriptors();
         for (final PropertyDescriptor prop : props)
         {
             propSet.add(prop.getName());

@@ -31,13 +31,11 @@ public abstract class WebAppConfigurator
 
         if (webAppObj instanceof org.eclipse.jst.javaee.web.WebApp)
         {
-            return new JavaEEWebAppConfigurator(project,
-                    (org.eclipse.jst.javaee.web.WebApp) webAppObj);
+            return new JavaEEWebAppConfigurator(project);
         }
         else if (webAppObj instanceof org.eclipse.jst.j2ee.webapplication.WebApp)
         {
-            return new J2EEWebAppConfigurator(project,
-                    (org.eclipse.jst.j2ee.webapplication.WebApp) webAppObj);
+            return new J2EEWebAppConfigurator(project);
         }
 
         return null;
@@ -66,28 +64,26 @@ public abstract class WebAppConfigurator
     @SuppressWarnings("unchecked")
     private static class JavaEEWebAppConfigurator extends WebAppConfigurator
     {
-        private final org.eclipse.jst.javaee.web.WebApp _webApp;
-
-        public JavaEEWebAppConfigurator(final IProject project,
-                final org.eclipse.jst.javaee.web.WebApp webApp)
+        public JavaEEWebAppConfigurator(final IProject project)
         {
             super(project);
-            _webApp = webApp;
         }
 
         @Override
         public void addContextParam(final String paramName,
                 final String paramValue)
         {
-            Runnable runnable = new Runnable()
+            final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
-                    org.eclipse.jst.javaee.core.ParamValue newParamValue = JavaeeFactory.eINSTANCE
+                    final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
+                            .getModelProvider(_project).getModelObject();
+                    final org.eclipse.jst.javaee.core.ParamValue newParamValue = JavaeeFactory.eINSTANCE
                             .createParamValue();
                     newParamValue.setParamName(paramName);
                     newParamValue.setParamValue(paramValue);
-                    _webApp.getContextParams().add(newParamValue);
+                    webApp.getContextParams().add(newParamValue);
                 }
             };
             executeChange(runnable);
@@ -96,14 +92,17 @@ public abstract class WebAppConfigurator
         @Override
         public void addListener(final String listenerClass)
         {
-            Runnable runnable = new Runnable()
+            final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
-                    org.eclipse.jst.javaee.core.Listener listener = 
-                        JavaeeFactory.eINSTANCE.createListener();
+                    final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
+                            .getModelProvider(_project).getModelObject();
+
+                    final org.eclipse.jst.javaee.core.Listener listener = JavaeeFactory.eINSTANCE
+                            .createListener();
                     listener.setListenerClass(listenerClass);
-                    _webApp.getListeners().add(listener);
+                    webApp.getListeners().add(listener);
                 }
             };
             executeChange(runnable);
@@ -113,29 +112,27 @@ public abstract class WebAppConfigurator
     @SuppressWarnings("unchecked")
     private static class J2EEWebAppConfigurator extends WebAppConfigurator
     {
-        private final org.eclipse.jst.j2ee.webapplication.WebApp _webApp;
-
-        public J2EEWebAppConfigurator(final IProject project,
-                final org.eclipse.jst.j2ee.webapplication.WebApp webApp)
+        public J2EEWebAppConfigurator(final IProject project)
         {
             super(project);
-            _webApp = webApp;
         }
 
         @Override
         public void addContextParam(final String paramName,
                 final String paramValue)
         {
-            Runnable runnable = new Runnable()
+            final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
+                    final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
+                            .getModelProvider(_project).getModelObject();
 
                     final org.eclipse.jst.j2ee.common.ParamValue newParamValue = CommonFactory.eINSTANCE
                             .createParamValue();
                     newParamValue.setName(paramName);
                     newParamValue.setValue(paramValue);
-                    _webApp.getContextParams().add(paramValue);
+                    webApp.getContextParams().add(newParamValue);
                 }
             };
             executeChange(runnable);
@@ -144,14 +141,17 @@ public abstract class WebAppConfigurator
         @Override
         public void addListener(final String listenerClass)
         {
-            Runnable runnable = new Runnable()
+            final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
-                    org.eclipse.jst.j2ee.common.Listener listener = 
-                        CommonFactory.eINSTANCE.createListener();
+                    final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
+                            .getModelProvider(_project).getModelObject();
+
+                    final org.eclipse.jst.j2ee.common.Listener listener = CommonFactory.eINSTANCE
+                            .createListener();
                     listener.setListenerClassName(listenerClass);
-                    _webApp.getListeners().add(listener);
+                    webApp.getListeners().add(listener);
                 }
             };
             executeChange(runnable);

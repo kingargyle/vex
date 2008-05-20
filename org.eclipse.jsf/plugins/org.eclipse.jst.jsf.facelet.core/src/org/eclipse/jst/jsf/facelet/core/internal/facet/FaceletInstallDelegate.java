@@ -16,16 +16,17 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class FaceletInstallDelegate implements IDelegate
 {
-
-    public void execute(IProject project, IProjectFacetVersion fv,
-            Object config, IProgressMonitor monitor) throws CoreException
+    public void execute(final IProject project, final IProjectFacetVersion fv,
+            final Object config, final IProgressMonitor monitor)
+            throws CoreException
     {
         final FacetInstallModel model = (FacetInstallModel) config;
         try
         {
             if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
             {
-                FaceletCoreTraceOptions.log("Installing facet on project: "+project.getName());
+                FaceletCoreTraceOptions.log("Installing facet on project: "
+                        + project.getName());
 
                 FaceletCoreTraceOptions.log(String.format(
                         "FaceletInstallDelegate: Add default selection %b",
@@ -57,8 +58,8 @@ public class FaceletInstallDelegate implements IDelegate
             {
                 installFaceletViewHandler(project, monitor);
             }
-            
-            WebAppConfigurator configurator = WebAppConfigurator
+
+            final WebAppConfigurator configurator = WebAppConfigurator
                     .getConfigurator(project);
 
             if (configurator != null)
@@ -71,7 +72,8 @@ public class FaceletInstallDelegate implements IDelegate
             }
             else
             {
-                FaceletCoreTraceOptions.log("FaceletInstallDelegate: No web configurator");
+                FaceletCoreTraceOptions
+                        .log("FaceletInstallDelegate: No web configurator");
             }
         }
         finally
@@ -100,8 +102,8 @@ public class FaceletInstallDelegate implements IDelegate
         {
             try
             {
-                FacesConfigType root = edit.getFacesConfig();
-                EList applications = root.getApplication();
+                final FacesConfigType root = edit.getFacesConfig();
+                final EList applications = root.getApplication();
                 ApplicationType application = null;
                 if (applications.size() > 0)
                 {
@@ -113,7 +115,7 @@ public class FaceletInstallDelegate implements IDelegate
                             .createApplicationType();
                     applications.add(application);
                 }
-                ViewHandlerType viewHandlerType = FacesConfigFactory.eINSTANCE
+                final ViewHandlerType viewHandlerType = FacesConfigFactory.eINSTANCE
                         .createViewHandlerType();
                 viewHandlerType
                         .setTextContent("com.sun.facelets.FaceletViewHandler");
