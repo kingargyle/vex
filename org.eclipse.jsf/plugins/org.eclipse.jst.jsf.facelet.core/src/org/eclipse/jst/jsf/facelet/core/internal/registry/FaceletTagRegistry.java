@@ -53,7 +53,9 @@ import org.eclipse.jst.jsf.core.internal.jem.BeanProxyUtil.BeanProxyWrapper;
 import org.eclipse.jst.jsf.core.internal.jem.BeanProxyUtil.ProxyException;
 import org.eclipse.jst.jsf.designtime.internal.view.model.AbstractTagRegistry;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.CompositeTagResolvingStrategy;
+import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.IAttributeAdvisor.NullAttributeAdvisor;
 import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
+import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglib;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglibWithLibraryClass;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTaglibWithTags;
@@ -69,39 +71,55 @@ import org.xml.sax.SAXException;
 public final class FaceletTagRegistry extends AbstractTagRegistry implements
         IManagedObject
 {
+    private static final String FACELET_TAGLIB_DTD_PATH = "/dtd/facelet-taglib_1_0.dtd"; //$NON-NLS-1$
+    private static final String STATIC_MEMBER_NAMESPACE = "Namespace"; //$NON-NLS-1$
+    private static final String METHOD_NAME_GET_NAMESPACE = "getNamespace"; //$NON-NLS-1$
+    private static final String METHOD_NAME_GET_VALUE = "getValue"; //$NON-NLS-1$
+    private static final String METHOD_NAME_GET_KEY = "getKey"; //$NON-NLS-1$
+    private static final String METHOD_NAME_HAS_NEXT = "hasNext"; //$NON-NLS-1$
+    private static final String METHOD_NAME_NEXT = "next"; //$NON-NLS-1$
+    private static final String METHOD_NAME_ITERATOR = "iterator"; //$NON-NLS-1$
+    private static final String METHOD_NAME_ENTRY_SET = "entrySet"; //$NON-NLS-1$
+    private static final String PROPERTY_NAME_FACTORIES = "factories"; //$NON-NLS-1$
+    private static final String QUALIFIED_CLASS_NAME__COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY = "com.sun.facelets.tag.AbstractTagLibrary"; //$NON-NLS-1$
+    private static final String QUALIFIED_CLASS_NAME_JAVA_UTIL_MAP = "java.util.Map"; //$NON-NLS-1$
     // INSTANCE
-    private final IProject                   _project;
-    private final Map<String, FaceletTaglib> _nsResolved;
-    private final Set<FaceletTaglib>         _unResolved;
+    private final IProject                                         _project;
+    private final Map<String, FaceletTaglib>                       _nsResolved;
+    private final Set<FaceletTaglib>                               _unResolved;
     private final CompositeTagResolvingStrategy<FaceletTagElement> _resolver;
-    private ProxyFactoryRegistry             _registry;
-    private boolean                          _isInitialized;
+    private final FaceletDocumentFactory                           _factory;
+    private ProxyFactoryRegistry                                   _registry;
+    private boolean                                                _isInitialized;
 
-    FaceletTagRegistry(final IProject project) {
+    FaceletTagRegistry(final IProject project)
+    {
         _project = project;
         _nsResolved = new HashMap<String, FaceletTaglib>();
         _unResolved = new HashSet<FaceletTaglib>();
-        
+
         final List<String> ids = new ArrayList<String>();
         ids.add(VeryTemporaryDefaultFaceletResolver.ID);
         ids.add(FaceletTagResolvingStrategy.ID);
-        final IdentifierOrderedIteratorPolicy<String> policy =
-            new IdentifierOrderedIteratorPolicy<String>(ids);
+        final IdentifierOrderedIteratorPolicy<String> policy = new IdentifierOrderedIteratorPolicy<String>(
+                ids);
 
-        // exclude things that are not explicitly listed in the policy.  That
+        // exclude things that are not explicitly listed in the policy. That
         // way preference-based disablement will cause those strategies to
         // be excluded.
         policy.setExcludeNonExplicitValues(true);
-        _resolver = new CompositeTagResolvingStrategy<FaceletTagElement>(
-                policy);
+        _resolver = new CompositeTagResolvingStrategy<FaceletTagElement>(policy);
 
+        _factory = new FaceletDocumentFactory(project);
         // add the strategies
-        _resolver.addStrategy(new FaceletTagResolvingStrategy(_project));
-        _resolver.addStrategy(new VeryTemporaryDefaultFaceletResolver(_project));
-        //_resolver.addStrategy(new DefaultJSPTagResolver(_project));
+        _resolver.addStrategy(new FaceletTagResolvingStrategy(_project,
+                _factory));
+        _resolver.addStrategy(new VeryTemporaryDefaultFaceletResolver(_project,
+                _factory));
+        // _resolver.addStrategy(new DefaultJSPTagResolver(_project));
         // makes sure that a tag element will always be created for any
         // given tag definition even if other methods fail
-        //_resolver.addStrategy(new UnresolvedJSPTagResolvingStrategy());
+        // _resolver.addStrategy(new UnresolvedJSPTagResolvingStrategy());
     }
 
     /**
@@ -109,6 +127,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
      *         Changing the returned may has no effect on the registry, however
      *         the containned objects are not copies.
      */
+    @Override
     public synchronized Collection<FaceletTaglib> getAllTagLibraries()
     {
         final Set<FaceletTaglib> allTagLibraries = new HashSet<FaceletTaglib>();
@@ -119,17 +138,17 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                 initialize();
                 _isInitialized = true;
             }
-            catch (JavaModelException e)
+            catch (final JavaModelException e)
             {
-                FaceletCorePlugin.log("Problem during initialization", e);
+                FaceletCorePlugin.log("Problem during initialization", e); //$NON-NLS-1$
             }
-            catch (CoreException e)
+            catch (final CoreException e)
             {
-                FaceletCorePlugin.log("Problem during initialization", e);
+                FaceletCorePlugin.log("Problem during initialization", e); //$NON-NLS-1$
             }
-            catch (IOException e)
+            catch (final IOException e)
             {
-                FaceletCorePlugin.log("Problem during initialization", e);
+                FaceletCorePlugin.log("Problem during initialization", e); //$NON-NLS-1$
             }
         }
         allTagLibraries.addAll(_nsResolved.values());
@@ -144,7 +163,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         {
             throw new CoreException(new Status(IStatus.ERROR,
                     FaceletCorePlugin.PLUGIN_ID,
-                    "Project either does not exists or is not a java project: "
+                    "Project either does not exists or is not a java project: " //$NON-NLS-1$
                             + _project));
         }
 
@@ -228,23 +247,29 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
      * @param defaultDtdStream
      */
     private List<FaceletTaglib> processJar(final IClasspathEntry entry,
-            final InputStream defaultDtdStream) {
+            final InputStream defaultDtdStream)
+    {
         JarFile jarFile = null;
         final List<FaceletTaglib> tagLibsFound = new LinkedList<FaceletTaglib>();
 
-        try {
+        try
+        {
             jarFile = getJarFileFromCPE(entry);
 
-            if (jarFile != null) {
+            if (jarFile != null)
+            {
                 final Enumeration<JarEntry> jarEntries = jarFile.entries();
-                while (jarEntries.hasMoreElements()) {
+                while (jarEntries.hasMoreElements())
+                {
                     final JarEntry jarEntry = jarEntries.nextElement();
                     final String name = jarEntry.getName();
 
-                    if (name.startsWith("META-INF/")
-                            && name.endsWith(".taglib.xml")) {
+                    if (name.startsWith("META-INF/") //$NON-NLS-1$
+                            && name.endsWith(".taglib.xml")) //$NON-NLS-1$
+                    {
                         InputStream is = null;
-                        try {
+                        try
+                        {
                             is = jarFile.getInputStream(jarEntry);
 
                             final byte[] buffer = getBufferForEntry(is);
@@ -252,60 +277,81 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                                     new ByteArrayInputStream(buffer));
 
                             final Document doc = TagModelParser
-                            .getDefaultTaglibDocument(inputSource,
-                                    new InputSource(
-                                            getDefaultDTDSource()));
+                                    .getDefaultTaglibDocument(inputSource,
+                                            new InputSource(
+                                                    getDefaultDTDSource()));
                             final FaceletTaglib tagLib = TagModelParser
-                            .processDocument(doc);
-                            if (tagLib.getNSUri() != null) {
-//                                System.out.println("Namespace found: "
-//                                        + tagLib.getNSUri());
+                                    .processDocument(doc, _factory,
+                                            new NullAttributeAdvisor());
+                            if (tagLib.getNSUri() != null)
+                            {
+                                // System.out.println("Namespace found: "
+                                // + tagLib.getNSUri());
                             }
                             tagLibsFound.add(tagLib);
-                        } catch (final ParserConfigurationException e) {
+                        }
+                        catch (final ParserConfigurationException e)
+                        {
                             FaceletCorePlugin
-                            .log(
-                                    "Error initializing facelet registry entry",
-                                    e);
-                        } catch (final IOException ioe) {
+                                    .log(
+                                            "Error initializing facelet registry entry", //$NON-NLS-1$
+                                            e);
+                        }
+                        catch (final IOException ioe)
+                        {
                             FaceletCorePlugin
-                            .log(
-                                    "Error initializing facelet registry entry",
-                                    ioe);
-                        } catch (final SAXException ioe) {
+                                    .log(
+                                            "Error initializing facelet registry entry", //$NON-NLS-1$
+                                            ioe);
+                        }
+                        catch (final SAXException ioe)
+                        {
                             FaceletCorePlugin
-                            .log(
-                                    "Error initializing facelet registry entry",
-                                    ioe);
-                        } finally {
-                            if (is != null) {
+                                    .log(
+                                            "Error initializing facelet registry entry", //$NON-NLS-1$
+                                            ioe);
+                        }
+                        finally
+                        {
+                            if (is != null)
+                            {
                                 // is.close();
                             }
                         }
                     }
                 }
             }
-        } catch (final IOException e) {
-            FaceletCorePlugin.log("Error opening classpath jar file", e);
-        } finally {
-            if (jarFile != null) {
-                try {
+        }
+        catch (final IOException e)
+        {
+            FaceletCorePlugin.log("Error opening classpath jar file", e); //$NON-NLS-1$
+        }
+        finally
+        {
+            if (jarFile != null)
+            {
+                try
+                {
                     jarFile.close();
-                } catch (final IOException ioe) {
-                    FaceletCorePlugin.log("Error closing jar file", ioe);
+                }
+                catch (final IOException ioe)
+                {
+                    FaceletCorePlugin.log("Error closing jar file", ioe); //$NON-NLS-1$
                 }
             }
         }
         return tagLibsFound;
     }
 
-    private FaceletTaglib resolveTaglib(final String className) {
+    private FaceletTaglib resolveTaglib(final String className)
+    {
         if (_registry == null)
         {
             try
             {
                 final IConfigurationContributor[] contributor = new IConfigurationContributor[]
-                { new ServletBeanProxyContributor(JSFVersion.V1_1) , new ELProxyContributor(_project)};
+                { new ServletBeanProxyContributor(JSFVersion.V1_1),
+                        new ELProxyContributor(_project) };
 
                 _registry = IDERegistration.startAnImplementation(contributor,
                         false, _project, _project.getName(),
@@ -313,7 +359,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
             }
             catch (final CoreException e)
             {
-                FaceletCorePlugin.log("Error starting vm for project: "
+                FaceletCorePlugin.log("Error starting vm for project: " //$NON-NLS-1$
                         + _project.getName(), e);
                 return null;
             }
@@ -334,11 +380,11 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         {
             classTypeWrapper.init();
         }
-        catch (ProxyException e)
+        catch (final ProxyException e)
         {
-            FaceletCorePlugin.log("Couldn't load class "+className, e);
+            FaceletCorePlugin.log("Couldn't load class " + className, e); //$NON-NLS-1$
         }
- 
+
         final String namespace = resolveNS(classTypeWrapper);
         System.out.println(namespace);
         if (namespace != null)
@@ -353,25 +399,27 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     }
 
     private Map<String, ITagElement> resolveTags(final String uri,
-            final IBeanTypeProxy typeProxy,
-            final BeanProxyWrapper beanProxy) 
+            final IBeanTypeProxy typeProxy, final BeanProxyWrapper beanProxy)
     {
         final Map<String, ITagElement> tags = new HashMap<String, ITagElement>();
 
         // if the tag factory is a child of AbstractTagFactory, then we
         // can try to get our hands on its private parts ...
         final IBeanTypeProxy mapTypeProxy = _registry.getBeanTypeProxyFactory()
-        .getBeanTypeProxy("java.util.Map");
+                .getBeanTypeProxy(QUALIFIED_CLASS_NAME_JAVA_UTIL_MAP);
         final IBeanTypeProxy componentFactoryTypeProxy = _registry
-        .getBeanTypeProxyFactory().getBeanTypeProxy(
-                "com.sun.facelets.tag.AbstractTagLibrary");
+                .getBeanTypeProxyFactory().getBeanTypeProxy(
+                        QUALIFIED_CLASS_NAME__COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY);
 
-        if (mapTypeProxy != null && componentFactoryTypeProxy != null) {
+        if (mapTypeProxy != null && componentFactoryTypeProxy != null)
+        {
             final IFieldProxy fieldProxy = componentFactoryTypeProxy
-            .getDeclaredFieldProxy("factories");
+                    .getDeclaredFieldProxy(PROPERTY_NAME_FACTORIES);
 
-            if (fieldProxy != null) {
-                if (fieldProxy.getFieldType().isKindOf(mapTypeProxy)) {
+            if (fieldProxy != null)
+            {
+                if (fieldProxy.getFieldType().isKindOf(mapTypeProxy))
+                {
                     IBeanProxy factories = null;
 
                     try
@@ -383,71 +431,83 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                     }
                     catch (final ThrowableProxy e)
                     {
-                        FaceletCorePlugin
-                                .log(
-                                        "Error getting factories from bean instance",
-                                        e);
+                        FaceletCorePlugin.log(
+                                "Error getting factories from bean instance", //$NON-NLS-1$
+                                e);
                     }
 
-                    if (factories != null) {
+                    if (factories != null)
+                    {
                         final IMethodProxy entrySetMethod = fieldProxy
-                        .getFieldType().getMethodProxy("entrySet");
-                        if (entrySetMethod != null) {
-                            try {
+                                .getFieldType().getMethodProxy(METHOD_NAME_ENTRY_SET);
+                        if (entrySetMethod != null)
+                        {
+                            try
+                            {
                                 entrySetMethod.setAccessible(true);
                                 final IBeanProxy entrySetProxy = entrySetMethod
-                                .invoke(factories);
+                                        .invoke(factories);
 
-                                if (entrySetProxy != null) {
+                                if (entrySetProxy != null)
+                                {
                                     final IMethodProxy iteratorMethod = entrySetProxy
-                                    .getTypeProxy().getMethodProxy(
-                                            "iterator");
+                                            .getTypeProxy().getMethodProxy(
+                                                    METHOD_NAME_ITERATOR);
                                     iteratorMethod.setAccessible(true);
                                     final IBeanProxy iteratorProxy = iteratorMethod
-                                    .invoke(entrySetProxy);
+                                            .invoke(entrySetProxy);
 
-                                    if (iteratorProxy != null) {
+                                    if (iteratorProxy != null)
+                                    {
                                         final IMethodProxy nextMethod = iteratorProxy
-                                        .getTypeProxy().getMethodProxy(
-                                                "next");
+                                                .getTypeProxy().getMethodProxy(
+                                                        METHOD_NAME_NEXT);
                                         nextMethod.setAccessible(true);
                                         final IMethodProxy hasNextMethod = iteratorProxy
-                                        .getTypeProxy().getMethodProxy(
-                                                "hasNext");
+                                                .getTypeProxy().getMethodProxy(
+                                                        METHOD_NAME_HAS_NEXT);
                                         hasNextMethod.setAccessible(true);
 
                                         while (((IBooleanBeanProxy) hasNextMethod
                                                 .invoke(iteratorProxy))
-                                                .booleanValue()) {
+                                                .booleanValue())
+                                        {
                                             final IBeanProxy entryProxy = nextMethod
-                                            .invoke(iteratorProxy);
+                                                    .invoke(iteratorProxy);
                                             final IMethodProxy getKeyProxy = entryProxy
-                                            .getTypeProxy()
-                                            .getMethodProxy("getKey");
+                                                    .getTypeProxy()
+                                                    .getMethodProxy(METHOD_NAME_GET_KEY);
                                             final IMethodProxy getValueProxy = entryProxy
-                                            .getTypeProxy()
-                                            .getMethodProxy("getValue");
+                                                    .getTypeProxy()
+                                                    .getMethodProxy(METHOD_NAME_GET_VALUE);
                                             if (getKeyProxy != null
-                                                    && getValueProxy != null) {
+                                                    && getValueProxy != null)
+                                            {
                                                 getKeyProxy.setAccessible(true);
                                                 final IBeanProxy key = getKeyProxy
-                                                .invoke(entryProxy);
+                                                        .invoke(entryProxy);
 
-                                                if (key instanceof IStringBeanProxy) {
+                                                if (key instanceof IStringBeanProxy)
+                                                {
                                                     final String name = ((IStringBeanProxy) key)
-                                                    .stringValue();
+                                                            .stringValue();
                                                     getValueProxy
-                                                    .setAccessible(true);
+                                                            .setAccessible(true);
                                                     final IBeanProxy value = getValueProxy
-                                                    .invoke(entryProxy);
+                                                            .invoke(entryProxy);
 
-                                                    if (value != null) {
-                                                        final FaceletTagElement input =
-                                                            new FaceletTagElement(uri, name, value, _registry);
-                                                        final ITagElement tag = 
-                                                            _resolver.resolve(input);
+                                                    if (value != null)
+                                                    {
+                                                        final FaceletTagElement input = new FaceletTagElement(
+                                                                uri, name,
+                                                                value,
+                                                                _registry);
+                                                        final ITagElement tag = _resolver
+                                                                .resolve(input);
 
-                                                        if (tag != _resolver.getNoResult()) {
+                                                        if (tag != _resolver
+                                                                .getNoResult())
+                                                        {
                                                             tags.put(name, tag);
                                                         }
                                                     }
@@ -458,8 +518,11 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
 
                                 }
 
-                            } catch (final ThrowableProxy e) {
-                                FaceletCorePlugin.log("Error invoking entrySet", e);
+                            }
+                            catch (final ThrowableProxy e)
+                            {
+                                FaceletCorePlugin.log(
+                                        "Error invoking entrySet", e); //$NON-NLS-1$
                             }
                         }
                     }
@@ -471,23 +534,27 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         return tags;
     }
 
-    private String resolveNS(final BeanProxyWrapper beanProxy) 
+    private String resolveNS(final BeanProxyWrapper beanProxy)
     {
 
-//        final IMethodProxy methodProxy = typeProxy
-//        .getMethodProxy("getNamespace");
+        // final IMethodProxy methodProxy = typeProxy
+        // .getMethodProxy("getNamespace");
 
         IBeanProxy resultProxy = null;
-        try {
-             resultProxy = beanProxy.call("getNamespace");
+        try
+        {
+            resultProxy = beanProxy.call(METHOD_NAME_GET_NAMESPACE);
 
-            if (resultProxy instanceof IStringBeanProxy) {
+            if (resultProxy instanceof IStringBeanProxy)
+            {
                 return ((IStringBeanProxy) resultProxy).stringValue();
             }
-        } catch (final  BeanProxyUtil.ProxyException e) {
+        }
+        catch (final BeanProxyUtil.ProxyException e)
+        {
             // fall through
         }
-        
+
         return resolveNSAggressively(beanProxy);
     }
 
@@ -495,27 +562,32 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     {
         try
         {
-            return beanProxy.getStringFieldValue("Namespace");
+            return beanProxy.getStringFieldValue(STATIC_MEMBER_NAMESPACE);
         }
-        catch (ProxyException e)
+        catch (final ProxyException e)
         {
             // fall through
         }
         return null;
     }
 
-    private byte[] getBufferForEntry(final InputStream is) {
+    private byte[] getBufferForEntry(final InputStream is)
+    {
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         final byte[] buffer = new byte[2048];
 
         int bytesRead = 0;
 
-        try {
-            while (((bytesRead = is.read(buffer))) != -1) {
+        try
+        {
+            while (((bytesRead = is.read(buffer))) != -1)
+            {
                 stream.write(buffer, 0, bytesRead);
             }
-        } catch (final IOException e) {
-            FaceletCorePlugin.log("Error loading buffer", e);
+        }
+        catch (final IOException e)
+        {
+            FaceletCorePlugin.log("Error loading buffer", e); //$NON-NLS-1$
             return null;
         }
 
@@ -556,7 +628,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     private static InputStream getDefaultDTDSource() throws IOException
     {
         final URL url = FaceletCorePlugin.getDefault().getBundle().getEntry(
-                "/dtd/facelet-taglib_1_0.dtd");
+                FACELET_TAGLIB_DTD_PATH);
 
         if (url != null)
         {
@@ -565,7 +637,8 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         return null;
     }
 
-    public synchronized Namespace getTagLibrary(String uri)
+    @Override
+    public synchronized Namespace getTagLibrary(final String uri)
     {
         // TODO:
         getAllTagLibraries();
@@ -575,8 +648,9 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     @Override
     public Job getRefreshJob(final boolean flushCaches)
     {
-        return new Job("Refreshing Facelet tag registry for "
-                + _project.getName())
+        return new Job(
+                Messages.FaceletTagRegistry_TAG_REGISTRY_REFRESH_JOB_DESCRIPTION
+                        + _project.getName())
         {
             @Override
             protected IStatus run(final IProgressMonitor monitor)
@@ -596,19 +670,19 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
                 {
                     status = new Status(IStatus.ERROR,
                             FaceletCorePlugin.PLUGIN_ID,
-                            "Error refreshing facelet library registry", e);
+                            "Error refreshing facelet library registry", e); //$NON-NLS-1$
                 }
                 catch (final CoreException e)
                 {
                     status = new Status(IStatus.ERROR,
                             FaceletCorePlugin.PLUGIN_ID,
-                            "Error refreshing facelet library registry", e);
+                            "Error refreshing facelet library registry", e); //$NON-NLS-1$
                 }
                 catch (final IOException e)
                 {
                     status = new Status(IStatus.ERROR,
                             FaceletCorePlugin.PLUGIN_ID,
-                            "Error refreshing facelet library registry", e);
+                            "Error refreshing facelet library registry", e); //$NON-NLS-1$
                 }
                 return status;
             }
@@ -619,19 +693,19 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
     protected void doDispose()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     protected void cleanupPersistentState()
     {
         // TODO ??
-        
+
     }
 
     public void checkpoint()
     {
         // TODO ??
-        
+
     }
 }

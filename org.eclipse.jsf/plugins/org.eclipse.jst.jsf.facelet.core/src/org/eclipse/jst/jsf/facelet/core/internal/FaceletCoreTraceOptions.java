@@ -27,14 +27,24 @@ public final class FaceletCoreTraceOptions
      * True if the facet installer is being traced.
      */
     public static final boolean TRACE_FACETINSTALLDELEGATE;
-    
-    private static final String KEY_DEBUG_ENABLED = "/debug";
+    /**
+     * True if the facet uninstaller is being traced
+     */
+    public static final boolean TRACE_FACETUNINSTALLDELEGATE;
+    /**
+     * True if the base facet change delegate is being traced
+     */
+    public static final boolean TRACE_FACETCHANGEDELEGATE;
+
+    private static final String KEY_DEBUG_ENABLED = "/debug"; //$NON-NLS-1$
 //    private static final String KEY_VIEW_TAGREGISTRY = "/jsptagregistry";
 //    private static final String KEY_VIEW_JSPTAGREGISTRY_CHANGES =
 //        KEY_VIEW_TAGREGISTRY + "/changes";
-    private static final String KEY_VIEW_REGISTRYMANAGER = "/registrymanager";
-    private static final String KEY_FACETINSTALLDELEGATE = "/facetinstalldelegate";
-    
+    private static final String KEY_VIEW_REGISTRYMANAGER = "/registrymanager"; //$NON-NLS-1$
+    private static final String KEY_FACETINSTALLDELEGATE = "/facetinstalldelegate"; //$NON-NLS-1$
+    private static final String KEY_FACETUNINSTALLDELEGATE = "facetuninstalldelegate"; //$NON-NLS-1$
+    private static final String KEY_FACETCHANGEDELEGATE = "facetchangedelegate"; //$NON-NLS-1$
+
     static
     {
         final DebugOptions debugOptions = FrameworkDebugOptions.getDefault();
@@ -43,17 +53,23 @@ public final class FaceletCoreTraceOptions
                 && debugOptions.getBooleanOption(FaceletCorePlugin.PLUGIN_ID
                         + KEY_DEBUG_ENABLED, false);
 
-        if (ENABLED)
+        if (ENABLED && debugOptions != null)
         {
             TRACE_REGISTRYMANAGER = debugOptions.getBooleanOption(
                     FaceletCorePlugin.PLUGIN_ID + KEY_VIEW_REGISTRYMANAGER, false);
             TRACE_FACETINSTALLDELEGATE = debugOptions.getBooleanOption(
                     FaceletCorePlugin.PLUGIN_ID + KEY_FACETINSTALLDELEGATE, false);
+            TRACE_FACETUNINSTALLDELEGATE = debugOptions.getBooleanOption(
+                    FaceletCorePlugin.PLUGIN_ID + KEY_FACETUNINSTALLDELEGATE, false);
+            TRACE_FACETCHANGEDELEGATE = debugOptions.getBooleanOption(
+                    FaceletCorePlugin.PLUGIN_ID + KEY_FACETCHANGEDELEGATE, false);
         }
         else
         {
             TRACE_REGISTRYMANAGER = false;
             TRACE_FACETINSTALLDELEGATE = false;
+            TRACE_FACETUNINSTALLDELEGATE = false;
+            TRACE_FACETCHANGEDELEGATE = false;
         }
     }
 

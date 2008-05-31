@@ -19,6 +19,10 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     private static final long serialVersionUID = 5754003734420972494L;
     private final Map<String, ITagElement> _tags;
 
+    /**
+     * @param namespace
+     * @param tags
+     */
     protected FaceletTaglibWithTags(final String namespace, final Map<String, ITagElement> tags/*, List<FaceletFunction> functions*/)
     {
         super(namespace);
@@ -84,7 +88,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     @Override
     public String getLibraryTypeDescription()
     {
-        return "Facelet Tag Library with Tag/Function Definitions";
+        return Messages.FaceletTaglibWithTags_TAG_LIBRARY_WITH_TAGS_TYPE_DESCRIPTION;
     }
 
     @Override

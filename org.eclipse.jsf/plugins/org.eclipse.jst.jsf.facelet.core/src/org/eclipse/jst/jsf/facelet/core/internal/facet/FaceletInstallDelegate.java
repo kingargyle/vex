@@ -11,70 +11,56 @@ import org.eclipse.jst.jsf.facesconfig.emf.FacesConfigFactory;
 import org.eclipse.jst.jsf.facesconfig.emf.FacesConfigType;
 import org.eclipse.jst.jsf.facesconfig.emf.ViewHandlerType;
 import org.eclipse.jst.jsf.facesconfig.util.FacesConfigArtifactEdit;
-import org.eclipse.wst.common.project.facet.core.IDelegate;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
-public class FaceletInstallDelegate implements IDelegate
+/**
+ * The facet installing delegate for Facelets.
+ * 
+ * @author cbateman
+ * 
+ */
+public class FaceletInstallDelegate extends FaceletChangeDelegate
 {
+
+    @Override
     public void execute(final IProject project, final IProjectFacetVersion fv,
             final Object config, final IProgressMonitor monitor)
             throws CoreException
     {
-        final FacetInstallModel model = (FacetInstallModel) config;
+        final FacetChangeModel model = (FacetChangeModel) config;
+        if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+        {
+            FaceletCoreTraceOptions.log("Installing facet on project: " //$NON-NLS-1$
+                    + project.getName());
+
+            FaceletCoreTraceOptions.log(String.format(
+                    "FaceletInstallDelegate: Add default selection %b", //$NON-NLS-1$
+                    Boolean.valueOf(model.isChgDefaultSuffix())));
+            FaceletCoreTraceOptions
+                    .log(String
+                            .format(
+                                    "FaceletInstallDelegate: Add view handler %b", Boolean.valueOf(model //$NON-NLS-1$
+                                                    .isChgViewHandler())));
+            FaceletCoreTraceOptions.log(String.format(
+                    "FaceletInstallDelegate: Add configure listener %b", //$NON-NLS-1$
+                    Boolean.valueOf(model.isChgConfigureListener())));
+            FaceletCoreTraceOptions
+                    .log(String
+                            .format(
+                                    "FaceletInstallDelegate: Add web app lifecycle listener %b", //$NON-NLS-1$
+                                    Boolean.valueOf(model
+                                            .isChgWebAppLifecycleListener())));
+        }
+
         try
         {
-            if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
-            {
-                FaceletCoreTraceOptions.log("Installing facet on project: "
-                        + project.getName());
-
-                FaceletCoreTraceOptions.log(String.format(
-                        "FaceletInstallDelegate: Add default selection %b",
-                        model.isAddDefaultSuffix()));
-                FaceletCoreTraceOptions.log(String.format(
-                        "FaceletInstallDelegate: Add view handler %b", model
-                                .isAddViewHandler()));
-                FaceletCoreTraceOptions.log(String.format(
-                        "FaceletInstallDelegate: Add configure listener %b",
-                        model.isAddConfigureListener()));
-                FaceletCoreTraceOptions
-                        .log(String
-                                .format(
-                                        "FaceletInstallDelegate: Add web app lifecycle listener %b",
-                                        model.isAddWebAppLifecycleListener()));
-            }
-
             if (monitor != null)
             {
                 monitor.beginTask("Installing facelet facet", 1); //$NON-NLS-1$
             }
 
-            final DesignTimeApplicationManager manager = DesignTimeApplicationManager
-                    .getInstance(project);
-
-            manager.setViewHandlerId(FaceletFacet.VIEW_HANDLER_ID);
-
-            if (model.isAddViewHandler())
-            {
-                installFaceletViewHandler(project, monitor);
-            }
-
-            final WebAppConfigurator configurator = WebAppConfigurator
-                    .getConfigurator(project);
-
-            if (configurator != null)
-            {
-                installDefaultSuffix(model, configurator);
-
-                installConfigureListener(model, configurator);
-
-                installWebLifecycleListener(model, configurator);
-            }
-            else
-            {
-                FaceletCoreTraceOptions
-                        .log("FaceletInstallDelegate: No web configurator");
-            }
+            super.execute(project, fv, config, monitor);
         }
         finally
         {
@@ -85,49 +71,57 @@ public class FaceletInstallDelegate implements IDelegate
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void installFaceletViewHandler(final IProject project,
+    /**
+     * Install the facelet view handler in the WEB-INF/faces-config file if not
+     * already present.
+     * 
+     * @param project
+     * @param monitor
+     */
+    @Override
+    protected void maybeChangeFaceletViewHandler(final IProject project,
             final IProgressMonitor monitor)
     {
         if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
         {
             FaceletCoreTraceOptions
-                    .log("FaceletInstallDelegate: Installing facelet view handler");
+                    .log("FaceletInstallDelegate: Installing facelet view handler"); //$NON-NLS-1$
         }
 
         final FacesConfigArtifactEdit edit = FacesConfigArtifactEdit
                 .getFacesConfigArtifactEditForWrite(project,
-                        "WEB-INF/faces-config.xml");
+                        "WEB-INF/faces-config.xml"); //$NON-NLS-1$
         if (edit != null)
         {
             try
             {
                 final FacesConfigType root = edit.getFacesConfig();
-                final EList applications = root.getApplication();
-                ApplicationType application = null;
-                if (applications.size() > 0)
+                if (!isViewHandlerPresent(root))
                 {
-                    application = (ApplicationType) applications.get(0);
+                    if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+                    {
+                        FaceletCoreTraceOptions
+                                .log("FaceletInstallDelegate: View Handler not already found in faces-config"); //$NON-NLS-1$
+                    }
+
+                    PlatformUI.getWorkbench().getDisplay().syncExec(
+                            new TempSafeUpdateFacesConfigOnUIThread(edit,
+                                    monitor));
+
+                    if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+                    {
+                        FaceletCoreTraceOptions
+                                .log("FaceletInstallDelegate: Saved changes for facelet view handler"); //$NON-NLS-1$
+                    }
                 }
                 else
                 {
-                    application = FacesConfigFactory.eINSTANCE
-                            .createApplicationType();
-                    applications.add(application);
+                    if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+                    {
+                        FaceletCoreTraceOptions
+                                .log("FaceletInstallDelegate: View Handler NOT already found in faces-config; not adding"); //$NON-NLS-1$
+                    }
                 }
-                final ViewHandlerType viewHandlerType = FacesConfigFactory.eINSTANCE
-                        .createViewHandlerType();
-                viewHandlerType
-                        .setTextContent("com.sun.facelets.FaceletViewHandler");
-                application.getViewHandler().add(viewHandlerType);
-                edit.save(monitor);
-
-                if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
-                {
-                    FaceletCoreTraceOptions
-                            .log("FaceletInstallDelegate: Saved changes for facelet view handler");
-                }
-
             }
             finally
             {
@@ -136,48 +130,105 @@ public class FaceletInstallDelegate implements IDelegate
         }
     }
 
-    private void installDefaultSuffix(final FacetInstallModel model,
-            final WebAppConfigurator configurator)
+    private static class TempSafeUpdateFacesConfigOnUIThread implements
+            Runnable
     {
-        if (model.isAddDefaultSuffix())
+        private final FacesConfigArtifactEdit _edit;
+        private final IProgressMonitor        _monitor;
+
+        public TempSafeUpdateFacesConfigOnUIThread(
+                final FacesConfigArtifactEdit edit,
+                final IProgressMonitor monitor)
         {
-            if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
-            {
-                FaceletCoreTraceOptions
-                        .log("FaceletInstallDelegate: Installing DEFAULT_SUFFIX");
-            }
-            configurator
-                    .addContextParam("javax.faces.DEFAULT_SUFFIX", ".xhtml");
+            _edit = edit;
+            _monitor = monitor;
         }
 
-    }
-
-    private void installConfigureListener(final FacetInstallModel model,
-            final WebAppConfigurator configurator)
-    {
-        if (model.isAddConfigureListener())
+        @SuppressWarnings("unchecked")
+        public void run()
         {
-            if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+
+            final FacesConfigType root = _edit.getFacesConfig();
+            final EList applications = root.getApplication();
+            ApplicationType application = null;
+            if (applications.size() > 0)
             {
-                FaceletCoreTraceOptions
-                        .log("FaceletInstallDelegate: Install Configure Listener");
+                application = (ApplicationType) applications.get(0);
             }
-            configurator.addListener("com.sun.faces.config.ConfigureListener");
+            else
+            {
+                application = FacesConfigFactory.eINSTANCE
+                        .createApplicationType();
+                applications.add(application);
+            }
+            final ViewHandlerType viewHandlerType = FacesConfigFactory.eINSTANCE
+                    .createViewHandlerType();
+            viewHandlerType.setTextContent(RUNTIME_VIEWHANDLER_CLASS_NAME);
+            application.getViewHandler().add(viewHandlerType);
+            _edit.save(_monitor);
         }
     }
 
-    private void installWebLifecycleListener(final FacetInstallModel model,
+    @Override
+    protected void handleDesignTimeViewHandler(final IProject project)
+    {
+        final DesignTimeApplicationManager manager = DesignTimeApplicationManager
+                .getInstance(project);
+
+        manager.setViewHandlerId(FaceletFacet.VIEW_HANDLER_ID);
+    }
+
+    @Override
+    protected String getDisplayName()
+    {
+        return Messages.FaceletInstallDelegate_FACET_INSTALLER_DELEGATE_DISPLAY_NAME;
+    }
+
+    @Override
+    protected void maybeChangeDefaultSuffix(final FacetChangeModel model,
             final WebAppConfigurator configurator)
     {
-        if (model.isAddWebAppLifecycleListener())
+        if (model.isChgDefaultSuffix())
         {
             if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
             {
                 FaceletCoreTraceOptions
-                        .log("FaceletInstallDelegate: Install WebappLifecycleListener");
+                        .log("FaceletInstallDelegate: Installing DEFAULT_SUFFIX"); //$NON-NLS-1$
             }
-            configurator
-                    .addListener("com.sun.faces.application.WebappLifecycleListener");
+            configurator.addContextParam(FaceletFacet.JAVAX_FACES_DEFAULT_SUFFIX, FaceletFacet.XHTML,
+                    false);
+        }
+    }
+
+    @Override
+    protected void maybeChangeConfigureListener(final FacetChangeModel model,
+            final WebAppConfigurator configurator)
+    {
+        if (model.isChgConfigureListener())
+        {
+            if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+            {
+                FaceletCoreTraceOptions
+                        .log("FaceletInstallDelegate: Install Configure Listener"); //$NON-NLS-1$
+            }
+            configurator.addListener(FaceletFacet.COM_SUN_FACES_CONFIG_CONFIGURE_LISTENER,
+                    false);
+        }
+    }
+
+    @Override
+    protected void maybeChangeWebLifecycleListener(
+            final FacetChangeModel model, final WebAppConfigurator configurator)
+    {
+        if (model.isChgWebAppLifecycleListener())
+        {
+            if (FaceletCoreTraceOptions.TRACE_FACETINSTALLDELEGATE)
+            {
+                FaceletCoreTraceOptions
+                        .log("FaceletInstallDelegate: Install WebappLifecycleListener"); //$NON-NLS-1$
+            }
+            configurator.addListener(
+                    FaceletFacet.COM_SUN_FACES_APPLICATION_WEBAPP_LIFECYCLE_LISTENER, false);
         }
     }
 }

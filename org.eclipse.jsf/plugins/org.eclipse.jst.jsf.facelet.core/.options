@@ -7,3 +7,5 @@ org.eclipse.jst.jsf.facelet.core/tagregistry=false
 org.eclipse.jst.jsf.facelet.core/tagregistry/changes=false
 org.eclipse.jst.jsf.facelet.core/registrymanager=false
 org.eclipse.jst.jsf.facelet.core/facetinstalldelegate=false
+org.eclipse.jst.jsf.facelet.core/facetuninstalldelegate=false
+org.eclipse.jst.jsf.facelet.core/facetchangedelegate=false

@@ -7,12 +7,23 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
+/**
+ * Adapts Facelet attribute date to the CM model.
+ * 
+ * @author cbateman
+ *
+ */
 public class AttributeCMAdapter implements CMAttributeDeclaration
 {
+    private static final String DESCRIPTION = "description"; //$NON-NLS-1$
     private int     _usage;
     private String _name;
     private String _description;
 
+    /**
+     * @param name
+     * @param usage
+     */
     public AttributeCMAdapter(final String name, final int usage)
     {
         _name = name;
@@ -57,13 +68,16 @@ public class AttributeCMAdapter implements CMAttributeDeclaration
 
     public Object getProperty(String propertyName)
     {
-        if ("description".equals(propertyName))
+        if (DESCRIPTION.equals(propertyName))
         {
             return _description;
         }
         return null;
     }
 
+    /**
+     * @param description
+     */
     public void setDescription(final String description)
     {
         _description = description;

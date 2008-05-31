@@ -15,8 +15,10 @@ import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IHandlerTag
 import org.eclipse.jst.jsf.core.JSFVersion;
 import org.eclipse.jst.jsf.core.internal.tld.TagIdentifierFactory;
 import org.eclipse.jst.jsf.core.jsfappconfig.JSFAppConfigUtils;
+import org.eclipse.jst.jsf.designtime.internal.view.mapping.ViewMetadataLoader;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.AbstractTagResolvingStrategy;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.DefaultTagTypeInfo;
+import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ComponentTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ConverterTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.HandlerTag;
@@ -25,18 +27,34 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.NoArchetypeFaceletTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
+/**
+ * Temporary hard-coded tag resolver (to be replaced by meta-data)
+ * @author cbateman
+ *
+ */
 public class VeryTemporaryDefaultFaceletResolver extends
-        AbstractTagResolvingStrategy<FaceletTagElement, String>
+AbstractTagResolvingStrategy<FaceletTagElement, String>
 {
-    public final static String       ID = "org.eclipse.jst.jsf.facelet.core.VeryTemporaryDefaultFaceletResolver";
+    /**
+     * Tag resolver unique identifier
+     */
+    public final static String       ID = "org.eclipse.jst.jsf.facelet.core.VeryTemporaryDefaultFaceletResolver"; //$NON-NLS-1$
     private final DefaultTagTypeInfo _coreHtmlTypeInfo;
     private final IProject           _project;
+    private final FaceletDocumentFactory    _factory;
+    private final ViewMetadataLoader _viewLoader;
 
-    public VeryTemporaryDefaultFaceletResolver(final IProject project)
+    /**
+     * @param project
+     * @param factory
+     */
+    public VeryTemporaryDefaultFaceletResolver(final IProject project, final FaceletDocumentFactory factory)
     {
         super();
+        _factory = factory;
         _project = project;
         _coreHtmlTypeInfo = new DefaultTagTypeInfo();
+        _viewLoader = new ViewMetadataLoader(project);
     }
 
     @Override
@@ -49,7 +67,7 @@ public class VeryTemporaryDefaultFaceletResolver extends
     public ITagElement resolve(final FaceletTagElement element)
     {
         final IProjectFacetVersion version = JSFAppConfigUtils
-                .getProjectFacet(_project);
+        .getProjectFacet(_project);
         final String versionAsString = version.getVersionString();
         final JSFVersion jsfVersion = JSFVersion.valueOfString(versionAsString);
 
@@ -73,29 +91,31 @@ public class VeryTemporaryDefaultFaceletResolver extends
     private ITagElement createFromTypeInfo(final TagIdentifier tagId,
             final TypeInfo typeInfo)
     {
+        final MetadataAttributeAdvisor advisor =
+            new MetadataAttributeAdvisor(tagId, _viewLoader);
         if (typeInfo instanceof ComponentTypeInfo)
         {
             return new ComponentTag(tagId.getUri(), tagId.getTagName(),
-                    (ComponentTypeInfo) typeInfo);
+                    (ComponentTypeInfo) typeInfo, _factory, advisor);
         }
         else if (typeInfo instanceof ConverterTypeInfo)
         {
             return new ConverterTag(tagId.getUri(), tagId.getTagName(),
-                    (ConverterTypeInfo) typeInfo, null);
+                    (ConverterTypeInfo) typeInfo, null, _factory, advisor);
         }
         else if (typeInfo instanceof ValidatorTypeInfo)
         {
             return new ValidatorTag(tagId.getUri(), tagId.getTagName(),
-                    (ValidatorTypeInfo) typeInfo, null);
+                    (ValidatorTypeInfo) typeInfo, null, _factory, advisor);
         }
         else if (typeInfo instanceof TagHandlerType)
         {
             return new HandlerTag(tagId.getUri(), tagId.getTagName(),
-                    (TagHandlerType) typeInfo, null);
+                    (TagHandlerType) typeInfo, null, _factory, advisor);
         }
         else if (DefaultTagTypeInfo.isDefaultLib(tagId.getUri()))
         {
-            return new NoArchetypeFaceletTag(tagId.getUri(), tagId.getTagName());
+            return new NoArchetypeFaceletTag(tagId.getUri(), tagId.getTagName(), _factory, advisor);
         }
 
         // not found
@@ -105,47 +125,47 @@ public class VeryTemporaryDefaultFaceletResolver extends
 
     public final String getDisplayName()
     {
-        return "Meta-data Driven Tag Resolver";
+        return "Meta-data Driven Tag Resolver"; //$NON-NLS-1$
     }
 
     private static final ComponentTypeInfo COMPINFO_COMPONENT = new ComponentTypeInfo(
-                                                                      "facelets.ui.ComponentRef",
-                                                                      "com.sun.facelets.tag.ui.ComponentRef",
-                                                                      new String[]
-                                                                      {
-            "javax.faces.component.UIComponentBase",
-            "javax.faces.component.UIComponent", "java.lang.Object", },
-                                                                      new String[]
-                                                                      { "javax.faces.component.StateHolder" },
-                                                                      "facelets",
-                                                                      null);
+            "facelets.ui.ComponentRef", //$NON-NLS-1$
+            "com.sun.facelets.tag.ui.ComponentRef", //$NON-NLS-1$
+            new String[]
+                       {
+                    "javax.faces.component.UIComponentBase", //$NON-NLS-1$
+                    "javax.faces.component.UIComponent", "java.lang.Object", }, //$NON-NLS-1$ //$NON-NLS-2$
+                    new String[]
+                               { "javax.faces.component.StateHolder" }, //$NON-NLS-1$
+                               "facelets", //$NON-NLS-1$
+                               null);
 
     private static final ComponentTypeInfo COMPINFO_DEBUG     = new ComponentTypeInfo(
-                                                                      "facelets.ui.Debug",
-                                                                      "com.sun.facelets.tag.ui.UIDebug",
-                                                                      new String[]
-                                                                      {
-            "javax.faces.component.UIComponentBase",
-            "javax.faces.component.UIComponent", "java.lang.Object", },
-                                                                      new String[]
-                                                                      { "javax.faces.component.StateHolder" },
-                                                                      "facelets",
-                                                                      null);
+            "facelets.ui.Debug", //$NON-NLS-1$
+            "com.sun.facelets.tag.ui.UIDebug", //$NON-NLS-1$
+            new String[]
+                       {
+                    "javax.faces.component.UIComponentBase", //$NON-NLS-1$
+                    "javax.faces.component.UIComponent", "java.lang.Object", }, //$NON-NLS-1$ //$NON-NLS-2$
+                    new String[]
+                               { "javax.faces.component.StateHolder" }, //$NON-NLS-1$
+                               "facelets", //$NON-NLS-1$
+                               null);
 
     private static final ComponentTypeInfo COMPINFO_REPEAT    = new ComponentTypeInfo(
-                                                                      "facelets.ui.Repeat",
-                                                                      "com.sun.facelets.component.UIRepeat",
-                                                                      new String[]
-                                                                      {
-            "javax.faces.component.UIComponentBase",
-            "javax.faces.component.UIComponent", "java.lang.Object", },
-                                                                      new String[]
-                                                                      {
-            "javax.faces.component.StateHolder",
-            "javax.faces.component.NamingContainer"                  },
-                                                                      "facelets",
-                                                                      null);
-    
+            "facelets.ui.Repeat", //$NON-NLS-1$
+            "com.sun.facelets.component.UIRepeat", //$NON-NLS-1$
+            new String[]
+                       {
+                    "javax.faces.component.UIComponentBase", //$NON-NLS-1$
+                    "javax.faces.component.UIComponent", "java.lang.Object", }, //$NON-NLS-1$ //$NON-NLS-2$
+                    new String[]
+                               {
+                    "javax.faces.component.StateHolder", //$NON-NLS-1$
+                               "javax.faces.component.NamingContainer"                  }, //$NON-NLS-1$
+                               "facelets", //$NON-NLS-1$
+                               null);
+
     /**
      * @param tagId
      * @param jsfVersion
@@ -189,6 +209,6 @@ public class VeryTemporaryDefaultFaceletResolver extends
         JSF11_ELEMENTS = Collections.unmodifiableMap(elements);
 
         JSF12_ELEMENTS = Collections
-                .unmodifiableMap(new HashMap<TagIdentifier, TypeInfo>(elements));
+        .unmodifiableMap(new HashMap<TagIdentifier, TypeInfo>(elements));
     }
 }

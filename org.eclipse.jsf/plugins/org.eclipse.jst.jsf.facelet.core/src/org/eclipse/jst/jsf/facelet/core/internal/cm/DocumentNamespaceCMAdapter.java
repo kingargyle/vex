@@ -76,7 +76,7 @@ class DocumentNamespaceCMAdapter implements CMNamedNodeMap, CMDocument
 
         public void remove()
         {
-            throw new UnsupportedOperationException("");
+            throw new UnsupportedOperationException(""); //$NON-NLS-1$
         }
     }
 

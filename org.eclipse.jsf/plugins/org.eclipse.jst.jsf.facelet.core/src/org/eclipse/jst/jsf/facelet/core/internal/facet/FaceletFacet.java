@@ -11,11 +11,35 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
-public class FaceletFacet
+/**
+ * Facelet facet constants and utilities
+ * @author cbateman
+ *
+ */
+public final class FaceletFacet
 {
-    public final static String FACET_ID        = "jsf.facelet";
-    public final static String VIEW_HANDLER_ID = "org.eclipse.jst.jsf.facelet.core.html.viewhandler";
+    /**
+     * Facelet facet id
+     */
+    public final static String FACET_ID        = "jsf.facelet"; //$NON-NLS-1$
+    /**
+     * The id of the Facelet HTML view handler
+     */
+    public final static String VIEW_HANDLER_ID = "org.eclipse.jst.jsf.facelet.core.html.viewhandler"; //$NON-NLS-1$
+    static final String COM_SUN_FACES_APPLICATION_WEBAPP_LIFECYCLE_LISTENER = "com.sun.faces.application.WebappLifecycleListener"; //$NON-NLS-1$
+    static final String COM_SUN_FACES_CONFIG_CONFIGURE_LISTENER             = "com.sun.faces.config.ConfigureListener";           //$NON-NLS-1$
+    static final String XHTML                                               = ".xhtml";                                           //$NON-NLS-1$
+    static final String JAVAX_FACES_DEFAULT_SUFFIX                          = "javax.faces.DEFAULT_SUFFIX";                       //$NON-NLS-1$
 
+    private FaceletFacet()
+    {
+        // no external instantiation
+    }
+
+    /**
+     * @param project
+     * @return true if projec has the facelet facet installed.
+     */
     public static boolean hasFacet(final IProject project)
     {
         final IProjectFacetVersion facetVersion = getProjectFacet(project);

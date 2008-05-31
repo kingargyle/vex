@@ -32,6 +32,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
+/**
+ * Temporary.
+ * 
+ * @author cbateman
+ *
+ */
 public class XHTMLContentAssistProcessor2 implements IContentAssistProcessor
 {
     private final static ICompletionProposal[] NO_PROPOSALS = new ICompletionProposal[0];

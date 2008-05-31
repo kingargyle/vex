@@ -3,56 +3,64 @@ package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 import org.eclipse.jst.jsf.common.dom.TagIdentifier;
 import org.eclipse.jst.jsf.core.internal.tld.TagIdentifierFactory;
 
+/**
+ * Common constants for Facelet ui tags.
+ * @author cbateman
+ *
+ */
 public interface IFaceletTagConstants
 {
-    final static public String URI_JSF_FACELETS           = "http://java.sun.com/jsf/facelets";
+    /**
+     * The JSF tag library uri
+     */
+    final static public String URI_JSF_FACELETS           = "http://java.sun.com/jsf/facelets"; //$NON-NLS-1$
 
     /**
      * component tagname
      */
-    final static public String TAG_COMPONENT              = "component";
+    final static public String TAG_COMPONENT              = "component"; //$NON-NLS-1$
 
     /**
      * composition tagname
      */
-    final static public String TAG_COMPOSITION              = "composition";
+    final static public String TAG_COMPOSITION              = "composition"; //$NON-NLS-1$
     /**
      * debug tagname
      */
-    final static public String TAG_DEBUG                  = "debug";
+    final static public String TAG_DEBUG                  = "debug"; //$NON-NLS-1$
     /**
      * decorate tagname
      */
-    final static public String TAG_DECORATE               = "decorate";
+    final static public String TAG_DECORATE               = "decorate"; //$NON-NLS-1$
     /**
      * define tagname
      */
-    final static public String TAG_DEFINE                 = "define";
+    final static public String TAG_DEFINE                 = "define"; //$NON-NLS-1$
     /**
      * fragment tagname
      */
-    final static public String TAG_FRAGMENT               = "fragment";
+    final static public String TAG_FRAGMENT               = "fragment"; //$NON-NLS-1$
     /**
      * include tagname
      */
-    final static public String TAG_INCLUDE                = "include";
+    final static public String TAG_INCLUDE                = "include"; //$NON-NLS-1$
     /**
      * insert tagname
      */
-    final static public String TAG_INSERT                 = "insert";
+    final static public String TAG_INSERT                 = "insert"; //$NON-NLS-1$
     /**
      * param tagname
      */
-    final static public String TAG_PARAM                  = "param";
+    final static public String TAG_PARAM                  = "param"; //$NON-NLS-1$
     
     /**
      * remove tagname
      */
-    final static public String TAG_REMOVE                 = "remove";
+    final static public String TAG_REMOVE                 = "remove"; //$NON-NLS-1$
     /**
      * repeat tagname
      */
-    final static public String TAG_REPEAT                 = "repeat";
+    final static public String TAG_REPEAT                 = "repeat"; //$NON-NLS-1$
 
     /**
      * TagIdentifier for COMPONENT 

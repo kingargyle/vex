@@ -80,6 +80,12 @@
                class="org.eclipse.jst.jsf.facelet.ui.internal.facet.FaceletInstallPage">
          </page>
       </wizard-pages>
+      <wizard-pages
+            action="jsf.facelet.v10.uninstall">
+         <page
+               class="org.eclipse.jst.jsf.facelet.ui.internal.facet.FaceletUninstallPage">
+         </page>
+      </wizard-pages>
    </extension>
    <!--<extension
          point="org.eclipse.wst.xml.core.modelQueryExtensions">

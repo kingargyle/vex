@@ -40,7 +40,7 @@ class ViewDefnAdapterFactory extends AbstractViewDefnAdapterFactory
         }
         catch (final ViewHandlerException vhe)
         {
-            JSFCorePlugin.log(vhe, "While acquiring view adapter");
+            JSFCorePlugin.log(vhe, "While acquiring view adapter"); //$NON-NLS-1$
         }
 
         // not found or failed

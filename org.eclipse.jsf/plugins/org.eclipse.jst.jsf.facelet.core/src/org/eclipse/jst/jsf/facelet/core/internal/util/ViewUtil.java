@@ -21,8 +21,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+/**
+ * Facelet view utilities
+ * 
+ * @author cbateman
+ */
 public final class ViewUtil
 {
+    private static final String HTMLSOURCE_CONTENT_TYPE_ID = "org.eclipse.wst.html.core.htmlsource"; //$NON-NLS-1$
+    private static final String XMLNS = "xmlns"; //$NON-NLS-1$
+
     /**
      * Warning! This call can be very expensive.  Cache results whenever
      * possible.
@@ -59,12 +67,12 @@ public final class ViewUtil
         for (int i = 0; i < attributes.getLength(); i++)
         {
             final Node node = attributes.item(i);
-            if ("xmlns".equals(node.getNodeName())
-                    || "xmlns".equals(node.getPrefix()))
+            if (XMLNS.equals(node.getNodeName())
+                    || XMLNS.equals(node.getPrefix()))
             {
                 final String attrValue = node.getNodeValue();
 
-                if (attrValue != null && !"".equals(attrValue.trim())
+                if (attrValue != null && !"".equals(attrValue.trim()) //$NON-NLS-1$
                         && node instanceof Attr)
                 {
                     alreadyUsed.add((Attr) node);
@@ -75,6 +83,11 @@ public final class ViewUtil
         return alreadyUsed;
     }
 
+    /**
+     * @param attrSet
+     * @param value
+     * @return true if attrSet contains an attribute whose value is <i>value</i>
+     */
     public static boolean hasAttributeValue(final Set<Attr> attrSet,
             final String value)
     {
@@ -88,10 +101,14 @@ public final class ViewUtil
         return false;
     }
 
+    /**
+     * @param project
+     * @return the html source type tag registry for project
+     */
     public static ITagRegistry getHtmlTagRegistry(final IProject project)
     {
         final IContentType contentType = Platform.getContentTypeManager()
-                .getContentType("org.eclipse.wst.html.core.htmlsource");
+                .getContentType(HTMLSOURCE_CONTENT_TYPE_ID);
         final TagRegistryIdentifier id = new TagRegistryIdentifier(project,
                 contentType);
         final ITagRegistry tagRegistry = CompositeTagRegistryFactory
@@ -99,6 +116,10 @@ public final class ViewUtil
         return tagRegistry;
     }
 
+    /**
+     * @param doc
+     * @return all of the prefixed namespaces defined in doc
+     */
     public static Map<String, PrefixEntry> getDocumentNamespaces(
             final Document doc)
     {
@@ -122,16 +143,25 @@ public final class ViewUtil
         return namespaces;
     }
 
+    /**
+     * Encapsulates a single namespace/prefix use declaration in an XML document
+     * @author cbateman
+     *
+     */
     public static class PrefixEntry
     {
         private final String _uri;
         private final String _prefix;
 
+        /**
+         * @param attr
+         * @return the prefix entry for attr or null
+         */
         public static PrefixEntry parseNamespace(final Attr attr)
         {
             final String prefix = attr.getPrefix();
 
-            if ("xmlns".equals(prefix))
+            if (XMLNS.equals(prefix))
             {
                 final String prefixName = attr.getLocalName();
                 if (prefixName != null)
@@ -148,17 +178,27 @@ public final class ViewUtil
             return null;
         }
 
+        /**
+         * @param uri
+         * @param prefix
+         */
         public PrefixEntry(final String uri, final String prefix)
         {
             _uri = uri;
             _prefix = prefix;
         }
 
+        /**
+         * @return the namespace uri
+         */
         public final String getUri()
         {
             return _uri;
         }
 
+        /**
+         * @return the namespace prefix
+         */
         public final String getPrefix()
         {
             return _prefix;

@@ -39,6 +39,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+/**
+ * The main entry point for Facelet content assist in html files.
+ * @author cbateman
+ *
+ */
 public class XHTMLContentAssistProcessor extends AbstractContentAssistProcessor
 {
     private IProject _project;
@@ -226,7 +231,7 @@ public class XHTMLContentAssistProcessor extends AbstractContentAssistProcessor
                 final Element element = (Element) node;
 
                 final CMElementDeclaration elementDecl = _factory
-                        .createCMElementDeclaration(_project, element);
+                        .createCMElementDeclaration(element);
 
                 if (elementDecl != null)
                 {

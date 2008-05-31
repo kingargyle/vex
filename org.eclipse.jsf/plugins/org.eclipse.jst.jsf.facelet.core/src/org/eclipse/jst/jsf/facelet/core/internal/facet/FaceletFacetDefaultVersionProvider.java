@@ -15,9 +15,9 @@ public final class FaceletFacetDefaultVersionProvider implements
     /**
      * The global id for the Facelet facet
      */
-    private static final String DEFAULT_FACET_ID      = FaceletFacet.FACET_ID; //$NON-NLS-1$
+    private static final String DEFAULT_FACET_ID      = FaceletFacet.FACET_ID;
 
-    private static final String DEFAULT_FACET_VERSION = "1.0";
+    private static final String DEFAULT_FACET_VERSION = "1.0"; //$NON-NLS-1$
 
     /*
      * (non-Javadoc)

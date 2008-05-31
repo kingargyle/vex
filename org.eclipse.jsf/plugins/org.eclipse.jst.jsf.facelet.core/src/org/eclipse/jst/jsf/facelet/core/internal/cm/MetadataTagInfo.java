@@ -23,6 +23,14 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
  */
 /* package */class MetadataTagInfo extends ExternalTagInfo
 {
+    private static final String VAR = "var"; //$NON-NLS-1$
+    private static final String VALUE = "value"; //$NON-NLS-1$
+    private static final String SRC = "src"; //$NON-NLS-1$
+    private static final String NAME = "name"; //$NON-NLS-1$
+    private static final String HOTKEY = "hotkey"; //$NON-NLS-1$
+    private static final String TEMPLATE = "template"; //$NON-NLS-1$
+    private static final String BINDING = "binding"; //$NON-NLS-1$
+    private static final String ID = "id"; //$NON-NLS-1$
     private final TLDDocument _doc;
     private final String      _uri;
 
@@ -37,7 +45,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
         if (doc == null)
         {
             throw new IllegalArgumentException(
-                    "Use MetadataTagInfo(uri) if no tld document");
+                    "Use MetadataTagInfo(uri) if no tld document"); //$NON-NLS-1$
         }
         _doc = doc;
         _uri = doc.getUri();
@@ -48,7 +56,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
     {
         // TODO: this is a temporary hack for EclipseCon
         if (IFaceletTagConstants.URI_JSF_FACELETS.equals(_uri)
-                && "description".equals(key))
+                && "description".equals(key)) //$NON-NLS-1$
         {
             return FACELET_TAG_DESCRIPTIONS.get(tagName);
         }
@@ -66,7 +74,6 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
     }
 
     /**
-     * @param uri
      * @param tagName
      * @return a named node map of known attributes for the tag, or null if not
      *         found
@@ -153,76 +160,76 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
     static
     {
-        final String ID_DESCRIPTION = "Assign a unique idea to generated component.  If not present, Facelets will automatically generate one.";
-        final String BINDING_DESCRIPTION = "A method binding of the form of the form #{bean.binding} where 'binding' has the signature <b>UIComponent binding()</b>, that returns the component instance to use. If not present, Facelets will automatically instantiate one.";
-        final String TEMPLATE_DESCRIPTION = "A uri that points to the template to use.  e.g. /WEB-INF/templates/mytemplate.xhtml";
-        final String HOTKEY_DESCRIPTION = "The key in combination with CTRL-SHIFT to use to launch the debug viewer";
-        final String DEFINE_NAME_DESCRIPTION = "The name of a template area.  This name is referenced in instance documents using the insert tag";
-        final String SRC_DESCRIPTION = "The path, absolute or relative to the original request, to another Facelet to include.  May be EL.  e.g. 'headerPage.xhtml'";
-        final String INSERT_NAME_DESCRIPTION = "The name of a template area to insert (defined in the template using the define tag).  If not specified, the entire template will be inserted.";
-        final String PARAM_NAME_DESCRIPTION = "The name of the new EL variable to declare";
-        final String PARAM_VALUE_DESCRIPTION = "The literal or EL value to assign to the new variable";
-        final String REPEAT_VAR_DESCRIPTION = "The name of the EL variable to use as the iterator";
-        final String REPEAT_VALUE_DESCRIPTION = "The EL expression used to derive the list of items to repeat over";
+        final String ID_DESCRIPTION = Messages.getString("MetadataTagInfo.ID_DESCRIPTION"); //$NON-NLS-1$
+        final String BINDING_DESCRIPTION = Messages.getString("MetadataTagInfo.BINDING_DESCRIPTION"); //$NON-NLS-1$
+        final String TEMPLATE_DESCRIPTION = Messages.getString("MetadataTagInfo.TEMPLATE_DESCRIPTION"); //$NON-NLS-1$
+        final String HOTKEY_DESCRIPTION = Messages.getString("MetadataTagInfo.HOTKEY_DESCRIPTION"); //$NON-NLS-1$
+        final String DEFINE_NAME_DESCRIPTION = Messages.getString("MetadataTagInfo.DEFINE_NAME_DESCRIPTION"); //$NON-NLS-1$
+        final String SRC_DESCRIPTION = Messages.getString("MetadataTagInfo.SRC_DESCRIPTION"); //$NON-NLS-1$
+        final String INSERT_NAME_DESCRIPTION = Messages.getString("MetadataTagInfo.INSERT_NAME_DESCRIPTION"); //$NON-NLS-1$
+        final String PARAM_NAME_DESCRIPTION = Messages.getString("MetadataTagInfo.PARAM_NAME_DESCRIPTION"); //$NON-NLS-1$
+        final String PARAM_VALUE_DESCRIPTION = Messages.getString("MetadataTagInfo.PARAM_VALUE_DESCRIPTION"); //$NON-NLS-1$
+        final String REPEAT_VAR_DESCRIPTION = Messages.getString("MetadataTagInfo.REPEAT_VAR_DESCRIPTION"); //$NON-NLS-1$
+        final String REPEAT_VALUE_DESCRIPTION = Messages.getString("MetadataTagInfo.REPEAT_VALUE_DESCRIPTION"); //$NON-NLS-1$
 
         final Map<String, InternalNamedNodeMap> map = new HashMap<String, InternalNamedNodeMap>();
         // component
         InternalNamedNodeMap nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("id", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(ID, CMAttributeDeclaration.OPTIONAL,
                 ID_DESCRIPTION));
-        nodeMap.add(createAttribute("binding", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(BINDING, CMAttributeDeclaration.OPTIONAL,
                 BINDING_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_COMPONENT, nodeMap);
 
         // composition
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("template",
+        nodeMap.add(createAttribute(TEMPLATE,
                 CMAttributeDeclaration.OPTIONAL, TEMPLATE_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_COMPOSITION, nodeMap);
 
         // debug
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("hotkey", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(HOTKEY, CMAttributeDeclaration.OPTIONAL,
                 HOTKEY_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_DEBUG, nodeMap);
 
         // decorate
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("template",
+        nodeMap.add(createAttribute(TEMPLATE,
                 CMAttributeDeclaration.REQUIRED, TEMPLATE_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_DECORATE, nodeMap);
 
         // define
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("name", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(NAME, CMAttributeDeclaration.REQUIRED,
                 DEFINE_NAME_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_DEFINE, nodeMap);
 
         // fragment
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("id", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(ID, CMAttributeDeclaration.OPTIONAL,
                 ID_DESCRIPTION));
-        nodeMap.add(createAttribute("binding", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(BINDING, CMAttributeDeclaration.OPTIONAL,
                 BINDING_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_FRAGMENT, nodeMap);
 
         // include
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("src", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(SRC, CMAttributeDeclaration.REQUIRED,
                 SRC_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_INCLUDE, nodeMap);
 
         // insert
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("name", CMAttributeDeclaration.OPTIONAL,
+        nodeMap.add(createAttribute(NAME, CMAttributeDeclaration.OPTIONAL,
                 INSERT_NAME_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_INSERT, nodeMap);
 
         // param
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("name", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(NAME, CMAttributeDeclaration.REQUIRED,
                 PARAM_NAME_DESCRIPTION));
-        nodeMap.add(createAttribute("value", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(VALUE, CMAttributeDeclaration.REQUIRED,
                 PARAM_VALUE_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_PARAM, nodeMap);
 
@@ -233,9 +240,9 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
         // repeat
         nodeMap = new InternalNamedNodeMap();
-        nodeMap.add(createAttribute("value", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(VALUE, CMAttributeDeclaration.REQUIRED,
                 REPEAT_VALUE_DESCRIPTION));
-        nodeMap.add(createAttribute("var", CMAttributeDeclaration.REQUIRED,
+        nodeMap.add(createAttribute(VAR, CMAttributeDeclaration.REQUIRED,
                 REPEAT_VAR_DESCRIPTION));
         map.put(IFaceletTagConstants.TAG_REPEAT, nodeMap);
 
@@ -257,16 +264,16 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
         FACELET_TAG_DESCRIPTIONS
                 .put(
                         IFaceletTagConstants.TAG_COMPONENT,
-                        "Adds a new UIComponent into the view's component tree.  The new component will be the parent of the tag's component children.  Text outside the tag is removed before view rendering similar to composition.");
+                        Messages.getString("MetadataTagInfo.COMPONENT_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         StringBuffer text = new StringBuffer();
         text
-                .append("<p><em>Inserts a composite component that ignores content around it:</em></p>");
-        text.append("<br><p><i>This text will be removed</i><br>");
-        text.append("<b>&lt;ui:composition&gt;</b><br>");
-        text.append("#{el.text}<br>");
-        text.append("&lt;h:inputText &nbsp;value=\"#{some.value}\"/&gt;<br>");
-        text.append("<b>&lt;/ui:composition&gt;</b><br>");
-        text.append("<i>This text will be removed</i></p>");
+                .append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.1")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.2")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.3")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.4")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.5")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.6")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.COMPONENT_TAG_DETAIL.7")); //$NON-NLS-1$
 
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_COMPOSITION, text
                 .toString());
@@ -274,33 +281,33 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
         FACELET_TAG_DESCRIPTIONS
                 .put(
                         IFaceletTagConstants.TAG_DEBUG,
-                        "Saves the component tree and EL variables in a view.  Accessible by hitting the hotkey (CTRL-SHIFT-D by default).");
+                        Messages.getString("MetadataTagInfo.DEBUG_TAG_DESCRIPTION.1")); //$NON-NLS-1$
 
         text = new StringBuffer();
         text
-                .append("<p><em>Inserts a composite component that keeps the content around it:</em></p>");
-        text.append("<br><p><i>This text will be removed</i><br>");
-        text.append("<b>&lt;ui:composition&gt;</b><br>");
-        text.append("#{el.text}<br>");
-        text.append("&lt;h:inputText &nbsp;value=\"#{some.value}\"/&gt;<br>");
-        text.append("<b>&lt;/ui:composition&gt;</b><br>");
-        text.append("<i>This text will be removed</i></p>");
+                .append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.1")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.2")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.3")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.4")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.5")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.6")); //$NON-NLS-1$
+        text.append(Messages.getString("MetadataTagInfo.DEBUG_TAG_DETAIL.7")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_DECORATE, text
                 .toString());
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_DEFINE
-                , "Defines a template area that can be used instances using insert.");
+                , Messages.getString("MetadataTagInfo.DEFINE_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_FRAGMENT
-                , "Adds a new UIComponent into the view's component tree.  The new component will be the parent of the tag's component children.  Text outside the tag is kept, similar to decorate.");
+                , Messages.getString("MetadataTagInfo.FRAGMENT_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_INCLUDE
-                , "Includes another facelet.");
+                , Messages.getString("MetadataTagInfo.INCLUDE_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_INSERT
-                , "Insert a named template area created using the define tag.");
+                , Messages.getString("MetadataTagInfo.INSERT_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_PARAM
-                , "Declares a new EL variable on the facelet page.");
+                , Messages.getString("MetadataTagInfo.PARAM_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_REMOVE
-                , "Removes its content from the rendered view.");
+                , Messages.getString("MetadataTagInfo.REMOVE_TAG_DESCRIPTION.1")); //$NON-NLS-1$
         FACELET_TAG_DESCRIPTIONS.put(IFaceletTagConstants.TAG_REPEAT
-                , "Repeatedly renders its content by iterating through the List returned from the value attribute.  Intended as a JSF-safe replacement for c:forEach.");
+                , Messages.getString("MetadataTagInfo.REPEAT_TAG_DESCRIPTION.1")); //$NON-NLS-1$
     }
 
 }

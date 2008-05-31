@@ -17,8 +17,13 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtension;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
+/**
+ * A model query extension used to help support content assist in html files.
+ * 
+ * @author cbateman
+ *
+ */
 public class MyModelQueryExtension extends ModelQueryExtension
 {
 
@@ -76,21 +81,4 @@ public class MyModelQueryExtension extends ModelQueryExtension
         }
         return new CMNode[0];
     }
-
-    @Override
-    public String[] getElementValues(Node parentNode, String namespace,
-            String name)
-    {
-        // TODO Auto-generated method stub
-        return super.getElementValues(parentNode, namespace, name);
-    }
-
-    @Override
-    public boolean isApplicableChildElement(Node parentNode, String namespace,
-            String name)
-    {
-        // TODO Auto-generated method stub
-        return super.isApplicableChildElement(parentNode, namespace, name);
-    }
-
 }

@@ -17,12 +17,21 @@ import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+/**
+ * The text hover for Facelets in html documents.
+ * 
+ * @author cbateman
+ *
+ */
 public class FaceletHover implements ITextHover
 {
     private IProject                  _project;
     private JSFELHover                _elHover;
     private HTMLTagInfoHoverProcessor _htmlHoverProcessor;
 
+    /**
+     * 
+     */
     public FaceletHover()
     {
         _elHover = new JSFELHover();
@@ -120,7 +129,7 @@ public class FaceletHover implements ITextHover
                 final FaceletDocumentFactory factory = new FaceletDocumentFactory(_project);
 
                 final CMElementDeclaration elementDecl = factory
-                        .createCMElementDeclaration(_project, element);
+                        .createCMElementDeclaration(element);
 
                 if (elementDecl != null)
                 {

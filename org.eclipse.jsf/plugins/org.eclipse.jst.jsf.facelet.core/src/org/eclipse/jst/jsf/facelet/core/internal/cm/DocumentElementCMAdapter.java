@@ -88,7 +88,7 @@ class DocumentElementCMAdapter implements CMNamedNodeMap,
 
     private String getPrefixedName(final String name)
     {
-        return _prefix + ":"+name;
+        return _prefix + ":"+name; //$NON-NLS-1$
     }
     
     public int getNodeType()

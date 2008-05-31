@@ -29,6 +29,9 @@ public class CompositeAttributeAssistProcessor implements
     private JSFELContentAssistProcessor _elProcessor;
     private char[]                      _activationChars;
 
+    /**
+     * Default constructor
+     */
     public CompositeAttributeAssistProcessor()
     {
         _nonELProcessor = new JSFContentAssistProcessor();

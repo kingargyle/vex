@@ -24,6 +24,11 @@ public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
     private final String                    _libraryClassName;
     private final Map<String, ITagElement>   _tags;
 
+    /**
+     * @param namespace
+     * @param libraryClassName
+     * @param tags
+     */
     public FaceletTaglibWithLibraryClass(final String namespace,
             final String libraryClassName,
             final Map<String, ITagElement> tags) {
@@ -51,6 +56,9 @@ public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
         _tags = new HashMap<String, ITagElement>(copyMe._tags);
     }
 
+    /**
+     * @return the library class name
+     */
     public final String getLibraryClassName() {
         return _libraryClassName;
     }
@@ -58,13 +66,13 @@ public final class FaceletTaglibWithLibraryClass extends FaceletTaglib
     @Override
     public String toString() {
         String toString = super.toString();
-        toString += "Library Class Name: " + _libraryClassName + "\n";
+        toString += "Library Class Name: " + _libraryClassName + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
         return toString;
     }
 
     @Override
     public String getLibraryTypeDescription() {
-        return "Facelet Tag Library With Library Class";
+        return Messages.FaceletTaglibWithLibraryClass_TAG_LIBRARY_TYPE_DESCRIPTION;
     }
 
     @Override

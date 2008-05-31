@@ -45,6 +45,12 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/**
+ * The Facelet HTML file validator.
+ * 
+ * @author cbateman
+ *
+ */
 public class HTMLValidator implements IValidatorJob
 {
     public ISchedulingRule getSchedulingRule(final IValidationContext helper)

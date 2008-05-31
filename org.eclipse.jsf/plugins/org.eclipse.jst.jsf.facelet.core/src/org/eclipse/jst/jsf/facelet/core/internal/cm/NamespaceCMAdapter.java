@@ -9,10 +9,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.jsf.common.internal.managedobject.IManagedObject;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.Namespace;
-import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
-import org.eclipse.jst.jsp.core.internal.contentmodel.tld.provisional.TLDDocument;
-import org.eclipse.jst.jsp.core.taglib.ITaglibRecord;
-import org.eclipse.jst.jsp.core.taglib.TaglibIndex;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNamedNodeMap;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNamespace;
@@ -22,14 +18,13 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 {
     private final Namespace                     _ns;
     private final Map<String, ElementCMAdapter> _elements;
-    private final IProject                      _project;
-    private ExternalTagInfo                     _tldTagInfo;
+    private final FaceletDocumentFactory        _factory;
 
     public NamespaceCMAdapter(final Namespace ns, final IProject project)
     {
         _ns = ns;
         _elements = new HashMap<String, ElementCMAdapter>();
-        _project = project;
+        _factory = new FaceletDocumentFactory(project);
     }
 
     public int getLength()
@@ -47,7 +42,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
         if (name != null && name.indexOf(':') > -1)
         {
-            String[]  splitName = name.split(":");
+            String[]  splitName = name.split(":"); //$NON-NLS-1$
             
             if (splitName.length == 2)
             {
@@ -61,42 +56,12 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
             final ITagElement tagElement = _ns.getViewElement(localname);
             if (tagElement != null)
             {
-                ExternalTagInfo tagInfo = getOrCreateExtraTagInfo();
+                ExternalTagInfo tagInfo = _factory.getOrCreateExtraTagInfo(_ns.getNSUri());
                 element = new ElementCMAdapter(tagElement, tagInfo);
                 _elements.put(localname, element);
             }
         }
         return element; 
-    }
-
-    private ExternalTagInfo getOrCreateExtraTagInfo()
-    {
-        if (_tldTagInfo == null)
-        {
-            _tldTagInfo = createExternalTagInfo();
-        }
-        return _tldTagInfo;
-    }
-
-    /**
-     * @return a new external tag info for this namespace
-     */
-    protected ExternalTagInfo createExternalTagInfo()
-    {
-        ExternalTagInfo tldTagInfo = new MetadataTagInfo(_ns.getNSUri());
-        final ITaglibRecord[] tldrecs = TaglibIndex
-                .getAvailableTaglibRecords(_project.getFullPath());
-        FIND_TLDRECORD: for (final ITaglibRecord rec : tldrecs)
-        {
-            final String matchUri = rec.getDescriptor().getURI();
-            if (_ns.getNSUri().equals(matchUri))
-            {
-                final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
-                tldTagInfo  = new MetadataTagInfo((TLDDocument) factory.createCMDocument(rec));
-                break FIND_TLDRECORD;
-            }
-        }
-        return tldTagInfo;
     }
 
     // TODO: optimize
@@ -115,7 +80,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
                     
                     if (element == null)
                     {
-                        element = new ElementCMAdapter(tagElement, getOrCreateExtraTagInfo());
+                        element = new ElementCMAdapter(tagElement, _factory.getOrCreateExtraTagInfo(_ns.getNSUri()));
                         _elements.put(tagElement.getName(), element);
                         return element;
                     }
@@ -154,7 +119,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 
         public void remove()
         {
-            throw new UnsupportedOperationException("");
+            throw new UnsupportedOperationException(""); //$NON-NLS-1$
         }
         
     }

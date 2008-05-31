@@ -2,8 +2,16 @@ package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
 import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ConverterTypeInfo;
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.IConverterTagElement;
+import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.IAttributeAdvisor;
+import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
 
 
+/**
+ * A basic JSF converter facelet tag element
+ * 
+ * @author cbateman
+ *
+ */
 public class ConverterTag extends FaceletTag implements IConverterTagElement
 {
     /**
@@ -13,9 +21,18 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
     private final ConverterTypeInfo _converter;
     private final String            _handler;  // may be null
 
-    public ConverterTag(final String uri, final String name, final ConverterTypeInfo converter, final String handler)
+    /**
+     * @param uri
+     * @param name
+     * @param converter
+     * @param handler
+     * @param factory
+     * @param advisor
+     */
+    public ConverterTag(final String uri, final String name, final ConverterTypeInfo converter, final String handler, final FaceletDocumentFactory factory, 
+            final IAttributeAdvisor advisor)
     {
-        super(uri, name, TagType.CONVERTER, null);
+        super(uri, name, TagType.CONVERTER, null,factory, advisor);
         _converter = converter;
         _handler = handler;
     }
@@ -40,11 +57,11 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
     {
         String toString = super.toString();
 
-        toString += "Converter Id: "+getConverter()+"\n";
+        toString += "Converter Id: "+getConverter()+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
 
         if  (_handler != null)
         {
-            toString += "Handler Class: "+getHandler()+"\n";
+            toString += "Handler Class: "+getHandler()+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return toString;

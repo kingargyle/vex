@@ -20,8 +20,17 @@ import org.eclipse.jst.jsf.designtime.internal.view.XMLViewDefnAdapter;
 import org.eclipse.jst.jsf.designtime.internal.view.DTUIViewRoot.VersionStamp;
 import org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacet;
 
+/**
+ * The Facelet design time view handler implementation.
+ * 
+ * @author cbateman
+ *
+ */
 public class DTFaceletViewHandler extends DefaultDTViewHandler
 {
+
+    private static final String ORG_ECLIPSE_WST_HTML_CORE_HTMLSOURCE = "org.eclipse.wst.html.core.htmlsource"; //$NON-NLS-1$
+    private static final String JAVAX_FACES_VIEW_ROOT = "javax.faces.ViewRoot"; //$NON-NLS-1$
 
     @Override
     public String calculateLocale(DTFacesContext context)
@@ -94,7 +103,7 @@ public class DTFaceletViewHandler extends DefaultDTViewHandler
                     final ComponentInfo child = (ComponentInfo) it.next();
                     
                     if (child instanceof DTUIViewRoot ||
-                            "javax.faces.ViewRoot".equals(child.getComponentTypeInfo().getComponentType()))
+                            JAVAX_FACES_VIEW_ROOT.equals(child.getComponentTypeInfo().getComponentType()))
                     {
                         // add recursively
                         populateViewRoot(viewRoot, child.getChildren());
@@ -119,7 +128,7 @@ public class DTFaceletViewHandler extends DefaultDTViewHandler
         final IContentTypeManager typeManager = Platform
                 .getContentTypeManager();
         IContentType htmlContentType = typeManager
-                .getContentType("org.eclipse.wst.html.core.htmlsource");
+                .getContentType(ORG_ECLIPSE_WST_HTML_CORE_HTMLSOURCE);
         if (htmlContentType != null
                 && htmlContentType.isAssociatedWith(file.getName()))
         {

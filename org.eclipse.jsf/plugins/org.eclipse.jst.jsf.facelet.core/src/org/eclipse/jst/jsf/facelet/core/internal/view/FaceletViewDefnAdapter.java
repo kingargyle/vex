@@ -28,6 +28,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
+/**
+ * The facelet view definition adapter.
+ * 
+ * @author cbateman
+ *
+ */
 public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
 {
     FaceletViewDefnAdapter(final ITagRegistry tagRegistry)
@@ -53,11 +59,11 @@ public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
             }
             catch (final IOException e)
             {
-                JSFCorePlugin.log(e, "Acquiring model for view root");
+                JSFCorePlugin.log(e, "Acquiring model for view root"); //$NON-NLS-1$
             }
             catch (final CoreException e)
             {
-                JSFCorePlugin.log(e, "Acquiring model for view root");
+                JSFCorePlugin.log(e, "Acquiring model for view root"); //$NON-NLS-1$
             }
             finally
             {
@@ -95,7 +101,7 @@ public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
             if (DOMRegionContext.XML_TAG_ATTRIBUTE_VALUE.equals(regionType))
             {
                 final String attributeText = resolver.getRegionText();
-                int elOpenIdx = attributeText.indexOf("#");
+                int elOpenIdx = attributeText.indexOf("#"); //$NON-NLS-1$
                 
                 if (elOpenIdx >= 0 && elOpenIdx < relativeOffset
                         && elOpenIdx+1 < attributeText.length()
@@ -140,7 +146,7 @@ public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
     @Override
     public String getPrefix(String namespace, IDocument document)
     {
-        if (namespace == null || "".equals(namespace.trim()))
+        if (namespace == null || "".equals(namespace.trim())) //$NON-NLS-1$
         {
             return null;
         }
@@ -200,6 +206,7 @@ public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
 
     private static class PrefixEntry
     {
+        private static final String XMLNS = "xmlns"; //$NON-NLS-1$
         private final String _uri;
         private final String _prefix;
 
@@ -207,7 +214,7 @@ public class FaceletViewDefnAdapter extends TaglibBasedViewDefnAdapter
         {
             final String prefix = attr.getPrefix();
 
-            if ("xmlns".equals(prefix))
+            if (XMLNS.equals(prefix))
             {
                 final String prefixName = attr.getLocalName();
                 if (prefixName != null)

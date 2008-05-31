@@ -26,7 +26,7 @@ public final class FaceletRegistryManager extends
         if (FaceletCoreTraceOptions.TRACE_REGISTRYMANAGER)
         {
             FaceletCoreTraceOptions
-                    .log("FaceletRegistryManager: Initializing FaceletRegistryManager singleton");
+                    .log("FaceletRegistryManager: Initializing FaceletRegistryManager singleton"); //$NON-NLS-1$
         }
 
         synchronized(FaceletRegistryManager.class)
@@ -50,7 +50,7 @@ public final class FaceletRegistryManager extends
     {
         if (FaceletCoreTraceOptions.TRACE_REGISTRYMANAGER)
         {
-            FaceletCoreTraceOptions.log("FaceletRegistryManager: creating new instance for "
+            FaceletCoreTraceOptions.log("FaceletRegistryManager: creating new instance for " //$NON-NLS-1$
                     + project.toString());
         }
 
@@ -62,7 +62,7 @@ public final class FaceletRegistryManager extends
     {
         if (FaceletCoreTraceOptions.TRACE_REGISTRYMANAGER)
         {
-            FaceletCoreTraceOptions.log("FaceletRegistryManager: Acquired instance for "
+            FaceletCoreTraceOptions.log("FaceletRegistryManager: Acquired instance for " //$NON-NLS-1$
                     + resource.toString());
         }
     }
@@ -72,7 +72,7 @@ public final class FaceletRegistryManager extends
     {
         if (FaceletCoreTraceOptions.TRACE_REGISTRYMANAGER)
         {
-            FaceletCoreTraceOptions.log("FaceletRegistryManager: Getting registry for "
+            FaceletCoreTraceOptions.log("FaceletRegistryManager: Getting registry for " //$NON-NLS-1$
                     + resource.toString());
         }
     }
@@ -100,7 +100,7 @@ public final class FaceletRegistryManager extends
 
         public String getDisplayName()
         {
-            return "Facelet Registry Factory";
+            return Messages.FaceletRegistryManager_REGISTRY_FACTORY_DISPLAYNAME;
         }
         
     }

@@ -28,14 +28,15 @@
     <action id="jsf.facelet.v10.install" facet="jsf.facelet" type="INSTALL" version="1.0">
         <delegate class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletInstallDelegate"/>
         <config-factory
-              class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacetDataModelProvider">
+              class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacetInstallDataModelProvider">
         </config-factory>
     </action>  
-<!--<action id="jsf.facelet.v10.uninstall" facet="jsf.facelet" type="UNINSTALL" version="1.0" >
-        <delegate
-        class="org.eclipse.jst.jsf.core.internal.project.facet.JSFFacetUninstallDelegate"/>
-    </action>-->
-    
+    <action id="jsf.facelet.v10.uninstall" facet="jsf.facelet" type="UNINSTALL" version="1.0" >
+        <delegate class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletUninstallDelegate"/>
+        <config-factory
+              class="org.eclipse.jst.jsf.facelet.core.internal.facet.FaceletFacetUninstallModelProvider">
+        </config-factory>
+    </action>
   </extension> 
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     <supported>
@@ -47,7 +48,7 @@
           point="org.eclipse.jst.jsf.core.tagregistry">
        <tagRegistry
              class="org.eclipse.jst.jsf.facelet.core.internal.registry.FaceletRegistryManager$MyRegistryFactory"
-             description="Facelet Tag Registry"
+             description="%tagRegistry.description.0"
              id="FaceletRegistry">
           <content-type
                 contentTypeId="org.eclipse.wst.html.core.htmlsource">

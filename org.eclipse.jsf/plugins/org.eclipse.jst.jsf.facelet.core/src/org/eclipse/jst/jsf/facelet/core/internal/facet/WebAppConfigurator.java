@@ -1,12 +1,12 @@
 package org.eclipse.jst.jsf.facelet.core.internal.facet;
 
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.j2ee.common.CommonFactory;
 import org.eclipse.jst.j2ee.model.IModelProvider;
 import org.eclipse.jst.j2ee.model.ModelProviderManager;
-import org.eclipse.jst.javaee.core.JavaeeFactory;
 import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
 
 /**
@@ -17,6 +17,10 @@ import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
  */
 public abstract class WebAppConfigurator
 {
+    /**
+     * @param project
+     * @return the configurator for project or null if none
+     */
     public static WebAppConfigurator getConfigurator(final IProject project)
     {
         final IModelProvider provider = ModelProviderManager
@@ -24,7 +28,7 @@ public abstract class WebAppConfigurator
         final Object webAppObj = provider.getModelObject();
         if (webAppObj == null)
         {
-            FaceletCorePlugin.log("Error getting web app configurator",
+            FaceletCorePlugin.log("Error getting web app configurator", //$NON-NLS-1$
                     new Throwable());
             return null;
         }
@@ -41,24 +45,61 @@ public abstract class WebAppConfigurator
         return null;
     }
 
-    protected final IProject _project;
+    private final IProject _project;
 
     WebAppConfigurator(final IProject project)
     {
         _project = project;
     }
 
+    /**
+     * @param paramName
+     * @param paramValue
+     * @param addEvenIfPresent
+     */
     public abstract void addContextParam(final String paramName,
+            final String paramValue, final boolean addEvenIfPresent);
+
+    /**
+     * @param paramName
+     * @param paramValue
+     */
+    public abstract void removeContextParam(final String paramName,
             final String paramValue);
 
-    public abstract void addListener(final String listenerClass);
+    /**
+     * Adds the listenerClass to the webapp config. If addEventIfPresent is
+     * false, then it will not add it if it finds it already. If true, it will
+     * forcibly add.
+     * 
+     * @param listenerClass
+     * @param addEvenIfPresent
+     */
+    public abstract void addListener(final String listenerClass,
+            final boolean addEvenIfPresent);
 
+    /**
+     * @param listenerClass
+     */
+    public abstract void removeListener(final String listenerClass);
+
+    /**
+     * @param runnable
+     */
     protected void executeChange(final Runnable runnable)
     {
-        final IPath webXMLPath = new Path("WEB-INF").append("web.xml");
+        final IPath webXMLPath = new Path("WEB-INF").append("web.xml"); //$NON-NLS-1$ //$NON-NLS-2$
         final IModelProvider provider = ModelProviderManager
-                .getModelProvider(_project);
+                .getModelProvider(getProject());
         provider.modify(runnable, webXMLPath);
+    }
+
+    /**
+     * @return the project
+     */
+    protected IProject getProject()
+    {
+        return _project;
     }
 
     @SuppressWarnings("unchecked")
@@ -71,41 +112,136 @@ public abstract class WebAppConfigurator
 
         @Override
         public void addContextParam(final String paramName,
-                final String paramValue)
+                final String paramValue, final boolean addEvenIfPresent)
         {
             final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
                     final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
-                            .getModelProvider(_project).getModelObject();
-                    final org.eclipse.jst.javaee.core.ParamValue newParamValue = JavaeeFactory.eINSTANCE
-                            .createParamValue();
-                    newParamValue.setParamName(paramName);
-                    newParamValue.setParamValue(paramValue);
-                    webApp.getContextParams().add(newParamValue);
+                            .getModelProvider(getProject()).getModelObject();
+                    if (addEvenIfPresent
+                            || !isContextParamPresent(webApp, paramName))
+                    {
+                        final org.eclipse.jst.javaee.core.ParamValue newParamValue = org.eclipse.jst.javaee.core.JavaeeFactory.eINSTANCE
+                                .createParamValue();
+                        newParamValue.setParamName(paramName);
+                        newParamValue.setParamValue(paramValue);
+                        webApp.getContextParams().add(newParamValue);
+                    }
                 }
             };
             executeChange(runnable);
         }
 
         @Override
-        public void addListener(final String listenerClass)
+        public void removeContextParam(final String paramName,
+                final String paramVal)
         {
             final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
                     final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
-                            .getModelProvider(_project).getModelObject();
-
-                    final org.eclipse.jst.javaee.core.Listener listener = JavaeeFactory.eINSTANCE
-                            .createListener();
-                    listener.setListenerClass(listenerClass);
-                    webApp.getListeners().add(listener);
+                            .getModelProvider(getProject()).getModelObject();
+                    for (final Iterator<?> it = webApp.getContextParams()
+                            .iterator(); it.hasNext();)
+                    {
+                        final org.eclipse.jst.javaee.core.ParamValue paramValue = (org.eclipse.jst.javaee.core.ParamValue) it
+                                .next();
+                        if (paramName.equals(paramValue.getParamName().trim())
+                                && paramVal.equals(paramValue.getParamValue()
+                                        .trim()))
+                        {
+                            it.remove();
+                        }
+                    }
                 }
             };
             executeChange(runnable);
+        }
+
+        private boolean isContextParamPresent(
+                final org.eclipse.jst.javaee.web.WebApp webApp,
+                final String paramName)
+        {
+            for (final Iterator<?> it = webApp.getContextParams().iterator(); it
+                    .hasNext();)
+            {
+                final org.eclipse.jst.javaee.core.ParamValue paramValue = (org.eclipse.jst.javaee.core.ParamValue) it
+                        .next();
+                if (paramName.equals(paramValue.getParamName().trim()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void addListener(final String listenerClass,
+                final boolean addEvenIfPresent)
+        {
+            final Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
+                    final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
+                            .getModelProvider(getProject()).getModelObject();
+
+                    if (addEvenIfPresent
+                            || !isListenerPresent(webApp, listenerClass))
+                    {
+                        final org.eclipse.jst.javaee.core.Listener listener = org.eclipse.jst.javaee.core.JavaeeFactory.eINSTANCE
+                                .createListener();
+                        listener.setListenerClass(listenerClass);
+                        webApp.getListeners().add(listener);
+                    }
+                }
+            };
+            executeChange(runnable);
+        }
+
+        @Override
+        public void removeListener(final String listenerClass)
+        {
+            final Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
+                    final org.eclipse.jst.javaee.web.WebApp webApp = (org.eclipse.jst.javaee.web.WebApp) ModelProviderManager
+                            .getModelProvider(getProject()).getModelObject();
+                    for (final Iterator listenerIt = webApp.getListeners()
+                            .iterator(); listenerIt.hasNext();)
+                    {
+                        final org.eclipse.jst.javaee.core.Listener listener = (org.eclipse.jst.javaee.core.Listener) listenerIt
+                                .next();
+                        if (listenerClass.equals(listener.getListenerClass()
+                                .trim()))
+                        {
+                            listenerIt.remove();
+                        }
+                    }
+                }
+            };
+            executeChange(runnable);
+        }
+
+        private boolean isListenerPresent(
+                final org.eclipse.jst.javaee.web.WebApp webApp,
+                final String listenerClass)
+        {
+            for (final Iterator listenerIt = webApp.getListeners().iterator(); listenerIt
+                    .hasNext();)
+            {
+                final org.eclipse.jst.javaee.core.Listener listener = (org.eclipse.jst.javaee.core.Listener) listenerIt
+                        .next();
+                if (listenerClass.equals(listener.getListenerClass().trim()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -119,42 +255,139 @@ public abstract class WebAppConfigurator
 
         @Override
         public void addContextParam(final String paramName,
-                final String paramValue)
+                final String paramValue, final boolean addEvenIfPresent)
         {
             final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
                     final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
-                            .getModelProvider(_project).getModelObject();
+                            .getModelProvider(getProject()).getModelObject();
 
-                    final org.eclipse.jst.j2ee.common.ParamValue newParamValue = CommonFactory.eINSTANCE
-                            .createParamValue();
-                    newParamValue.setName(paramName);
-                    newParamValue.setValue(paramValue);
-                    webApp.getContextParams().add(newParamValue);
+                    if (addEvenIfPresent
+                            || !isContextParamPresent(webApp, paramName))
+                    {
+                        final org.eclipse.jst.j2ee.common.ParamValue newParamValue = org.eclipse.jst.j2ee.common.CommonFactory.eINSTANCE
+                                .createParamValue();
+                        newParamValue.setName(paramName);
+                        newParamValue.setValue(paramValue);
+                        webApp.getContextParams().add(newParamValue);
+                    }
                 }
             };
             executeChange(runnable);
         }
 
         @Override
-        public void addListener(final String listenerClass)
+        public void removeContextParam(final String paramName,
+                final String paramVal)
         {
             final Runnable runnable = new Runnable()
             {
                 public void run()
                 {
                     final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
-                            .getModelProvider(_project).getModelObject();
-
-                    final org.eclipse.jst.j2ee.common.Listener listener = CommonFactory.eINSTANCE
-                            .createListener();
-                    listener.setListenerClassName(listenerClass);
-                    webApp.getListeners().add(listener);
+                            .getModelProvider(getProject()).getModelObject();
+                    for (final Iterator it = webApp.getContextParams()
+                            .iterator(); it.hasNext();)
+                    {
+                        final org.eclipse.jst.j2ee.common.ParamValue paramValue = (org.eclipse.jst.j2ee.common.ParamValue) it
+                                .next();
+                        if (paramName.equals(paramValue.getName().trim())
+                                && paramVal
+                                        .equals(paramValue.getValue().trim()))
+                        {
+                            it.remove();
+                        }
+                    }
                 }
             };
             executeChange(runnable);
+        }
+
+        private boolean isContextParamPresent(
+                final org.eclipse.jst.j2ee.webapplication.WebApp webApp,
+                final String paramName)
+        {
+            for (final Iterator it = webApp.getContextParams().iterator(); it
+                    .hasNext();)
+            {
+                final org.eclipse.jst.j2ee.common.ParamValue paramValue = (org.eclipse.jst.j2ee.common.ParamValue) it
+                        .next();
+                if (paramName.equals(paramValue.getName().trim()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void addListener(final String listenerClass,
+                final boolean addEvenIfPresent)
+        {
+            final Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
+                    final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
+                            .getModelProvider(getProject()).getModelObject();
+
+                    if (addEvenIfPresent
+                            || !isListenerPresent(webApp, listenerClass))
+                    {
+                        final org.eclipse.jst.j2ee.common.Listener listener = org.eclipse.jst.j2ee.common.CommonFactory.eINSTANCE
+                                .createListener();
+                        listener.setListenerClassName(listenerClass);
+                        webApp.getListeners().add(listener);
+                    }
+                }
+            };
+            executeChange(runnable);
+        }
+
+        @Override
+        public void removeListener(final String listenerClass)
+        {
+            final Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
+                    final org.eclipse.jst.j2ee.webapplication.WebApp webApp = (org.eclipse.jst.j2ee.webapplication.WebApp) ModelProviderManager
+                            .getModelProvider(getProject()).getModelObject();
+
+                    for (final Iterator listenerIt = webApp.getListeners()
+                            .iterator(); listenerIt.hasNext();)
+                    {
+                        final org.eclipse.jst.j2ee.common.Listener listener = (org.eclipse.jst.j2ee.common.Listener) listenerIt
+                                .next();
+                        if (listenerClass.equals(listener
+                                .getListenerClassName().trim()))
+                        {
+                            listenerIt.remove();
+                        }
+                    }
+                }
+            };
+            executeChange(runnable);
+        }
+
+        private boolean isListenerPresent(
+                final org.eclipse.jst.j2ee.webapplication.WebApp webApp,
+                final String listenerClass)
+        {
+            for (final Iterator listenerIt = webApp.getListeners().iterator(); listenerIt
+                    .hasNext();)
+            {
+                final org.eclipse.jst.j2ee.common.Listener listener = (org.eclipse.jst.j2ee.common.Listener) listenerIt
+                        .next();
+                if (listenerClass
+                        .equals(listener.getListenerClassName().trim()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
