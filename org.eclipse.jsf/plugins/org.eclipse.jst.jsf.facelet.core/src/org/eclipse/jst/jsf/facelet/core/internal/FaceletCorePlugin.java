@@ -1,15 +1,23 @@
 package org.eclipse.jst.jsf.facelet.core.internal;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.BundleContext;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class FaceletCorePlugin extends Plugin
+public class FaceletCorePlugin extends EMFPlugin
 {
+
+    /**
+     * Keep track of the singleton.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static final FaceletCorePlugin INSTANCE = new FaceletCorePlugin();
 
     /**
      * The plug-in ID
@@ -17,40 +25,78 @@ public class FaceletCorePlugin extends Plugin
     public static final String       PLUGIN_ID = "org.eclipse.jst.jsf.facelet.core"; //$NON-NLS-1$
 
     // The shared instance
-    private static FaceletCorePlugin plugin;
+    private static Implementation plugin;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+    /**
+     * Create the instance.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
      */
-    @Override
-    public void start(final BundleContext context) throws Exception
+    public FaceletCorePlugin()
     {
-        super.start(context);
-        plugin = this;
+        super
+          (new ResourceLocator [] 
+           {
+           });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * Returns the singleton instance of the Eclipse plugin.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the singleton instance.
+     * @generated
      */
     @Override
-    public void stop(final BundleContext context) throws Exception
+    public ResourceLocator getPluginResourceLocator()
     {
-        plugin = null;
-        super.stop(context);
+        return plugin;
     }
 
+    /**
+     * Returns the singleton instance of the Eclipse plugin.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the singleton instance.
+     * @generated
+     */
+    public static Implementation getPlugin()
+    {
+        return plugin;
+    }
+
+    /**
+     * The actual implementation of the Eclipse <b>Plugin</b>.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public static class Implementation extends EclipsePlugin
+    {
+        /**
+         * Creates an instance.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        public Implementation()
+        {
+            super();
+
+            // Remember the static instance.
+            //
+            plugin = this;
+        }
+    }
+
+    
     /**
      * Returns the shared instance
      * 
      * @return the shared instance
      */
-    public static FaceletCorePlugin getDefault()
+    public static Implementation getDefault()
     {
         return plugin;
     }

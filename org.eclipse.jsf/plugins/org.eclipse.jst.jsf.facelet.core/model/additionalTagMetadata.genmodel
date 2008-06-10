@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=""
+    modelDirectory="/org.eclipse.jst.jsf.facelet.core/src" editDirectory="/org.eclipse.jst.jsf.facelet.core/src"
+    modelPluginID="org.eclipse.jst.jsf.facelet.core" templateDirectory="templates"
+    dynamicTemplates="true" modelName="AdditionalTagMetadata" editPluginClass="org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin"
+    nonNLSMarkers="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" language="">
+  <foreignModel>additionalTagMetadata.ecore</foreignModel>
+  <genPackages prefix="AddTagMD" basePackage="org.eclipse.jst.jsf.facelet.core.internal.cm"
+      disposableProviderFactory="true" ecorePackage="additionalTagMetadata.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="additionalTagMetadata.ecore#//AttributeUsage">
+      <genEnumLiterals ecoreEnumLiteral="additionalTagMetadata.ecore#//AttributeUsage/OPTIONAL"/>
+      <genEnumLiterals ecoreEnumLiteral="additionalTagMetadata.ecore#//AttributeUsage/REQUIRED"/>
+      <genEnumLiterals ecoreEnumLiteral="additionalTagMetadata.ecore#//AttributeUsage/FIXED"/>
+      <genEnumLiterals ecoreEnumLiteral="additionalTagMetadata.ecore#//AttributeUsage/PROHIBITED"/>
+    </genEnums>
+    <genClasses ecoreClass="additionalTagMetadata.ecore#//ElementData">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute additionalTagMetadata.ecore#//ElementData/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference additionalTagMetadata.ecore#//ElementData/attributes"/>
+    </genClasses>
+    <genClasses ecoreClass="additionalTagMetadata.ecore#//AttributeData">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute additionalTagMetadata.ecore#//AttributeData/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute additionalTagMetadata.ecore#//AttributeData/usage"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

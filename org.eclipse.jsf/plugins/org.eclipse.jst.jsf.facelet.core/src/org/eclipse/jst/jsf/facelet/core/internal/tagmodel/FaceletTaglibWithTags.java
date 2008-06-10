@@ -1,6 +1,7 @@
 package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
      */
     private static final long serialVersionUID = 5754003734420972494L;
     private final Map<String, ITagElement> _tags;
+    private boolean                        _isInitialized; // = false
 
     /**
      * @param namespace
@@ -29,20 +31,9 @@ public class FaceletTaglibWithTags extends FaceletTaglib
         _tags = tags;
     }
 
-    @Override
-    public Map<String, ITagElement> getTags()
-    {
-        return internalGetTags();
-    }
-
     private void addFaceletTag(final String name, final FaceletTag tag)
     {
         _tags.put(name, tag);
-    }
-
-    private Map<String, ITagElement> internalGetTags()
-    {
-        return _tags;
     }
 
     static class WorkingCopy extends FaceletTaglibWithTags
@@ -63,13 +54,14 @@ public class FaceletTaglibWithTags extends FaceletTaglib
 
         public FaceletTaglibWithTags closeWorkingCopy()
         {
+            setInitialized();
             return this;
         }
 
-        public FaceletTaglibWithTags shallowCopy()
-        {
-            return new FaceletTaglibWithTags(getNSUri(), super.internalGetTags());
-        }
+//        public FaceletTaglibWithTags shallowCopy()
+//        {
+//            return new FaceletTaglibWithTags(getNSUri(), super.internalGetTags());
+//        }
     }
 
     @Override
@@ -77,7 +69,7 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     {
         String toString =  super.toString();
 
-        for (final ITagElement tag : getTags().values())
+        for (final ITagElement tag : getViewElements())
         {
             toString += tag.toString();
         }
@@ -98,29 +90,37 @@ public class FaceletTaglibWithTags extends FaceletTaglib
     }
 
     @Override
-    public Collection<ITagElement> getViewElements() {
-        // TODO Auto-generated method stub
-        return null;
+    public Collection<? extends ITagElement> getViewElements() {
+        return Collections.unmodifiableCollection(_tags.values());
     }
 
     @Override
     public ITagElement getViewElement(String name)
     {
-        //TODO:
-        throw new UnsupportedOperationException();
+        return _tags.get(name);
     }
 
     @Override
     public boolean hasViewElements()
     {
-      //TODO:
-        throw new UnsupportedOperationException();
+        return !_tags.isEmpty();
     }
 
     @Override
     public boolean isInitialized()
     {
-      //TODO:
-        throw new UnsupportedOperationException();
+        return _isInitialized;
+    }
+    
+    /**
+     * 
+     */
+    protected final void setInitialized()
+    {
+        //latch only 
+        if (!_isInitialized)
+        {
+            _isInitialized = true;
+        }
     }
 }

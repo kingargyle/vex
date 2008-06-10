@@ -109,7 +109,7 @@ public class FaceletDocumentFactory
      */
     private ExternalTagInfo createExternalTagInfo(final String uri)
     {
-        ExternalTagInfo tldTagInfo = new MetadataTagInfo(uri);
+        ExternalTagInfo tldTagInfo = new MetadataTagInfo(_project, uri);
         final ITaglibRecord[] tldrecs = TaglibIndex
                 .getAvailableTaglibRecords(_project.getFullPath());
         FIND_TLDRECORD: for (final ITaglibRecord rec : tldrecs)
@@ -118,7 +118,7 @@ public class FaceletDocumentFactory
             if (uri.equals(matchUri))
             {
                 final CMDocumentFactoryTLD factory = new CMDocumentFactoryTLD();
-                tldTagInfo = new MetadataTagInfo((TLDDocument) factory
+                tldTagInfo = new MetadataTagInfo(_project, (TLDDocument) factory
                         .createCMDocument(rec));
                 break FIND_TLDRECORD;
             }

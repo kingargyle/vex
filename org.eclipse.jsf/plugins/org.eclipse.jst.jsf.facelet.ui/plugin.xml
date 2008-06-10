@@ -87,6 +87,13 @@
          </page>
       </wizard-pages>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <include
+            file="templates/templates.xml"
+            translations="$nl$/templates/templates.properties">
+      </include>
+   </extension>
    <!--<extension
          point="org.eclipse.wst.xml.core.modelQueryExtensions">
       <modelQueryExtension
@@ -94,6 +101,4 @@
             contentType="org.eclipse.wst.html.core.htmlsource">
       </modelQueryExtension>
    </extension>-->
-
-
 </plugin>

@@ -85,5 +85,17 @@
           </description>
        </static-preset>
     </extension>
-
+    <extension
+        point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+        <factory 
+       uri = "http://org.eclipse.jst.jsf.facelet.core/additionalTagMetadata.ecore" 
+       class = "org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.provider.AddTagMDItemProviderAdapterFactory" 
+       supportedTypes = 
+         "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+          org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+          org.eclipse.emf.edit.provider.ITreeItemContentProvider
+          org.eclipse.emf.edit.provider.IItemLabelProvider
+          org.eclipse.emf.edit.provider.IItemPropertySource
+          org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.provider.IResourceProvider"/>
+  </extension>
 </plugin>

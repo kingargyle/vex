@@ -1,7 +1,6 @@
 package org.eclipse.jst.jsf.facelet.core.internal.tagmodel;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.eclipse.jst.jsf.common.runtime.internal.view.model.common.ITagElement;
 
@@ -55,11 +54,6 @@ public abstract class FaceletTaglib extends
      */
     public abstract String getLibraryTypeDescription();
 
-    /**
-     * @return a map of tags indexed by name. Map should be regarded as
-     *         unmodifiable and may throw exceptions on modification
-     */
-    public abstract Map<String, ITagElement> getTags();
 
     @Override
     public abstract ITagElement getViewElement(String name);

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.jst.jsf.facelet.core;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin
+Bundle-Activator: org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin$Implementation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.common;bundle-version="2.4.0",
  org.eclipse.jst.j2ee;bundle-version="1.1.105",
  org.eclipse.emf.ecore;bundle-version="2.4.0",
- org.eclipse.ui;bundle-version="3.4.0"
+ org.eclipse.ui;bundle-version="3.4.0",
+ org.eclipse.emf.edit.ui;bundle-version="2.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.eclipse.jdt.core,
@@ -37,10 +38,15 @@ Import-Package: org.eclipse.jdt.core,
  org.eclipse.wst.xml.core.internal.contentmodel,
  org.eclipse.wst.xml.core.internal.contentmodel.factory,
  org.eclipse.wst.xml.core.internal.regions
-Export-Package: org.eclipse.jst.jsf.facelet.core.internal,
- org.eclipse.jst.jsf.facelet.core.internal.cm,
- org.eclipse.jst.jsf.facelet.core.internal.facet,
- org.eclipse.jst.jsf.facelet.core.internal.registry,
- org.eclipse.jst.jsf.facelet.core.internal.tagmodel,
- org.eclipse.jst.jsf.facelet.core.internal.util,
- org.eclipse.jst.jsf.facelet.core.internal.view
+Export-Package: org.eclipse.jst.jsf.facelet.core.internal;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.cm;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd;x-friends:="org.eclipse.jst.jsf.facelet.tagsupport",
+ org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.impl;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.provider;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.util;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.cm.strategy;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.facet;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.registry;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.tagmodel;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.util;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.view;x-internal:=true
