@@ -101,7 +101,7 @@ public class FaceletMetaResolvingStrategy
         if (elementType instanceof ComponentTypeInfo)
         {
             return new ComponentTag(uri, tagName,
-                    (ComponentTypeInfo) elementType, _factory,
+                    (ComponentTypeInfo) elementType, null, _factory,
                     new MetadataAttributeAdvisor(tagId, _loader));
         }
         else if (elementType instanceof ConverterTypeInfo)

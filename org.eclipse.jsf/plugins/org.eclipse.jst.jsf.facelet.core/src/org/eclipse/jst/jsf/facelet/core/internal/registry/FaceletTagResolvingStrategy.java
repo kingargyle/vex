@@ -15,12 +15,16 @@ import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.IAttributeAdvisor;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ComponentTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ConverterTagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.HandlerTagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.SourceTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.TagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ValidatorTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ComponentTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ConverterTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTag;
+import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.HandlerTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.NoArchetypeFaceletTag;
+import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.SourceTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
 
 /*package*/class FaceletTagResolvingStrategy
@@ -83,7 +87,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
                         new IConfigurationContributor[]
                         { new ELProxyContributor(_project) });
             }
-            return new ComponentTag(uri, tagName, typeInfo, _factory, advisor);
+            return new ComponentTag(uri, tagName, typeInfo, safeGetString(componentTagDefn.getHandlerClass()), _factory, advisor);
         }
         // render type is optional, but must have component type
         else if (tagDefn instanceof ValidatorTagDefn)
@@ -104,14 +108,14 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
                 typeInfo = ValidatorTypeInfo.UNKNOWN;
             }
 
-            return new ValidatorTag(uri, tagName, typeInfo, null, _factory,
+            return new ValidatorTag(uri, tagName, typeInfo, safeGetString(validatorTagDefn.getHandlerClass()), _factory,
                     advisor);
         }
         // render type is optional, but must have converter id
         else if (tagDefn instanceof ConverterTagDefn)
         {
-            final ConverterTagDefn validatorTagDefn = (ConverterTagDefn) tagDefn;
-            final String converterId = validatorTagDefn.getConverterId();
+            final ConverterTagDefn converterTagDefn = (ConverterTagDefn) tagDefn;
+            final String converterId = converterTagDefn.getConverterId();
 
             ConverterTypeInfo typeInfo;
 
@@ -127,9 +131,37 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
             }
 
             // for now, all converters are unknown
-            return new ConverterTag(uri, tagName, typeInfo, null,
-                    _factory, advisor);
+            return new ConverterTag(uri, tagName, typeInfo, 
+                    safeGetString(converterTagDefn.getHandlerClass()), _factory, advisor);
         }
+        else if (tagDefn instanceof HandlerTagDefn)
+        {
+            final String handlerClass = safeGetString(((HandlerTagDefn)tagDefn).getHandlerClass());
+            return new HandlerTag(uri, tagName, null, handlerClass, _factory, advisor);
+        }
+        else if (tagDefn instanceof SourceTagDefn)
+        {
+            final String source = ((SourceTagDefn)tagDefn).getSource();
+            return new SourceTag(uri, tagName, source, _factory, advisor);
+        }
+
         return new NoArchetypeFaceletTag(uri, tagName, _factory, advisor);
+    }
+    
+    private static String safeGetString(final String value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+        
+        final String trimmed = value.trim();
+        
+        if ("".equals(trimmed)) //$NON-NLS-1$
+        {
+            return null;
+        }
+        
+        return trimmed;
     }
 }

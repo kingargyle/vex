@@ -19,7 +19,6 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
      */
     private static final long serialVersionUID = -5310748504219020605L;
     private final ConverterTypeInfo _converter;
-    private final String            _handler;  // may be null
 
     /**
      * @param uri
@@ -32,9 +31,8 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
     public ConverterTag(final String uri, final String name, final ConverterTypeInfo converter, final String handler, final FaceletDocumentFactory factory, 
             final IAttributeAdvisor advisor)
     {
-        super(uri, name, TagType.CONVERTER, null,factory, advisor);
+        super(uri, name, TagType.CONVERTER, handler, factory, advisor);
         _converter = converter;
-        _handler = handler;
     }
 
     /**
@@ -45,13 +43,6 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
         return _converter;
     }
 
-    /**
-     * @return the handler or null if none provided
-     */
-    public String getHandler() {
-        return _handler;
-    }
-
     @Override
     public String toString()
     {
@@ -59,9 +50,9 @@ public class ConverterTag extends FaceletTag implements IConverterTagElement
 
         toString += "Converter Id: "+getConverter()+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
 
-        if  (_handler != null)
+        if  (getTagHandlerClassName() != null)
         {
-            toString += "Handler Class: "+getHandler()+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
+            toString += "Handler Class: "+getTagHandlerClassName()+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return toString;

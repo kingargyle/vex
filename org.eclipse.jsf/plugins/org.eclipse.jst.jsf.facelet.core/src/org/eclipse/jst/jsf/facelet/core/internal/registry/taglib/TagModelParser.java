@@ -17,6 +17,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.F
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.FaceletTaglibFactory;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.FaceletXMLDefnTaglib;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.HandlerTagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.SourceTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.TagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ValidatorTagDefn;
 import org.w3c.dom.Document;
@@ -42,12 +43,13 @@ public class TagModelParser
     private static final String ELEMENT_NAME_CONVERTER            = "converter";                                            //$NON-NLS-1$
     private static final String ELEMENT_NAME_COMPONENT            = "component";                                            //$NON-NLS-1$
     private static final String ELEMENT_NAME_HANDLER_CLASS        = "handler-class";                                        //$NON-NLS-1$
+    private static final String ELEMENT_NAME_SOURCE               = "source";                                               //$NON-NLS-1$
     private static final String ELEMENT_NAME_TAG_NAME             = "tag-name";                                             //$NON-NLS-1$
     private static final String ELEMENT_NAME_TAG                  = "tag";                                                  //$NON-NLS-1$
     private static final String ELEMENT_NAME_NAMESPACE            = "namespace";                                            //$NON-NLS-1$
     private static final String ELEMENT_NAME_LIBRARY_CLASS        = "library-class";                                        //$NON-NLS-1$
     private static final String ELEMENT_NAME_FACELET_TAGLIB       = "facelet-taglib";                                       //$NON-NLS-1$
-    private static final String URI_FACELET_TAGLIB_1_0_DTD        = "facelet-taglib_1_0.dtd";       //$NON-NLS-1$
+    private static final String URI_FACELET_TAGLIB_1_0_DTD        = "facelet-taglib_1_0.dtd";                               //$NON-NLS-1$
     private static final String PUBLIC_DTD_FACELET_TAGLIB_1_0_DTD = "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"; //$NON-NLS-1$
 
     /**
@@ -76,8 +78,8 @@ public class TagModelParser
                     final String systemId) throws IOException, SAXException
             {
                 if (PUBLIC_DTD_FACELET_TAGLIB_1_0_DTD.equals(publicId)
-                        || (systemId != null
-                            && systemId.endsWith(URI_FACELET_TAGLIB_1_0_DTD)))
+                        || (systemId != null && systemId
+                                .endsWith(URI_FACELET_TAGLIB_1_0_DTD)))
 
                 {
                     return defaultDTDSource;
@@ -206,6 +208,17 @@ public class TagModelParser
                 handlerTag.setHandlerClass(safeGetTextContext(node));
                 handlerTag.setName(name);
                 return handlerTag;
+            }
+
+            node = children.get(ELEMENT_NAME_SOURCE);
+
+            if (node != null)
+            {
+                final SourceTagDefn sourceTag = FaceletTaglibFactory.eINSTANCE
+                        .createSourceTagDefn();
+                sourceTag.setSource(safeGetTextContext(node));
+                sourceTag.setName(name);
+                return sourceTag;
             }
 
             node = children.get(ELEMENT_NAME_COMPONENT);

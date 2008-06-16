@@ -32,16 +32,18 @@ public class ComponentTag extends FaceletTag implements IComponentTagElement
      * @param uri
      * @param name
      * @param typeInfo
+     * @param handlerClass 
      * @param factory
      * @param advisor
      */
     public ComponentTag(final String uri,
             final String name,
             final ComponentTypeInfo typeInfo,
+            final String handlerClass,
             final FaceletDocumentFactory factory, 
             final IAttributeAdvisor advisor)
     {
-        super(uri, name, TagType.COMPONENT, typeInfo.getClassName(), factory, advisor);
+        super(uri, name, TagType.COMPONENT, handlerClass, factory, advisor);
         _typeInfo = typeInfo;
     }
 

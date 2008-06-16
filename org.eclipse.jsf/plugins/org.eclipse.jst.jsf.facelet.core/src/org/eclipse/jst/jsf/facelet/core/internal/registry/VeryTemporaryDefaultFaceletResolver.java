@@ -97,7 +97,7 @@ public class VeryTemporaryDefaultFaceletResolver extends
         if (typeInfo instanceof ComponentTypeInfo)
         {
             return new ComponentTag(tagId.getUri(), tagId.getTagName(),
-                    (ComponentTypeInfo) typeInfo, _factory, advisor);
+                    (ComponentTypeInfo) typeInfo, null, _factory, advisor);
         }
         else if (typeInfo instanceof ConverterTypeInfo)
         {
