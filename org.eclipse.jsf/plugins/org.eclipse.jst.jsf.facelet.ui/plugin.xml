@@ -72,6 +72,31 @@
            </contentTypeBinding>
         </validator>
         </extension>
+        
+       <!--<extension
+        point="org.eclipse.wst.validation.validator"
+        id="FaceletTaglibValidator"
+        name="%FaceletTaglibValidator">
+        <validator>
+            <projectNature id="org.eclipse.wst.common.modulecore.ModuleCoreNature" />
+            <projectNature id="org.eclipse.jdt.core.javanature" />
+            <filter
+                objectClass="org.eclipse.core.resources.IFile"
+                nameFilter="faces-config.xml">
+            </filter>
+            <markerId
+               markerIdValue="JSPSemanticsValidatorMarker">
+            </markerId>
+            <helper 
+                class="org.eclipse.wst.validation.internal.operations.WorkbenchContext">
+            </helper>
+            <run
+                class="org.eclipse.jst.jsf.validation.internal.appconfig.AppConfigValidator"
+                incremental="true"
+                fullBuild="true"
+            />
+        </validator>
+    </extension>-->
    <extension
          point="org.eclipse.wst.common.project.facet.ui.wizardPages">
       <wizard-pages

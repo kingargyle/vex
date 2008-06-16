@@ -45,7 +45,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
  * @author cbateman
  * 
  */
-/* package */class WebappConfiguration
+public class WebappConfiguration
 {
     private static final String FACELET_LIBRARIES_CONTEXT_PARAM_NAME = "facelets.LIBRARIES"; //$NON-NLS-1$
     private final IProject      _project;
@@ -55,28 +55,33 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
     private final ContextParamAdapter _contextParamAdapter;
     private List<IFile>         _cachedFiles;
 
-    public WebappConfiguration(final IProject project)
+    /**
+     * @param project
+     */
+    /*package*/ WebappConfiguration(final IProject project)
     {
         _project = project;
         _contextParamAdapter = new ContextParamAdapter();
     }
 
+    /**
+     * @param listener
+     */
     public void addListener(final WebappListener listener)
     {
         _contextParamAdapter.addListener(listener);
     }
     
+    /**
+     * @param listener
+     */
     public void removeListener(final WebappListener listener)
     {
         _contextParamAdapter.removeListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jst.jsf.core.jsfappconfig.WebContentRelativeJSFAppConfigLocater
-     * #getFilenames()
+    /**
+     * @return the list of IFile's 
      */
     public List<IFile> getFiles()
     {
@@ -110,6 +115,9 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
         return provider.getModelObject();
     }
 
+    /**
+     * 
+     */
     public void start()
     {
         final Object webAppObj = getModelObject();
@@ -132,6 +140,9 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
         }
     }
 
+    /**
+     * 
+     */
     public void dispose()
     {
         if (_contextParamAdapter != null)

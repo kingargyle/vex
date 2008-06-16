@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;bundle-version="2.4.0",
  org.eclipse.ui;bundle-version="3.4.0",
  org.eclipse.emf.edit.ui;bundle-version="2.4.0",
- org.eclipse.jst.j2ee.web;bundle-version="1.1.200"
+ org.eclipse.jst.j2ee.web;bundle-version="1.1.200",
+ org.eclipse.wst.validation;bundle-version="1.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.eclipse.jdt.core,
@@ -54,4 +55,5 @@ Export-Package: org.eclipse.jst.jsf.facelet.core.internal;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.util;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.tagmodel;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.util;x-internal:=true,
+ org.eclipse.jst.jsf.facelet.core.internal.validation;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.view;x-internal:=true

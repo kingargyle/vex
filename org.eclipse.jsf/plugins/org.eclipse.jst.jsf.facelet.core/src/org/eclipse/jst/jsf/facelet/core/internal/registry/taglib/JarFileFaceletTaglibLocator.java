@@ -196,9 +196,7 @@ import org.xml.sax.SAXException;
                         {
                             is = jarFile.getInputStream(jarEntry);
 
-                            final byte[] buffer = getBufferForEntry(is);
-                            final FaceletTaglibDefn tagLib = loadFromBuffer(
-                                    buffer, getDefaultDTDSource());
+                            FaceletTaglibDefn tagLib = TagModelParser.loadFromInputStream(is, null);
 
                             if (tagLib != null)
                             {

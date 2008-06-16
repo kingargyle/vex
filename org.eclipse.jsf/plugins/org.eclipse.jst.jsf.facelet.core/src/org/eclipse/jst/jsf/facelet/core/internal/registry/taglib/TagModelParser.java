@@ -1,6 +1,10 @@
 package org.eclipse.jst.jsf.facelet.core.internal.registry.taglib;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ComponentTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ConverterTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.FaceletLibraryClassTagLib;
@@ -35,6 +40,9 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class TagModelParser
 {
+    private static final String FACELET_TAGLIB_DTD_PATH = "/dtd/facelet-taglib_1_0.dtd"; //$NON-NLS-1$
+
+
     private static final String ELEMENT_NAME_VALIDATOR_ID         = "validator-id";                                         //$NON-NLS-1$
     private static final String ELEMENT_NAME_CONVERTER_ID         = "converter-id";                                         //$NON-NLS-1$
     private static final String ELEMENT_NAME_RENDERER_TYPE        = "renderer-type";                                        //$NON-NLS-1$
@@ -51,6 +59,86 @@ public class TagModelParser
     private static final String ELEMENT_NAME_FACELET_TAGLIB       = "facelet-taglib";                                       //$NON-NLS-1$
     private static final String URI_FACELET_TAGLIB_1_0_DTD        = "facelet-taglib_1_0.dtd";                               //$NON-NLS-1$
     private static final String PUBLIC_DTD_FACELET_TAGLIB_1_0_DTD = "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"; //$NON-NLS-1$
+
+    /**
+     * @param is
+     * @param dtdSourcePath
+     * @return the taglib definition or null
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static FaceletTaglibDefn loadFromInputStream(final InputStream is, final String dtdSourcePath) throws IOException, ParserConfigurationException, SAXException
+    {
+        final byte[] buffer = getBufferForEntry(is);
+        final InputStream dtdSource = getDefaultDTDSource(dtdSourcePath != null ? dtdSourcePath : FACELET_TAGLIB_DTD_PATH);
+        final FaceletTaglibDefn taglib = loadFromBuffer(buffer, dtdSource);
+        return taglib;
+
+    }
+    /**
+     * @param buffer
+     * @param defaultDtdStream
+     * @return the tag library definition (loaded EMF model) for the buffer
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static FaceletTaglibDefn loadFromBuffer(final byte[] buffer,
+            final InputStream defaultDtdStream) throws IOException,
+            ParserConfigurationException, SAXException
+    {
+        final InputSource inputSource = new InputSource(
+                new ByteArrayInputStream(buffer));
+
+        final Document doc = TagModelParser.getDefaultTaglibDocument(
+                inputSource, new InputSource(defaultDtdStream));
+        final FaceletTaglibDefn tagLib = TagModelParser.processDocument(doc);
+        return tagLib;
+    }
+
+    /**
+     * @param path 
+     * @return the input stream for the default bundle Facelet dtd.
+     * @throws IOException
+     */
+    protected static InputStream getDefaultDTDSource(final String path) throws IOException
+    {
+        final URL url = FaceletCorePlugin.getDefault().getBundle().getEntry(path);
+
+        if (url != null)
+        {
+            return url.openStream();
+        }
+        return null;
+    }
+
+    /**
+     * @param is must be open.  Caller is responsible for closing.
+     * @return load the stream into a byte buffer.  
+     */
+    protected static byte[] getBufferForEntry(final InputStream is)
+    {
+        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        final byte[] buffer = new byte[2048];
+
+        int bytesRead = 0;
+
+        try
+        {
+            while (((bytesRead = is.read(buffer))) != -1)
+            {
+                stream.write(buffer, 0, bytesRead);
+            }
+        }
+        catch (final IOException e)
+        {
+            FaceletCorePlugin.log("Error loading buffer", e); //$NON-NLS-1$
+            return null;
+        }
+
+        return stream.toByteArray();
+    }
 
     /**
      * @param taglibFile

@@ -139,9 +139,7 @@ import org.xml.sax.SAXException;
         try
         {
             is = file.getContents();
-            final byte[] buffer = getBufferForEntry(is);
-            final FaceletTaglibDefn taglib = loadFromBuffer(buffer,
-                    getDefaultDTDSource());
+            FaceletTaglibDefn taglib = TagModelParser.loadFromInputStream(is, null);
             if (taglib != null)
             {
                 return _factory.createRecords(taglib);
