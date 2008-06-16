@@ -1,13 +1,7 @@
 package org.eclipse.jst.jsf.facelet.core.internal.registry;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jem.internal.proxy.core.IBeanProxy;
-import org.eclipse.jem.internal.proxy.core.IBeanTypeProxy;
 import org.eclipse.jem.internal.proxy.core.IConfigurationContributor;
-import org.eclipse.jem.internal.proxy.core.IFieldProxy;
-import org.eclipse.jem.internal.proxy.core.IStringBeanProxy;
-import org.eclipse.jem.internal.proxy.core.ProxyFactoryRegistry;
-import org.eclipse.jem.internal.proxy.core.ThrowableProxy;
 import org.eclipse.jst.jsf.common.dom.TagIdentifier;
 import org.eclipse.jst.jsf.common.runtime.internal.model.component.ComponentTypeInfo;
 import org.eclipse.jst.jsf.common.runtime.internal.model.decorator.ConverterTypeInfo;
@@ -18,32 +12,26 @@ import org.eclipse.jst.jsf.designtime.internal.view.DTComponentIntrospector;
 import org.eclipse.jst.jsf.designtime.internal.view.mapping.ViewMetadataLoader;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.AbstractTagResolvingStrategy;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.IAttributeAdvisor;
-import org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ComponentTagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ConverterTagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.TagDefn;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.ValidatorTagDefn;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ComponentTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ConverterTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.FaceletTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.NoArchetypeFaceletTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
 
-/*package*/class FaceletTagResolvingStrategy extends
-        AbstractTagResolvingStrategy<FaceletTagElement, String>
+/*package*/class FaceletTagResolvingStrategy
+        extends
+        AbstractTagResolvingStrategy<IFaceletTagResolvingStrategy.TLDWrapper, String>
+        implements IFaceletTagResolvingStrategy
 {
-    private static final String FIELD_NAME_CONVERTER_ID = "converterId"; //$NON-NLS-1$
-    private static final String FIELD_NAME_VALIDATOR_ID = "validatorId"; //$NON-NLS-1$
-    private static final String FIELD_NAME_RENDER_TYPE = "renderType"; //$NON-NLS-1$
-    private static final String FIELD_NAME_COMPONENT_TYPE = "componentType"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$HandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_CONVERTER_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$UserConverterHandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_CONVERTER_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$ConverterHandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_VALIDATOR_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$UserValidatorHandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_VALIDATOR_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$ValidatorHandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_COMPONENT_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$UserComponentHandlerFactory"; //$NON-NLS-1$
-    private static final String COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_COMPONENT_HANDLER_FACTORY = "com.sun.facelets.tag.AbstractTagLibrary$ComponentHandlerFactory"; //$NON-NLS-1$
-    public final static String ID = "org.eclipse.jst.jsf.facelet.core.FaceletTagResolvingStrategy"; //$NON-NLS-1$
-    private final IProject     _project;
-    private final FaceletDocumentFactory    _factory;
-    private final ViewMetadataLoader _viewLoader;
+    public final static String           ID = "org.eclipse.jst.jsf.facelet.core.FaceletTagResolvingStrategy"; //$NON-NLS-1$
+    private final IProject               _project;
+    private final FaceletDocumentFactory _factory;
+    private final ViewMetadataLoader     _viewLoader;
 
     public FaceletTagResolvingStrategy(final IProject project,
             final FaceletDocumentFactory factory)
@@ -60,10 +48,9 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
     }
 
     @Override
-    public final ITagElement resolve(final FaceletTagElement element)
+    public final ITagElement resolve(final TLDWrapper tldWrapper)
     {
-        return createFaceletTag(element.getUri(), element.getName(), element
-                .getFactory(), element.getRegistry());
+        return createFaceletTag(tldWrapper.getUri(), tldWrapper.getTagDefn());
     }
 
     public final String getDisplayName()
@@ -71,154 +58,78 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
         return Messages.FaceletTagResolvingStrategy_FACELET_TAG_RESOLVER_DISPLAY_NAME;
     }
 
-    private FaceletTag createFaceletTag(final String uri, final String name,
-            final IBeanProxy factory, final ProxyFactoryRegistry registry)
+    private FaceletTag createFaceletTag(final String uri, final TagDefn tagDefn)
     {
-        final IBeanTypeProxy componentHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_COMPONENT_HANDLER_FACTORY);
-        final IBeanTypeProxy userComponentHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_COMPONENT_HANDLER_FACTORY);
-        final IBeanTypeProxy validatorHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_VALIDATOR_HANDLER_FACTORY);
-        final IBeanTypeProxy userValidatorHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_VALIDATOR_HANDLER_FACTORY);
-        final IBeanTypeProxy converterHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_CONVERTER_HANDLER_FACTORY);
-        final IBeanTypeProxy userConverterHandlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_USER_CONVERTER_HANDLER_FACTORY);
-        final IBeanTypeProxy handlerFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_HANDLER_FACTORY);
-        final IBeanTypeProxy userTagFactory = registry
-                .getBeanTypeProxyFactory()
-                .getBeanTypeProxy(
-                        COM_SUN_FACELETS_TAG_ABSTRACT_TAG_LIBRARY$_HANDLER_FACTORY);
+        final String tagName = tagDefn.getName();
+        final TagIdentifier tagId = TagIdentifierFactory.createJSPTagWrapper(
+                uri, tagName);
 
-        final TagIdentifier tagId = TagIdentifierFactory.createJSPTagWrapper(uri, name);
-        final IAttributeAdvisor advisor = new MetadataAttributeAdvisor(tagId, _viewLoader);
+        final IAttributeAdvisor advisor = new MetadataAttributeAdvisor(tagId,
+                _viewLoader);
 
-        if (factory.getTypeProxy().isKindOf(componentHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userComponentHandlerFactory))
+        if (tagDefn instanceof ComponentTagDefn)
         {
-            final IFieldProxy componentTypeProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy(FIELD_NAME_COMPONENT_TYPE);
-            final IFieldProxy rendererTypeProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy(FIELD_NAME_RENDER_TYPE);
-            try
+            final ComponentTagDefn componentTagDefn = (ComponentTagDefn) tagDefn;
+            final String componentType = componentTagDefn.getComponentType();
+            final String componentClass = DTComponentIntrospector
+                    .findComponentClass(componentType, _project);
+
+            ComponentTypeInfo typeInfo = null;
+
+            if (componentClass != null)
             {
-                if (componentTypeProxy != null)
-                {
-                    componentTypeProxy.setAccessible(true);
-                    rendererTypeProxy.setAccessible(true);
-                    final IBeanProxy componentType = componentTypeProxy
-                            .get(factory);
-
-                    // render type is optional, but must have component type
-                    if (componentType instanceof IStringBeanProxy)
-                    {
-                        final String componentTypeValue = ((IStringBeanProxy) componentType)
-                                .stringValue();
-
-                        if (componentTypeValue != null)
-                        {
-                            final String componentClass = DTComponentIntrospector
-                                    .findComponentClass(componentTypeValue,
-                                            _project);
-
-                            ComponentTypeInfo typeInfo = null;
-
-                            if (componentClass != null)
-                            {
-                                typeInfo = DTComponentIntrospector
-                                        .getComponent(componentTypeValue,
-                                                componentClass, _project,
-                                                new IConfigurationContributor[]
-                                                { new ELProxyContributor(
-                                                        _project) });
-                            }
-                            return new ComponentTag(uri, name, typeInfo, _factory, advisor);
-                        }
-                    }
-                }
+                typeInfo = DTComponentIntrospector.getComponent(componentClass,
+                        componentClass, _project,
+                        new IConfigurationContributor[]
+                        { new ELProxyContributor(_project) });
             }
-            catch (final ThrowableProxy e)
-            {
-                FaceletCorePlugin.log("Error get component info", e); //$NON-NLS-1$
-            }
+            return new ComponentTag(uri, tagName, typeInfo, _factory, advisor);
         }
-        else if (factory.getTypeProxy().isKindOf(validatorHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userValidatorHandlerFactory))
+        // render type is optional, but must have component type
+        else if (tagDefn instanceof ValidatorTagDefn)
         {
-            final IFieldProxy validatorIdProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy(FIELD_NAME_VALIDATOR_ID);
+            final ValidatorTagDefn validatorTagDefn = (ValidatorTagDefn) tagDefn;
+            final String validatorId = validatorTagDefn.getValidatorId();
 
-            try
-            {
-                if (validatorIdProxy != null)
-                {
-                    validatorIdProxy.setAccessible(true);
-                    final IBeanProxy validatorId = validatorIdProxy
-                            .get(factory);
+            ValidatorTypeInfo typeInfo;
 
-                    // render type is optional, but must have component type
-                    if (validatorId instanceof IStringBeanProxy)
-                    {
-                        return new ValidatorTag(uri, name,
-                                ValidatorTypeInfo.UNKNOWN, null, _factory, advisor);
-                    }
-                }
-            }
-            catch (final ThrowableProxy e)
+            if (validatorId != null)
             {
-                FaceletCorePlugin.log("Error getting validator info", e); //$NON-NLS-1$
+                final String validatorClass = DTComponentIntrospector
+                        .findValidatorClass(validatorId, _project);
+                typeInfo = new ValidatorTypeInfo(validatorClass, validatorId);
             }
+            else
+            {
+                typeInfo = ValidatorTypeInfo.UNKNOWN;
+            }
+
+            return new ValidatorTag(uri, tagName, typeInfo, null, _factory,
+                    advisor);
         }
-        else if (factory.getTypeProxy().isKindOf(converterHandlerFactory)
-                || factory.getTypeProxy().isKindOf(userConverterHandlerFactory))
+        // render type is optional, but must have converter id
+        else if (tagDefn instanceof ConverterTagDefn)
         {
-            final IFieldProxy converterIdProxy = factory.getTypeProxy()
-                    .getDeclaredFieldProxy(FIELD_NAME_CONVERTER_ID);
+            final ConverterTagDefn validatorTagDefn = (ConverterTagDefn) tagDefn;
+            final String converterId = validatorTagDefn.getConverterId();
 
-            try
-            {
-                if (converterIdProxy != null)
-                {
-                    converterIdProxy.setAccessible(true);
-                    final IBeanProxy converterId = converterIdProxy
-                            .get(factory);
+            ConverterTypeInfo typeInfo;
 
-                    // render type is optional, but must have component type
-                    if (converterId instanceof IStringBeanProxy)
-                    {
-                        // for now, all converters are unknown
-                        return new ConverterTag(uri, name,
-                                ConverterTypeInfo.UNKNOWN, null, _factory, advisor);
-                    }
-                }
-            }
-            catch (final ThrowableProxy e)
+            if (converterId != null)
             {
-                FaceletCorePlugin.log("Error getting validator info", e); //$NON-NLS-1$
+                final String converterClass = DTComponentIntrospector
+                        .findConverterClass(converterId, _project);
+                typeInfo = new ConverterTypeInfo(converterClass, converterId);
             }
+            else
+            {
+                typeInfo = ConverterTypeInfo.UNKNOWN;
+            }
+
+            // for now, all converters are unknown
+            return new ConverterTag(uri, tagName, typeInfo, null,
+                    _factory, advisor);
         }
-        else if (factory.getTypeProxy().isKindOf(handlerFactory)
-                || factory.getTypeProxy().isKindOf(userTagFactory))
-        {
-            return new NoArchetypeFaceletTag(uri, name, _factory, advisor);
-        }
-        return null;
+        return new NoArchetypeFaceletTag(uri, tagName, _factory, advisor);
     }
 }

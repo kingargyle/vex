@@ -11,12 +11,21 @@ import org.eclipse.jem.internal.proxy.core.IConfigurationContributionController;
 import org.eclipse.jst.jsf.core.JSFVersion;
 import org.osgi.framework.Bundle;
 
-class ServletBeanProxyContributor extends ConfigurationContributorAdapter
+/**
+ * Contributes dummy jsp servlet api to smooth the JEM instantiation for introspection.
+ * 
+ * @author cbateman
+ *
+ */
+public class ServletBeanProxyContributor extends ConfigurationContributorAdapter
 {
     private static final String JAVAX_SERVLET_JSP = "javax.servlet.jsp"; //$NON-NLS-1$
     private static final String JAVAX_SERVLET = "javax.servlet"; //$NON-NLS-1$
     private final JSFVersion _jsfVersion;
 
+    /**
+     * @param jsfVersion
+     */
     public ServletBeanProxyContributor(final JSFVersion jsfVersion)
     {
         if (jsfVersion == null)

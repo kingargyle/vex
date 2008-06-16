@@ -19,6 +19,7 @@ import org.eclipse.jst.jsf.designtime.internal.view.mapping.ViewMetadataLoader;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.AbstractTagResolvingStrategy;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.DefaultTagTypeInfo;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.FaceletDocumentFactory;
+import org.eclipse.jst.jsf.facelet.core.internal.registry.IFaceletTagResolvingStrategy.TLDWrapper;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ComponentTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ConverterTag;
 import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.HandlerTag;
@@ -33,7 +34,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  *
  */
 public class VeryTemporaryDefaultFaceletResolver extends
-AbstractTagResolvingStrategy<FaceletTagElement, String>
+        AbstractTagResolvingStrategy<TLDWrapper, String> implements IFaceletTagResolvingStrategy
 {
     /**
      * Tag resolver unique identifier
@@ -64,7 +65,7 @@ AbstractTagResolvingStrategy<FaceletTagElement, String>
     }
 
     @Override
-    public ITagElement resolve(final FaceletTagElement element)
+    public ITagElement resolve(final TLDWrapper element)
     {
         final IProjectFacetVersion version = JSFAppConfigUtils
         .getProjectFacet(_project);
@@ -72,7 +73,7 @@ AbstractTagResolvingStrategy<FaceletTagElement, String>
         final JSFVersion jsfVersion = JSFVersion.valueOfString(versionAsString);
 
         final String uri = element.getUri();
-        final String name = element.getName();
+        final String name = element.getTagDefn().getName();
         final TagIdentifier tagId = TagIdentifierFactory.createJSPTagWrapper(
                 uri, name);
         TypeInfo typeInfo = null;

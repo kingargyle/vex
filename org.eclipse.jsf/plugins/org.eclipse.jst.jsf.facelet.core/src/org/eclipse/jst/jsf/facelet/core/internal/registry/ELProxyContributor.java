@@ -21,7 +21,10 @@ public class ELProxyContributor extends ConfigurationContributorAdapter
 {
     private final IProject _project;
 
-    ELProxyContributor(final IProject project)
+    /**
+     * @param project
+     */
+    public ELProxyContributor(final IProject project)
     {
         _project = project;
     }

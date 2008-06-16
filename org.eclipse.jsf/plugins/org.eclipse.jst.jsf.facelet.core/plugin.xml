@@ -98,4 +98,13 @@
           org.eclipse.emf.edit.provider.IItemPropertySource
           org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.provider.IResourceProvider"/>
   </extension>
+    <extension
+          point="org.eclipse.wst.xml.core.catalogContributions">
+       <catalogContribution id="default">
+             <public
+                publicId="-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+                uri="dtd/facelet-taglib_1_0.dtd"
+                webURL="facelet-taglib_1_0.dtd" />
+       </catalogContribution>
+    </extension>
 </plugin>

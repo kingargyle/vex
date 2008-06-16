@@ -18,11 +18,22 @@ import org.eclipse.jst.jsf.designtime.internal.view.mapping.ViewMetadataLoader;
 import org.eclipse.jst.jsf.designtime.internal.view.mapping.viewmapping.AttributeToPropertyMapping;
 import org.eclipse.jst.jsf.designtime.internal.view.model.jsp.IAttributeAdvisor;
 
-/* package */class MetadataAttributeAdvisor implements IAttributeAdvisor
+/**
+ * An attribute advisor that composes multiple strategies for deriving information
+ * about Facelet tags.
+ * 
+ * @author cbateman
+ *
+ */
+/*package*/ class MetadataAttributeAdvisor implements IAttributeAdvisor
 {
     private final TagIdentifier      _tagId;
     private final ViewMetadataLoader _loader;
 
+    /**
+     * @param tagId
+     * @param loader
+     */
     public MetadataAttributeAdvisor(final TagIdentifier tagId,
             final ViewMetadataLoader loader)
     {
