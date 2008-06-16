@@ -31,6 +31,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.cm.AttributeCMAdapter;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.ExternalTagInfo;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.AddTagMDPackage;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.AttributeData;
+import org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.AttributeUsage;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.ElementData;
 import org.eclipse.jst.jsf.facelet.core.internal.cm.addtagmd.provider.IResourceProvider;
 import org.eclipse.jst.jsf.facelet.core.internal.util.TagMetadataLoader;
@@ -47,11 +48,11 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 public class MDExternalMetadataStrategy extends
         AbstractExternalMetadataStrategy implements IManagedObject
 {
-    private static MySingletonManager   MANAGER = new MySingletonManager();
-    
+    private static MySingletonManager MANAGER = new MySingletonManager();
+
     /**
      * @param project
-     * @return the instance of the strategy for project or 
+     * @return the instance of the strategy for project or
      */
     public static IExternalMetadataStrategy create(final IProject project)
     {
@@ -59,9 +60,10 @@ public class MDExternalMetadataStrategy extends
         {
             return MANAGER.getInstance(project);
         }
-        catch (ManagedObjectException e)
+        catch (final ManagedObjectException e)
         {
-            FaceletCorePlugin.log("Getting managed instance of tag metadata strategy", e); //$NON-NLS-1$
+            FaceletCorePlugin.log(
+                    "Getting managed instance of tag metadata strategy", e); //$NON-NLS-1$
         }
         return new NullExternalMetadataStrategy();
     }
@@ -69,7 +71,7 @@ public class MDExternalMetadataStrategy extends
     /**
      * The unique identifier for the strategy.
      */
-    public final static String      STRATEGY_ID = "org.eclipse.jst.jsf.facelet.core.internal.cm.strategy.MDExternalMetadataStrategy"; //$NON-NLS-1$
+    public final static String                   STRATEGY_ID = "org.eclipse.jst.jsf.facelet.core.internal.cm.strategy.MDExternalMetadataStrategy"; //$NON-NLS-1$
 
     //    private static final String     VAR         = "var";                                                  //$NON-NLS-1$
     //    private static final String     VALUE       = "value";                                                //$NON-NLS-1$
@@ -80,10 +82,11 @@ public class MDExternalMetadataStrategy extends
     //    private static final String     BINDING     = "binding";                                              //$NON-NLS-1$
     //    private static final String     ID          = "id";                                                   //$NON-NLS-1$
 
-    private final IProject          _project;
-    private final TagMetadataLoader _tagMetadataLoader;
-    private final Map<String, MDExternalTagInfo>    _cached;
-    private final AtomicBoolean     _isDisposed = new AtomicBoolean(false);
+    private final IProject                       _project;
+    private final TagMetadataLoader              _tagMetadataLoader;
+    private final Map<String, MDExternalTagInfo> _cached;
+    private final AtomicBoolean                  _isDisposed = new AtomicBoolean(
+                                                                     false);
 
     /**
      * Default constructor
@@ -115,7 +118,7 @@ public class MDExternalMetadataStrategy extends
             _cached.clear();
         }
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -127,10 +130,10 @@ public class MDExternalMetadataStrategy extends
     public ExternalTagInfo perform(final TagIdentifier input) throws Exception
     {
         MDExternalTagInfo tagInfo = _cached.get(input.getUri());
-        
+
         if (tagInfo == null)
         {
-            tagInfo =  new MDExternalTagInfo(input.getUri(), _tagMetadataLoader);
+            tagInfo = new MDExternalTagInfo(input.getUri(), _tagMetadataLoader);
             _cached.put(input.getUri(), tagInfo);
         }
         return tagInfo;
@@ -153,8 +156,8 @@ public class MDExternalMetadataStrategy extends
         @Override
         public CMNamedNodeMap getAttributes(final String tagName)
         {
-            InternalNamedNodeMap nodeMap = _attributes.get(tagName);
-            final InternalNamedNodeMap[]  innerClassNodeMap = new InternalNamedNodeMap[1];
+            final InternalNamedNodeMap nodeMap = _attributes.get(tagName);
+            final InternalNamedNodeMap[] innerClassNodeMap = new InternalNamedNodeMap[1];
             innerClassNodeMap[0] = nodeMap;
 
             if (nodeMap == null)
@@ -163,24 +166,34 @@ public class MDExternalMetadataStrategy extends
                 {
                     public void run()
                     {
-                        final ElementData data = _tagMetadataLoader.getElementData(
-                                _uri, tagName);
-        
+                        final ElementData data = _tagMetadataLoader
+                                .getElementData(_uri, tagName);
+
                         if (data != null)
                         {
                             innerClassNodeMap[0] = new InternalNamedNodeMap();
-        
-                            for (final AttributeData attribute : data.getAttributes())
+
+                            for (final AttributeData attribute : data
+                                    .getAttributes())
                             {
-                                innerClassNodeMap[0].add(createAttribute(attribute));
+                                innerClassNodeMap[0]
+                                        .add(createAttribute(attribute));
                             }
                             _attributes.put(tagName, innerClassNodeMap[0]);
                         }
+                        // no meta-data found for this tag, so mark as null
+                        // instance so future calls don't bother a re-lookup.
+                        else
+                        {
+                            _attributes.put(tagName,
+                                    MDExternalMetadataStrategy.NULL_INSTANCE);
+                        }
                     }
 
-                    public void handleException(Throwable exception)
+                    public void handleException(final Throwable exception)
                     {
-                        FaceletCorePlugin.log("While loading attribute meta-data", exception); //$NON-NLS-1$
+                        FaceletCorePlugin.log(
+                                "While loading attribute meta-data", exception); //$NON-NLS-1$
                     }
                 });
             }
@@ -193,20 +206,22 @@ public class MDExternalMetadataStrategy extends
         {
             final Object[] value = new Object[1];
             value[0] = null;
-            
+
             SafeRunnable.run(new ISafeRunnable()
             {
                 public void run()
                 {
                     if ("description".equals(key)) //$NON-NLS-1$
                     {
-                        value[0] = _tagMetadataLoader.getDescription(_uri, tagName);
+                        value[0] = _tagMetadataLoader.getDescription(_uri,
+                                tagName);
                     }
                 }
 
-                public void handleException(Throwable exception)
+                public void handleException(final Throwable exception)
                 {
-                    FaceletCorePlugin.log("While loading tag property meta-data", exception); //$NON-NLS-1$
+                    FaceletCorePlugin.log(
+                            "While loading tag property meta-data", exception); //$NON-NLS-1$
                 }
             });
             return value[0];
@@ -252,6 +267,44 @@ public class MDExternalMetadataStrategy extends
         {
             return Collections.unmodifiableList(_nodes).iterator();
         }
+    }
+
+    private final static NullInternalNamedNodeMap NULL_INSTANCE = new NullInternalNamedNodeMap();
+
+    private static class NullInternalNamedNodeMap extends InternalNamedNodeMap
+    {
+
+        @Override
+        public void add(final CMNode node)
+        {
+            // do nothing
+        }
+
+        @Override
+        public int getLength()
+        {
+            // always empty
+            return 0;
+        }
+
+        @Override
+        public CMNode getNamedItem(final String name)
+        {
+            return null;
+        }
+
+        @Override
+        public CMNode item(final int index)
+        {
+            return null;
+        }
+
+        @Override
+        public Iterator<?> iterator()
+        {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
     }
 
     // temporary: transfer out to metadata
@@ -365,7 +418,8 @@ public class MDExternalMetadataStrategy extends
             final AttributeData attributeData)
     {
         final AttributeCMAdapter attribute = new AttributeCMAdapter(
-                attributeData.getName(), attributeData.getUsage().getValue());
+                attributeData.getName(), convertUsageEnum(attributeData
+                        .getUsage()));
 
         final ComposedAdapterFactory factory = new ComposedAdapterFactory(
                 ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
@@ -385,16 +439,36 @@ public class MDExternalMetadataStrategy extends
                             .getAttributeData_Description());
             description = translated != null ? translated : description;
         }
-        
+
         attribute.setDescription(description);
         return attribute;
     }
-    
-    private static class MySingletonManager extends ResourceSingletonObjectManager<MDExternalMetadataStrategy, IProject>
+
+    private static int convertUsageEnum(final AttributeUsage usage)
+    {
+        switch (usage)
+        {
+            case OPTIONAL:
+                return CMAttributeDeclaration.OPTIONAL;
+            case REQUIRED:
+                return CMAttributeDeclaration.REQUIRED;
+            case FIXED:
+                return CMAttributeDeclaration.FIXED;
+            case PROHIBITED:
+                return CMAttributeDeclaration.PROHIBITED;
+            default:
+                return CMAttributeDeclaration.OPTIONAL;
+        }
+    }
+
+    private static class MySingletonManager
+            extends
+            ResourceSingletonObjectManager<MDExternalMetadataStrategy, IProject>
     {
 
         @Override
-        protected MDExternalMetadataStrategy createNewInstance(IProject resource)
+        protected MDExternalMetadataStrategy createNewInstance(
+                final IProject resource)
         {
             return new MDExternalMetadataStrategy(resource);
         }

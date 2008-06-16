@@ -86,6 +86,14 @@
                 </attribute>
             </value>
         </trait>
+        <entity id="binding">
+            <trait id="attribute-value-runtime-type">
+                <value>org.eclipse.jst.jsf.core.attributevalues.ComponentBindingType</value>
+            </trait>
+            <trait id="runtime-return-type">
+                <value>javax.faces.component.UIComponent</value>
+            </trait>    
+        </entity>
     </entity>
     
     <entity id="composition" type="tag">  
@@ -99,6 +107,12 @@
                 </attribute>
             </value>
         </trait>
+        
+        <entity id="template">
+            <trait id="attribute-value-runtime-type">
+                <value>org.eclipse.jst.jsf.core.attributevalues.WebPathType</value>
+            </trait>        
+        </entity>
     </entity>
     
     <entity id="debug" type="tag">  
@@ -125,6 +139,12 @@
                 </attribute>
             </value>
         </trait>
+        <entity id="template">
+            <trait id="attribute-value-runtime-type">
+                <value>org.eclipse.jst.jsf.core.attributevalues.WebPathType</value>
+            </trait>
+        </entity>
+        
     </entity>
     
     <entity id="define" type="tag">  
@@ -156,6 +176,14 @@
                 </attribute>
             </value>
         </trait>
+        <entity id="binding">
+            <trait id="attribute-value-runtime-type">
+                <value>org.eclipse.jst.jsf.core.attributevalues.ComponentBindingType</value>
+            </trait>
+            <trait id="runtime-return-type">
+                <value>javax.faces.component.UIComponent</value>
+            </trait>    
+        </entity>
     </entity>
     
     <entity id="include" type="tag">  

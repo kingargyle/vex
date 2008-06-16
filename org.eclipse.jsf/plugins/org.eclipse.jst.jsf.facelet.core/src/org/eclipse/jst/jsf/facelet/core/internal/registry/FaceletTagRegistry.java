@@ -66,7 +66,7 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         _unResolved = new HashSet<FaceletNamespace>();
 
         final List<String> ids = new ArrayList<String>();
-        ids.add(VeryTemporaryDefaultFaceletResolver.ID);
+        ids.add(FaceletMetaResolvingStrategy.ID);
         ids.add(FaceletTagResolvingStrategy.ID);
         final IdentifierOrderedIteratorPolicy<String> policy = new IdentifierOrderedIteratorPolicy<String>(
                 ids);
@@ -81,8 +81,8 @@ public final class FaceletTagRegistry extends AbstractTagRegistry implements
         // add the strategies
         _resolver.addStrategy(new FaceletTagResolvingStrategy(_project,
                 _factory));
-        _resolver.addStrategy(new VeryTemporaryDefaultFaceletResolver(_project,
-                _factory));
+        _resolver.addStrategy(new FaceletMetaResolvingStrategy(_project, _factory));
+
         // _resolver.addStrategy(new DefaultJSPTagResolver(_project));
         // makes sure that a tag element will always be created for any
         // given tag definition even if other methods fail
