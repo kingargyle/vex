@@ -107,4 +107,12 @@
                 webURL="facelet-taglib_1_0.dtd" />
        </catalogContribution>
     </extension>
+    
+       <extension
+         point="org.eclipse.jst.jsf.core.AttributeValueRuntimeTypes">
+
+      <attributeValueRuntimeType
+            class="org.eclipse.jst.jsf.facelet.core.internal.cm.attributevalues.TemplateWebPathType"
+            id="attributevalues.TemplateWebPathType"/>
+    </extension>
 </plugin>
