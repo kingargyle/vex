@@ -82,7 +82,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.tagmodel.ValidatorTag;
 
             if (componentClass != null)
             {
-                typeInfo = DTComponentIntrospector.getComponent(componentClass,
+                typeInfo = DTComponentIntrospector.getComponent(componentType,
                         componentClass, _project,
                         new IConfigurationContributor[]
                         { new ELProxyContributor(_project) });
