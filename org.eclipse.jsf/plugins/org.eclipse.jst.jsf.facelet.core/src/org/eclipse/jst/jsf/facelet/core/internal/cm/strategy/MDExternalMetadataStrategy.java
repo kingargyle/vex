@@ -198,6 +198,11 @@ public class MDExternalMetadataStrategy extends
                 });
             }
 
+            // don't return the null map instance
+            if (innerClassNodeMap[0] == MDExternalMetadataStrategy.NULL_INSTANCE)
+            {
+                return null;
+            }
             return innerClassNodeMap[0];
         }
 
