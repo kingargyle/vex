@@ -17,10 +17,6 @@
       %feature.license
    </license>
 
-   <requires>
-      <import feature="org.eclipse.jst.jsf.feature" version="2.0.0.qualifier" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="org.eclipse.jst.jsf.facelet.core"
          download-size="0"
