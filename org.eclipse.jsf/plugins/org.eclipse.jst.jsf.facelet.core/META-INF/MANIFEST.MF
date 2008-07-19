@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.jst.jsf.facelet.core;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.jst.jsf.facelet.core.internal.FaceletCorePlugin$Implementation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
@@ -58,3 +58,4 @@ Export-Package: org.eclipse.jst.jsf.facelet.core.internal;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.util;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.validation;x-internal:=true,
  org.eclipse.jst.jsf.facelet.core.internal.view;x-internal:=true
+Bundle-Vendor: %providerName

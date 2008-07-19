@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.jst.jsf.facelet.feature"
-      label="%feature.name"
+      label="%featureName"
       version="0.1.0.qualifier"
-      provider-name="%feature.provider">
+      provider-name="%featureProvider"
+      plugin="org.eclipse.jst.jsf.facelet.core">
 
    <description>
-      %feature.description
+      %featureDescription
    </description>
 
    <copyright>
