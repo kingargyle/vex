@@ -1,0 +1,34 @@
+@import "../PRODUCT_PLUGIN/book.css";
+
+span.control {
+	font-weight: bold;
+}
+
+span.name {
+	font-style: italic;
+}
+
+span.code {
+	font-family: monospace;
+}
+
+p.nav_footer {
+	font-weight: bold;
+}
+
+p.nav_footer a {
+	font-weight: bold;
+	font-style: italic;
+}
+
+tr.bgcolorAlternatingOne {
+	background-color: white;
+	border: 2px;
+    border-color: black;
+}
+
+tr.bgcolorAlternatingTwo {
+	background-color: #D3D3D3;
+	border: 2px;
+	border-color: black;
+}

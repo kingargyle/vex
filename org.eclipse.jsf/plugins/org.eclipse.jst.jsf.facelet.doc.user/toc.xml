@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="JSF Facelets Tools User Guide" topic="html/mainpage.html">
+	<topic label="Getting Started" href="html/gettingstarted/getting_started.html">
+  <topic href="html/gettingstarted/tutorial/JSF Facelets Tools Tutorial.html" label="JSF Facelets Tools  Tutorial">
+  </topic>
+	</topic>
+	<topic label="Legal" href="html/legal.htm"/>
+</toc>
