@@ -20,7 +20,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 import junit.framework.TestCase;
 
 /**
- * Test the <code>net.sf.vex.dom</code> package.
+ * Test the <code>org.eclipse.wst.vex.core.internal.dom</code> package.
  */
 public class DomTest extends TestCase {
 

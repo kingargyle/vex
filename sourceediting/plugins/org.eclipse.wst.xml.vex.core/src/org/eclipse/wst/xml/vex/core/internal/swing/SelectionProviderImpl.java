@@ -24,8 +24,9 @@ public class SelectionProviderImpl
 
     private List listeners = new ArrayList();
     
-    /**
-     * @see net.sf.vex.core.SelectionProvider#addSelectionChangeListener(net.sf.vex.SelectionListener)
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#addSelectionListener(org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
      */
     public void addSelectionListener(SelectionListener listener) {
         this.listeners.add(listener);
@@ -45,16 +46,18 @@ public class SelectionProviderImpl
             //System.out.println("" + (end-start) + ": " + listener);
         }
     }
-    
-    /**
-     * @see net.sf.vex.core.SelectionProvider#removeSelectionChangeListener(net.sf.vex.SelectionListener)
+
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#removeSelectionListener(org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
      */
     public void removeSelectionListener(SelectionListener listener) {
         this.listeners.remove(listener);
     }
 
-    /**
-     * @see net.sf.vex.core.SelectionListener#selectionChanged(net.sf.vex.Selection)
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener#selectionChanged(org.eclipse.wst.xml.vex.core.internal.swing.Selection)
      */
     public void selectionChanged(Selection selection) {
         this.fireSelectionChanged(selection);

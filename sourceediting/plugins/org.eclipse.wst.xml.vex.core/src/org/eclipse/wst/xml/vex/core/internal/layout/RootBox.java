@@ -155,8 +155,9 @@ public class RootBox extends AbstractBox implements BlockBox {
         }
     }
 
-    /* (non-Javadoc)
-     * @see net.sf.vex.layout.ContentBox#viewToModel(net.sf.vex.layout.LayoutContext, int, int)
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.wst.xml.vex.core.internal.layout.AbstractBox#viewToModel(org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext, int, int)
      */
     public int viewToModel(LayoutContext context, int x, int y) {
         return this.childBox.viewToModel(

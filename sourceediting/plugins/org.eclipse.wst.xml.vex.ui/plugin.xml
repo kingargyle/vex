@@ -33,12 +33,12 @@
             <separator name="items"/>
          </menu>
                
-         <action id="net.sf.vex.action.PasteTextAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.PasteTextAction"
                  label="%PasteTextAction.label"
                  menubarPath="edit/cut.ext"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.RestoreLastSelectionAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.RestoreLastSelectionAction"
                  label="%RestoreLastSelectionAction.label"
                  menubarPath="edit/editEnd"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
@@ -50,17 +50,17 @@
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
 
-         <action id="net.sf.vex.action.DuplicateSelectionAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction"
                  label="%DuplicateSelectionAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/modify"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate"
-                 definitionId="net.sf.vex.action.DuplicateSelectionAction">
+                 definitionId="org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction">
          </action>
-         <action id="net.sf.vex.action.RemoveElementAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.RemoveElementAction"
                  label="%RemoveElementAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/modify"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate"
-                 definitionId="net.sf.vex.action.RemoveElementAction">
+                 definitionId="org.eclipse.wst.xml.vex.ui.action.RemoveElementAction">
          </action>
          <action id="org.eclipse.wst.xml.vex.ui.action.ChangeElementAction"
                  label="%ChangeElementAction.menu.label"
@@ -68,53 +68,53 @@
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
 
-         <action id="net.sf.vex.action.MoveRowDownAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.MoveRowDownAction"
                  label="%MoveRowDownAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.rowMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.MoveRowUpAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.MoveRowUpAction"
                  label="%MoveRowUpAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.rowMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.DeleteRowAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.DeleteRowAction"
                  label="%DeleteRowAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.rowMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.InsertRowBelowAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.InsertRowBelowAction"
                  label="%InsertRowBelowAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.rowMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.InsertRowAboveAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.InsertRowAboveAction"
                  label="%InsertRowAboveAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.rowMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
 
-         <action id="net.sf.vex.action.MoveColumnRightAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.MoveColumnRightAction"
                  label="%MoveColumnRightAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.columnMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.MoveColumnLeftAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.MoveColumnLeftAction"
                  label="%MoveColumnLeftAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.columnMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.DeleteColumnAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.DeleteColumnAction"
                  label="%DeleteColumnAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.columnMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.InsertColumnAfterAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.InsertColumnAfterAction"
                  label="%InsertColumnAfterAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.columnMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
          </action>
-         <action id="net.sf.vex.action.InsertColumnBeforeAction"
+         <action id="org.eclipse.wst.xml.vex.ui.action.InsertColumnBeforeAction"
                  label="%InsertColumnBeforeAction.label"
                  menubarPath="org.eclipse.wst.xml.vex.ui.documentMenu/org.eclipse.wst.xml.vex.ui.columnMenu/items"
                  class="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionDelegate">
@@ -127,7 +127,7 @@
       <editor
             name="%VexEditor.name"
             extensions="htm,html,xhtml,xml,pml"
-            icon="vex16.gif"
+            icon="$nl$/vex16.gif"
             class="org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"
             contributorClass="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionBarContributor"
             id="org.eclipse.wst.xml.vex.ui.VexEditor">
@@ -137,12 +137,12 @@
          point="org.eclipse.ui.newWizards">
       <category
             name="%NewWizardCategory.name"
-            id="net.sf.vex.NewWizardCategory">
+            id="org.eclipse.wst.xml.vex.ui.vex.NewWizardCategory">
       </category>
       <wizard
             name="%NewDocumentWizard.name"
-            icon="vex16.gif"
-            category="net.sf.vex.NewWizardCategory"
+            icon="$nl$/vex16.gif"
+            category="org.eclipse.wst.xml.vex.ui.vex.NewWizardCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.editor.NewDocumentWizard"
             id="org.eclipse.wst.xml.vex.ui.NewDocumentWizard">
          <description>%NewDocumentWizard.desc</description>
@@ -152,7 +152,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="%DocumentPerspective.name"
-            icon="vex16.gif"
+            icon="$nl$/vex16.gif"
             class="org.eclipse.wst.xml.vex.ui.internal.editor.DocumentPerspective"
             id="org.eclipse.wst.xml.vex.ui.DocumentPerspective">
       </perspective>
@@ -174,32 +174,32 @@
       <command
             name="%ChangeElementAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.ChangeElementAction">
+            id="org.eclipse.wst.xml.vex.ui.action.ChangeElementAction">
       </command>
       <command
             name="%DeleteColumnAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.DeleteColumnAction">
+            id="org.eclipse.wst.xml.vex.ui.action.DeleteColumnAction">
       </command>
       <command
             name="%DeleteRowAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.DeleteRowAction">
+            id="org.eclipse.wst.xml.vex.ui.action.DeleteRowAction">
       </command>
       <command
             name="%DuplicateSelectionAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.DuplicateSelectionAction">
+            id="org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction">
       </command>
       <command
             name="%InsertColumnAfterAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.InsertColumnAfterAction">
+            id="org.eclipse.wst.xml.vex.ui.action.InsertColumnAfterAction">
       </command>
       <command
             name="%InsertColumnBeforeAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.InsertColumnBeforeAction">
+            id="org.eclipse.wst.xml.vex.ui.action.InsertColumnBeforeAction">
       </command>
       <command
             name="%InsertElementAction.label"
@@ -209,67 +209,67 @@
       <command
             name="%InsertRowAboveAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.InsertRowAboveAction">
+            id="org.eclipse.wst.xml.vex.ui.action.InsertRowAboveAction">
       </command>
       <command
             name="%InsertRowBelowAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.InsertRowBelowAction">
+            id="org.eclipse.wst.xml.vex.ui.action.InsertRowBelowAction">
       </command>
       <command
             name="%MoveColumnLeftAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.MoveColumnLeftAction">
+            id="org.eclipse.wst.xml.vex.ui.action.MoveColumnLeftAction">
       </command>
       <command
             name="%MoveColumnRightAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.MoveColumnRightAction">
+            id="org.eclipse.wst.xml.vex.ui.action.MoveColumnRightAction">
       </command>
       <command
             name="%MoveRowDownAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.MoveRowDownAction">
+            id="org.eclipse.wst.xml.vex.ui.action.MoveRowDownAction">
       </command>
       <command
             name="%MoveRowUpAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.MoveRowUpAction">
+            id="org.eclipse.wst.xml.vex.ui.action.MoveRowUpAction">
       </command>
       <command
             name="%NextTableCellAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.NextTableCellAction">
+            id="org.eclipse.wst.xml.vex.ui.action.NextTableCellAction">
       </command>
       <command
             name="%PasteTextAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.PasteTextAction">
+            id="org.eclipse.wst.xml.vex.ui.action.PasteTextAction">
       </command>
       <command
             name="%PreviousTableCellAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.PreviousTableCellAction">
+            id="org.eclipse.wst.xml.vex.ui.action.PreviousTableCellAction">
       </command>
       <command
             name="%RemoveElementAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.RemoveElementAction">
+            id="org.eclipse.wst.xml.vex.ui.action.RemoveElementAction">
       </command>
       <command
             name="%RestoreLastSelectionAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.RestoreLastSelectionAction">
+            id="org.eclipse.wst.xml.vex.ui.action.RestoreLastSelectionAction">
       </command>
       <command
             name="%SplitAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.SplitAction">
+            id="org.eclipse.wst.xml.vex.ui.action.SplitAction">
       </command>
       <command
             name="%SplitItemAction.label"
             categoryId="org.eclipse.wst.xml.vex.ui.VexCommandCategory"
-            id="net.sf.vex.action.SplitItemAction">
+            id="org.eclipse.wst.xml.vex.ui.action.SplitItemAction">
       </command>
       
    </extension>
@@ -277,24 +277,24 @@
          point="org.eclipse.ui.views">
       <category
             name="%VexViewCategory.name"
-            id="net.sf.vex.views.VexViewCategory">
+            id="org.eclipse.wst.xml.vex.ui.views.VexViewCategory">
       </category>
       <view
             name="%DebugView.name"
-            icon="vex16.gif"
-            category="net.sf.vex.views.VexViewCategory"
+            icon="$nl$/vex16.gif"
+            category="org.eclipse.wst.xml.vex.ui.views.VexViewCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.editor.DebugView"
-            id="net.sf.vex.views.debug">
+            id="org.eclipse.wst.xml.vex.ui.views.debug">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             name="%ConfigurationView.name"
-            icon="vex16.gif"
-            category="net.sf.vex.views.VexViewCategory"
+            icon="$nl$/vex16.gif"
+            category="org.eclipse.wst.xml.vex.ui.views.VexViewCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationView"
-            id="net.sf.vex.views.configuration">
+            id="org.eclipse.wst.xml.vex.ui.views.configuration">
       </view>
    </extension>
    <extension
@@ -311,8 +311,8 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             name="%NewPluginProjectWizard.name"
-            icon="icons/vex16.gif"
-            category="net.sf.vex.NewWizardCategory"
+            icon="$nl$/icons/vex16.gif"
+            category="org.eclipse.wst.xml.vex.ui.NewWizardCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.config.NewPluginProjectWizard"
             project="true"
             id="org.eclipse.wst.xml.vex.ui.config.NewPluginProjectWizard">
@@ -391,13 +391,13 @@
          point="org.eclipse.ui.bindings">
          
       <key
-            commandId="net.sf.vex.action.ChangeElementAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.ChangeElementAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Ctrl+Alt+Space"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.DuplicateSelectionAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Ctrl+D"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
@@ -409,31 +409,31 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.NextTableCellAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.NextTableCellAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Tab"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.PreviousTableCellAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.PreviousTableCellAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Shift+Tab"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.RemoveElementAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.RemoveElementAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Ctrl+U"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.SplitItemAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.SplitItemAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Shift+Enter"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
       <key
-            commandId="net.sf.vex.action.SplitAction"
+            commandId="org.eclipse.wst.xml.vex.ui.action.SplitAction"
             contextId="org.eclipse.wst.xml.vex.ui.VexEditorContext"
             sequence="Enter"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">

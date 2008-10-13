@@ -69,7 +69,7 @@ public class DocumentType extends ConfigItem implements Comparable {
      * Returns the name of the class that generates an outline for this
      * document type. This class must implement
      * org.eclipse.ui.views.contentoutline.IContentOutlinePage. Normally,
-     * classes will extend net.sf.vex.editor.AbstractContentOutlinePage.
+     * classes will extend org.eclipse.wst.vex.ui.internal.editor.AbstractContentOutlinePage.
      * Returns null if this document type was not supplied by a plugin,
      * or if the the contentOutlinePage attribute was not set.
      */

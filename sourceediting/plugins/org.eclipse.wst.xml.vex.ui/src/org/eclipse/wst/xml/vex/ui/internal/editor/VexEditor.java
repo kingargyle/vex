@@ -631,7 +631,7 @@ public class VexEditor extends EditorPart {
         hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.InsertColumnBeforeAction",
         		new ActionHandler(new VexActionAdapter(this, new InsertColumnBeforeAction())));
         		
-        hs.activateHandler("net.sf.vex.editor.action.InsertElementAction",
+        hs.activateHandler("org.eclipse.wst.xml.vex.ui.editor.action.InsertElementAction",
         		new ActionHandler(new VexActionAdapter(this, new InsertElementAction())));
         
         hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.InsertRowAboveAction",

@@ -25,7 +25,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import junit.framework.TestCase;
 
 /**
- * Test the <code>net.sf.vex.css</code> package.
+ * Test the <code>org.eclipse.wst.vex.core.internal.css</code> package.
  */
 public class CssTest extends TestCase {
     

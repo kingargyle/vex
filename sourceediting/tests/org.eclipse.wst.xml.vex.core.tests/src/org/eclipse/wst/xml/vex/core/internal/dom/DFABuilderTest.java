@@ -15,7 +15,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.*;
 import junit.framework.*;
 
 /**
- * Test the <code>net.sf.vex.dom</code> package.
+ * Test the <code>org.eclipse.wst.xml.vex.core.internal.dom</code> package.
  */
 public class DFABuilderTest extends TestCase {
 

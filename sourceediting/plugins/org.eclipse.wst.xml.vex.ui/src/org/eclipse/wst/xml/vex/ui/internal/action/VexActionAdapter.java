@@ -21,7 +21,7 @@ import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
  * Adapts a JFace Action to an IVexAction instance. The ID and definition ID of 
  * the resulting action is set to the classname of the action. Localized
  * strings for the action are pulled from the classname of the given action. For example,
- * if the action is "net.sf.vex.action.PasteTextAction", the following properties
+ * if the action is "org.eclipse.wst.vex.ui.internal.action.PasteTextAction", the following properties
  * are retrieved from plugin.xml:
  * 
  * <dl>

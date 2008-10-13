@@ -218,9 +218,9 @@ public class VexComponent extends JComponent implements Scrollable, SelectionPro
         }
     };
 
-
-    /**
-     * @see net.sf.vex.core.SelectionProvider#addSelectionListener(net.sf.vex.SelectionListener)
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#addSelectionListener(org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
      */
     public void addSelectionListener(SelectionListener listener) {
         this.selectionProvider.addSelectionListener(listener);
@@ -313,7 +313,7 @@ public class VexComponent extends JComponent implements Scrollable, SelectionPro
     public static String getUIString(String name) {
         if (uiStringBundle == null) {
             uiStringBundle =
-                ResourceBundle.getBundle("net.sf.vex.app.UIStrings");
+                ResourceBundle.getBundle("org.eclipse.wst.vex.app.UIStrings");
         }
 
         try {
@@ -323,7 +323,7 @@ public class VexComponent extends JComponent implements Scrollable, SelectionPro
         }
     }
 
-
+ 
     //------------------------------------------------ Scrollable methods
 
     public Dimension getPreferredScrollableViewportSize() {
