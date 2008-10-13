@@ -14,22 +14,25 @@ import java.io.Serializable;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
-
-
 /**
- * Interface to an object that creates boxes from elements. Implementations
- * of this interface must be serializable.
+ * Interface to an object that creates boxes from elements. Implementations of
+ * this interface must be serializable.
  */
 public interface BoxFactory extends Serializable {
 
-    /**
-     * Creates a box given an element. 
-     * @param context CSS styles for the new element
-     * @param element Element for which the box should be created.
-     * @param parent Parent box for the new box.
-     * @param containerWidth Width of the box to be created.
-     */
-    public Box createBox(LayoutContext context, Element element, BlockBox parent, int containerWidth);
+	/**
+	 * Creates a box given an element.
+	 * 
+	 * @param context
+	 *            CSS styles for the new element
+	 * @param element
+	 *            Element for which the box should be created.
+	 * @param parent
+	 *            Parent box for the new box.
+	 * @param containerWidth
+	 *            Width of the box to be created.
+	 */
+	public Box createBox(LayoutContext context, Element element,
+			BlockBox parent, int containerWidth);
 
 }
-

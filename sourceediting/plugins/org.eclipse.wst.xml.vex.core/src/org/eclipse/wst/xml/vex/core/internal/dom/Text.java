@@ -11,22 +11,24 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 /**
- * <code>Text</code> represents a run of text in a document. Text
- * objects are not used in the internal document structure; they are
- * only returned as needed by the <code>Element.getContent</code>
- * method.
+ * <code>Text</code> represents a run of text in a document. Text objects are
+ * not used in the internal document structure; they are only returned as needed
+ * by the <code>Element.getContent</code> method.
  */
 public class Text extends Node {
 
-    /**
-     * Class constructor.
-     * 
-     * @param content Content object containing the text
-     * @param startOffset character offset of the start of the run
-     * @param endOffset character offset of the end of the run
-     */
-    public Text(Content content, int startOffset, int endOffset) {
-	this.setContent(content, startOffset, endOffset);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param content
+	 *            Content object containing the text
+	 * @param startOffset
+	 *            character offset of the start of the run
+	 * @param endOffset
+	 *            character offset of the end of the run
+	 */
+	public Text(Content content, int startOffset, int endOffset) {
+		this.setContent(content, startOffset, endOffset);
+	}
 
 }

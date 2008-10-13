@@ -10,18 +10,18 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-
 /**
- * Factory for returning a WhitespacePolicy object given a document type 
- * public ID. This is required by DocumentBuilder, since we don't know what
+ * Factory for returning a WhitespacePolicy object given a document type public
+ * ID. This is required by DocumentBuilder, since we don't know what
  * WhitespacePolicy we need before we begin parsing the document.
  */
 public interface IWhitespacePolicyFactory {
-    
-    /**
-     * Return a WhitespacePolicy for documents with the given public ID.
-     * @param publicId Public ID of the document type associated with
-     * the document.
-     */
-    public IWhitespacePolicy getPolicy(String publicId);
+
+	/**
+	 * Return a WhitespacePolicy for documents with the given public ID.
+	 * 
+	 * @param publicId
+	 *            Public ID of the document type associated with the document.
+	 */
+	public IWhitespacePolicy getPolicy(String publicId);
 }

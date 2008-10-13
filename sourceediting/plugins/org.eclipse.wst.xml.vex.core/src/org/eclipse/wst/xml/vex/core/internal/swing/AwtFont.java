@@ -17,16 +17,16 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
  */
 public class AwtFont implements FontResource {
 
-    private java.awt.Font awtFont;
-    
-    public AwtFont(java.awt.Font awtFont) {
-        this.awtFont = awtFont;
-    }
-    
-    java.awt.Font getAwtFont() {
-        return this.awtFont;
-    }
-    
-    public void dispose() {
-    }
+	private java.awt.Font awtFont;
+
+	public AwtFont(java.awt.Font awtFont) {
+		this.awtFont = awtFont;
+	}
+
+	java.awt.Font getAwtFont() {
+		return this.awtFont;
+	}
+
+	public void dispose() {
+	}
 }

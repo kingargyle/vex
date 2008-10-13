@@ -28,54 +28,61 @@ import org.eclipse.ui.part.PageBookView;
  */
 public class DebugView extends PageBookView {
 
-    protected IPage createDefaultPage(PageBook book) {
-        IPageBookViewPage page = new IPageBookViewPage() {
-            public void createControl(Composite parent) {
-                this.label = new Label(parent, SWT.NONE);
-                this.label.setText(Messages.getString("DebugView.noActiveEditor")); //$NON-NLS-1$
-            }
-            public void dispose() {
-            }
-            public Control getControl() {
-                return this.label;
-            }
-            public IPageSite getSite() {
-                return this.site;
-            }
-            public void init(IPageSite site) throws PartInitException {
-                this.site = site;
-            }
-            public void setActionBars(IActionBars actionBars) {
-            }
-            public void setFocus() {
-            }
-            
-            private IPageSite site;
-            private Label label;
-        };
-        
-        initPage(page);
-        page.createControl(getPageBook());
-        return page;
-    }
+	protected IPage createDefaultPage(PageBook book) {
+		IPageBookViewPage page = new IPageBookViewPage() {
+			public void createControl(Composite parent) {
+				this.label = new Label(parent, SWT.NONE);
+				this.label.setText(Messages
+						.getString("DebugView.noActiveEditor")); //$NON-NLS-1$
+			}
 
-    protected PageRec doCreatePage(IWorkbenchPart part) {
-        DebugViewPage page = new DebugViewPage((VexEditor) part);
-        initPage(page);
-        page.createControl(getPageBook());
-        return new PageRec(part, page);
-    }
+			public void dispose() {
+			}
 
-    protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
-        pageRecord.page.dispose();
-    }
+			public Control getControl() {
+				return this.label;
+			}
 
-    protected IWorkbenchPart getBootstrapPart() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+			public IPageSite getSite() {
+				return this.site;
+			}
 
-    protected boolean isImportant(IWorkbenchPart part) {
-        return (part instanceof VexEditor);
-    }
+			public void init(IPageSite site) throws PartInitException {
+				this.site = site;
+			}
+
+			public void setActionBars(IActionBars actionBars) {
+			}
+
+			public void setFocus() {
+			}
+
+			private IPageSite site;
+			private Label label;
+		};
+
+		initPage(page);
+		page.createControl(getPageBook());
+		return page;
+	}
+
+	protected PageRec doCreatePage(IWorkbenchPart part) {
+		DebugViewPage page = new DebugViewPage((VexEditor) part);
+		initPage(page);
+		page.createControl(getPageBook());
+		return new PageRec(part, page);
+	}
+
+	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
+		pageRecord.page.dispose();
+	}
+
+	protected IWorkbenchPart getBootstrapPart() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected boolean isImportant(IWorkbenchPart part) {
+		return (part instanceof VexEditor);
+	}
 }

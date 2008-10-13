@@ -13,22 +13,22 @@ package org.eclipse.wst.xml.vex.core.internal.action;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
- * Abstract Vex action. This class provides default implementations for
- * all methods in IVexAction except for <code>run</code>.
+ * Abstract Vex action. This class provides default implementations for all
+ * methods in IVexAction except for <code>run</code>.
  */
 public abstract class AbstractVexAction implements IVexAction {
 
-    /**
-     * Class constructor.
-     */
-    public AbstractVexAction() {
-    }
+	/**
+	 * Class constructor.
+	 */
+	public AbstractVexAction() {
+	}
 
-    /**
-     * Returns <code>true</code>.
-     */
-    public boolean isEnabled(IVexWidget vexWidget) {
-        return true;
-    }
+	/**
+	 * Returns <code>true</code>.
+	 */
+	public boolean isEnabled(IVexWidget vexWidget) {
+		return true;
+	}
 
 }

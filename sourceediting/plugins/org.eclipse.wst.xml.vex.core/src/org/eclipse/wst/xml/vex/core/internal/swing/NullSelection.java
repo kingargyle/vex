@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.swing;
 
-
 /**
  * Passed to {@link SelectionListener}s to indicate that nothing is currently
  * selected.

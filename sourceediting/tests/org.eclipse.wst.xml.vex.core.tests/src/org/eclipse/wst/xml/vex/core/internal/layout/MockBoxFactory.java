@@ -17,32 +17,30 @@ import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.SpaceBox;
 
-
-
 /**
  * A box factory that, for an element named &lt;space&gt;, returns a SpaceBox
- * with height and width given by attributes of those names, e.g.
- * &lt;space height="100" width="200"/&gt;
+ * with height and width given by attributes of those names, e.g. &lt;space
+ * height="100" width="200"/&gt;
  */
-public class TestBoxFactory extends CssBoxFactory {
-    
-    public Box createBox(LayoutContext context, Element element,
-            BlockElementBox parent, int width) {
-        
-        if (element.getName().equals("space")) {
-            int w = 0;
-            int h = 0;
-            try {
-                w = Integer.parseInt(element.getAttribute("width"));
-            } catch (NumberFormatException ex) {
-            }
-            try {
-                h = Integer.parseInt(element.getAttribute("height"));
-            } catch (NumberFormatException ex) {
-            }
-            return new SpaceBox(w, h);
-        }
-        // TODO Auto-generated method stub
-        return super.createBox(context, element, parent, width);
-    }
+public class MockBoxFactory extends CssBoxFactory {
+
+	public Box createBox(LayoutContext context, Element element,
+			BlockElementBox parent, int width) {
+
+		if (element.getName().equals("space")) {
+			int w = 0;
+			int h = 0;
+			try {
+				w = Integer.parseInt(element.getAttribute("width"));
+			} catch (NumberFormatException ex) {
+			}
+			try {
+				h = Integer.parseInt(element.getAttribute("height"));
+			} catch (NumberFormatException ex) {
+			}
+			return new SpaceBox(w, h);
+		}
+		// TODO Auto-generated method stub
+		return super.createBox(context, element, parent, width);
+	}
 }

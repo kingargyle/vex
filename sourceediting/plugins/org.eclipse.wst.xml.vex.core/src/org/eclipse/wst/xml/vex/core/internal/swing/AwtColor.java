@@ -17,16 +17,16 @@ import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
  */
 public class AwtColor implements ColorResource {
 
-    private java.awt.Color awtColor;
-    
-    public AwtColor(java.awt.Color awtColor) {
-        this.awtColor = awtColor;
-    }
-    
-    java.awt.Color getAwtColor() {
-        return this.awtColor;
-    }
-    
-    public void dispose() {
-    }
+	private java.awt.Color awtColor;
+
+	public AwtColor(java.awt.Color awtColor) {
+		this.awtColor = awtColor;
+	}
+
+	java.awt.Color getAwtColor() {
+		return this.awtColor;
+	}
+
+	public void dispose() {
+	}
 }

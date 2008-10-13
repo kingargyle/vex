@@ -14,8 +14,11 @@ package org.eclipse.wst.xml.vex.core.internal.core;
  * Toolkit-independent font metrics.
  */
 public interface FontMetrics {
-    public int getAscent();
-    public int getDescent();
-    public int getHeight();
-    public int getLeading();
+	public int getAscent();
+
+	public int getDescent();
+
+	public int getHeight();
+
+	public int getLeading();
 }

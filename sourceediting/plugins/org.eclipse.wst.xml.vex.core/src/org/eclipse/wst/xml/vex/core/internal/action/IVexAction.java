@@ -16,16 +16,20 @@ import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
  * Interface implemented by command objects that can act on a VexWidget.
  */
 public interface IVexAction {
-   
-    /**
-     * Performs the action on the VexWidget.
-     * @param vexWidget IVexWidget on which the action is to be performed.
-     */
-    public void run(IVexWidget vexWidget);
-    
-    /**
-     * Returns true if the action is valid for the given VexWidget.
-     * @param vexWidget IVexWidget against which to test validity.
-     */
-    public boolean isEnabled(IVexWidget vexWidget);
+
+	/**
+	 * Performs the action on the VexWidget.
+	 * 
+	 * @param vexWidget
+	 *            IVexWidget on which the action is to be performed.
+	 */
+	public void run(IVexWidget vexWidget);
+
+	/**
+	 * Returns true if the action is valid for the given VexWidget.
+	 * 
+	 * @param vexWidget
+	 *            IVexWidget against which to test validity.
+	 */
+	public boolean isEnabled(IVexWidget vexWidget);
 }

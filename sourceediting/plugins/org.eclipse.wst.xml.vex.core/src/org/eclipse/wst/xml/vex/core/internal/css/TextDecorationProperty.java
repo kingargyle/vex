@@ -17,46 +17,45 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class TextDecorationProperty extends AbstractProperty {
 
-    /**
-     * Class constructor.
-     */
-    public TextDecorationProperty() {
-        super(CSS.TEXT_DECORATION);
-    }
+	/**
+	 * Class constructor.
+	 */
+	public TextDecorationProperty() {
+		super(CSS.TEXT_DECORATION);
+	}
 
-    public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
-        if (isTextDecoration(lu)) {
-            return lu.getStringValue();
-        } else {
-            // not specified, "inherit", or some other value
-            if (parentStyles != null) {
-                return parentStyles.getTextDecoration();
-            } else {
-                return CSS.NONE;
-            }
-        }
-    }
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+		if (isTextDecoration(lu)) {
+			return lu.getStringValue();
+		} else {
+			// not specified, "inherit", or some other value
+			if (parentStyles != null) {
+				return parentStyles.getTextDecoration();
+			} else {
+				return CSS.NONE;
+			}
+		}
+	}
 
-    //=================================================== PRIVATE
-    
-    /**
-     * Returns true if the given lexical unit represents a text decoration.
-     *
-     * @param lu LexicalUnit to check.
-     */
-    private static boolean isTextDecoration(LexicalUnit lu) {
-        if (lu == null) {
-            return false;
-        } else if (lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
-            String s = lu.getStringValue();
-            return s.equals(CSS.NONE)
-                || s.equals(CSS.UNDERLINE)
-                || s.equals(CSS.OVERLINE)
-                || s.equals(CSS.LINE_THROUGH)
-                || s.equals(CSS.BLINK);
-        } else {
-            return false;
-        }
-    }
+	// =================================================== PRIVATE
+
+	/**
+	 * Returns true if the given lexical unit represents a text decoration.
+	 * 
+	 * @param lu
+	 *            LexicalUnit to check.
+	 */
+	private static boolean isTextDecoration(LexicalUnit lu) {
+		if (lu == null) {
+			return false;
+		} else if (lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
+			String s = lu.getStringValue();
+			return s.equals(CSS.NONE) || s.equals(CSS.UNDERLINE)
+					|| s.equals(CSS.OVERLINE) || s.equals(CSS.LINE_THROUGH)
+					|| s.equals(CSS.BLINK);
+		} else {
+			return false;
+		}
+	}
 
 }

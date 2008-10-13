@@ -15,30 +15,38 @@ package org.eclipse.wst.xml.vex.core.internal.action;
  */
 public interface TableCellCallback {
 
-    /**
-     * Called before the first cell in a row is visited.
-     * 
-     * @param row Element or IntRange representing the row.
-     * @param rowIndex Zero-based index of the row.
-     */
-    public void startRow(Object row, int rowIndex);
-    
-    /**
-     * Called when a cell is visited.
-     * 
-     * @param row Element or IntRange representing the row.
-     * @param cell Element or IntRange representing the cell.
-     * @param rowIndex Zero-based index of the current row.
-     * @param cellIndex Zero-based index of the current cell.
-     */
-    public void onCell(Object row, Object cell, int rowIndex, int cellIndex);
+	/**
+	 * Called before the first cell in a row is visited.
+	 * 
+	 * @param row
+	 *            Element or IntRange representing the row.
+	 * @param rowIndex
+	 *            Zero-based index of the row.
+	 */
+	public void startRow(Object row, int rowIndex);
 
-    /**
-     * Called after the last cell in a row is visited.
-     * 
-     * @param row Element or IntRange representing the row.
-     * @param rowIndex Zero-based index of the row.
-     */
-    public void endRow(Object row, int rowIndex);
-    
+	/**
+	 * Called when a cell is visited.
+	 * 
+	 * @param row
+	 *            Element or IntRange representing the row.
+	 * @param cell
+	 *            Element or IntRange representing the cell.
+	 * @param rowIndex
+	 *            Zero-based index of the current row.
+	 * @param cellIndex
+	 *            Zero-based index of the current cell.
+	 */
+	public void onCell(Object row, Object cell, int rowIndex, int cellIndex);
+
+	/**
+	 * Called after the last cell in a row is visited.
+	 * 
+	 * @param row
+	 *            Element or IntRange representing the row.
+	 * @param rowIndex
+	 *            Zero-based index of the row.
+	 */
+	public void endRow(Object row, int rowIndex);
+
 }

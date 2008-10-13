@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.w3c.css.sac.LexicalUnit;
 
@@ -19,45 +18,47 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class LineHeightProperty extends AbstractProperty {
 
-    private static final float LINE_HEIGHT_NORMAL = 1.2f;
+	private static final float LINE_HEIGHT_NORMAL = 1.2f;
 
-    /**
-     * Class constructor.
-     */
-    public LineHeightProperty() {
-        super(CSS.LINE_HEIGHT);
-    }
+	/**
+	 * Class constructor.
+	 */
+	public LineHeightProperty() {
+		super(CSS.LINE_HEIGHT);
+	}
 
-    /**
-     * Calculates the value of the property given a LexicalUnit. Returns
-     * a RelativeLength that is relative to the current font size.
-     */
-    public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
-        
-        int ppi = DisplayDevice.getCurrent().getVerticalPPI();
-        
-        if (isLength(lu)) {
-            return RelativeLength.createAbsolute(Math.round(getIntLength(lu, styles.getFontSize(), ppi) / styles.getFontSize()));
-        } else if (isNumber(lu)) {
-            if (getNumber(lu) <= 0) {
-                return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
-            } else {
-                return RelativeLength.createRelative(getNumber(lu));
-            }
-        } else if (isPercentage(lu)) {
-            if (lu.getFloatValue() <= 0) {
-                return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
-            } else {
-                return RelativeLength.createRelative(lu.getFloatValue() / 100);
-            }
-        } else {
-            // not specified, "inherit", or other unknown value
-            if (parentStyles == null) {
-                return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
-            } else {
-                return (RelativeLength) parentStyles.get(CSS.LINE_HEIGHT);
-            }
-        }
-    }
+	/**
+	 * Calculates the value of the property given a LexicalUnit. Returns a
+	 * RelativeLength that is relative to the current font size.
+	 */
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+
+		int ppi = DisplayDevice.getCurrent().getVerticalPPI();
+
+		if (isLength(lu)) {
+			return RelativeLength.createAbsolute(Math.round(getIntLength(lu,
+					styles.getFontSize(), ppi)
+					/ styles.getFontSize()));
+		} else if (isNumber(lu)) {
+			if (getNumber(lu) <= 0) {
+				return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
+			} else {
+				return RelativeLength.createRelative(getNumber(lu));
+			}
+		} else if (isPercentage(lu)) {
+			if (lu.getFloatValue() <= 0) {
+				return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
+			} else {
+				return RelativeLength.createRelative(lu.getFloatValue() / 100);
+			}
+		} else {
+			// not specified, "inherit", or other unknown value
+			if (parentStyles == null) {
+				return RelativeLength.createRelative(LINE_HEIGHT_NORMAL);
+			} else {
+				return (RelativeLength) parentStyles.get(CSS.LINE_HEIGHT);
+			}
+		}
+	}
 
 }

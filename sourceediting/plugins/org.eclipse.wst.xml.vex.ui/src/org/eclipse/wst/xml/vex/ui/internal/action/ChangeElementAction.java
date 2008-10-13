@@ -15,18 +15,17 @@ import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
 
-
 /**
  * Displays the Change Element dialog.
  */
 public class ChangeElementAction implements IVexAction {
 
-    public void run(IVexWidget vexWidget) {
-        new MorphAssistant().show((VexWidget) vexWidget);
-    }
+	public void run(IVexWidget vexWidget) {
+		new MorphAssistant().show((VexWidget) vexWidget);
+	}
 
-    public boolean isEnabled(IVexWidget vexWidget) {
-        return true;
-    }
+	public boolean isEnabled(IVexWidget vexWidget) {
+		return true;
+	}
 
 }

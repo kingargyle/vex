@@ -13,36 +13,39 @@ package org.eclipse.wst.xml.vex.core.internal.action;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
-
 /**
  * Moves the current table row down below its next sibling.
  */
 public class MoveRowDownAction extends AbstractVexAction {
 
-    public void run(final IVexWidget vexWidget) {
+	public void run(final IVexWidget vexWidget) {
 
-        final ActionUtils.SelectedRows selected = ActionUtils.getSelectedTableRows(vexWidget);
-        
-        if (selected.getRows() == null || selected.getRowAfter() == null) {
-            return;
-        }
-        
-        vexWidget.doWork(true, new Runnable() {
-            public void run() {
-                IntRange range = ActionUtils.getOuterRange(selected.getRowAfter());
-                vexWidget.moveTo(range.getStart());
-                vexWidget.moveTo(range.getEnd(), true);
-                vexWidget.cutSelection();
-                
-                Object firstRow = selected.getRows().get(0);
-                vexWidget.moveTo(ActionUtils.getOuterRange(firstRow).getStart());
-                vexWidget.paste();
-            }
-        });
-    }
+		final ActionUtils.SelectedRows selected = ActionUtils
+				.getSelectedTableRows(vexWidget);
 
-    public boolean isEnabled(IVexWidget vexWidget) {
-        ActionUtils.SelectedRows selected = ActionUtils.getSelectedTableRows(vexWidget);
-        return selected.getRows() != null && selected.getRowAfter() != null;
-    }
+		if (selected.getRows() == null || selected.getRowAfter() == null) {
+			return;
+		}
+
+		vexWidget.doWork(true, new Runnable() {
+			public void run() {
+				IntRange range = ActionUtils.getOuterRange(selected
+						.getRowAfter());
+				vexWidget.moveTo(range.getStart());
+				vexWidget.moveTo(range.getEnd(), true);
+				vexWidget.cutSelection();
+
+				Object firstRow = selected.getRows().get(0);
+				vexWidget
+						.moveTo(ActionUtils.getOuterRange(firstRow).getStart());
+				vexWidget.paste();
+			}
+		});
+	}
+
+	public boolean isEnabled(IVexWidget vexWidget) {
+		ActionUtils.SelectedRows selected = ActionUtils
+				.getSelectedTableRows(vexWidget);
+		return selected.getRows() != null && selected.getRowAfter() != null;
+	}
 }

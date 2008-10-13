@@ -40,150 +40,145 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class DocumentWriterTest extends TestCase {
 
-    public void testWriteDocument() throws Exception {
+	public void testWriteDocument() throws Exception {
 
-        StyleSheetReader reader = new StyleSheetReader();
-        StyleSheet ss = reader.read(this.getClass().getResource("test.css"));
+		StyleSheetReader reader = new StyleSheetReader();
+		StyleSheet ss = reader.read(this.getClass().getResource("test.css"));
 
-        URL docUrl = this.getClass().getResource("DocumentWriterTest1.xml");
+		URL docUrl = this.getClass().getResource("DocumentWriterTest1.xml");
 
-        Document docOrig = readDocument(new InputSource(docUrl.toString()), ss);
+		Document docOrig = readDocument(new InputSource(docUrl.toString()), ss);
 
-        DocumentWriter dw = new DocumentWriter();
-        dw.setWhitespacePolicy(new CssWhitespacePolicy(ss));
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        dw.write(docOrig, os);
+		DocumentWriter dw = new DocumentWriter();
+		dw.setWhitespacePolicy(new CssWhitespacePolicy(ss));
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		dw.write(docOrig, os);
 
-        InputStream is = new ByteArrayInputStream(os.toByteArray());
+		InputStream is = new ByteArrayInputStream(os.toByteArray());
 
-        // Dump document to console
-//        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//        while (true) {
-//            String s = br.readLine();
-//            if (s == null)
-//                break;
-//            System.out.println(s);
-//        }
-//        is.reset();
-        
-        Document docNew = readDocument(new InputSource(is), ss);
+		// Dump document to console
+		// BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		// while (true) {
+		// String s = br.readLine();
+		// if (s == null)
+		// break;
+		// System.out.println(s);
+		// }
+		// is.reset();
 
-        assertEquals(docOrig, docNew);
-    }
+		Document docNew = readDocument(new InputSource(is), ss);
 
-    private void assertEquals(Document expected, Document actual)
-        throws Exception {
+		assertEquals(docOrig, docNew);
+	}
 
-        assertEquals(expected.getRootElement(), actual.getRootElement());
-    }
+	private void assertEquals(Document expected, Document actual)
+			throws Exception {
 
-    private void assertEquals(Element expected, Element actual)
-        throws Exception {
+		assertEquals(expected.getRootElement(), actual.getRootElement());
+	}
 
-        System.out.println("Checking " + actual.getName());
-        assertEquals(expected.getName(), actual.getName());
+	private void assertEquals(Element expected, Element actual)
+			throws Exception {
 
-        String[] expectedAttrs = expected.getAttributeNames();
-        Arrays.sort(expectedAttrs);
+		System.out.println("Checking " + actual.getName());
+		assertEquals(expected.getName(), actual.getName());
 
-        String[] actualAttrs = actual.getAttributeNames();
-        Arrays.sort(actualAttrs);
+		String[] expectedAttrs = expected.getAttributeNames();
+		Arrays.sort(expectedAttrs);
 
-        assertEquals(expectedAttrs.length, actualAttrs.length);
-        for (int i = 0; i < expectedAttrs.length; i++) {
-            assertEquals(expectedAttrs[i], actualAttrs[i]);
-        }
+		String[] actualAttrs = actual.getAttributeNames();
+		Arrays.sort(actualAttrs);
 
-        Node[] expectedContent = expected.getChildNodes();
-        Node[] actualContent = actual.getChildNodes();
-        assertEquals(expectedContent.length, actualContent.length);
-        for (int i = 0; i < expectedContent.length; i++) {
-            assertEquals(
-                expectedContent[i].getClass(),
-                actualContent[i].getClass());
-            if (expectedContent[i] instanceof Element) {
-                assertEquals(
-                    (Element) expectedContent[i],
-                    (Element) actualContent[i]);
-            } else {
-                assertEquals(
-                    expectedContent[i].getText(),
-                    actualContent[i].getText());
-            }
-        }
-    }
+		assertEquals(expectedAttrs.length, actualAttrs.length);
+		for (int i = 0; i < expectedAttrs.length; i++) {
+			assertEquals(expectedAttrs[i], actualAttrs[i]);
+		}
 
-    private static Document readDocument(InputSource is, StyleSheet ss)
-        throws ParserConfigurationException, SAXException, IOException {
+		Node[] expectedContent = expected.getChildNodes();
+		Node[] actualContent = actual.getChildNodes();
+		assertEquals(expectedContent.length, actualContent.length);
+		for (int i = 0; i < expectedContent.length; i++) {
+			assertEquals(expectedContent[i].getClass(), actualContent[i]
+					.getClass());
+			if (expectedContent[i] instanceof Element) {
+				assertEquals((Element) expectedContent[i],
+						(Element) actualContent[i]);
+			} else {
+				assertEquals(expectedContent[i].getText(), actualContent[i]
+						.getText());
+			}
+		}
+	}
 
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        XMLReader xmlReader = factory.newSAXParser().getXMLReader();
-        DefaultHandler defaultHandler = new DefaultHandler();
-        
-        final IWhitespacePolicy policy = new CssWhitespacePolicy(ss);
-            
-        IWhitespacePolicyFactory wsFactory = new IWhitespacePolicyFactory() {
-            public IWhitespacePolicy getPolicy(String publicId) {
-                return policy; 
-            }
-        };
-        
-        org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder builder =
-            new org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder(wsFactory);
+	private static Document readDocument(InputSource is, StyleSheet ss)
+			throws ParserConfigurationException, SAXException, IOException {
 
-        xmlReader.setContentHandler(builder);
-        xmlReader.setDTDHandler(defaultHandler);
-        xmlReader.setEntityResolver(defaultHandler);
-        xmlReader.setErrorHandler(defaultHandler);
-        xmlReader.parse(is);
-        return builder.getDocument();
-    }
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+		DefaultHandler defaultHandler = new DefaultHandler();
 
-    /**
-     * Which elements are block elements for the purposes of our test cases.
-     */
-    /*
-    private static boolean isBlockElement(Element element) {
-        return element.getName().equals("html")
-            || element.getName().equals("body")
-            || element.getName().equals("p");
-    }
-*/
-    /**
-     * Parse the given document and pass them through to stdout to confirm
-     * their goodness.
-     */
-    public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java DocumentWriterTest filename width");
-            System.exit(1);
-        }
+		final IWhitespacePolicy policy = new CssWhitespacePolicy(ss);
 
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(args[0]);
-            int width = Integer.parseInt(args[1]);
-            StyleSheetReader reader = new StyleSheetReader();
-            StyleSheet ss =
-                reader.read(DocumentWriterTest.class.getResource("test.css"));
-            Document doc = readDocument(new InputSource(fis), ss);
+		IWhitespacePolicyFactory wsFactory = new IWhitespacePolicyFactory() {
+			public IWhitespacePolicy getPolicy(String publicId) {
+				return policy;
+			}
+		};
 
-            DocumentWriter writer = new DocumentWriter();
-            writer.setWhitespacePolicy(new CssWhitespacePolicy(ss));
-            writer.setWrapColumn(width);
+		org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder builder = new org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder(
+				wsFactory);
 
-            writer.write(doc, System.out);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException ex) {
-                }
-                fis = null;
-            }
-        }
-    }
+		xmlReader.setContentHandler(builder);
+		xmlReader.setDTDHandler(defaultHandler);
+		xmlReader.setEntityResolver(defaultHandler);
+		xmlReader.setErrorHandler(defaultHandler);
+		xmlReader.parse(is);
+		return builder.getDocument();
+	}
+
+	/**
+	 * Which elements are block elements for the purposes of our test cases.
+	 */
+	/*
+	 * private static boolean isBlockElement(Element element) { return
+	 * element.getName().equals("html") || element.getName().equals("body") ||
+	 * element.getName().equals("p"); }
+	 */
+	/**
+	 * Parse the given document and pass them through to stdout to confirm their
+	 * goodness.
+	 */
+	public static void main(String[] args) {
+		if (args.length < 2) {
+			System.out.println("Usage: java DocumentWriterTest filename width");
+			System.exit(1);
+		}
+
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(args[0]);
+			int width = Integer.parseInt(args[1]);
+			StyleSheetReader reader = new StyleSheetReader();
+			StyleSheet ss = reader.read(DocumentWriterTest.class
+					.getResource("test.css"));
+			Document doc = readDocument(new InputSource(fis), ss);
+
+			DocumentWriter writer = new DocumentWriter();
+			writer.setWhitespacePolicy(new CssWhitespacePolicy(ss));
+			writer.setWrapColumn(width);
+
+			writer.write(doc, System.out);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.exit(1);
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException ex) {
+				}
+				fis = null;
+			}
+		}
+	}
 }

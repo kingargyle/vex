@@ -14,19 +14,22 @@ package org.eclipse.wst.xml.vex.core.internal.core;
  * An object that can be drawn into a Graphics.
  */
 public interface Drawable {
-    
-    /**
-     * Draw the object.
-     * @param g Graphics into which to draw the object.
-     * @param x x-coordinate where the object should be drawn
-     * @param y y-coordinate where the object should be drawn
-     */
-    public void draw(Graphics g, int x, int y);
 
-    /**
-     * Returns the smallest rectangle that completely encloses the 
-     * drawn shape.
-     */
-    public Rectangle getBounds();
-    
+	/**
+	 * Draw the object.
+	 * 
+	 * @param g
+	 *            Graphics into which to draw the object.
+	 * @param x
+	 *            x-coordinate where the object should be drawn
+	 * @param y
+	 *            y-coordinate where the object should be drawn
+	 */
+	public void draw(Graphics g, int x, int y);
+
+	/**
+	 * Returns the smallest rectangle that completely encloses the drawn shape.
+	 */
+	public Rectangle getBounds();
+
 }

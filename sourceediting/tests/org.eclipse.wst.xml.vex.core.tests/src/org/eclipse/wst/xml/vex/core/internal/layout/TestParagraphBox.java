@@ -21,54 +21,39 @@ import junit.framework.TestCase;
 
 public class TestParagraphBox extends TestCase {
 
-    FakeGraphics g;
-    LayoutContext context;
-    
-    public TestParagraphBox() throws Exception {
-        
-        URL url = this.getClass().getResource("test.css");
-        StyleSheetReader reader = new StyleSheetReader();
-        StyleSheet ss = reader.read(url);
-        
-        this.g = new FakeGraphics();
-        
-        this.context = new LayoutContext();
-        this.context.setBoxFactory(new CssBoxFactory());
-        this.context.setGraphics(this.g);
-        this.context.setStyleSheet(ss);
-    }
+	FakeGraphics g;
+	LayoutContext context;
 
-    /*
-    public void testWordWrap() throws Exception {
-        RootElement root = new RootElement("root");
-        Document doc = new Document(root);
-        
-        Styles styles = this.context.getStyleSheet().getStyles(root);
-        
-        FontMetrics fm = this.g.getFontMetrics();
-        
-        // Test Case 1: check the offsets 
-        //
-        // UPPER CASE indicates static text
-        // lower case indicates document text
-        // [ ] represent element start and end         
-        //
-        // BLACK WHITE GRAY
-        // RED [orange] YELLOW   (line is 1:8, last=false)
-        // BLACK WHITE GRAY
-        // [blue] GREEN [pink]     (line is 9:20 last=true)
-        // BLACK WHITE GRAY
-        //
-        // Document looks like this (# chars are element sentinels
-        //    2     8      16  20
-        //   /     /       /   /    
-        // ##orange##blue##pink##
-        //           \   \ 
-        //            10  14
-        //
-        
-    }
-    */
+	public TestParagraphBox() throws Exception {
+
+		URL url = this.getClass().getResource("test.css");
+		StyleSheetReader reader = new StyleSheetReader();
+		StyleSheet ss = reader.read(url);
+
+		this.g = new FakeGraphics();
+
+		this.context = new LayoutContext();
+		this.context.setBoxFactory(new CssBoxFactory());
+		this.context.setGraphics(this.g);
+		this.context.setStyleSheet(ss);
+	}
+
+	/*
+	 * public void testWordWrap() throws Exception { RootElement root = new
+	 * RootElement("root"); Document doc = new Document(root);
+	 * 
+	 * Styles styles = this.context.getStyleSheet().getStyles(root);
+	 * 
+	 * FontMetrics fm = this.g.getFontMetrics();
+	 * 
+	 * // Test Case 1: check the offsets // // UPPER CASE indicates static text
+	 * // lower case indicates document text // [ ] represent element start and
+	 * end // // BLACK WHITE GRAY // RED [orange] YELLOW (line is 1:8,
+	 * last=false) // BLACK WHITE GRAY // [blue] GREEN [pink] (line is 9:20
+	 * last=true) // BLACK WHITE GRAY // // Document looks like this (# chars
+	 * are element sentinels // 2 8 16 20 // / / / / // ##orange##blue##pink##
+	 * // \ \ // 10 14 //
+	 * 
+	 * }
+	 */
 }
-
-

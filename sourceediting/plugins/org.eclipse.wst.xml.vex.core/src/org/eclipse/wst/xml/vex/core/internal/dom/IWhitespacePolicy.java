@@ -10,24 +10,27 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-
 /**
  * Determines whitespace policy for document elements. For example, a CSS
  * stylesheet implements a whitespace policy via its display and white-space
  * properties.
  */
 public interface IWhitespacePolicy {
-    
-    /**
-     * Returns true if the given element is normally block-formatted.
-     * @param element Element to test.
-     */
-    public boolean isBlock(Element element);
-    
-    /**
-     * Returns true if the given element is pre-formatted, that is, all of 
-     * its contained whitespace should be preserved.
-     * @param element Element to test.
-     */
-    public boolean isPre(Element element);
+
+	/**
+	 * Returns true if the given element is normally block-formatted.
+	 * 
+	 * @param element
+	 *            Element to test.
+	 */
+	public boolean isBlock(Element element);
+
+	/**
+	 * Returns true if the given element is pre-formatted, that is, all of its
+	 * contained whitespace should be preserved.
+	 * 
+	 * @param element
+	 *            Element to test.
+	 */
+	public boolean isPre(Element element);
 }

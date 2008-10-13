@@ -17,11 +17,12 @@ import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
  */
 public class RestoreLastSelectionAction extends AbstractVexAction {
 
-    public void run(IVexWidget vexWidget) {
-        throw new UnsupportedOperationException("RestoreLastSelectionAction is not yet implemented.");
-    }
+	public void run(IVexWidget vexWidget) {
+		throw new UnsupportedOperationException(
+				"RestoreLastSelectionAction is not yet implemented.");
+	}
 
-    public boolean isEnabled(IVexWidget vexWidget) {
-        return false;
-    }
+	public boolean isEnabled(IVexWidget vexWidget) {
+		return false;
+	}
 }

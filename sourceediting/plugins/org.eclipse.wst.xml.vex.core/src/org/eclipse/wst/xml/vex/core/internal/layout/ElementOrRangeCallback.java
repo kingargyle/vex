@@ -13,6 +13,7 @@ package org.eclipse.wst.xml.vex.core.internal.layout;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 public interface ElementOrRangeCallback {
-    public void onElement(Element child, String displayStyle);
-    public void onRange(Element parent, int startOffset, int endOffset);
+	public void onElement(Element child, String displayStyle);
+
+	public void onRange(Element parent, int startOffset, int endOffset);
 }

@@ -11,14 +11,16 @@
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 /**
- * Interface through which a resource parser notifies an interested party
- * of build problems.
+ * Interface through which a resource parser notifies an interested party of
+ * build problems.
  */
 public interface IBuildProblemHandler {
 
-    /**
-     * Called by the parser when a problem is found while parsing a resource.
-     * @param problem Details of the problem.
-     */
-    public void foundProblem(BuildProblem problem);
+	/**
+	 * Called by the parser when a problem is found while parsing a resource.
+	 * 
+	 * @param problem
+	 *            Details of the problem.
+	 */
+	public void foundProblem(BuildProblem problem);
 }

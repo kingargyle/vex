@@ -11,40 +11,42 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 /**
- * The root element of a document. Keeps track of the document to which
- * it is associated. Any element can find the document to which it is
- * associated by following its parents to this root. This would be done,
- * for example, to notify document listeners that the document has changed
- * when the element changes.
+ * The root element of a document. Keeps track of the document to which it is
+ * associated. Any element can find the document to which it is associated by
+ * following its parents to this root. This would be done, for example, to
+ * notify document listeners that the document has changed when the element
+ * changes.
  */
 public class RootElement extends Element {
 
-    private Document document;
-    
-    /**
-     * Class constructor
-     * @param name Name of the element.
-     */
-    public RootElement(String name) {
-        super(name);
-    }
+	private Document document;
 
-    /**
-     * @return The document associated with this element.
-     */
-    public Document getDocument() {
-        return document;
-    }
+	/**
+	 * Class constructor
+	 * 
+	 * @param name
+	 *            Name of the element.
+	 */
+	public RootElement(String name) {
+		super(name);
+	}
 
-    /**
-     * Sets the document to which this element is associated.
-     * This is called by the document constructor, so it need not
-     * be called by client code.
-     * @param document Document to which this root element is
-     * associated.
-     */
-    public void setDocument(Document document) {
-        this.document = document;
-    }
+	/**
+	 * @return The document associated with this element.
+	 */
+	public Document getDocument() {
+		return document;
+	}
+
+	/**
+	 * Sets the document to which this element is associated. This is called by
+	 * the document constructor, so it need not be called by client code.
+	 * 
+	 * @param document
+	 *            Document to which this root element is associated.
+	 */
+	public void setDocument(Document document) {
+		this.document = document;
+	}
 
 }

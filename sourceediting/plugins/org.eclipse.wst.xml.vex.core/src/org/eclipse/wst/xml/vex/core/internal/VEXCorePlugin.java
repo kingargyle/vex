@@ -16,24 +16,24 @@ import org.osgi.framework.BundleContext;
 
 public class VEXCorePlugin extends AbstractUIPlugin {
 
-    private static VEXCorePlugin instance;
-    
-    public VEXCorePlugin() {
-        instance = this;  
-    }
-    
-    /**
-     * Returns the shared instance.
-     */
-    public static VEXCorePlugin getInstance() {
-        return instance;
-    }
-    
-    public void start(BundleContext bundleContext) throws Exception {
-        super.start(bundleContext);
-    }
+	private static VEXCorePlugin instance;
 
-    public void stop(BundleContext context) throws Exception {
-        super.stop(context);
-    }
+	public VEXCorePlugin() {
+		instance = this;
+	}
+
+	/**
+	 * Returns the shared instance.
+	 */
+	public static VEXCorePlugin getInstance() {
+		return instance;
+	}
+
+	public void start(BundleContext bundleContext) throws Exception {
+		super.start(bundleContext);
+	}
+
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
+	}
 }

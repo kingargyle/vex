@@ -16,39 +16,39 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontMetrics;
  * Wrapper for the AWT FontMetrics class.
  */
 public class AwtFontMetrics implements FontMetrics {
-    
-    private java.awt.FontMetrics awtFontMetrics;
 
-    public AwtFontMetrics(java.awt.FontMetrics awtFontMetrics) {
-        this.awtFontMetrics = awtFontMetrics;
-    }
-    
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getAscent()
-     */
-    public int getAscent() {
-        return this.awtFontMetrics.getAscent();
-    }
+	private java.awt.FontMetrics awtFontMetrics;
 
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getDescent()
-     */
-    public int getDescent() {
-        return this.awtFontMetrics.getDescent();
-    }
+	public AwtFontMetrics(java.awt.FontMetrics awtFontMetrics) {
+		this.awtFontMetrics = awtFontMetrics;
+	}
 
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getHeight()
-     */
-    public int getHeight() {
-        return this.awtFontMetrics.getHeight();
-    }
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getAscent()
+	 */
+	public int getAscent() {
+		return this.awtFontMetrics.getAscent();
+	}
 
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getLeading()
-     */
-    public int getLeading() {
-        return this.awtFontMetrics.getLeading();
-    }
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getDescent()
+	 */
+	public int getDescent() {
+		return this.awtFontMetrics.getDescent();
+	}
+
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getHeight()
+	 */
+	public int getHeight() {
+		return this.awtFontMetrics.getHeight();
+	}
+
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.core.FontMetrics#getLeading()
+	 */
+	public int getLeading() {
+		return this.awtFontMetrics.getLeading();
+	}
 
 }

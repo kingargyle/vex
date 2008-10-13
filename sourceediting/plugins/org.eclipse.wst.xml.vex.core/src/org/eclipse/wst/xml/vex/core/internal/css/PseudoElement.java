@@ -16,36 +16,39 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Element;
  * Represents a :before or :after pseudo-element.
  */
 public class PseudoElement extends Element {
-    
-    public static final String AFTER = "after";
-    public static final String BEFORE = "before";
 
-    /**
-     * Class constructor.
-     * @param parent Parent element to this pseudo-element.
-     * @param name Name of this pseudo-element, e.g. PseudoElement.BEFORE.
-     */    
-    public PseudoElement(Element parent, String name) {
-        super(name);
-        this.setParent(parent);
-    }
-    
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object o) {
-        if (o == null || o.getClass() != this.getClass()) {
-            return false;
-        }
-        PseudoElement other = (PseudoElement) o;
-        return this.getParent() == other.getParent()
-            && this.getName().equals(other.getName());
-    }
-    
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode() {
-        return this.getParent().hashCode() + this.getName().hashCode();
-    }
+	public static final String AFTER = "after";
+	public static final String BEFORE = "before";
+
+	/**
+	 * Class constructor.
+	 * 
+	 * @param parent
+	 *            Parent element to this pseudo-element.
+	 * @param name
+	 *            Name of this pseudo-element, e.g. PseudoElement.BEFORE.
+	 */
+	public PseudoElement(Element parent, String name) {
+		super(name);
+		this.setParent(parent);
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if (o == null || o.getClass() != this.getClass()) {
+			return false;
+		}
+		PseudoElement other = (PseudoElement) o;
+		return this.getParent() == other.getParent()
+				&& this.getName().equals(other.getName());
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return this.getParent().hashCode() + this.getName().hashCode();
+	}
 }

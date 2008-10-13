@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.action;
 
-
 /**
  * Inserts one or more table rows below the currently selected one(s).
  */
 public class InsertRowBelowAction extends InsertRowAction {
-    
-    public InsertRowBelowAction() {
-        super(false);
-    }
+
+	public InsertRowBelowAction() {
+		super(false);
+	}
 }

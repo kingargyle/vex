@@ -10,45 +10,48 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
-
 /**
  * An empty inline box that simply takes up space.
  */
 public class SpaceBox extends AbstractBox implements InlineBox {
 
-    /**
-     * Class constructor.
-     * @param width width of the box
-     * @param height height of the box
-     */
-    public SpaceBox(int width, int height) {
-        this.setWidth(width);
-        this.setHeight(height);
-    }
-    
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.layout.InlineBox#getBaseline()
-     */
-    public int getBaseline() {
-        return this.getHeight();
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param width
+	 *            width of the box
+	 * @param height
+	 *            height of the box
+	 */
+	public SpaceBox(int width, int height) {
+		this.setWidth(width);
+		this.setHeight(height);
+	}
 
-    public boolean isEOL() {
-        return false;
-    }
-    
-    /**
-     * @see org.eclipse.wst.xml.vex.core.internal.layout.InlineBox#split(org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext, int, boolean)
-     */
-    public Pair split(LayoutContext context, int maxWidth, boolean force) {
-        return new Pair(null, this);
-    }
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.layout.InlineBox#getBaseline()
+	 */
+	public int getBaseline() {
+		return this.getHeight();
+	}
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return "[spacer]";
-    }
+	public boolean isEOL() {
+		return false;
+	}
+
+	/**
+	 * @see org.eclipse.wst.xml.vex.core.internal.layout.InlineBox#split(org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext,
+	 *      int, boolean)
+	 */
+	public Pair split(LayoutContext context, int maxWidth, boolean force) {
+		return new Pair(null, this);
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "[spacer]";
+	}
 
 }

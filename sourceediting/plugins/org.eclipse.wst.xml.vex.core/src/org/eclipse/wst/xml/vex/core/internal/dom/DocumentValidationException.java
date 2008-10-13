@@ -10,21 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-
 /**
  * Exception thrown when an change would have compromised document validity.
  */
 public class DocumentValidationException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Class constructor.
-     *
-     * @param message Message indicating the nature of the exception.
-     */
-    public DocumentValidationException(String message) {
-        super(message);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param message
+	 *            Message indicating the nature of the exception.
+	 */
+	public DocumentValidationException(String message) {
+		super(message);
+	}
 }
-

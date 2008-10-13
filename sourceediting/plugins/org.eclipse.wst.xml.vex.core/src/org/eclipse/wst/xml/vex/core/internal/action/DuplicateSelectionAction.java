@@ -13,35 +13,34 @@ package org.eclipse.wst.xml.vex.core.internal.action;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
-
 /**
  * Duplicates current selection or element.
  */
 public class DuplicateSelectionAction extends AbstractVexAction {
 
-    public void run(final IVexWidget vexWidget) {
-        
-        vexWidget.doWork(new Runnable() {
-            public void run() {
-                if (!vexWidget.hasSelection()) {
-                    Element element = vexWidget.getCurrentElement();
-                    if (element.getParent() == null) {
-                        // Can't dup the root element
-                        return;
-                    }
-                    vexWidget.moveTo(element.getStartOffset());
-                    vexWidget.moveTo(element.getEndOffset() + 1, true);
-                }
+	public void run(final IVexWidget vexWidget) {
 
-                vexWidget.copySelection();
-                int startOffset = vexWidget.getSelectionEnd(); 
-                vexWidget.moveTo(startOffset);
-                vexWidget.paste();
-                int endOffset = vexWidget.getCaretOffset();
-                vexWidget.moveTo(startOffset);
-                vexWidget.moveTo(endOffset, true);
-            }
-        });
-    }
+		vexWidget.doWork(new Runnable() {
+			public void run() {
+				if (!vexWidget.hasSelection()) {
+					Element element = vexWidget.getCurrentElement();
+					if (element.getParent() == null) {
+						// Can't dup the root element
+						return;
+					}
+					vexWidget.moveTo(element.getStartOffset());
+					vexWidget.moveTo(element.getEndOffset() + 1, true);
+				}
+
+				vexWidget.copySelection();
+				int startOffset = vexWidget.getSelectionEnd();
+				vexWidget.moveTo(startOffset);
+				vexWidget.paste();
+				int endOffset = vexWidget.getCaretOffset();
+				vexWidget.moveTo(startOffset);
+				vexWidget.moveTo(endOffset, true);
+			}
+		});
+	}
 
 }

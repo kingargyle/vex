@@ -21,55 +21,53 @@ import org.eclipse.core.runtime.CoreException;
  * Project nature that defines Vex Plugin projects.
  */
 public class PluginProjectNature implements IProjectNature {
-    
-    public static final String ID = "org.eclipse.wst.xml.vex.ui.pluginNature"; //$NON-NLS-1$
 
-    public void configure() throws CoreException {
-        this.registerBuilder();
-    }
+	public static final String ID = "org.eclipse.wst.xml.vex.ui.pluginNature"; //$NON-NLS-1$
 
-    public void deconfigure() throws CoreException {
-        //System.out.println("deconfiguring " + project.getName());
-        project.deleteMarkers(IMarker.PROBLEM, true, 1);
-    }
+	public void configure() throws CoreException {
+		this.registerBuilder();
+	}
 
-    public IProject getProject() {
-        return this.project;
-    }
+	public void deconfigure() throws CoreException {
+		// System.out.println("deconfiguring " + project.getName());
+		project.deleteMarkers(IMarker.PROBLEM, true, 1);
+	}
 
-    public void setProject(IProject project) {
-        this.project = project;
-    }
+	public IProject getProject() {
+		return this.project;
+	}
 
-    //====================================================== PRIVATE
+	public void setProject(IProject project) {
+		this.project = project;
+	}
 
-    private IProject project;
-    
-    
-    private void registerBuilder() throws CoreException {
-        IProjectDescription desc = project.getDescription();
-        ICommand[] commands = desc.getBuildSpec();
-        boolean found = false;
+	// ====================================================== PRIVATE
 
-        for (int i = 0; i < commands.length; ++i) {
-           if (commands[i].getBuilderName().equals(PluginProjectBuilder.ID)) {
-              found = true;
-              break;
-           }
-        }
-        if (!found) { 
-           //add builder to project
-           ICommand command = desc.newCommand();
-           command.setBuilderName(PluginProjectBuilder.ID);
-           ICommand[] newCommands = new ICommand[commands.length + 1];
+	private IProject project;
 
-           // Add it before other builders.
-           System.arraycopy(commands, 0, newCommands, 1, commands.length);
-           newCommands[0] = command;
-           desc.setBuildSpec(newCommands);
-           project.setDescription(desc, null);
-        }
+	private void registerBuilder() throws CoreException {
+		IProjectDescription desc = project.getDescription();
+		ICommand[] commands = desc.getBuildSpec();
+		boolean found = false;
 
+		for (int i = 0; i < commands.length; ++i) {
+			if (commands[i].getBuilderName().equals(PluginProjectBuilder.ID)) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			// add builder to project
+			ICommand command = desc.newCommand();
+			command.setBuilderName(PluginProjectBuilder.ID);
+			ICommand[] newCommands = new ICommand[commands.length + 1];
 
-    }
+			// Add it before other builders.
+			System.arraycopy(commands, 0, newCommands, 1, commands.length);
+			newCommands[0] = command;
+			desc.setBuildSpec(newCommands);
+			project.setDescription(desc, null);
+		}
+
+	}
 }

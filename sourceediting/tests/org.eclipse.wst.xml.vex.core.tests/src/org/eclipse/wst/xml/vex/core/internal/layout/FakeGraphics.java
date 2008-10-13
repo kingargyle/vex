@@ -24,143 +24,147 @@ import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
  */
 public class FakeGraphics implements Graphics {
 
-    private int charWidth = 6;
-    
-    public FakeGraphics() {
-        DisplayDevice.setCurrent(new DisplayDevice() {
-            public int getHorizontalPPI() {
-                return 72;
-            }
-            public int getVerticalPPI() {
-                return 72;
-            }
-        });
-    }
+	private int charWidth = 6;
 
-    private FontMetrics fontMetrics = new FontMetrics() {
-        public int getAscent() {
-            return 10;
-        }
-        public int getDescent() {
-            return 3;
-        }
-        public int getHeight() {
-            return 13;
-        }
-        public int getLeading() {
-            return 2;
-        }
-    };
-    
-    public int charsWidth(char[] data, int offset, int length) {
-        return length * charWidth;
-    }
+	public FakeGraphics() {
+		DisplayDevice.setCurrent(new DisplayDevice() {
+			public int getHorizontalPPI() {
+				return 72;
+			}
 
-    public ColorResource createColor(Color rgb) {
-        return new ColorResource() {
-            public void dispose() {
-            }
-        };
-    }
+			public int getVerticalPPI() {
+				return 72;
+			}
+		});
+	}
 
-    public FontResource createFont(FontSpec fontSpec) {
-        return new FontResource() {
-            public void dispose() {
-            }
-        };
-    }
+	private FontMetrics fontMetrics = new FontMetrics() {
+		public int getAscent() {
+			return 10;
+		}
 
-    public void dispose() {
-    }
+		public int getDescent() {
+			return 3;
+		}
 
-    public void drawChars(char[] chars, int offset, int length, int x, int y) {
-    }
+		public int getHeight() {
+			return 13;
+		}
 
-    public void drawLine(int x1, int y1, int x2, int y2) {
-    }
+		public int getLeading() {
+			return 2;
+		}
+	};
 
-    public void drawString(String s, int x, int y) {
-    }
+	public int charsWidth(char[] data, int offset, int length) {
+		return length * charWidth;
+	}
 
-    public void drawOval(int x, int y, int width, int height) {
-    }
+	public ColorResource createColor(Color rgb) {
+		return new ColorResource() {
+			public void dispose() {
+			}
+		};
+	}
 
-    public void drawRect(int x, int y, int width, int height) {
-    }
+	public FontResource createFont(FontSpec fontSpec) {
+		return new FontResource() {
+			public void dispose() {
+			}
+		};
+	}
 
-    public void fillOval(int x, int y, int width, int height) {
-    }
+	public void dispose() {
+	}
 
-    public void fillRect(int x, int y, int width, int height) {
-    }
+	public void drawChars(char[] chars, int offset, int length, int x, int y) {
+	}
 
-    public Rectangle getClipBounds() {
-        return null;
-    }
+	public void drawLine(int x1, int y1, int x2, int y2) {
+	}
 
-    public ColorResource getBackgroundColor() {
-        return null;
-    }
+	public void drawString(String s, int x, int y) {
+	}
 
-    public ColorResource getColor() {
-        return null;
-    }
+	public void drawOval(int x, int y, int width, int height) {
+	}
 
-    public FontResource getFont() {
-        return null;
-    }
+	public void drawRect(int x, int y, int width, int height) {
+	}
 
-    public int getLineStyle() {
-        return 0;
-    }
+	public void fillOval(int x, int y, int width, int height) {
+	}
 
-    public int getLineWidth() {
-        return 0;
-    }
+	public void fillRect(int x, int y, int width, int height) {
+	}
 
-    public ColorResource getSystemColor(int id) {
-        return null;
-    }
+	public Rectangle getClipBounds() {
+		return null;
+	}
 
-    public FontMetrics getFontMetrics() {
-        return this.fontMetrics;
-    }
+	public ColorResource getBackgroundColor() {
+		return null;
+	}
 
-    public boolean isAntiAliased() {
-        return false;
-    }
+	public ColorResource getColor() {
+		return null;
+	}
 
-    public void setAntiAliased(boolean antiAliased) {
-    }
+	public FontResource getFont() {
+		return null;
+	}
 
-    public ColorResource setBackgroundColor(ColorResource color) {
-        return null;
-    }
+	public int getLineStyle() {
+		return 0;
+	}
 
-    public ColorResource setColor(ColorResource color) {
-        return null;
-    }
+	public int getLineWidth() {
+		return 0;
+	}
 
-    public FontResource setFont(FontResource font) {
-        return null;
-    }
+	public ColorResource getSystemColor(int id) {
+		return null;
+	}
 
-    public void setLineStyle(int style) {
-    }
+	public FontMetrics getFontMetrics() {
+		return this.fontMetrics;
+	}
 
-    public void setLineWidth(int width) {
-    }
+	public boolean isAntiAliased() {
+		return false;
+	}
 
-    public int stringWidth(String s) {
-        return charWidth * s.length();
-    }
+	public void setAntiAliased(boolean antiAliased) {
+	}
 
-    public int getCharWidth() {
-        return this.charWidth;
-    }
+	public ColorResource setBackgroundColor(ColorResource color) {
+		return null;
+	}
 
-    public void setXORMode(boolean xorMode) {
-        // TODO Auto-generated method stub
-        
-    }
+	public ColorResource setColor(ColorResource color) {
+		return null;
+	}
+
+	public FontResource setFont(FontResource font) {
+		return null;
+	}
+
+	public void setLineStyle(int style) {
+	}
+
+	public void setLineWidth(int width) {
+	}
+
+	public int stringWidth(String s) {
+		return charWidth * s.length();
+	}
+
+	public int getCharWidth() {
+		return this.charWidth;
+	}
+
+	public void setXORMode(boolean xorMode) {
+		// TODO Auto-generated method stub
+
+	}
 }

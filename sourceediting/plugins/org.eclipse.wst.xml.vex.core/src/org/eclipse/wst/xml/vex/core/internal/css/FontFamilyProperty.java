@@ -20,52 +20,51 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class FontFamilyProperty extends AbstractProperty {
 
-    /**
-     * Class constructor.
-     */
-    public FontFamilyProperty() {
-        super(CSS.FONT_FAMILY);
-    }
+	/**
+	 * Class constructor.
+	 */
+	public FontFamilyProperty() {
+		super(CSS.FONT_FAMILY);
+	}
 
-    /**
+	/**
      *
      */
 
-    public Object calculate(LexicalUnit lu, Styles parentStyles,
-            Styles styles) {
-        if (isFontFamily(lu)) {
-            return getFontFamilies(lu);
-        } else {
-            // not specified, "inherit", or some other value
-            if (parentStyles != null) {
-                return parentStyles.getFontFamilies();
-            } else {
-                return DEFAULT_FONT_FAMILY;
-            }
-        }
-    }
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+		if (isFontFamily(lu)) {
+			return getFontFamilies(lu);
+		} else {
+			// not specified, "inherit", or some other value
+			if (parentStyles != null) {
+				return parentStyles.getFontFamilies();
+			} else {
+				return DEFAULT_FONT_FAMILY;
+			}
+		}
+	}
 
-    //================================================= PRIVATE
-    
-    private static final String[] DEFAULT_FONT_FAMILY = new String[] { "sans-serif" };
+	// ================================================= PRIVATE
 
-    private static boolean isFontFamily(LexicalUnit lu) {
-        return lu != null 
-        && (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE
-                || lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT);
-    }
+	private static final String[] DEFAULT_FONT_FAMILY = new String[] { "sans-serif" };
 
-    private static String[] getFontFamilies(LexicalUnit lu) {
-        List list = new ArrayList();
-        while (lu != null) {
-            if (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE
-                    || lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
-                
-                list.add(lu.getStringValue());
-            }
-            lu = lu.getNextLexicalUnit();
-        }
-        return (String[]) list.toArray(new String[list.size()]);
-    }
+	private static boolean isFontFamily(LexicalUnit lu) {
+		return lu != null
+				&& (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE || lu
+						.getLexicalUnitType() == LexicalUnit.SAC_IDENT);
+	}
+
+	private static String[] getFontFamilies(LexicalUnit lu) {
+		List list = new ArrayList();
+		while (lu != null) {
+			if (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE
+					|| lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
+
+				list.add(lu.getStringValue());
+			}
+			lu = lu.getNextLexicalUnit();
+		}
+		return (String[]) list.toArray(new String[list.size()]);
+	}
 
 }

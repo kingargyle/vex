@@ -14,7 +14,6 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
@@ -23,28 +22,29 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class Messages {
 
-    private static ResourceBundle resources;
+	private static ResourceBundle resources;
 
-    private Messages() {
-    }
+	private Messages() {
+	}
 
-    /**
-     * Returns the language-specific string for the given key,
-     * or the key itself if not found.
-     */
-    public static String getString(String key) {
-        if (resources == null) {
-            resources = ResourceBundle.getBundle("org.eclipse.wst.xml.vex.ui.internal.config.messages"); //$NON-NLS-1$
-        }
-        
-        try {
-            return resources.getString(key);
-        } catch (MissingResourceException ex) {
-            String message = Messages.getString("Messages.cantFindResource"); //$NON-NLS-1$
-            VexPlugin.getInstance().log(IStatus.WARNING,
-                    MessageFormat.format(message, new Object[] { key }));
-            return key;
-        }
-    }
+	/**
+	 * Returns the language-specific string for the given key, or the key itself
+	 * if not found.
+	 */
+	public static String getString(String key) {
+		if (resources == null) {
+			resources = ResourceBundle
+					.getBundle("org.eclipse.wst.xml.vex.ui.internal.config.messages"); //$NON-NLS-1$
+		}
+
+		try {
+			return resources.getString(key);
+		} catch (MissingResourceException ex) {
+			String message = Messages.getString("Messages.cantFindResource"); //$NON-NLS-1$
+			VexPlugin.getInstance().log(IStatus.WARNING,
+					MessageFormat.format(message, new Object[] { key }));
+			return key;
+		}
+	}
 
 }

@@ -23,24 +23,24 @@ import junit.framework.TestCase;
 
 public class SerializationTest extends TestCase {
 
-    public void testSerialization() throws Exception {
-//        serialize("test1.css");
-//        serialize("test2.css");
-        serialize("testLexicalUnits.css");
-//        serialize("testRules.css");
-    }
-    
-    private void serialize(String resource) throws Exception {
-        
-        URL url = this.getClass().getResource(resource);
-        StyleSheetReader reader = new StyleSheetReader();
-        StyleSheet ss = reader.read(url);
+	public void testSerialization() throws Exception {
+		// serialize("test1.css");
+		// serialize("test2.css");
+		serialize("testLexicalUnits.css");
+		// serialize("testRules.css");
+	}
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(ss);
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        ois.readObject();
-    }
+	private void serialize(String resource) throws Exception {
+
+		URL url = this.getClass().getResource(resource);
+		StyleSheetReader reader = new StyleSheetReader();
+		StyleSheet ss = reader.read(url);
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(ss);
+		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		ObjectInputStream ois = new ObjectInputStream(bais);
+		ois.readObject();
+	}
 }

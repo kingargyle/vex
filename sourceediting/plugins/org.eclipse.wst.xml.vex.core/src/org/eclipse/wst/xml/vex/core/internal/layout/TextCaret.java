@@ -21,30 +21,34 @@ import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
  */
 public class TextCaret extends Caret {
 
-    private static final int LINE_WIDTH = 2;
+	private static final int LINE_WIDTH = 2;
 
-    private int height;
-    
-    /**
-     * Class constructor
-     * @param x x-coordinate of the caret
-     * @param y y-coordinate of the top of the caret
-     * @param height height of the caret
-     */
-    public TextCaret(int x, int y, int height) {
-        super(x, y);
-        this.height = height;
-    }
-    
-    public void draw(Graphics g, Color color) {
-        ColorResource newColor = g.createColor(color);
-        ColorResource oldColor = g.setColor(newColor);
-        g.fillRect(this.getX(), this.getY(), LINE_WIDTH, height);
-        g.setColor(oldColor);
-        newColor.dispose();
-    }
-    
-    public Rectangle getBounds() {
-        return new Rectangle(this.getX(), this.getY(), LINE_WIDTH, height);    
-    }
+	private int height;
+
+	/**
+	 * Class constructor
+	 * 
+	 * @param x
+	 *            x-coordinate of the caret
+	 * @param y
+	 *            y-coordinate of the top of the caret
+	 * @param height
+	 *            height of the caret
+	 */
+	public TextCaret(int x, int y, int height) {
+		super(x, y);
+		this.height = height;
+	}
+
+	public void draw(Graphics g, Color color) {
+		ColorResource newColor = g.createColor(color);
+		ColorResource oldColor = g.setColor(newColor);
+		g.fillRect(this.getX(), this.getY(), LINE_WIDTH, height);
+		g.setColor(oldColor);
+		newColor.dispose();
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(this.getX(), this.getY(), LINE_WIDTH, height);
+	}
 }

@@ -13,17 +13,18 @@ package org.eclipse.wst.xml.vex.core.internal.widget;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 
 /**
- * Interface implemented by classes that determine whether a Box
- * matches certain criteria. 
+ * Interface implemented by classes that determine whether a Box matches certain
+ * criteria.
  * 
  * @see IVexWidget#
  */
 public interface IBoxFilter {
 
-    /**
-     * Returns <code>true</code> if the given box matches the criteria.
-     * 
-     * @param box Box to be tested.
-     */
-    public boolean matches(Box box);
+	/**
+	 * Returns <code>true</code> if the given box matches the criteria.
+	 * 
+	 * @param box
+	 *            Box to be tested.
+	 */
+	public boolean matches(Box box);
 }

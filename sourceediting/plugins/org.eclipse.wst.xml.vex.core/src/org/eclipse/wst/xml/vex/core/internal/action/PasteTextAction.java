@@ -13,16 +13,17 @@ package org.eclipse.wst.xml.vex.core.internal.action;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
- * Paste the clipboard contents into the document as plain text, ignoring
- * any markup.
+ * Paste the clipboard contents into the document as plain text, ignoring any
+ * markup.
  */
 public class PasteTextAction extends AbstractVexAction {
 
-    public void run(IVexWidget vexWidget) {
-        throw new UnsupportedOperationException("PasteTextAction is not yet implemented.");
-    }
+	public void run(IVexWidget vexWidget) {
+		throw new UnsupportedOperationException(
+				"PasteTextAction is not yet implemented.");
+	}
 
-    public boolean isEnabled(IVexWidget vexWidget) {
-        return false;
-    }
+	public boolean isEnabled(IVexWidget vexWidget) {
+		return false;
+	}
 }

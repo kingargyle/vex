@@ -15,52 +15,62 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Implementation of the {@link SelectionProvider} interface. Also acts as
- * a selection event multiplexor: any events received on its 
- * {@link SelectionListener} interface are relayed to any registered listeners. 
+ * Implementation of the {@link SelectionProvider} interface. Also acts as a
+ * selection event multiplexor: any events received on its
+ * {@link SelectionListener} interface are relayed to any registered listeners.
  */
-public class SelectionProviderImpl 
-    implements SelectionProvider, SelectionListener {
+public class SelectionProviderImpl implements SelectionProvider,
+		SelectionListener {
 
-    private List listeners = new ArrayList();
-    
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#addSelectionListener(org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
-     */
-    public void addSelectionListener(SelectionListener listener) {
-        this.listeners.add(listener);
+	private List listeners = new ArrayList();
 
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#
+	 * addSelectionListener
+	 * (org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
+	 */
+	public void addSelectionListener(SelectionListener listener) {
+		this.listeners.add(listener);
 
-    /**
-     * Call <code>selectionChanged</code> on all registered listeners.
-     * @param selection Selection that has changed.
-     */
-    public void fireSelectionChanged(Selection selection) {
-        for (Iterator iter = listeners.iterator(); iter.hasNext(); ) {
-            SelectionListener listener = (SelectionListener) iter.next();
-            //long start = System.currentTimeMillis();
-            listener.selectionChanged(selection);
-            //long end = System.currentTimeMillis();
-            //System.out.println("" + (end-start) + ": " + listener);
-        }
-    }
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#removeSelectionListener(org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
-     */
-    public void removeSelectionListener(SelectionListener listener) {
-        this.listeners.remove(listener);
-    }
+	/**
+	 * Call <code>selectionChanged</code> on all registered listeners.
+	 * 
+	 * @param selection
+	 *            Selection that has changed.
+	 */
+	public void fireSelectionChanged(Selection selection) {
+		for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+			SelectionListener listener = (SelectionListener) iter.next();
+			// long start = System.currentTimeMillis();
+			listener.selectionChanged(selection);
+			// long end = System.currentTimeMillis();
+			// System.out.println("" + (end-start) + ": " + listener);
+		}
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener#selectionChanged(org.eclipse.wst.xml.vex.core.internal.swing.Selection)
-     */
-    public void selectionChanged(Selection selection) {
-        this.fireSelectionChanged(selection);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.wst.xml.vex.core.internal.swing.SelectionProvider#
+	 * removeSelectionListener
+	 * (org.eclipse.wst.xml.vex.core.internal.swing.SelectionListener)
+	 */
+	public void removeSelectionListener(SelectionListener listener) {
+		this.listeners.remove(listener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.wst.xml.vex.core.internal.swing.SelectionListener#
+	 * selectionChanged(org.eclipse.wst.xml.vex.core.internal.swing.Selection)
+	 */
+	public void selectionChanged(Selection selection) {
+		this.fireSelectionChanged(selection);
+	}
 
 }

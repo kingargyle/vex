@@ -17,17 +17,17 @@ import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
  */
 public class SwtColor implements ColorResource {
 
-    private org.eclipse.swt.graphics.Color swtColor;
-    
-    public SwtColor(org.eclipse.swt.graphics.Color swtColor) {
-        this.swtColor = swtColor;
-    }
-    
-    org.eclipse.swt.graphics.Color getSwtColor() {
-        return this.swtColor;
-    }
-    
-    public void dispose() {
-        this.swtColor.dispose();
-    }
+	private org.eclipse.swt.graphics.Color swtColor;
+
+	public SwtColor(org.eclipse.swt.graphics.Color swtColor) {
+		this.swtColor = swtColor;
+	}
+
+	org.eclipse.swt.graphics.Color getSwtColor() {
+		return this.swtColor;
+	}
+
+	public void dispose() {
+		this.swtColor.dispose();
+	}
 }

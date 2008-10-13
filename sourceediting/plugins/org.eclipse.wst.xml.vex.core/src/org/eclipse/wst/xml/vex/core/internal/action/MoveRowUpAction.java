@@ -15,38 +15,40 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
-
 /**
  * Moves the current table row up above its previous sibling.
  */
 public class MoveRowUpAction extends AbstractVexAction {
 
-    public void run(final IVexWidget vexWidget) {
+	public void run(final IVexWidget vexWidget) {
 
-        final ActionUtils.SelectedRows selected = ActionUtils.getSelectedTableRows(vexWidget);
-        
-        if (selected.getRows() == null || selected.getRowBefore() == null) {
-            return;
-        }
-        
-        vexWidget.doWork(true, new Runnable() {
-            public void run() {
-                IntRange range = ActionUtils.getOuterRange(selected.getRowBefore());
-                vexWidget.moveTo(range.getStart());
-                vexWidget.moveTo(range.getEnd(), true);
-                vexWidget.cutSelection();
-                
-                List rows = selected.getRows();
-                Object lastRow = rows.get(rows.size() - 1);
-                vexWidget.moveTo(ActionUtils.getOuterRange(lastRow).getEnd());
-                vexWidget.paste();
-            }
-        });
-    }
+		final ActionUtils.SelectedRows selected = ActionUtils
+				.getSelectedTableRows(vexWidget);
 
-    public boolean isEnabled(IVexWidget vexWidget) {
-        ActionUtils.SelectedRows selected = ActionUtils.getSelectedTableRows(vexWidget);
-        return selected.getRows() != null && selected.getRowBefore() != null;
-    }
-    
+		if (selected.getRows() == null || selected.getRowBefore() == null) {
+			return;
+		}
+
+		vexWidget.doWork(true, new Runnable() {
+			public void run() {
+				IntRange range = ActionUtils.getOuterRange(selected
+						.getRowBefore());
+				vexWidget.moveTo(range.getStart());
+				vexWidget.moveTo(range.getEnd(), true);
+				vexWidget.cutSelection();
+
+				List rows = selected.getRows();
+				Object lastRow = rows.get(rows.size() - 1);
+				vexWidget.moveTo(ActionUtils.getOuterRange(lastRow).getEnd());
+				vexWidget.paste();
+			}
+		});
+	}
+
+	public boolean isEnabled(IVexWidget vexWidget) {
+		ActionUtils.SelectedRows selected = ActionUtils
+				.getSelectedTableRows(vexWidget);
+		return selected.getRows() != null && selected.getRowBefore() != null;
+	}
+
 }

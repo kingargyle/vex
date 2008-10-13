@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.w3c.css.sac.LexicalUnit;
 
@@ -19,31 +18,31 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class LengthProperty extends AbstractProperty {
 
-    public LengthProperty(String name, byte axis) {
-        super(name);
-        this.axis = axis;
-    }
+	public LengthProperty(String name, byte axis) {
+		super(name);
+		this.axis = axis;
+	}
 
-    public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
 
-        DisplayDevice device = DisplayDevice.getCurrent();
-        int ppi = this.axis == AXIS_HORIZONTAL ? device.getHorizontalPPI() : device.getVerticalPPI();
-        
-        if (isLength(lu)) {
-            int length = getIntLength(lu, styles.getFontSize(), ppi);
-            return RelativeLength.createAbsolute(length);
-        } else if (isPercentage(lu)) {
-            return RelativeLength.createRelative(lu.getFloatValue() / 100);
-        } else if (isInherit(lu) && parentStyles != null) {
-            return parentStyles.get(this.getName());
-        } else {
-            // not specified, "auto", or other unknown value
-            return RelativeLength.createAbsolute(0);
-        }
-    }
+		DisplayDevice device = DisplayDevice.getCurrent();
+		int ppi = this.axis == AXIS_HORIZONTAL ? device.getHorizontalPPI()
+				: device.getVerticalPPI();
 
+		if (isLength(lu)) {
+			int length = getIntLength(lu, styles.getFontSize(), ppi);
+			return RelativeLength.createAbsolute(length);
+		} else if (isPercentage(lu)) {
+			return RelativeLength.createRelative(lu.getFloatValue() / 100);
+		} else if (isInherit(lu) && parentStyles != null) {
+			return parentStyles.get(this.getName());
+		} else {
+			// not specified, "auto", or other unknown value
+			return RelativeLength.createAbsolute(0);
+		}
+	}
 
-    //============================================================ PRIVATE
+	// ============================================================ PRIVATE
 
-    private int axis;
+	private int axis;
 }

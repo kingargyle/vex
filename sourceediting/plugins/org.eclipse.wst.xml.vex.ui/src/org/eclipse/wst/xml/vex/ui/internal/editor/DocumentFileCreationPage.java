@@ -20,32 +20,40 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
  */
 public class DocumentFileCreationPage extends WizardNewFileCreationPage {
 
-    /**
-     * Class constructor. Supplies a title and description to the superclass.
-     * @param pageName name of the page
-     * @param selection selection active when the wizard was started
-     */
-    public DocumentFileCreationPage(String pageName, IStructuredSelection selection) {
-        super(pageName, selection);
-        this.setTitle(Messages.getString("DocumentFileCreationPage.title")); //$NON-NLS-1$
-        this.setDescription(Messages.getString("DocumentFileCreationPage.desc")); //$NON-NLS-1$
-    }
+	/**
+	 * Class constructor. Supplies a title and description to the superclass.
+	 * 
+	 * @param pageName
+	 *            name of the page
+	 * @param selection
+	 *            selection active when the wizard was started
+	 */
+	public DocumentFileCreationPage(String pageName,
+			IStructuredSelection selection) {
+		super(pageName, selection);
+		this.setTitle(Messages.getString("DocumentFileCreationPage.title")); //$NON-NLS-1$
+		this
+				.setDescription(Messages
+						.getString("DocumentFileCreationPage.desc")); //$NON-NLS-1$
+	}
 
-    /**
-     * Returns the initial contents of the file. The initial contents
-     * are set by the wizard via the {@link setInitialContents} method.
-     */
-    protected InputStream getInitialContents() {
-        return this.initialContents;
-    }
+	/**
+	 * Returns the initial contents of the file. The initial contents are set by
+	 * the wizard via the {@link setInitialContents} method.
+	 */
+	protected InputStream getInitialContents() {
+		return this.initialContents;
+	}
 
-    /**
-     * Sets the initial contents to be used when the document is created.
-     * @param initialContents initial contents for the new document.
-     */
-    public void setInitialContents(InputStream initialContents) {
-        this.initialContents = initialContents;
-    }
-    
-    private InputStream initialContents;
+	/**
+	 * Sets the initial contents to be used when the document is created.
+	 * 
+	 * @param initialContents
+	 *            initial contents for the new document.
+	 */
+	public void setInitialContents(InputStream initialContents) {
+		this.initialContents = initialContents;
+	}
+
+	private InputStream initialContents;
 }

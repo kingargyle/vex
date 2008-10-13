@@ -14,32 +14,31 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
-
-
 /**
- * Implementation of the BoxFactory interface that returns boxes that
- * represent CSS semantics.
+ * Implementation of the BoxFactory interface that returns boxes that represent
+ * CSS semantics.
  */
 public class CssBoxFactory implements BoxFactory {
 
-    private static final long serialVersionUID = -6882526795866485074L;
+	private static final long serialVersionUID = -6882526795866485074L;
 
-    /**
-     * Class constructor.
-     */
-    public CssBoxFactory() {
-    }
+	/**
+	 * Class constructor.
+	 */
+	public CssBoxFactory() {
+	}
 
-    public Box createBox(LayoutContext context, Element element, BlockBox parent, int containerWidth) {
-        Styles styles = context.getStyleSheet().getStyles(element);
-        if (styles.getDisplay().equals(CSS.TABLE)) {
-            return new TableBox(context, parent, element);
-        } else if (styles.isBlock()) {
-            return new BlockElementBox(context, parent, element);
-        } else {
-            throw new RuntimeException("Unexpected display property: " + styles.getDisplay());
-        }
-    }
+	public Box createBox(LayoutContext context, Element element,
+			BlockBox parent, int containerWidth) {
+		Styles styles = context.getStyleSheet().getStyles(element);
+		if (styles.getDisplay().equals(CSS.TABLE)) {
+			return new TableBox(context, parent, element);
+		} else if (styles.isBlock()) {
+			return new BlockElementBox(context, parent, element);
+		} else {
+			throw new RuntimeException("Unexpected display property: "
+					+ styles.getDisplay());
+		}
+	}
 
 }
-

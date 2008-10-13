@@ -17,64 +17,68 @@ import org.eclipse.swt.widgets.Display;
  */
 public class Timer {
 
-    /**
-     * Class constructor. The timer must be explicitly started using the
-     * start() method.
-     * @param periodMs Milliseconds between each invocation.
-     * @param runnable Runnable to execute when the period expires.
-     */
-    public Timer(int periodMs, Runnable runnable) {
-        this.periodMs = periodMs;
-        this.runnable = runnable;
-    }
+	/**
+	 * Class constructor. The timer must be explicitly started using the start()
+	 * method.
+	 * 
+	 * @param periodMs
+	 *            Milliseconds between each invocation.
+	 * @param runnable
+	 *            Runnable to execute when the period expires.
+	 */
+	public Timer(int periodMs, Runnable runnable) {
+		this.periodMs = periodMs;
+		this.runnable = runnable;
+	}
 
-    /**
-     * Reset the timer so that it waits another period before firing.
-     */
-    public void reset() {
-        if (this.started) {
-            this.stop();
-            this.start();
-        }
-    }
+	/**
+	 * Reset the timer so that it waits another period before firing.
+	 */
+	public void reset() {
+		if (this.started) {
+			this.stop();
+			this.start();
+		}
+	}
 
-    /**
-     * Start the timer. 
-     */
-    public void start() {
-        if (!this.started) {
-            this.innerRunnable = new InnerRunnable();
-            Display.getCurrent().timerExec(this.periodMs, this.innerRunnable);
-            this.started = true;
-        }
-    }
+	/**
+	 * Start the timer.
+	 */
+	public void start() {
+		if (!this.started) {
+			this.innerRunnable = new InnerRunnable();
+			Display.getCurrent().timerExec(this.periodMs, this.innerRunnable);
+			this.started = true;
+		}
+	}
 
-    /**
-     * Stop the timer.
-     */
-    public void stop() {
-        if (this.started) {
-            this.innerRunnable.discarded = true;
-            this.innerRunnable = null;
-            this.started = false;
-        }
-    }
-    
-    //==================================================== PRIVATE
-    
-    private Runnable runnable;
-    private int periodMs;
-    private boolean started = false;
-    private InnerRunnable innerRunnable;
-    
-    private class InnerRunnable implements Runnable {
-        public boolean discarded = false;
-        public void run() {
-            if (!discarded) {
-                runnable.run();
-                //Display display = Display.getCurrent();
-                Display.getCurrent().timerExec(periodMs, this);
-            }
-        }
-    }
+	/**
+	 * Stop the timer.
+	 */
+	public void stop() {
+		if (this.started) {
+			this.innerRunnable.discarded = true;
+			this.innerRunnable = null;
+			this.started = false;
+		}
+	}
+
+	// ==================================================== PRIVATE
+
+	private Runnable runnable;
+	private int periodMs;
+	private boolean started = false;
+	private InnerRunnable innerRunnable;
+
+	private class InnerRunnable implements Runnable {
+		public boolean discarded = false;
+
+		public void run() {
+			if (!discarded) {
+				runnable.run();
+				// Display display = Display.getCurrent();
+				Display.getCurrent().timerExec(periodMs, this);
+			}
+		}
+	}
 }

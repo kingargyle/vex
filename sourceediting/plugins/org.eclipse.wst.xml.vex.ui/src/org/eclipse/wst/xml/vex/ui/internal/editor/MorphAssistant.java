@@ -12,25 +12,24 @@ package org.eclipse.wst.xml.vex.ui.internal.editor;
 
 import java.text.MessageFormat;
 
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
-
 
 /**
  * Content assistant that shows valid elements to be inserted at the current
  * point.
  */
 public class MorphAssistant extends ContentAssistant {
-    
-    public IAction[] getActions(VexWidget vexWidget) {
-        return vexWidget.getValidMorphActions();
-    }
 
-    public String getTitle(VexWidget vexWidget) {
-        String message = Messages.getString("ChangeElementAction.dynamic.label"); //$NON-NLS-1$
-        String name = vexWidget.getCurrentElement().getName();
-        return MessageFormat.format(message, new Object[] { name });
-    }
+	public IAction[] getActions(VexWidget vexWidget) {
+		return vexWidget.getValidMorphActions();
+	}
+
+	public String getTitle(VexWidget vexWidget) {
+		String message = Messages
+				.getString("ChangeElementAction.dynamic.label"); //$NON-NLS-1$
+		String name = vexWidget.getCurrentElement().getName();
+		return MessageFormat.format(message, new Object[] { name });
+	}
 
 }

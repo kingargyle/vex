@@ -17,17 +17,17 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
  */
 public class SwtFont implements FontResource {
 
-    private org.eclipse.swt.graphics.Font swtFont;
-    
-    public SwtFont(org.eclipse.swt.graphics.Font swtFont) {
-        this.swtFont = swtFont;
-    }
-    
-    org.eclipse.swt.graphics.Font getSwtFont() {
-        return this.swtFont;
-    }
-    
-    public void dispose() {
-        this.swtFont.dispose();
-    }
+	private org.eclipse.swt.graphics.Font swtFont;
+
+	public SwtFont(org.eclipse.swt.graphics.Font swtFont) {
+		this.swtFont = swtFont;
+	}
+
+	org.eclipse.swt.graphics.Font getSwtFont() {
+		return this.swtFont;
+	}
+
+	public void dispose() {
+		this.swtFont.dispose();
+	}
 }

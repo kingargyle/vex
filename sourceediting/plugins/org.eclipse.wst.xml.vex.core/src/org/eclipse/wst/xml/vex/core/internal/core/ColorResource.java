@@ -11,15 +11,15 @@
 package org.eclipse.wst.xml.vex.core.internal.core;
 
 /**
- * Wrapper for a toolkit-defined color. Color objects are system resources.
- * They should be retrieved with the Graphics.createColor method and should
- * be disposed when no longer needed.
+ * Wrapper for a toolkit-defined color. Color objects are system resources. They
+ * should be retrieved with the Graphics.createColor method and should be
+ * disposed when no longer needed.
  */
 public interface ColorResource {
 
-    public static final int SELECTION_BACKGROUND = 0;
-    public static final int SELECTION_FOREGROUND = 1;
-    
-    public void dispose();
+	public static final int SELECTION_BACKGROUND = 0;
+	public static final int SELECTION_FOREGROUND = 1;
+
+	public void dispose();
 
 }

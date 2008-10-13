@@ -12,26 +12,26 @@ package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 
-public class TestDisplayDevice extends DisplayDevice {
+public class MockDisplayDevice extends DisplayDevice {
 
-    private int horizontalPPI;
-    private int verticalPPI;
+	private int horizontalPPI;
+	private int verticalPPI;
 
-    public TestDisplayDevice(int horizontalPPI, int verticalPPI) {
-        this.horizontalPPI = horizontalPPI;
-        this.verticalPPI = verticalPPI;
-    }
+	public MockDisplayDevice(int horizontalPPI, int verticalPPI) {
+		this.horizontalPPI = horizontalPPI;
+		this.verticalPPI = verticalPPI;
+	}
 
-    public int getHorizontalPPI() {
-        return this.horizontalPPI;
-    }
+	public int getHorizontalPPI() {
+		return this.horizontalPPI;
+	}
 
-    /**
+	/**
      *
      */
 
-    public int getVerticalPPI() {
-        return this.verticalPPI;
-    }
+	public int getVerticalPPI() {
+		return this.verticalPPI;
+	}
 
 }

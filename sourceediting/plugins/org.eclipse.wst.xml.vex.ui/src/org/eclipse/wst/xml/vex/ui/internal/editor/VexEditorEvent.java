@@ -17,18 +17,20 @@ import java.util.EventObject;
  */
 public class VexEditorEvent extends EventObject {
 
-    /**
-     * Class constructor.
-     * @param source VexEditor that originated this event.
-     */
-    public VexEditorEvent(VexEditor source) {
-        super(source);
-    }
-    
-    /**
-     * Returns the VexEditor that originated this event.
-     */
-    public VexEditor getVexEditor() {
-        return (VexEditor) this.getSource();
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param source
+	 *            VexEditor that originated this event.
+	 */
+	public VexEditorEvent(VexEditor source) {
+		super(source);
+	}
+
+	/**
+	 * Returns the VexEditor that originated this event.
+	 */
+	public VexEditor getVexEditor() {
+		return (VexEditor) this.getSource();
+	}
 }

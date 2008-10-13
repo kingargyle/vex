@@ -11,11 +11,11 @@
 package org.eclipse.wst.xml.vex.core.internal.core;
 
 /**
- * Wrapper for a toolkit-defined font. Fonts are system-defined resources.
- * They must be retrieved from the Graphics.createFont method, and must be
- * disposed when no longer needed.
+ * Wrapper for a toolkit-defined font. Fonts are system-defined resources. They
+ * must be retrieved from the Graphics.createFont method, and must be disposed
+ * when no longer needed.
  */
 public interface FontResource {
 
-    public void dispose();
+	public void dispose();
 }

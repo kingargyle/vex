@@ -15,15 +15,15 @@ package org.eclipse.wst.xml.vex.ui.internal.editor;
  */
 public interface IVexEditorListener {
 
-    /**
-     * Called after the editor has successfully loaded a document.
-     */
-    public void documentLoaded(VexEditorEvent event);
-    
-    /**
-     * Called before the editor unloads a document. Note that the editor may
-     * be disposing of the corresponding VexWidget, so any registered 
-     * listeners on the widget should unregister in this event. 
-     */
-    public void documentUnloaded(VexEditorEvent event);
+	/**
+	 * Called after the editor has successfully loaded a document.
+	 */
+	public void documentLoaded(VexEditorEvent event);
+
+	/**
+	 * Called before the editor unloads a document. Note that the editor may be
+	 * disposing of the corresponding VexWidget, so any registered listeners on
+	 * the widget should unregister in this event.
+	 */
+	public void documentUnloaded(VexEditorEvent event);
 }

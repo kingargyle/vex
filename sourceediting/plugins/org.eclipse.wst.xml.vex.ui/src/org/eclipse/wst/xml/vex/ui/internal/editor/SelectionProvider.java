@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.editor;
 
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -23,40 +22,43 @@ import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
  * relayed to registered listeners.
  */
 public class SelectionProvider implements ISelectionProvider,
-        ISelectionChangedListener {
+		ISelectionChangedListener {
 
-    public void addSelectionChangedListener(ISelectionChangedListener listener) {
-        this.listeners.add(listener);
-    }
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		this.listeners.add(listener);
+	}
 
-    /**
-     * Fire a SelectionChangedEvent to all registered listeners.
-     * @param e Event to be passed to the listeners' selectionChanged method.
-     */
-    public void fireSelectionChanged(SelectionChangedEvent e) {
-        this.selection = e.getSelection();
-        this.listeners.fireEvent("selectionChanged", e); //$NON-NLS-1$
-    }
-    
-    public ISelection getSelection() {
-        return this.selection;
-    }
+	/**
+	 * Fire a SelectionChangedEvent to all registered listeners.
+	 * 
+	 * @param e
+	 *            Event to be passed to the listeners' selectionChanged method.
+	 */
+	public void fireSelectionChanged(SelectionChangedEvent e) {
+		this.selection = e.getSelection();
+		this.listeners.fireEvent("selectionChanged", e); //$NON-NLS-1$
+	}
 
-    public void removeSelectionChangedListener(
-            ISelectionChangedListener listener) {
-        this.listeners.remove(listener);
-    }
+	public ISelection getSelection() {
+		return this.selection;
+	}
 
-    public void setSelection(ISelection selection) {
-        this.selection = selection;
-    }
+	public void removeSelectionChangedListener(
+			ISelectionChangedListener listener) {
+		this.listeners.remove(listener);
+	}
 
-    public void selectionChanged(SelectionChangedEvent event) {
-        this.fireSelectionChanged(event);
-    }
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
 
-    //===================================================== PRIVATE
+	public void selectionChanged(SelectionChangedEvent event) {
+		this.fireSelectionChanged(event);
+	}
 
-    ISelection selection;
-    private ListenerList listeners = new ListenerList(ISelectionChangedListener.class, SelectionChangedEvent.class);
+	// ===================================================== PRIVATE
+
+	ISelection selection;
+	private ListenerList listeners = new ListenerList(
+			ISelectionChangedListener.class, SelectionChangedEvent.class);
 }

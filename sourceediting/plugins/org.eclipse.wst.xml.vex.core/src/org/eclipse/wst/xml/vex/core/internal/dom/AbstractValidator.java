@@ -18,46 +18,41 @@ import java.util.List;
  */
 public abstract class AbstractValidator implements Validator {
 
-    
-    /**
-     * @see Validator#isValidSequence
-     */
-    public boolean isValidSequence(
-        String element,
-        String[] seq1,
-        String[] seq2,
-        String[] seq3,
-        boolean partial) {
-            
-        List list = new ArrayList();
-        for (int i = 0; i < seq1.length; i++) {
-            list.add(seq1[i]);
-        }
-        if (seq2 != null) {
-            for (int i = 0; i < seq2.length; i++) {
-                if (i == 0 && seq2[i].equals(Validator.PCDATA) && list.size() > 0
-                    && list.get(list.size() - 1).equals(Validator.PCDATA)) {
-                    // Avoid consecutive PCDATA's
-                    continue;
-                }
-                list.add(seq2[i]);
-            }
-        }
-        if (seq3 != null) {
-            for (int i = 0; i < seq3.length; i++) {
-                if (i == 0 && seq3[i].equals(Validator.PCDATA) && list.size() > 0
-                    && list.get(list.size() - 1).equals(Validator.PCDATA)) {
-                    // Avoid consecutive PCDATA's
-                    continue;
-                }
-                list.add(seq3[i]);
-            }
-        }
+	/**
+	 * @see Validator#isValidSequence
+	 */
+	public boolean isValidSequence(String element, String[] seq1,
+			String[] seq2, String[] seq3, boolean partial) {
 
-        String[] nodes = (String[]) list.toArray(new String[list.size()]);
-        return this.isValidSequence(element, nodes, partial);    
-    }
+		List list = new ArrayList();
+		for (int i = 0; i < seq1.length; i++) {
+			list.add(seq1[i]);
+		}
+		if (seq2 != null) {
+			for (int i = 0; i < seq2.length; i++) {
+				if (i == 0 && seq2[i].equals(Validator.PCDATA)
+						&& list.size() > 0
+						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
+					// Avoid consecutive PCDATA's
+					continue;
+				}
+				list.add(seq2[i]);
+			}
+		}
+		if (seq3 != null) {
+			for (int i = 0; i < seq3.length; i++) {
+				if (i == 0 && seq3[i].equals(Validator.PCDATA)
+						&& list.size() > 0
+						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
+					// Avoid consecutive PCDATA's
+					continue;
+				}
+				list.add(seq3[i]);
+			}
+		}
 
+		String[] nodes = (String[]) list.toArray(new String[list.size()]);
+		return this.isValidSequence(element, nodes, partial);
+	}
 
 }
-

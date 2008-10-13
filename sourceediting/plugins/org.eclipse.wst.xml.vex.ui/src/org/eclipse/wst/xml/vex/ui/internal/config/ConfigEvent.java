@@ -17,12 +17,14 @@ import java.util.EventObject;
  */
 public class ConfigEvent extends EventObject {
 
-    /**
-     * Class constructor.
-     * @param source Source of the event.
-     */
-    public ConfigEvent(Object source) {
-        super(source);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param source
+	 *            Source of the event.
+	 */
+	public ConfigEvent(Object source) {
+		super(source);
+	}
 
 }

@@ -17,57 +17,59 @@ import java.io.IOException;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 
-
 /**
- * Represents a selection of a Vex document, which can be viewed as plaintext
- * or as a document fragment.
+ * Represents a selection of a Vex document, which can be viewed as plaintext or
+ * as a document fragment.
  */
 public class VexSelection extends StringSelection {
 
-    /**
-     * DataFlavor representing a Vex document fragment. 
-     */
-    public static final DataFlavor VEX_DOCUMENT_FRAGMENT_FLAVOR =
-        new DataFlavor(DocumentFragment.class, DocumentFragment.MIME_TYPE);
+	/**
+	 * DataFlavor representing a Vex document fragment.
+	 */
+	public static final DataFlavor VEX_DOCUMENT_FRAGMENT_FLAVOR = new DataFlavor(
+			DocumentFragment.class, DocumentFragment.MIME_TYPE);
 
-    private DataFlavor[] flavors;        
-    private DocumentFragment frag;
-    
-    /**
-     * Class constructor.
-     * @param s String representing the selection.
-     * @param frag Document fragment representing the selection. 
-     */
-    public VexSelection(String s, DocumentFragment frag) {
-        super(s);
-        this.frag = frag;
-        
-        DataFlavor[] superFlavors = super.getTransferDataFlavors();
-        this.flavors = new DataFlavor[superFlavors.length + 1];
-        System.arraycopy(superFlavors, 0, this.flavors, 0, superFlavors.length);
-        this.flavors[this.flavors.length - 1] = VEX_DOCUMENT_FRAGMENT_FLAVOR;
-    }
+	private DataFlavor[] flavors;
+	private DocumentFragment frag;
 
-    public Object getTransferData(DataFlavor flavor)
-        throws UnsupportedFlavorException, IOException {
-            
-        if (flavor.equals(VEX_DOCUMENT_FRAGMENT_FLAVOR)) {
-            return this.frag;
-        } else {
-            return super.getTransferData(flavor);
-        }
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param s
+	 *            String representing the selection.
+	 * @param frag
+	 *            Document fragment representing the selection.
+	 */
+	public VexSelection(String s, DocumentFragment frag) {
+		super(s);
+		this.frag = frag;
 
-    public DataFlavor[] getTransferDataFlavors() {
-        return this.flavors;
-    }
+		DataFlavor[] superFlavors = super.getTransferDataFlavors();
+		this.flavors = new DataFlavor[superFlavors.length + 1];
+		System.arraycopy(superFlavors, 0, this.flavors, 0, superFlavors.length);
+		this.flavors[this.flavors.length - 1] = VEX_DOCUMENT_FRAGMENT_FLAVOR;
+	}
 
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
-        if (flavor.equals(VEX_DOCUMENT_FRAGMENT_FLAVOR)) {
-            return true;
-        } else {
-            return super.isDataFlavorSupported(flavor);
-        }
-    }
+	public Object getTransferData(DataFlavor flavor)
+			throws UnsupportedFlavorException, IOException {
+
+		if (flavor.equals(VEX_DOCUMENT_FRAGMENT_FLAVOR)) {
+			return this.frag;
+		} else {
+			return super.getTransferData(flavor);
+		}
+	}
+
+	public DataFlavor[] getTransferDataFlavors() {
+		return this.flavors;
+	}
+
+	public boolean isDataFlavorSupported(DataFlavor flavor) {
+		if (flavor.equals(VEX_DOCUMENT_FRAGMENT_FLAVOR)) {
+			return true;
+		} else {
+			return super.isDataFlavorSupported(flavor);
+		}
+	}
 
 }

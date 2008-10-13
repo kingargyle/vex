@@ -14,71 +14,75 @@ package org.eclipse.wst.xml.vex.core.internal.core;
  * Toolkit-independent insets.
  */
 public class Insets {
-    
-    private int top;
-    private int left;
-    private int bottom;
-    private int right;
 
-    /** Zero insets */
-    public static final Insets ZERO_INSETS = new Insets(0, 0, 0, 0);
-    
-    /**
-     * Class constructor.
-     * 
-     * @param top Top inset.
-     * @param left Left inset.
-     * @param bottom Bottom inset.
-     * @param right Right inset.
-     */
-    public Insets(int top, int left, int bottom, int right) {
-        this.top = top;
-        this.left = left;
-        this.bottom = bottom;
-        this.right = right;
-    }
+	private int top;
+	private int left;
+	private int bottom;
+	private int right;
 
-    /**
-     * @return Returns the top.
-     */
-    public int getTop() {
-        return top;
-    }
+	/** Zero insets */
+	public static final Insets ZERO_INSETS = new Insets(0, 0, 0, 0);
 
-    /**
-     * @return Returns the left.
-     */
-    public int getLeft() {
-        return left;
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param top
+	 *            Top inset.
+	 * @param left
+	 *            Left inset.
+	 * @param bottom
+	 *            Bottom inset.
+	 * @param right
+	 *            Right inset.
+	 */
+	public Insets(int top, int left, int bottom, int right) {
+		this.top = top;
+		this.left = left;
+		this.bottom = bottom;
+		this.right = right;
+	}
 
-    /**
-     * @return Returns the bottom.
-     */
-    public int getBottom() {
-        return bottom;
-    }
+	/**
+	 * @return Returns the top.
+	 */
+	public int getTop() {
+		return top;
+	}
 
-    /**
-     * Returns the right inset.
-     */
-    public int getRight() {
-        return right;
-    }
+	/**
+	 * @return Returns the left.
+	 */
+	public int getLeft() {
+		return left;
+	}
 
-    public String toString() {
-        StringBuffer sb = new StringBuffer(80);
-        sb.append(Insets.class.getName());
-        sb.append("[top=");
-        sb.append(this.getTop());
-        sb.append(",left=");
-        sb.append(this.getLeft());
-        sb.append(",bottom=");
-        sb.append(this.getBottom());
-        sb.append(",right=");
-        sb.append(this.getRight());
-        sb.append("]");
-        return sb.toString();
-    }
+	/**
+	 * @return Returns the bottom.
+	 */
+	public int getBottom() {
+		return bottom;
+	}
+
+	/**
+	 * Returns the right inset.
+	 */
+	public int getRight() {
+		return right;
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer(80);
+		sb.append(Insets.class.getName());
+		sb.append("[top=");
+		sb.append(this.getTop());
+		sb.append(",left=");
+		sb.append(this.getLeft());
+		sb.append(",bottom=");
+		sb.append(this.getBottom());
+		sb.append(",right=");
+		sb.append(this.getRight());
+		sb.append("]");
+		return sb.toString();
+	}
 
 }

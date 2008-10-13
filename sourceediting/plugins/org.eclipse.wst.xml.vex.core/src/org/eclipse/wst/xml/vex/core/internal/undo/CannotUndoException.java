@@ -15,35 +15,42 @@ package org.eclipse.wst.xml.vex.core.internal.undo;
  */
 public class CannotUndoException extends RuntimeException {
 
-    /**
-     * Class constructor. 
-     */
-    public CannotUndoException() {
-    }
+	/**
+	 * Class constructor.
+	 */
+	public CannotUndoException() {
+	}
 
-    /**
-     * Class constructor.
-     * @param message Message indicating the reason for the failure.
-     */
-    public CannotUndoException(String message) {
-        super(message);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param message
+	 *            Message indicating the reason for the failure.
+	 */
+	public CannotUndoException(String message) {
+		super(message);
+	}
 
-    /**
-     * Class constructor.
-     * @param cause Root cause of the failure.
-     */
-    public CannotUndoException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param cause
+	 *            Root cause of the failure.
+	 */
+	public CannotUndoException(Throwable cause) {
+		super(cause);
+	}
 
-    /**
-     * Class constructor.
-     * @param message Message indicating the reason for the failure.
-     * @param cause Root cause of the failure.
-     */
-    public CannotUndoException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Class constructor.
+	 * 
+	 * @param message
+	 *            Message indicating the reason for the failure.
+	 * @param cause
+	 *            Root cause of the failure.
+	 */
+	public CannotUndoException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

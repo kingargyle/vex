@@ -16,8 +16,8 @@ import junit.framework.TestCase;
  * Test the ResourceTracker class.
  */
 public class ResourceTrackerTest extends TestCase {
-    
-    public void testAll() throws Exception {
-        
-    }
+
+	public void testAll() throws Exception {
+
+	}
 }
