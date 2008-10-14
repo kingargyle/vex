@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * Class that owns the content assistant window, the popup where the user can

@@ -8,22 +8,12 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
-
-import org.eclipse.jface.action.IAction;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
+package org.eclipse.wst.xml.vex.ui.internal.swing;
 
 /**
- * Content assistant that shows valid elements to be inserted at the current
- * point.
+ * Marker interface for classes that represent selections passed to
+ * {@link SelectionListener}s.
  */
-public class InsertAssistant extends ContentAssistant {
+public interface Selection {
 
-	public IAction[] getActions(VexWidget vexWidget) {
-		return vexWidget.getValidInsertActions();
-	}
-
-	public String getTitle(VexWidget vexWidget) {
-		return Messages.getString("InsertAssistant.title"); //$NON-NLS-1$
-	}
 }

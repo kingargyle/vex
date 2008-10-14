@@ -10,22 +10,12 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
-
 /**
- * Displays the Change Element dialog.
+ * Inserts one or more table rows below the currently selected one(s).
  */
-public class ChangeElementAction implements IVexAction {
+public class InsertRowBelowAction extends InsertRowAction {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+	public InsertRowBelowAction() {
+		super(false);
 	}
-
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
-	}
-
 }

@@ -11,10 +11,10 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.wst.xml.vex.core.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
+import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * Adapts a JFace Action to an IVexAction instance. The ID and definition ID of

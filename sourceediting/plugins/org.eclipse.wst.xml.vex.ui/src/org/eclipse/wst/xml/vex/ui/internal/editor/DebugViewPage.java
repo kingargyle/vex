@@ -39,9 +39,9 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.HostComponent;
 import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetImpl;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * Page in the debug view.

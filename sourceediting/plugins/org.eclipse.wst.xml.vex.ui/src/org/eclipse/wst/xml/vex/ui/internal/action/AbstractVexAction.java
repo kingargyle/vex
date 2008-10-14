@@ -11,19 +11,22 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Displays the Change Element dialog.
+ * Abstract Vex action. This class provides default implementations for all
+ * methods in IVexAction except for <code>run</code>.
  */
-public class ChangeElementAction implements IVexAction {
+public abstract class AbstractVexAction implements IVexAction {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+	/**
+	 * Class constructor.
+	 */
+	public AbstractVexAction() {
 	}
 
+	/**
+	 * Returns <code>true</code>.
+	 */
 	public boolean isEnabled(IVexWidget vexWidget) {
 		return true;
 	}

@@ -8,24 +8,26 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.swt;
 
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
+import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 
 /**
- * Displays the Change Element dialog.
+ * Wrapper for the SWT Font class.
  */
-public class ChangeElementAction implements IVexAction {
+public class SwtFont implements FontResource {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+	private org.eclipse.swt.graphics.Font swtFont;
+
+	public SwtFont(org.eclipse.swt.graphics.Font swtFont) {
+		this.swtFont = swtFont;
 	}
 
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
+	org.eclipse.swt.graphics.Font getSwtFont() {
+		return this.swtFont;
 	}
 
+	public void dispose() {
+		this.swtFont.dispose();
+	}
 }

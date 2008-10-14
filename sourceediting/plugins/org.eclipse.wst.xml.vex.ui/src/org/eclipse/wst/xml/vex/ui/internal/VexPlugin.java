@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
-import org.eclipse.wst.xml.vex.core.internal.swt.SwtDisplayDevice;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob;
+import org.eclipse.wst.xml.vex.ui.internal.swt.SwtDisplayDevice;
 import org.osgi.framework.BundleContext;
 
 /**

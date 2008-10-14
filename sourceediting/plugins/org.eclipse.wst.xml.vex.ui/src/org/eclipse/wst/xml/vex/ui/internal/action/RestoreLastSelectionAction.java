@@ -11,21 +11,18 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Displays the Change Element dialog.
+ * Restore the selection to what it was before it last changed.
  */
-public class ChangeElementAction implements IVexAction {
+public class RestoreLastSelectionAction extends AbstractVexAction {
 
 	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+		throw new UnsupportedOperationException(
+				"RestoreLastSelectionAction is not yet implemented.");
 	}
 
 	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
+		return false;
 	}
-
 }

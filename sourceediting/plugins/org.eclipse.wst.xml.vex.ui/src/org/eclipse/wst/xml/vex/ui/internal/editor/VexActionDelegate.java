@@ -20,12 +20,12 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.wst.xml.vex.core.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.core.internal.action.RemoveElementAction;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.RemoveElementAction;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * An IWorkbenchWindowActionDelegate that defers to to an instance of

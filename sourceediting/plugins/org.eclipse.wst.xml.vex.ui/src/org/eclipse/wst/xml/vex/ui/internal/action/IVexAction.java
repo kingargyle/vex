@@ -11,21 +11,25 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Displays the Change Element dialog.
+ * Interface implemented by command objects that can act on a VexWidget.
  */
-public class ChangeElementAction implements IVexAction {
+public interface IVexAction {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
-	}
+	/**
+	 * Performs the action on the VexWidget.
+	 * 
+	 * @param vexWidget
+	 *            IVexWidget on which the action is to be performed.
+	 */
+	public void run(IVexWidget vexWidget);
 
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
-	}
-
+	/**
+	 * Returns true if the action is valid for the given VexWidget.
+	 * 
+	 * @param vexWidget
+	 *            IVexWidget against which to test validity.
+	 */
+	public boolean isEnabled(IVexWidget vexWidget);
 }

@@ -11,21 +11,19 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Displays the Change Element dialog.
+ * Paste the clipboard contents into the document as plain text, ignoring any
+ * markup.
  */
-public class ChangeElementAction implements IVexAction {
+public class PasteTextAction extends AbstractVexAction {
 
 	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+		throw new UnsupportedOperationException(
+				"PasteTextAction is not yet implemented.");
 	}
 
 	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
+		return false;
 	}
-
 }

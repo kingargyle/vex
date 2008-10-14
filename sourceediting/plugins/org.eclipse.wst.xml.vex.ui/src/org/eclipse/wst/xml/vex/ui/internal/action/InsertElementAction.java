@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
-import org.eclipse.wst.xml.vex.core.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
+import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
 import org.eclipse.wst.xml.vex.ui.internal.editor.InsertAssistant;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * @author john

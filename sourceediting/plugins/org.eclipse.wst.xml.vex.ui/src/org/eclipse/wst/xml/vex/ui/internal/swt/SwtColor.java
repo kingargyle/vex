@@ -8,24 +8,26 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.swt;
 
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.editor.MorphAssistant;
-import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
+import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 
 /**
- * Displays the Change Element dialog.
+ * Wrapper for the SWT Color class.
  */
-public class ChangeElementAction implements IVexAction {
+public class SwtColor implements ColorResource {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
+	private org.eclipse.swt.graphics.Color swtColor;
+
+	public SwtColor(org.eclipse.swt.graphics.Color swtColor) {
+		this.swtColor = swtColor;
 	}
 
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
+	org.eclipse.swt.graphics.Color getSwtColor() {
+		return this.swtColor;
 	}
 
+	public void dispose() {
+		this.swtColor.dispose();
+	}
 }

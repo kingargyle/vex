@@ -13,7 +13,7 @@ package org.eclipse.wst.xml.vex.ui.internal.editor;
 import java.text.MessageFormat;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * Content assistant that shows valid elements to be inserted at the current

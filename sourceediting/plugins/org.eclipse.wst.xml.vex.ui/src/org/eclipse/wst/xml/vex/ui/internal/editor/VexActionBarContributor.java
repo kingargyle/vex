@@ -26,23 +26,23 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.eclipse.wst.xml.vex.core.internal.action.ActionUtils;
-import org.eclipse.wst.xml.vex.core.internal.action.DeleteColumnAction;
-import org.eclipse.wst.xml.vex.core.internal.action.DeleteRowAction;
-import org.eclipse.wst.xml.vex.core.internal.action.InsertColumnAfterAction;
-import org.eclipse.wst.xml.vex.core.internal.action.InsertColumnBeforeAction;
-import org.eclipse.wst.xml.vex.core.internal.action.InsertRowAboveAction;
-import org.eclipse.wst.xml.vex.core.internal.action.InsertRowBelowAction;
-import org.eclipse.wst.xml.vex.core.internal.action.MoveColumnLeftAction;
-import org.eclipse.wst.xml.vex.core.internal.action.MoveColumnRightAction;
-import org.eclipse.wst.xml.vex.core.internal.action.MoveRowDownAction;
-import org.eclipse.wst.xml.vex.core.internal.action.MoveRowUpAction;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.swt.VexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
+import org.eclipse.wst.xml.vex.ui.internal.action.ActionUtils;
+import org.eclipse.wst.xml.vex.ui.internal.action.DeleteColumnAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.DeleteRowAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnAfterAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnBeforeAction;
 import org.eclipse.wst.xml.vex.ui.internal.action.InsertElementAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowAboveAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowBelowAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnLeftAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnRightAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowDownAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowUpAction;
 import org.eclipse.wst.xml.vex.ui.internal.action.VexActionAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
  * Contribute actions on behalf of the VexEditor.
