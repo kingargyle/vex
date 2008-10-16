@@ -645,8 +645,10 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		if (beforeInlines != null) {
 			pendingInlines.addAll(beforeInlines);
 		}
+		
+		Document document = context.getDocument();
 
-		Element element = context.getDocument().findCommonElement(startOffset,
+		Element element = document.findCommonElement(startOffset,
 				endOffset);
 
 		if (startOffset == endOffset) {

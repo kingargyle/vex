@@ -12,10 +12,29 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
@@ -26,6 +45,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestPlugin;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -33,7 +53,90 @@ import org.xml.sax.XMLReader;
 /**
  * Test the SpaceNormalizer class.
  */
+@SuppressWarnings("restriction")
 public class SpaceNormalizerTest extends TestCase {
+
+	protected static IProject fTestProject;
+	private static boolean fTestProjectInitialized;
+	private static final String TEST_PROJECT_NAME = "testproject";
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		DisplayDevice.setCurrent(new MockDisplayDevice(90, 90));
+
+		if (!fTestProjectInitialized) {
+			getAndCreateProject();
+
+			Enumeration<String> e = Platform.getBundle(
+					VEXCoreTestPlugin.PLUGIN_ID).getEntryPaths("/projectFiles");
+			while (e.hasMoreElements()) {
+				String path = e.nextElement();
+				URL url = Platform.getBundle(VEXCoreTestPlugin.PLUGIN_ID)
+						.getEntry(path);
+				if (!url.getFile().endsWith("/")) {
+					url = FileLocator.resolve(url);
+					path = path.substring("projectfiles".length());
+					IFile destFile = fTestProject.getFile(path);
+					System.out.println(destFile.getLocation() + " --> "
+							+ url.toExternalForm());
+					destFile.createLink(url.toURI(), IResource.REPLACE,
+							new NullProgressMonitor());
+				}
+			}
+			fTestProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+			fTestProjectInitialized = true;
+		}
+	}
+
+	protected IFile getFile(String path) {
+		return fTestProject.getFile(new Path(path));
+	}
+
+	private static void getAndCreateProject() throws CoreException {
+		IWorkspace workspace = getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+		fTestProject = root.getProject(TEST_PROJECT_NAME);
+
+		createProject(fTestProject, null, null);
+		fTestProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+		assertTrue(fTestProject.exists());
+	}
+
+	private static void createProject(IProject project, IPath locationPath,
+			IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+		monitor.beginTask("creating test project", 10);
+		// create the project
+		try {
+			if (!project.exists()) {
+				IProjectDescription desc = project.getWorkspace()
+						.newProjectDescription(project.getName());
+				if (Platform.getLocation().equals(locationPath)) {
+					locationPath = null;
+				}
+				desc.setLocation(locationPath);
+				project.create(desc, monitor);
+				monitor = null;
+			}
+			if (!project.isOpen()) {
+				project.open(monitor);
+				monitor = null;
+			}
+		} finally {
+			if (monitor != null) {
+				monitor.done();
+			}
+		}
+	}
+
+	/**
+	 * Returns the workspace instance.
+	 */
+	public static IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
+	}
 
 	/**
 	 * Test the normalize method. Test cases are as follows.
@@ -58,14 +161,9 @@ public class SpaceNormalizerTest extends TestCase {
 				+ "<block>\n\t foo<block>bar</block>baz \n\t</block>"
 				+ "\n\t </doc>";
 
-		StyleSheetReader reader = new StyleSheetReader();
-		StyleSheet ss = reader.read(this.getClass().getResource("test.css"));
+		StyleSheet ss = getStyleSheet();
 
 		Document doc = createDocument(input, ss);
-
-		// SpaceNormalizer norm = new SpaceNormalizer(ss);
-		// norm.normalize(doc);
-
 		Element element;
 
 		element = doc.getRootElement();
@@ -98,24 +196,64 @@ public class SpaceNormalizerTest extends TestCase {
 		c2 = children[3].getChildElements();
 		assertContent(c2[0], new String[] { "bar" });
 
+	}
+
+	public void testPreNormalize1() throws ParserConfigurationException,
+			SAXException, IOException {
 		// ========= Now test with a PRE element =========
 
-		input = "<doc>\n\t  "
-				+ "<pre>\n\t foo\n\t <inline>\n\t foo\n\t bar\n \t</inline>\n\t baz\n\t </pre>\n\t "
-				+ "\n\t </doc>";
+		String input = "<doc>\n " + "<pre>\n foo\n</pre>\n " + "\n </doc>";
 
-		doc = createDocument(input, ss);
+		Document doc = createDocument(input, getStyleSheet());
 
-		element = doc.getRootElement();
+		Element element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
 		Element pre = element.getChildElements()[0];
-		assertContent(pre, new String[] { "\n\t foo\n\t ", "<inline>",
-				"\n\t baz\n\t " });
+		assertContent(pre, new String[] { "\n foo\n" });
+	}
+
+	public void testPreNormalize2() throws Exception {
+		// ========= Now test with a PRE element =========
+
+		String input = "<doc>\n "
+				+ "<pre>\n foo\n <inline>\n foo\n bar\n </inline></pre>\n "
+				+ "\n </doc>";
+
+		Document doc = createDocument(input, getStyleSheet());
+
+		Element element = doc.getRootElement();
+		Element pre = element.getChildElements()[0];
+		Element inline = pre.getChildElements()[0];
+		assertContent(inline, new String[] { "\n foo\n bar\n " });
+	}
+
+	public void testPreElementNormalize() throws ParserConfigurationException,
+			SAXException, IOException {
+		// ========= Now test with a PRE element =========
+
+		String input = "<doc>\n  "
+				+ "<pre>\n\t foo\n\t <inline>\n\t foo\n\t bar\n\t </inline>\n\t baz\n\t </pre>\n "
+				+ "\n </doc>";
+
+		Document doc = createDocument(input, getStyleSheet());
+
+		Element element = doc.getRootElement();
+		assertContent(element, new String[] { "<pre>" });
+
+		Element pre = element.getChildElements()[0];
+		assertContent(pre,
+				new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
 
 		Element inline = pre.getChildElements()[0];
-		assertContent(inline, new String[] { "\n\t foo\n\t bar\n \t" });
+		assertContent(inline, new String[] { "\n\t foo\n\t bar\n\t " });
+	}
 
+	private StyleSheet getStyleSheet() throws IOException {
+		StyleSheetReader reader = new StyleSheetReader();
+		URL url = getFile("test.css").getLocationURI().toURL();
+		StyleSheet ss = reader.read(url);
+		return ss;
 	}
 
 	// ========================================================= PRIVATE
@@ -137,7 +275,8 @@ public class SpaceNormalizerTest extends TestCase {
 				assertEquals(name, ((Element) content[i]).getName());
 			} else {
 				assertTrue(content[i] instanceof Text);
-				assertEquals(strings[i], content[i].getText());
+				String contentText = content[i].getText();
+				assertEquals(strings[i], contentText);
 			}
 		}
 	}
@@ -159,15 +298,6 @@ public class SpaceNormalizerTest extends TestCase {
 
 		InputSource is = new InputSource(new ByteArrayInputStream(s.getBytes()));
 		xmlReader.setContentHandler(builder);
-		// xmlReader.setDTDHandler(defaultHandler);
-		// xmlReader.setEntityResolver(new EntityResolver() {
-		// public InputSource resolveEntity(String publicId, String systemId)
-		// throws SAXException, IOException {
-		// System.out.println("resolveEntity called");
-		// return new InputSource(new ByteArrayInputStream(DTD.getBytes()));
-		// }
-		// });
-		// xmlReader.setErrorHandler(defaultHandler);
 		xmlReader.parse(is);
 		return builder.getDocument();
 	}

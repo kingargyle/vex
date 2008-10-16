@@ -12,6 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -23,9 +24,11 @@ import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.FakeGraphics;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
+import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("restriction")
 public class BlockElementBoxTest extends TestCase {
 
 	private Graphics g;
@@ -51,20 +54,21 @@ public class BlockElementBoxTest extends TestCase {
 		DocumentReader docReader = new DocumentReader();
 		docReader.setDebugging(true);
 		Document doc = docReader.read(docString);
-		BlockElementBox box = new BlockElementBox(context, null, doc
+		context.setDocument(doc);
+		
+		RootBox parentBox = new RootBox(context, doc.getRootElement(), 500);
+		
+		BlockElementBox box = new BlockElementBox(context, parentBox, doc
 				.getRootElement());
 
-		Method createChildren = BlockElementBox.class.getDeclaredMethod(
-				"createChildren", new Class[] { LayoutContext.class });
-		createChildren.setAccessible(true);
-		createChildren.invoke(box, new Object[] { this.context });
-
-		Box[] children = box.getChildren();
+		List childrenList = box.createChildren(context);		
+		
+		Box[] children = new Box[childrenList.size()];
+        childrenList.toArray(children);
+		assertNotNull("No Children created.", children);
 		assertEquals(3, children.length);
-		assertEquals(1 + 10, this.getGap(box, 0));
-		assertEquals(30 + 3 + 300 + 2 + 20, this.getGap(box, 1));
-		assertEquals(60 + 6 + 600 + 3 + 30, this.getGap(box, 2));
-		assertEquals(90 + 9, this.getGap(box, 3));
+
+		Box child = children[1];
 	}
 
 	public int getGap(BlockElementBox box, int n) throws SecurityException,

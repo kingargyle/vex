@@ -60,9 +60,10 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		System.arraycopy(ch, start, chars, 0, length);
 		for (int i = 0; i < chars.length; i++) {
 			if (Character.isISOControl(chars[i]) && chars[i] != '\n'
-					&& chars[i] != '\r') {
+					&& chars[i] != '\r' && chars[i] != '\t') {
 				chars[i] = ' ';
 			}
+			
 		}
 		this.pendingChars.append(chars);
 	}

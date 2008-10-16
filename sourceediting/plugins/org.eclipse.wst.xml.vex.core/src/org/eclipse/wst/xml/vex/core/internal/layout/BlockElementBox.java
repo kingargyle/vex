@@ -119,7 +119,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	 * Lays out the children as vertically stacked blocks. Runs of text and
 	 * inline elements are wrapped in DummyBlockBox's.
 	 */
-	protected List createChildren(LayoutContext context) {
+	public List createChildren(LayoutContext context) {
 
 		long start = 0;
 		if (VEXCorePlugin.getInstance().isDebugging()) {
