@@ -35,6 +35,7 @@ public class TextWrapper {
 	 * @param s
 	 *            Text to be added.
 	 */
+	@SuppressWarnings("unchecked")
 	public void add(String s) {
 		int i = 0;
 		int j = 0;
@@ -53,12 +54,15 @@ public class TextWrapper {
 				thisIsWhite = true;
 			}
 
-			if (lastIsWhite)
+			if (lastIsWhite || parts.size() == 0) {
 				this.parts.add(s.substring(i, j));
-			else
+			}
+			else if (parts.size() > 0) { 
+				
 				this.parts.add(((String) this.parts
 						.remove(this.parts.size() - 1))
 						+ s.substring(i, j));
+			} 
 			i = j;
 			lastIsWhite = thisIsWhite;
 		}
