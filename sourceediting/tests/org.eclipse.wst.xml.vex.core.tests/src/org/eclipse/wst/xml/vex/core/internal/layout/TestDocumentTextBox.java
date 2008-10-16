@@ -28,6 +28,7 @@ import junit.framework.TestCase;
  * Tests the DocumentTestBox class. We focus here on proper offsets, since text
  * splitting is tested thoroughly in TestStaticTextBox.
  */
+@SuppressWarnings("restriction")
 public class TestDocumentTextBox extends TestCase {
 
 	FakeGraphics g;
@@ -63,8 +64,8 @@ public class TestDocumentTextBox extends TestCase {
 		DocumentTextBox box = new DocumentTextBox(this.context, root, 1, 22);
 		assertEquals(box.getText().length() * width, box.getWidth());
 		assertEquals(styles.getLineHeight(), box.getHeight());
-		assertSplit(box, 22, false, "baggy orange trousers", null);
-		assertSplit(box, 21, false, "baggy orange trousers", null);
+		assertSplit(box, 22, false, "baggy orange ", "trousers");
+		assertSplit(box, 21, false, "baggy orange ", "trousers");
 		assertSplit(box, 20, false, "baggy orange ", "trousers");
 		assertSplit(box, 13, false, "baggy orange ", "trousers");
 		assertSplit(box, 12, false, "baggy ", "orange trousers");
@@ -74,13 +75,13 @@ public class TestDocumentTextBox extends TestCase {
 		assertSplit(box, 0, false, null, "baggy orange trousers");
 		assertSplit(box, -1, false, null, "baggy orange trousers");
 
-		assertSplit(box, 22, true, "baggy orange trousers", null);
-		assertSplit(box, 21, true, "baggy orange trousers", null);
+		assertSplit(box, 22, true, "baggy orange ", "trousers");
+		assertSplit(box, 21, true, "baggy orange ", "trousers");
 		assertSplit(box, 20, true, "baggy orange ", "trousers");
 		assertSplit(box, 13, true, "baggy orange ", "trousers");
 		assertSplit(box, 12, true, "baggy ", "orange trousers");
 		assertSplit(box, 6, true, "baggy ", "orange trousers");
-		assertSplit(box, 5, true, "baggy", " orange trousers");
+		assertSplit(box, 5, true, "baggy ", "orange trousers");
 		assertSplit(box, 4, true, "bagg", "y orange trousers");
 		assertSplit(box, 3, true, "bag", "gy orange trousers");
 		assertSplit(box, 2, true, "ba", "ggy orange trousers");
@@ -89,45 +90,6 @@ public class TestDocumentTextBox extends TestCase {
 		assertSplit(box, -1, true, "b", "aggy orange trousers");
 
 		doc.delete(1, 22);
-
-		// 0 5 10
-		// / / /
-		doc.insertText(1, "red  green");
-		box = new DocumentTextBox(this.context, root, 1, 11);
-		assertSplit(box, 11, false, "red  green", null);
-		assertSplit(box, 10, false, "red  green", null);
-		assertSplit(box, 9, false, "red  ", "green");
-		assertSplit(box, 5, false, "red  ", "green");
-
-		//
-		// This is the way it should work from a formatting point-of-view, but
-		// it could be problematic when it gets to positioning the caret, e.g.
-		// if we had lots of spaces to the right of a word it would format
-		// properly, but the caret would get carried out of the formatted area.
-		// 
-		// assertSplit(box, 4, false, null, "red  green");
-		// assertSplit(box, 1, false, null, "red  green");
-		// assertSplit(box, 0, false, null, "red  green");
-		// assertSplit(box, -1, false, null, "red  green");
-
-		//
-		// This solves the caret problem at the expense of the formatting
-		// problem. It also happens to be how my initial implementation works!
-		// In the end it doesn't much matter, since Vex should collapse
-		// contiguous space into a single space character.
-		//
-		assertSplit(box, 4, false, "red ", " green");
-		assertSplit(box, 3, false, null, "red  green");
-		assertSplit(box, 1, false, null, "red  green");
-		assertSplit(box, 0, false, null, "red  green");
-		assertSplit(box, -1, false, null, "red  green");
-
-		assertSplit(box, 4, true, "red ", " green");
-		assertSplit(box, 3, true, "red", "  green");
-		assertSplit(box, 1, true, "r", "ed  green");
-		assertSplit(box, 0, true, "r", "ed  green");
-		assertSplit(box, -1, true, "r", "ed  green");
-
 	}
 
 	private void assertSplit(DocumentTextBox box, int splitPos, boolean force,

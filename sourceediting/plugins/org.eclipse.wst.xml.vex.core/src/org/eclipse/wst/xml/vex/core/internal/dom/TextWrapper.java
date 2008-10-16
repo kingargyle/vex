@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     David Carver unit tests fixes
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
