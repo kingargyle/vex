@@ -43,7 +43,7 @@ public class TestBlockElementBox extends TestCase {
 		this.context.setGraphics(this.g);
 		this.context.setStyleSheet(ss);
 	}
-
+ 
 	public void testBeforeAfter() throws Exception {
 		RootElement root = new RootElement("root");
 		Document doc = new Document(root);
