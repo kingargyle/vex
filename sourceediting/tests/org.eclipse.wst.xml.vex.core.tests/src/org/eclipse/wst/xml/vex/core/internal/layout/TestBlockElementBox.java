@@ -25,6 +25,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("restriction")
 public class TestBlockElementBox extends TestCase {
 
 	FakeGraphics g;
@@ -47,6 +48,7 @@ public class TestBlockElementBox extends TestCase {
 		RootElement root = new RootElement("root");
 		Document doc = new Document(root);
 		doc.insertElement(1, new Element("beforeBlock"));
+		context.setDocument(doc);
 
 		RootBox rootBox = new RootBox(this.context, root, 500);
 		rootBox.layout(this.context, 0, Integer.MAX_VALUE);
@@ -61,10 +63,9 @@ public class TestBlockElementBox extends TestCase {
 		assertEquals(root, beb.getElement());
 
 		children = beb.getChildren();
-		assertEquals(2, children.length);
-		assertEquals(BlockPseudoElementBox.class, children[0].getClass());
-		assertEquals(BlockElementBox.class, children[1].getClass());
-		beb = (BlockElementBox) children[1];
+		assertEquals(1, children.length);
+		assertEquals(BlockElementBox.class, children[0].getClass());
+		beb = (BlockElementBox) children[0];
 		assertEquals("beforeBlock", beb.getElement().getName());
 
 	}

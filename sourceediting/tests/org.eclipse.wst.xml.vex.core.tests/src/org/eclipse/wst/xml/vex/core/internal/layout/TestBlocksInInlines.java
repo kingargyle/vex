@@ -12,6 +12,8 @@ package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import java.net.URL;
 
+import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
@@ -32,6 +34,12 @@ public class TestBlocksInInlines extends TestCase {
 	FakeGraphics g;
 	LayoutContext context;
 
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		DisplayDevice.setCurrent(new MockDisplayDevice(90, 90));
+	}
+	
 	public TestBlocksInInlines() throws Exception {
 		URL url = this.getClass().getResource("test.css");
 		StyleSheetReader reader = new StyleSheetReader();
@@ -48,6 +56,7 @@ public class TestBlocksInInlines extends TestCase {
 	public void testBlockInInline() throws Exception {
 		RootElement root = new RootElement("root");
 		Document doc = new Document(root);
+		context.setDocument(doc);
 
 		doc.insertText(1, "one  five");
 		doc.insertElement(5, new Element("b"));
