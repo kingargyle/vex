@@ -501,7 +501,7 @@ public class VexEditor extends EditorPart {
 		super.setInput(input);
 		this.setPartName(input.getName());
 		this.setContentDescription(input.getName());
-		this.setTitleToolTip(input.getToolTipText());
+		//this.setTitleToolTip(input.getToolTipText());
 	}
 
 	public void setStatus(String text) {

@@ -53,7 +53,7 @@ public class VexActionAdapter extends Action {
 		this.setId(id);
 		this.setActionDefinitionId(id);
 		this.setText(Messages.getString(key + ".label")); //$NON-NLS-1$
-		this.setToolTipText(Messages.getString(key + ".tooltip")); //$NON-NLS-1$
+		//this.setToolTipText(Messages.getString(key + ".tooltip")); //$NON-NLS-1$
 	}
 
 	public void run() {
