@@ -16,6 +16,7 @@ import org.eclipse.wst.xml.vex.ui.internal.editor.Association;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("restriction")
 public class AssociationTest extends TestCase {
 
 	public void testAddRemove() throws Exception {
