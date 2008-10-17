@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Concepts" link_to="toc.xml#concepts"> 
+  <topic label="Editing Documents" href="html/concepts/editing.html"> 
+    <topic label="Inserting Elements" href="html/concepts/inserting.html" /> 
+    <topic label="Selection" href="html/concepts/selection.html" /> 
+    <topic label="Unwrapping and Morphing" href="html/concepts/unwrap-morph.html" /> 
+    <topic label="Splits and Joins" href="html/concepts/split-join.html" /> 
+  </topic> 
+  <topic label="Extending Vex"  href="html/concepts/extending.html"/> 
+</toc>

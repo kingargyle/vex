@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Selection</title>
+  </head>
+  <body>
+    <h1>Selection</h1>
+    <p>The act of selecting a block of text to replace or to surround 
+    with an element is performed the same in Vex as in most word 
+    processors: by moving the caret while holding the <b>Shift</b> key 
+    or by dragging the mouse between two positions. The main difference 
+    is that in some cases, Vex will expand the selection so that it 
+    does not span only a portion of an element.</p>
+    <p>To see this in action, place the caret in the middle of an 
+    inline element containing some text. While holding the <b>Shift</b> 
+    key, move the caret towards the end of the element. As the caret 
+    passes the end marker for the element, note that the starting point 
+    of the selection jumps to the start of the element. If you move the 
+    caret back inside the element (while still holding <b>Shift</b>), 
+    you'll notice that the start of the selection jumps back to its 
+    original place.</p>
+    <p>When a block element is selected, Vex draws an outline around 
+    the entire block, showing the element name in the lower right 
+    corner. This allows you to see that the entire element is selected 
+    rather than just its contents.</p>
+    <p>This selection behaviour is Vex's way of preserving the 
+    structure of the document. It is based on the assumption that 
+    normally you want to manage entire elements.</p>
+  </body>
+</html>

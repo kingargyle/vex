@@ -1,0 +1,61 @@
+<?xml version='1.0'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+  <head>
+
+    <title>Creating a New Document Type</title>
+
+  </head>
+
+  <body>
+
+    <h1>Registering a DTD</h1>
+
+    <p>You can register a new document type with Vex if you have a DTD 
+    file describing the document structure.</p>
+
+    <ol>
+
+      <li>If necessary, <a href="create-plugin-project.html">create a 
+      plug-in project</a> to contain your DTD.</li>
+
+      <li>Copy the DTD file and any related files to a directory in the 
+      plug-in project. If you copy these files outside of Eclipse, you 
+      may have to refresh the workspace in Eclipse by right-clicking 
+      the project in the Navigator and selecting <b>Refresh</b> from 
+      the context menu.</li>
+
+      <li>In the Navigator, right-click the DTD file and select 
+      <b>Properties</b>.</li>
+
+      <li>Select the Vex Document Type property page and provide a 
+      Name, Public ID, and System ID to use for this document type. You 
+      may optionally select which elements in the DTD may be used for 
+      document root elements when done. Click OK when done.</li>
+
+    </ol>
+
+    <p>You can confirm that your DTD file was successfully registered 
+    by checking out the <a href="show-configuration-view.html">Vex 
+    Configuration view</a>.</p>
+
+    <p>Note that you must also <a href="register-css.html">register a 
+    CSS stylesheet</a> and bind it to your new document type before you 
+    can edit documents with the type.</p>
+
+    <h5>Related Tasks</h5>
+
+    <ul>
+
+      <li><a href="create-plugin-project.html">Creating a Plug-in 
+      Project</a></li>
+
+      <li><a href="register-css.html">Registering a CSS file</a></li>
+
+    </ul>
+
+  </body>
+
+</html>
+

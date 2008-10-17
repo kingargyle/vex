@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Tasks" link_to="toc.xml#tasks"> 
+  <topic label="Creating a Plug-in Project"  href="html/tasks/create-plugin-project.html"/> 
+  <topic label="Registering a DTD"  href="html/tasks/register-dtd.html"/> 
+  <topic label="Registering a CSS Stylesheet"  href="html/tasks/register-css.html"/> 
+  <topic label="Displaying the Vex Configuration View"  href="html/tasks/show-configuration-view.html"/> 
+</toc>
