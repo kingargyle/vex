@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.views;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +22,8 @@ import org.eclipse.ui.part.IPageBookViewPage;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * A view that shows stats about the current Vex editor as a debugging aid.

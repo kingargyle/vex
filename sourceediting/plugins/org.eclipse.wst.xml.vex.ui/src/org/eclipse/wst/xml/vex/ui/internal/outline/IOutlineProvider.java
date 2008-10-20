@@ -8,11 +8,12 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.outline;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * Implemented by objects that can provide a document outline.

@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.core.internal.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -122,6 +122,7 @@
 
       </actionSet>
    </extension>
+  <!--
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -133,6 +134,25 @@
             id="org.eclipse.wst.xml.vex.ui.VexEditor">
       </editor>
    </extension>
+   -->
+   
+   	<extension point="org.eclipse.ui.editors">
+		<editor
+			name="%VexEditor.name"
+			icon="$nl$/vex16.gif"
+			contributorClass="org.eclipse.wst.xml.vex.ui.internal.action.VexActionBarContributor"
+			class="org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart"
+			symbolicFontName="org.eclipse.wst.sse.ui.textfont"
+			id="org.eclipse.wst.xml.vex.ui.VexEditor">
+			<contentTypeBinding
+				contentTypeId="org.eclipse.core.runtime.xml" />
+			<contentTypeBinding
+				contentTypeId="org.eclipse.wst.xml.core.xmlsource" />
+
+		</editor>
+	</extension>
+   
+   
    <extension
          point="org.eclipse.ui.newWizards">
       <category
@@ -143,7 +163,7 @@
             name="%NewDocumentWizard.name"
             icon="$nl$/vex16.gif"
             category="org.eclipse.wst.xml.vex.ui.NewWizardCategory"
-            class="org.eclipse.wst.xml.vex.ui.internal.editor.NewDocumentWizard"
+            class="org.eclipse.wst.xml.vex.ui.internal.wizards.NewDocumentWizard"
             id="org.eclipse.wst.xml.vex.ui.NewDocumentWizard">
          <description>%NewDocumentWizard.desc</description>
       </wizard>
@@ -153,7 +173,7 @@
       <perspective
             name="%DocumentPerspective.name"
             icon="$nl$/vex16.gif"
-            class="org.eclipse.wst.xml.vex.ui.internal.editor.DocumentPerspective"
+            class="org.eclipse.wst.xml.vex.ui.internal.perspective.DocumentPerspective"
             id="org.eclipse.wst.xml.vex.ui.DocumentPerspective">
       </perspective>
    </extension>
@@ -283,7 +303,7 @@
             name="%DebugView.name"
             icon="$nl$/vex16.gif"
             category="org.eclipse.wst.xml.vex.ui.views.VexViewCategory"
-            class="org.eclipse.wst.xml.vex.ui.internal.editor.DebugView"
+            class="org.eclipse.wst.xml.vex.ui.internal.views.DebugView"
             id="org.eclipse.wst.xml.vex.ui.views.debug">
       </view>
    </extension>

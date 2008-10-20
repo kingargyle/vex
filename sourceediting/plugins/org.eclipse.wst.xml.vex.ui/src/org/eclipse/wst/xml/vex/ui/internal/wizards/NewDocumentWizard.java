@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,6 +36,10 @@ import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
+import org.eclipse.wst.xml.vex.ui.internal.editor.DocumentFileCreationPage;
+import org.eclipse.wst.xml.vex.ui.internal.editor.DocumentTypeSelectionPage;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * Wizard for creating a new Vex document.

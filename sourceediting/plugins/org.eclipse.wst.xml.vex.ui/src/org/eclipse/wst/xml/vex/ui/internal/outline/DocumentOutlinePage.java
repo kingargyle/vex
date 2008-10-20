@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.outline;
 
 import java.text.MessageFormat;
 
@@ -31,6 +31,11 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
+import org.eclipse.wst.xml.vex.ui.internal.editor.IVexEditorListener;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
+import org.eclipse.wst.xml.vex.ui.internal.editor.SelectionProvider;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditorEvent;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 import org.osgi.framework.Bundle;
 

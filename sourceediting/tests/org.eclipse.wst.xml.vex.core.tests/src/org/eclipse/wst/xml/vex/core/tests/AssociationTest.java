@@ -8,11 +8,11 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.tests;
+package org.eclipse.wst.xml.vex.core.tests;
 
 import java.util.Collection;
 
-import org.eclipse.wst.xml.vex.ui.internal.editor.Association;
+import org.eclipse.wst.xml.vex.core.internal.util.Association;
 
 import junit.framework.TestCase;
 

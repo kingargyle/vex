@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.property;
 
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -19,6 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 
 /**
  * Property source that treats element attributes as properties.

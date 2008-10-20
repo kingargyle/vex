@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.views;
 
 import java.lang.reflect.Field;
 
@@ -41,6 +41,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.widget.HostComponent;
 import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetImpl;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**

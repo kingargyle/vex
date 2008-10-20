@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.editor;
+package org.eclipse.wst.xml.vex.ui.internal.outline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * Default implementation of IOutlineProvider. Simply displays all block-level

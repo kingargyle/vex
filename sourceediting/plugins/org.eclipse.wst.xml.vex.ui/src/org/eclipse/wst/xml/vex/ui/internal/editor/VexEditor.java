@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -62,6 +63,9 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
@@ -98,6 +102,8 @@ import org.eclipse.wst.xml.vex.ui.internal.config.ConfigRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
+import org.eclipse.wst.xml.vex.ui.internal.outline.DocumentOutlinePage;
+import org.eclipse.wst.xml.vex.ui.internal.property.ElementPropertySource;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -632,12 +638,12 @@ public class VexEditor extends EditorPart {
 		gd.verticalAlignment = GridData.FILL;
 		this.vexWidget.setLayoutData(gd);
 
-		VexActionBarContributor contributor = (VexActionBarContributor) this
-				.getEditorSite().getActionBarContributor();
-
-		MenuManager menuMgr = contributor.getContextMenuManager();
-		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
-		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
+//		VexActionBarContributor contributor = (VexActionBarContributor) this
+//				.getEditorSite().getActionBarContributor();
+//
+//		MenuManager menuMgr = contributor.getContextMenuManager();
+//		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
+//		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
 
 		this.savedUndoDepth = this.vexWidget.getUndoDepth();
 
@@ -1054,4 +1060,26 @@ public class VexEditor extends EditorPart {
 		}
 	}
 
+	public void setDocument(IDocument document) {
+		/*
+		 * let the text editor to be the one that manages the model's lifetime
+		 */
+		IStructuredModel model = null;
+		try {
+			model = StructuredModelManager.getModelManager().getExistingModelForRead(document);
+
+			if ((model != null) && (model instanceof IDOMModel)) {
+				org.w3c.dom.Document domDoc = null;
+				domDoc = ((IDOMModel) model).getDocument();
+			}
+			else {
+			}
+		}
+		finally {
+			if (model != null) {
+				model.releaseFromRead();
+			}
+		}
+	}
+	
 }
