@@ -63,6 +63,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
+import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
@@ -111,17 +112,18 @@ import org.xml.sax.SAXParseException;
 /**
  * Editor for editing XML file using the VexWidget.
  */
-public class VexEditor extends EditorPart {
+public class VexEditorMultiPage extends VexEditor {
 
 	/**
 	 * ID of this editor extension.
 	 */
-	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.editor.VexEditorMultiPage"; //$NON-NLS-1$
+	private org.w3c.dom.Document domDoc = null;
 
 	/**
 	 * Class constructor.
 	 */
-	public VexEditor() {
+	public VexEditorMultiPage() {
 		this.debugging = VexPlugin.getInstance().isDebugging()
 				&& "true".equalsIgnoreCase(Platform.getDebugOption(VexPlugin.ID + "/debug/layout")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -324,7 +326,7 @@ public class VexEditor extends EditorPart {
 
 		if (this.vexWidget != null) {
 			this.vexEditorListeners.fireEvent(
-					"documentUnloaded", new VexEditorEvent(this)); //$NON-NLS-1$
+					"documentUnloaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
 		}
 
 		this.loaded = false;
@@ -353,12 +355,12 @@ public class VexEditor extends EditorPart {
 
 			URL url = inputPath.toFile().toURL();
 
-			DocumentReader reader = new DocumentReader();
+			DOMDocumentReader reader = new DOMDocumentReader();
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
-			this.doctype = null;
-			this.doc = reader.read(url);
+			doctype = null;
+			doc = reader.read(domDoc);
 
 			if (this.debugging) {
 				long end = System.currentTimeMillis();
@@ -397,7 +399,7 @@ public class VexEditor extends EditorPart {
 			this.wasDirty = isDirty();
 
 			this.vexEditorListeners.fireEvent(
-					"documentLoaded", new VexEditorEvent(this)); //$NON-NLS-1$
+					"documentLoaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
 
 		} catch (SAXParseException ex) {
 
@@ -634,12 +636,12 @@ public class VexEditor extends EditorPart {
 		gd.verticalAlignment = GridData.FILL;
 		this.vexWidget.setLayoutData(gd);
 
-		VexActionBarContributor contributor = (VexActionBarContributor) this
-				.getEditorSite().getActionBarContributor();
-
-		MenuManager menuMgr = contributor.getContextMenuManager();
-		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
-		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
+//		VexActionBarContributor contributor = (VexActionBarContributor) this
+//				.getEditorSite().getActionBarContributor();
+//
+//		MenuManager menuMgr = contributor.getContextMenuManager();
+//		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
+//		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
 
 		this.savedUndoDepth = this.vexWidget.getUndoDepth();
 
@@ -647,106 +649,6 @@ public class VexEditor extends EditorPart {
 		IContextService cs = (IContextService) this.getSite().getService(
 				IContextService.class);
 		cs.activateContext("org.eclipse.wst.xml.vex.ui.VexEditorContext");
-
-		IHandlerService hs = (IHandlerService) this.getSite().getService(
-				IHandlerService.class);
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.ChangeElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new ChangeElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.DeleteColumnAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DeleteColumnAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.DeleteRowAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DeleteRowAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DuplicateSelectionAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertColumnAfterAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertColumnAfterAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertColumnBeforeAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertColumnBeforeAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.editor.action.InsertElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertRowAboveAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertRowAboveAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertRowBelowAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertRowBelowAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveColumnLeftAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveColumnLeftAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveColumnRightAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveColumnRightAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveRowDownAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveRowDownAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.MoveRowUpAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveRowUpAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.NextTableCellAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new NextTableCellAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.PasteTextAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new PasteTextAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.PreviousTableCellAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new PreviousTableCellAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.RemoveElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new RemoveElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.RestoreLastSelectionAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new RestoreLastSelectionAction())));
-
-		hs
-				.activateHandler(
-						"org.eclipse.wst.xml.vex.ui.action.SplitAction",
-						new ActionHandler(new VexActionAdapter(this,
-								new SplitAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.SplitItemAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new SplitItemAction())));
 
 		this.vexWidget.addSelectionChangedListener(this.selectionProvider);
 
@@ -932,7 +834,7 @@ public class VexEditor extends EditorPart {
 				}
 			}
 
-			style = VexEditor.findStyleForDoctype(doctype.getPublicId());
+			style = VexEditorMultiPage.findStyleForDoctype(doctype.getPublicId());
 			if (style == null) {
 				throw new NoStyleForDoctypeException(doctype);
 			}
@@ -1054,6 +956,14 @@ public class VexEditor extends EditorPart {
 		} else {
 			return super.getAdapter(adapter);
 		}
+	}
+
+	public org.w3c.dom.Document getDomDoc() {
+		return domDoc;
+	}
+
+	public void setDomDoc(org.w3c.dom.Document domDoc) {
+		this.domDoc = domDoc;
 	}
 
 }

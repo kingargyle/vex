@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.editor;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -29,9 +29,20 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
+import org.eclipse.wst.xml.vex.ui.internal.action.ActionUtils;
+import org.eclipse.wst.xml.vex.ui.internal.action.DeleteColumnAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.DeleteRowAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnAfterAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnBeforeAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertElementAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowAboveAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowBelowAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnLeftAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnRightAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowDownAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowUpAction;
+import org.eclipse.wst.xml.vex.ui.internal.action.VexActionAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
-import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**

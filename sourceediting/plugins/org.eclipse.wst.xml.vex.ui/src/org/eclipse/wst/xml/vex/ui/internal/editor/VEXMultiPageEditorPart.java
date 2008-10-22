@@ -4,26 +4,31 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
+import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeViewer;
 
 public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 
 	private StructuredTextEditor textEditor = null;
-	private VexEditor vexEditor = null;
+	private VexEditorMultiPage vexEditor = null;
 	private int sourcePageIndex;
 	private int visualPageIndex;
+	private IDOMDocument modelDocument;
 	
 	protected void createPages() {
 		try {
-			createVisualEditorPage();
 			createSourcePage();
-
-			addVisualEditorPage();
+			createVisualEditorPage();
 			addSourcePage();
-			vexEditor.setDocument(getDocument());
-			setActivePage(visualPageIndex);
+			addVisualEditorPage();
+			setActivePage(sourcePageIndex);
+
 		} catch (PartInitException e) {
 			Logger.logException(e);
 			throw new RuntimeException(e);
@@ -37,7 +42,7 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 	}
 	
 	private void createVisualEditorPage() {
-		vexEditor = new VexEditor();
+		vexEditor = new VexEditorMultiPage();
 	}
 	
 	/**
@@ -46,7 +51,7 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 	private void addSourcePage() throws PartInitException {
 		sourcePageIndex = addPage(textEditor, getEditorInput());
 		setPageText(sourcePageIndex, XMLEditorMessages.XMLMultiPageEditorPart_0);
-
+		vexEditor.setDomDoc(modelDocument);
 		firePropertyChange(PROP_TITLE);
 
 		// Changes to the Text Viewer's document instance should also
@@ -78,5 +83,18 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 			document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
 		}
 		return document;
-	}	
+	}
+	
+	private void setDOMDocument(IDocument document) {
+	    IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForRead(getDocument());
+	    IDOMDocument modelDocument = null;
+	    try {
+	      if (model instanceof IDOMModel) {
+	        modelDocument = ((IDOMModel)model).getDocument();
+	      }
+	    } finally {
+	      if (model != null)
+	        model.releaseFromRead();
+	    }
+	}
 }
