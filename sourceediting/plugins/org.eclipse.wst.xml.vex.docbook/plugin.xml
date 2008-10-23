@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="docbook4_5"
+         name="%doctype.docbook4_5"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            dtd="4.5/docbookx.dtd"
+            outlineProvider="org.eclipse.wst.xml.vex.docbook.DocBookOutlineProvider"
+            publicId="-//OASIS//DTD DocBook XML V4.5//EN"
+            systemId="http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+            
+         <rootElement
+               name="article">
+         </rootElement>
+         <rootElement
+               name="appendix">
+         </rootElement>
+         <rootElement
+               name="book">
+         </rootElement>
+         <rootElement
+               name="chapter">
+         </rootElement>
+         <rootElement
+               name="sect1">
+         </rootElement>
+         <rootElement
+               name="sect2">
+         </rootElement>
+         <rootElement
+               name="sect3">
+         </rootElement>
+         <rootElement
+               name="sect4">
+         </rootElement>
+         <rootElement
+               name="sect5">
+         </rootElement>
+         <rootElement
+               name="section">
+         </rootElement>
+      </doctype>
+   </extension>
+   <extension
+         id="sdocbook1_1"
+         name="%doctype.sdocbook1_1"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            dtd="s1.1/sdocbook.dtd"
+            outlineProvider="org.eclipse.wst.xml.vex.docbook.DocBookOutlineProvider"
+            publicId="-//OASIS//DTD Simplified DocBook XML V1.1//EN"
+            systemId="http://www.oasis-open.org/docbook/xml/simple/1.1/sdocbook.dtd">
+         <rootElement
+               name="article">
+         </rootElement>
+         <rootElement
+               name="appendix">
+         </rootElement>
+         <rootElement
+               name="sect1">
+         </rootElement>
+         <rootElement
+               name="sect2">
+         </rootElement>
+         <rootElement
+               name="sect3">
+         </rootElement>
+         <rootElement
+               name="sect4">
+         </rootElement>
+         <rootElement
+               name="sect5">
+         </rootElement>
+         <rootElement
+               name="section">
+         </rootElement>
+            </doctype>
+   </extension>
+   <extension
+         id="docbook-plain"
+         name="%style.docbook-plain"
+         point="org.eclipse.wst.xml.vex.ui.styles">
+      <style
+            css="styles/docbook-plain.css">
+         <doctypeRef publicId="-//OASIS//DTD Simplified DocBook XML V1.1//EN"/>
+         <doctypeRef publicId="-//OASIS//DTD DocBook XML V4.5//EN"/>
+      </style>
+   </extension>
+
+</plugin>

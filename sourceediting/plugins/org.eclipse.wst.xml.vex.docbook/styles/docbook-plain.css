@@ -1,0 +1,939 @@
+abbrev {
+	display: inline;
+}
+
+abstract {
+	font-style: italic;
+	margin-left: 0.5in;
+	margin-right: 0.5in;
+	display: block;
+	padding: 6px;
+}
+
+acronym {
+	display: inline;
+}
+
+address {
+	display: block;
+}
+
+affiliation {
+	display: block;
+	margin-left: 10px;
+}
+
+appendix {
+	display: block;
+}
+
+article,book {
+	font-family: "Times New Roman", serif;
+	font-size: 16px;
+	display: block;
+	margin: .25in;
+}
+
+articleinfo {
+	border: 1px solid #669;
+	color: #669;
+	display: block;
+	font: 12px Verdana, sans-serif;
+	margin-bottom: .25in;
+	padding: 3px;
+}
+
+articleinfo:before {
+	background-color: #669;
+	color: white;
+	content: 'Article Info';
+	font-weight: bold;
+	display: block;
+	padding: 3px;
+}
+
+articleinfo>title:before {
+	content: "Title: ";
+	font-weight: bold;
+}
+
+articleinfo email {
+	display: block;
+}
+
+articleinfo email:before {
+	content: "Email: ";
+	font-weight: bold;
+}
+
+attribution {
+	display: block;
+	font-style: italic;
+	text-align: right;
+}
+
+attribution:before {
+	content: '-- ';
+}
+
+audiodata {
+	display: inline;
+}
+
+audioobject {
+	display: inline;
+}
+
+author {
+	display: block;
+}
+
+author:before {
+	content: 'Author: ';
+	font-weight: bold;
+}
+
+authorblurb {
+	display: block;
+}
+
+authorgroup {
+	display: block;
+}
+
+authorinitials {
+	display: inline;
+}
+
+bibliodiv {
+	display: block;
+}
+
+bibliography {
+	display: block;
+}
+
+bibliomisc {
+	display: inline;
+}
+
+bibliomixed {
+	display: block;
+}
+
+bibliomset {
+	display: block;
+}
+
+blockquote {
+	display: block;
+	margin-left: 0.5in;
+	margin-right: 0.5in;
+}
+
+bookinfo {
+	border: 1px solid #669;
+	color: #669;
+	display: block;
+	font: 10pt Verdana, sans-serif;
+	margin-bottom: .25in;
+	padding: 3px;
+}
+
+bookinfo:before {
+	background-color: #669;
+	color: white;
+	content: 'Book Info';
+	font-weight: bold;
+	display: block;
+	padding: 3px;
+}
+
+bookinfo>title:before {
+	content: "Title: ";
+	font-weight: bold;
+}
+
+bookinfo email {
+	display: block;
+}
+
+bookinfo email:before {
+	content: "Email: ";
+	font-weight: bold;
+}
+
+caption {
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+}
+
+caution,important,note,tip,warning {
+	border-width: 2px;
+	border-style: solid;
+	display: block;
+	padding: 3px;
+	margin: 3px;
+}
+
+caution {
+	border-color: yellow;
+	color: yellow;
+}
+
+caution:before,important:before,note:before,tip:before,warning:before {
+	font-size: larger;
+	font-weight: bold;
+	display: block
+}
+
+caution:before {
+	content: 'CAUTION';
+	color: yellow;
+}
+
+chapter {
+	display: block;
+}
+
+citetitle {
+	display: inline;
+	font-style: italic;
+}
+
+colspec {
+	display: inline;
+}
+
+command {
+	color: #008;
+	display: inline;
+	font: smaller "Courier New", monospace;
+}
+
+computeroutput {
+	display: inline;
+	font: smaller "Courier New", monospace;
+}
+
+copyright {
+	display: inline;
+}
+
+copyright:before {
+	content: 'Copyright (c) ';
+}
+
+corpauthor {
+	display: block;
+}
+
+corpauthor:before {
+	content: 'Corporate Author: ';
+	font-weight: bold;
+}
+
+date {
+	display: inline;
+}
+
+bookinfo>date:before {
+	content: 'Date: ';
+	font-weight: bold;
+}
+
+edition {
+	display: inline;
+}
+
+editor {
+	display: inline;
+}
+
+email {
+	display: inline;
+	font-style: italic;
+}
+
+emphasis {
+	display: inline;
+	font-style: italic;
+}
+
+entry {
+	display: table-cell;
+}
+
+entrytbl {
+	display: table;
+}
+
+epigraph {
+	font-style: italic;
+	display: block;
+	margin-left: 0.5in;
+}
+
+example {
+	display: block;
+}
+
+example title {
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+}
+
+example title:before {
+	content: 'Example: ';
+}
+
+figure {
+	display: block;
+}
+
+figure title {
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+}
+
+figure title:before {
+	content: 'Figure: ';
+}
+
+filename {
+	display: inline;
+	font: bold smaller "Courier New", monospace;
+}
+
+firstname {
+	display: inline;
+}
+
+footnote {
+	display: inline;
+}
+
+glossary {
+	display: block;
+}
+
+glossaryinfo {
+	display: block;
+}
+
+glossdef {
+	display: block;
+	margin: 20px 60px;
+}
+
+glossdiv,glosssee {
+	display: block;
+}
+
+glossentry {
+	display: block;
+}
+
+glosssee:before {
+	content: 'See ';
+	display: block;
+	font-style: italic;
+}
+
+glossseealso {
+	display: block;
+}
+
+glossseealso:before {
+	content: 'See also ';
+	display: block;
+	font-style: italic;
+}
+
+glossterm {
+	display: inline;
+	font-style: italic;
+}
+
+glossentry>glossterm {
+	display: block;
+	font-style: normal;
+	font-weight: bold;
+	margin: 20px 0;
+}
+
+holder {
+	display: inline;
+}
+
+honorific {
+	display: inline;
+}
+
+imagedata {
+	display: inline;
+}
+
+imageobject {
+	display: inline;
+}
+
+important {
+	border-color: green;
+	color: green;
+}
+
+important:before {
+	content: 'IMPORTANT';
+	color: green;
+}
+
+informalexample {
+	display: block;
+}
+
+informaltable {
+	display: table;
+}
+
+inlinemediaobject {
+	display: inline;
+}
+
+isbn {
+	display: inline;
+}
+
+issn {
+	display: inline;
+}
+
+issuenum {
+	display: inline;
+}
+
+itemizedlist {
+	display: block;
+	list-style-type: disc;
+	margin-left: 1em;
+}
+
+itemizedlist itemizedlist {
+	list-style-type: circle;
+}
+
+itemizedlist itemizedlist itemizedlist {
+	list-style-type: square;
+}
+
+itermset {
+	display: block;
+}
+
+itermset:before {
+	content: "Index Terms: ";
+	display: inline;
+	font-weight: bold;
+}
+
+keyword {
+	display: inline;
+}
+
+keywordset {
+	display: block;
+}
+
+keywordset:before {
+	content: "Keywords: ";
+	display: inline;
+	font-weight: bold;
+}
+
+legalnotice {
+	display: block;
+}
+
+legalnotice:before {
+	content: "Legal Notice:";
+	display: inline;
+	font-weight: bold;
+}
+
+lineage {
+	display: inline;
+}
+
+lineannotation {
+	display: inline;
+}
+
+link {
+	display: inline;
+}
+
+listitem {
+	display: list-item;
+	margin-left: 1em;
+}
+
+literal {
+	font-family: Courier;
+	display: inline;
+}
+
+literallayout {
+	display: inline;
+}
+
+mediaobject {
+	display: inline;
+}
+
+member {
+	display: inline;
+}
+
+note {
+	border-color: blue;
+	color: blue;
+}
+
+note:before {
+	content: 'NOTE';
+	color: blue;
+}
+
+objectinfo {
+	display: inline;
+}
+
+option {
+	display: inline;
+}
+
+orderedlist {
+	display: block;
+	list-style-type: decimal;
+	margin-left: 1em;
+}
+
+orderedlist orderedlist {
+	list-style-type: lower-alpha;
+}
+
+orderedlist orderedlist orderedlist {
+	list-style-type: lower-roman;
+}
+
+otheraddr {
+	display: inline;
+}
+
+othercredit {
+	display: inline;
+}
+
+othername {
+	display: inline;
+}
+
+pagenums {
+	display: inline;
+}
+
+para {
+	display: block;
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+part {
+	display: block;
+}
+
+phone {
+	display: inline;
+}
+
+phrase {
+	display: inline;
+}
+
+pob {
+	display: inline;
+}
+
+postcode {
+	display: inline;
+}
+
+preface {
+	display: block;
+}
+
+printhistory {
+	display: inline;
+}
+
+procedure {
+	display: inline;
+}
+
+programlisting {
+	background-color: #ffd;
+	border: 1px solid black;
+	font: smaller "Courier New", monospace;
+	display: block;
+	padding: 3px;
+	white-space: pre;
+}
+
+prompt {
+	font-weight: bold;
+	display: inline;
+}
+
+pubdate {
+	display: block;
+}
+
+pubdate:before {
+	content: "Publication Date: ";
+	font-weight: bold;
+}
+
+publisher {
+	display: inline;
+}
+
+publishername {
+	display: inline;
+}
+
+qandaentry {
+	display: block;
+}
+
+qandaset {
+	display: block;
+}
+
+question {
+	display: block;
+	font-weight: bold;
+}
+
+answer {
+	display: block;
+	margin-left: 30px;
+}
+
+quote {
+	display: inline;
+}
+
+releaseinfo {
+	display: block;
+}
+
+releaseinfo:before {
+	content: "Release Info: ";
+	font-weight: bold;
+}
+
+replaceable {
+	display: inline;
+	font-family: "Times New Roman", serif;
+	font-style: italic;
+	font-weight: normal;
+}
+
+revhistory {
+	background-color: #669;
+	border-spacing: 1px;
+	font-size: smaller;
+	display: table;
+	margin: 10px;
+}
+
+revhistory:before {
+	content: "Revision History:";
+	font-weight: bold;
+}
+
+revision {
+	display: table-row;
+}
+
+revision>* {
+	background-color: white;
+	padding: 3px;
+}
+
+revnumber {
+	display: table-cell;
+}
+
+revremark,revdescription {
+	display: table-cell;
+}
+
+revision>author,revision>authorinitials {
+	display: table-cell;
+}
+
+row {
+	display: table-row;
+}
+
+screen {
+	background-color: #ccc;
+	border-left: 2px solid black;
+	font: smaller "Courier New", monospace;
+	display: block;
+	padding: 3px;
+	white-space: pre;
+}
+
+section,sect1,sect2,sect3,sect4,sect5 {
+	display: block;
+	margin-left: 18px;
+}
+
+sectioninfo {
+	display: none;
+}
+
+sidebar {
+	display: block;
+}
+
+simplelist {
+	display: inline;
+}
+
+state {
+	display: inline;
+}
+
+step {
+	display: inline;
+}
+
+street {
+	display: inline;
+}
+
+substeps {
+	display: inline;
+}
+
+subtitle {
+	font: bold 16pt Arial, sans-serif;
+	display: block;
+	margin-bottom: 16px;
+	text-align: center;
+}
+
+surname {
+	display: inline;
+}
+
+systemitem {
+	display: inline;
+}
+
+tbody {
+	display: table-row-group;
+}
+
+term {
+	display: block;
+}
+
+textobject {
+	display: inline;
+}
+
+tgroup { /* display: table; */
+	display: block;
+}
+
+thead {
+	display: table-row-group;
+}
+
+tip {
+	border-color: silver;
+	color: silver;
+}
+
+tip:before {
+	content: 'TIP';
+	color: silver;
+}
+
+title {
+	display: block;
+}
+
+article>title {
+	font: bold 20pt Arial, sans-serif;
+	display: block;
+	margin-top: .7in;
+	margin-bottom: 16px;
+	text-align: center;
+	padding-bottom: 6px;
+	border-bottom: 2px solid black;
+}
+
+book>preface>title,book>part>title {
+	font: bold 20pt Arial, sans-serif;
+	display: block;
+	margin-top: .7in;
+	margin-bottom: 16px;
+	text-align: center;
+	padding-bottom: 6px;
+}
+
+appendix>title,section>title,sect1>title,chapter>title,glossary>title,glossary>glossaryinfo>title
+	{
+	font: bold 16pt Arial, sans-serif;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	display: block;
+	text-align: left;
+}
+
+appendix>title:before {
+	content: 'Appendix: ';
+}
+
+appendix>section>title,section>section>title,sect2>title,glossdiv>title
+	{
+	font: italic bold 14pt Arial, sans-serif;
+	display: block;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	text-align: left;
+}
+
+appendix>section>section>title,section>section>section>title,sect3>title
+	{
+	font: bold 12pt Arial, sans-serif;
+	display: block;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	text-align: left;
+}
+
+appendix>section>section>section>title,section>section>section>section>title,sect4>title
+	{
+	font: italic bold 12pt Arial, sans-serif;
+	display: block;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	text-align: left;
+}
+
+appendix>section>section>section>section>title,section>section>section>section>section>title,sect5>title
+	{
+	font: bold 10pt Arial, sans-serif;
+	display: block;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	text-align: left;
+}
+
+appendix>section>section>section>section>section>title,section>section>section>section>section>section>title,sect6>title
+	{
+	font: bold 10pt Arial, sans-serif;
+	display: block;
+	margin-top: .25in;
+	margin-bottom: .1in;
+	text-align: left;
+}
+
+caution>title,important>title,note>title,tip>title,warning>title {
+	display: block;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+	text-align: left;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+titleabbrev {
+	display: none;
+}
+
+trademark {
+	display: inline;
+}
+
+ulink {
+	border-bottom: 1px solid blue;
+	color: blue;
+	display: inline;
+}
+
+userinput {
+	display: inline;
+}
+
+variablelist {
+	display: block;
+	margin-left: 1em;
+	list-style-type: none;
+}
+
+varlistentry {
+	display: block;
+	margin-left: 1em;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+varlistentry listitem {
+	margin-left: 3em;
+}
+
+videodata {
+	display: inline;
+}
+
+videoobject {
+	display: inline;
+}
+
+volumenum {
+	display: inline;
+}
+
+warning {
+	border: 2px solid red;
+	display: block;
+	color: red;
+	padding: 3px;
+}
+
+warning:before {
+	content: 'WARNING';
+	font-size: larger;
+	font-weight: bold;
+	color: red;
+	display: block
+}
+
+xref {
+	display: inline;
+}
+
+year {
+	display: inline;
+}
