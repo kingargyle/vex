@@ -1,7 +1,0 @@
-<project default="build">
-
-  <target name="build">
-    <xslt style="toc.xsl" in="toc.xml" out="toc.html" />
-  </target>
-
-</project>
