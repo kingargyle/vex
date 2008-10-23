@@ -4,8 +4,8 @@ Bundle-Name: %plugin.name
 Bundle-Version: 0.5.0.qualifier
 Bundle-Vendor: Eclipse
 Bundle-SymbolicName: org.eclipse.wst.xml.vex.core;singleton:=true
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
  org.w3c.css.sac;bundle-version="[1.3.0,2.0.0)",
  org.apache.xerces;bundle-version="[2.9.0,3.0.0)",
  org.eclipse.wst.sse.core;bundle-version="[1.1.400,2.0.0)",
