@@ -13,6 +13,8 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 /**
  * Interface for classes that manage a string of characters representing the
  * content of a document.
+ * 
+ * @model
  */
 public interface Content {
 
@@ -21,6 +23,7 @@ public interface Content {
 	 * 
 	 * @param offset
 	 *            initial offset of the position
+	 * @model
 	 */
 	public Position createPosition(int offset);
 
@@ -31,6 +34,7 @@ public interface Content {
 	 *            Offset at which to insert the string.
 	 * @param s
 	 *            String to insert.
+	 * @model
 	 */
 	public void insertString(int offset, String s);
 
@@ -41,6 +45,7 @@ public interface Content {
 	 *            Offset from which characters should be deleted.
 	 * @param length
 	 *            Number of characters to delete.
+	 * @model
 	 */
 	public void remove(int offset, int length);
 
@@ -51,11 +56,14 @@ public interface Content {
 	 *            Offset at which the string begins.
 	 * @param length
 	 *            Number of characters to return.
+	 * @model
 	 */
 	public String getString(int offset, int length);
 
 	/**
 	 * Return the length of the content.
+	 * 
+	 * @model
 	 */
 	public int getLength();
 }

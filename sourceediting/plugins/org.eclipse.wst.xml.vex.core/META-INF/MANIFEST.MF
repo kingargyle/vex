@@ -26,3 +26,4 @@ Bundle-ClassPath: lib/dtdparser120.jar,
   lib/flute.jar,
  .
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

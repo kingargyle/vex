@@ -19,6 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * A box that wraps inline content into a paragraph.
@@ -60,7 +61,7 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 	 *            width to which the paragraph is to be wrapped
 	 * @return
 	 */
-	public static ParagraphBox create(LayoutContext context, Element element,
+	public static ParagraphBox create(LayoutContext context, IVEXElement element,
 			List inlines, int width) {
 		InlineBox[] array = (InlineBox[]) inlines.toArray(new InlineBox[inlines
 				.size()]);
@@ -73,14 +74,14 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 	 * @param context
 	 *            LayoutContext used for this layout
 	 * @param element
-	 *            Element that controls the styling of this paragraph, in
+	 *            IVEXElement that controls the styling of this paragraph, in
 	 *            particular text alignment.
 	 * @param inlines
 	 *            Array of InlineBox objects to be wrapped.
 	 * @param width
 	 *            width to which the paragraph is to be wrapped.
 	 */
-	public static ParagraphBox create(LayoutContext context, Element element,
+	public static ParagraphBox create(LayoutContext context, IVEXElement element,
 			InlineBox[] inlines, int width) {
 
 		// lines is the list of LineBoxes we are creating

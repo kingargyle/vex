@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
@@ -22,11 +23,11 @@ public class RemoveElementAction extends AbstractVexAction {
 	public void run(final IVexWidget vexWidget) {
 		vexWidget.doWork(new Runnable() {
 			public void run() {
-				Element element = vexWidget.getDocument().getElementAt(
+				IVEXElement element = vexWidget.getDocument().getElementAt(
 						vexWidget.getCaretOffset());
 				vexWidget.moveTo(element.getStartOffset() + 1, false);
 				vexWidget.moveTo(element.getEndOffset(), true);
-				DocumentFragment frag = vexWidget.getSelectedFragment();
+				IVEXDocumentFragment frag = vexWidget.getSelectedFragment();
 				vexWidget.deleteSelection();
 				vexWidget.moveBy(-1, false);
 				vexWidget.moveBy(2, true);

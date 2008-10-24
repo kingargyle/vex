@@ -16,9 +16,10 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.Node;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.ElementOrRangeCallback;
@@ -134,7 +135,7 @@ public class ActionUtils {
 	 */
 	public static int getCurrentColumnIndex(IVexWidget vexWidget) {
 
-		Element row = getCurrentTableRow(vexWidget);
+		IVEXElement row = getCurrentTableRow(vexWidget);
 
 		if (row == null) {
 			return -1;
@@ -154,7 +155,7 @@ public class ActionUtils {
 						i++;
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						i++;
 					}
@@ -170,10 +171,10 @@ public class ActionUtils {
 	 * @param vexWidget
 	 *            IVexWidget to use.
 	 */
-	public static Element getCurrentTableRow(IVexWidget vexWidget) {
+	public static IVEXElement getCurrentTableRow(IVexWidget vexWidget) {
 
 		StyleSheet ss = vexWidget.getStyleSheet();
-		Element element = vexWidget.getCurrentElement();
+		IVEXElement element = vexWidget.getCurrentElement();
 
 		while (element != null) {
 			if (ss.getStyles(element).getDisplay().equals(CSS.TABLE_ROW)) {
@@ -212,10 +213,10 @@ public class ActionUtils {
 		}
 
 		int previousSiblingStart = -1;
-		Element parent = vexWidget.getDocument().getElementAt(startOffset);
-		Node[] children = parent.getChildNodes();
+		IVEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
+		IVEXNode[] children = parent.getChildNodes();
 		for (int i = 0; i < children.length; i++) {
-			Node child = children[i];
+			IVEXNode child = children[i];
 			if (startOffset == child.getStartOffset()) {
 				break;
 			}
@@ -335,7 +336,7 @@ public class ActionUtils {
 								cellIndex++;
 							}
 
-							public void onRange(Element parent,
+							public void onRange(IVEXElement parent,
 									int startOffset, int endOffset) {
 								callback.onCell(row, new IntRange(startOffset,
 										endOffset), rowIndex[0], cellIndex);
@@ -348,7 +349,7 @@ public class ActionUtils {
 				rowIndex[0]++;
 			}
 
-			public void onRange(Element parent, final int startOffset,
+			public void onRange(IVEXElement parent, final int startOffset,
 					final int endOffset) {
 
 				final IntRange row = new IntRange(startOffset, endOffset);
@@ -365,7 +366,7 @@ public class ActionUtils {
 								cellIndex++;
 							}
 
-							public void onRange(Element parent,
+							public void onRange(IVEXElement parent,
 									int startOffset, int endOffset) {
 								callback.onCell(row, new IntRange(startOffset,
 										endOffset), rowIndex[0], cellIndex);
@@ -449,13 +450,13 @@ public class ActionUtils {
 			ElementOrRangeCallback callback) {
 
 		final StyleSheet ss = vexWidget.getStyleSheet();
-		final Document doc = vexWidget.getDocument();
+		final IVEXDocument doc = vexWidget.getDocument();
 		final int offset = vexWidget.getCaretOffset();
 
 		// This may or may not be a table
 		// In any case, it's the element that contains the top-level table
 		// children
-		Element table = doc.getElementAt(offset);
+		IVEXElement table = doc.getElementAt(offset);
 
 		while (table != null && !LayoutUtils.isTableChild(ss, table)) {
 			table = table.getParent();
@@ -482,7 +483,7 @@ public class ActionUtils {
 						tableChildren.add(child);
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						if (!found[0]) {
 							tableChildren.clear();

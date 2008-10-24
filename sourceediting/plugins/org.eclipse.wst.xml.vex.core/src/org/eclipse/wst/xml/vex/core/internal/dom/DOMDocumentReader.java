@@ -64,7 +64,7 @@ public class DOMDocumentReader {
 	 * @param url
 	 *            URL from which to load the document.
 	 */
-	public Document read(org.w3c.dom.Document domDocument) throws IOException,
+	public IVEXDocument read(org.w3c.dom.Document domDocument) throws IOException,
 			ParserConfigurationException, SAXException {
 		DOMInputSource domIS = new DOMInputSource((org.w3c.dom.Node)domDocument.getDocumentElement());
 		Reader reader = domIS.getCharacterStream();
@@ -78,7 +78,7 @@ public class DOMDocumentReader {
 	 * @param s
 	 *            String containing the document to be read.
 	 */
-	public Document read(String s) throws IOException,
+	public IVEXDocument read(String s) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		Reader reader = new CharArrayReader(s.toCharArray());
@@ -91,7 +91,7 @@ public class DOMDocumentReader {
 	 * @param is
 	 *            SAX InputSource from which to load the document.
 	 */
-	public Document read(InputSource is) throws IOException,
+	public IVEXDocument read(InputSource is) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();

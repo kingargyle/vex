@@ -21,8 +21,9 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
  * Represents an XML document.
+ * 
  */
-public class Document {
+public class Document implements IVEXDocument {
 
 	private Content content;
 	private RootElement rootElement;
@@ -64,33 +65,23 @@ public class Document {
 		this.rootElement = rootElement;
 	}
 
-	/**
-	 * Adds a document listener to the list of listeners to be notified of
-	 * document changes.
-	 * 
-	 * @param listener
-	 *            <code>DocumentListener</code> to add.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#addDocumentListener(org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener)
 	 */
 	public void addDocumentListener(DocumentListener listener) {
 		this.listeners.add(listener);
 	}
 
-	/**
-	 * Returns true if the given document fragment can be inserted at the given
-	 * offset.
-	 * 
-	 * @param offset
-	 *            offset where the insertion is to occur
-	 * @param fragment
-	 *            fragment to be inserted
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#canInsertFragment(int, org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment)
 	 */
-	public boolean canInsertFragment(int offset, DocumentFragment fragment) {
+	public boolean canInsertFragment(int offset, IVEXDocumentFragment fragment) {
 
 		if (this.validator == null) {
 			return true;
 		}
 
-		Element element = this.getElementAt(offset);
+		IVEXElement element = this.getElementAt(offset);
 		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
 		String[] seq2 = fragment.getNodeNames();
 		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
@@ -98,11 +89,8 @@ public class Document {
 				seq3, true);
 	}
 
-	/**
-	 * Returns true if text can be inserted at the given offset.
-	 * 
-	 * @param offset
-	 *            offset where the insertion is to occur
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#canInsertText(int)
 	 */
 	public boolean canInsertText(int offset) {
 
@@ -110,7 +98,7 @@ public class Document {
 			return true;
 		}
 
-		Element element = this.getElementAt(offset);
+		IVEXElement element = this.getElementAt(offset);
 		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
 		String[] seq2 = new String[] { Validator.PCDATA };
 		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
@@ -119,32 +107,21 @@ public class Document {
 				seq3, true);
 	}
 
-	/**
-	 * Creates a <code>Position</code> object at the given character offset.
-	 * 
-	 * @param offset
-	 *            initial character offset of the position
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#createPosition(int)
 	 */
 	public Position createPosition(int offset) {
 		return this.content.createPosition(offset);
 	}
 
-	/**
-	 * Deletes a portion of the document. No element may straddle the deletion
-	 * span.
-	 * 
-	 * @param startOffset
-	 *            start of the range to delete
-	 * @param endOffset
-	 *            end of the range to delete
-	 * @throws DocumentValidationException
-	 *             if the change would result in an invalid document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#delete(int, int)
 	 */
 	public void delete(int startOffset, int endOffset)
 			throws DocumentValidationException {
 
-		Element e1 = this.getElementAt(startOffset);
-		Element e2 = this.getElementAt(endOffset);
+		IVEXElement e1 = this.getElementAt(startOffset);
+		IVEXElement e2 = this.getElementAt(endOffset);
 		if (e1 != e2) {
 			throw new IllegalArgumentException("Deletion from " + startOffset
 					+ " to " + endOffset + " is unbalanced");
@@ -163,7 +140,7 @@ public class Document {
 		}
 
 		// Grab the fragment for the undoable edit while it's still here
-		DocumentFragment frag = getFragment(startOffset, endOffset);
+		IVEXDocumentFragment frag = getFragment(startOffset, endOffset);
 
 		this.fireBeforeContentDeleted(new DocumentEvent(this, e1, startOffset,
 				endOffset - startOffset, null));
@@ -186,19 +163,14 @@ public class Document {
 				endOffset - startOffset, edit));
 	}
 
-	/**
-	 * Finds the lowest element that contains both of the given offsets.
-	 * 
-	 * @param offset1
-	 *            the first offset
-	 * @param offset2
-	 *            the second offset
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#findCommonElement(int, int)
 	 */
-	public Element findCommonElement(int offset1, int offset2) {
-		Element element = this.rootElement;
+	public IVEXElement findCommonElement(int offset1, int offset2) {
+		IVEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			Element[] children = element.getChildElements();
+			IVEXElement[] children = element.getChildElements();
 			for (int i = 0; i < children.length; i++) {
 				if (offset1 > children[i].getStartOffset()
 						&& offset2 > children[i].getStartOffset()
@@ -217,28 +189,27 @@ public class Document {
 		return element;
 	}
 
-	/**
-	 * Returns the character at the given offset.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getCharacterAt(int)
 	 */
 	public char getCharacterAt(int offset) {
 		return this.content.getString(offset, 1).charAt(0);
 	}
 
-	/**
-	 * Returns the element at the given offset. The given offset must be greater
-	 * or equal to 1 and less than the current document length.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getElementAt(int)
 	 */
-	public Element getElementAt(int offset) {
+	public IVEXElement getElementAt(int offset) {
 		if (offset < 1 || offset >= this.getLength()) {
 			throw new IllegalArgumentException("Illegal offset: " + offset
 					+ ". Must be between 1 and n-1");
 		}
-		Element element = this.rootElement;
+		IVEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			Element[] children = element.getChildElements();
+			IVEXElement[] children = element.getChildElements();
 			for (int i = 0; i < children.length; i++) {
-				Element child = children[i];
+				IVEXElement child = children[i];
 				if (offset <= child.getStartOffset()) {
 					return element;
 				} else if (offset <= child.getEndOffset()) {
@@ -254,21 +225,17 @@ public class Document {
 		return element;
 	}
 
-	/**
-	 * Returns the encoding used for this document, or null if no encoding has
-	 * been declared.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getEncoding()
 	 */
 	public String getEncoding() {
 		return this.encoding;
 	}
 
-	/**
-	 * Create a <code>DocumentFragment</code> representing the given range of
-	 * offsets.
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getFragment(int, int)
 	 */
-	public DocumentFragment getFragment(int startOffset, int endOffset) {
+	public IVEXDocumentFragment getFragment(int startOffset, int endOffset) {
 
 		assertOffset(startOffset, 0, this.content.getLength());
 		assertOffset(endOffset, 0, this.content.getLength());
@@ -278,21 +245,21 @@ public class Document {
 					+ ", " + endOffset + ")");
 		}
 
-		Element e1 = this.getElementAt(startOffset);
-		Element e2 = this.getElementAt(endOffset);
+		IVEXElement e1 = this.getElementAt(startOffset);
+		IVEXElement e2 = this.getElementAt(endOffset);
 		if (e1 != e2) {
 			throw new IllegalArgumentException("Fragment from " + startOffset
 					+ " to " + endOffset + " is unbalanced");
 		}
 
-		Element[] children = e1.getChildElements();
+		IVEXElement[] children = e1.getChildElements();
 
 		Content newContent = new GapContent(endOffset - startOffset);
 		String s = this.content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
 		List newChildren = new ArrayList();
 		for (int i = 0; i < children.length; i++) {
-			Element child = children[i];
+			IVEXElement child = children[i];
 			if (child.getEndOffset() <= startOffset) {
 				continue;
 			} else if (child.getStartOffset() >= endOffset) {
@@ -303,38 +270,30 @@ public class Document {
 			}
 		}
 
-		Element[] elementArray = (Element[]) newChildren
-				.toArray(new Element[newChildren.size()]);
+		IVEXElement[] elementArray = (IVEXElement[]) newChildren
+				.toArray(new IVEXElement[newChildren.size()]);
 		return new DocumentFragment(newContent, elementArray);
 	}
 
-	/**
-	 * Returns the length of the document in characters, including the null
-	 * characters that delimit each element.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getLength()
 	 */
 	public int getLength() {
 		return this.content.getLength();
 	}
 
-	/**
-	 * Returns an array of element names and Validator.PCDATA representing the
-	 * content between the given offsets. The given offsets must both be
-	 * directly in the same element.
-	 * 
-	 * @param startOffset
-	 *            the offset at which the sequence begins
-	 * @param endOffset
-	 *            the offset at which the sequence ends
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodeNames(int, int)
 	 */
 	public String[] getNodeNames(int startOffset, int endOffset) {
 
-		Node[] nodes = this.getNodes(startOffset, endOffset);
+		IVEXNode[] nodes = this.getNodes(startOffset, endOffset);
 		String[] names = new String[nodes.length];
 
 		for (int i = 0; i < nodes.length; i++) {
-			Node node = nodes[i];
+			IVEXNode node = nodes[i];
 			if (node instanceof Element) {
-				names[i] = ((Element) node).getName();
+				names[i] = ((IVEXElement) node).getName();
 			} else {
 				names[i] = Validator.PCDATA;
 			}
@@ -343,18 +302,12 @@ public class Document {
 		return names;
 	}
 
-	/**
-	 * Returns an array of Nodes representing the selected range. The given
-	 * offsets must both be directly in the same element.
-	 * 
-	 * @param startOffset
-	 *            the offset at which the sequence begins
-	 * @param endOffset
-	 *            the offset at which the sequence ends
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodes(int, int)
 	 */
-	public Node[] getNodes(int startOffset, int endOffset) {
+	public IVEXNode[] getNodes(int startOffset, int endOffset) {
 
-		Element element = this.getElementAt(startOffset);
+		IVEXElement element = this.getElementAt(startOffset);
 		if (element != this.getElementAt(endOffset)) {
 			throw new IllegalArgumentException("Offsets are unbalanced: "
 					+ startOffset + " is in " + element.getName() + ", "
@@ -363,9 +316,9 @@ public class Document {
 		}
 
 		List list = new ArrayList();
-		Node[] nodes = element.getChildNodes();
+		IVEXNode[] nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.length; i++) {
-			Node node = nodes[i];
+			IVEXNode node = nodes[i];
 			if (node.getEndOffset() <= startOffset) {
 				continue;
 			} else if (node.getStartOffset() >= endOffset) {
@@ -387,7 +340,7 @@ public class Document {
 			}
 		}
 
-		return (Node[]) list.toArray(new Node[list.size()]);
+		return (IVEXNode[]) list.toArray(new IVEXNode[list.size()]);
 	}
 
 	/**
@@ -404,8 +357,8 @@ public class Document {
 	 * @param elements
 	 *            child elements that are within the run
 	 */
-	static Node[] createNodeArray(Content content, int startOffset,
-			int endOffset, Element[] elements) {
+	static IVEXNode[] createNodeArray(Content content, int startOffset,
+			int endOffset, IVEXElement[] elements) {
 
 		List nodes = new ArrayList();
 		int offset = startOffset;
@@ -422,51 +375,39 @@ public class Document {
 			nodes.add(new Text(content, offset, endOffset));
 		}
 
-		return (Node[]) nodes.toArray(new Node[nodes.size()]);
+		return (IVEXNode[]) nodes.toArray(new IVEXNode[nodes.size()]);
 	}
 
-	/**
-	 * Returns the public ID of the document type.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getPublicID()
 	 */
 	public String getPublicID() {
 		return this.publicID;
 	}
 
-	/**
-	 * Returns the text between the two given offsets. Unlike getText, sentinel
-	 * characters are not removed.
-	 * 
-	 * @param startOffset
-	 *            character offset of the start of the text
-	 * @param endOffset
-	 *            character offset of the end of the text
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getRawText(int, int)
 	 */
 	public String getRawText(int startOffset, int endOffset) {
 		return this.content.getString(startOffset, endOffset - startOffset);
 	}
 
-	/**
-	 * Returns the root element of this document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getRootElement()
 	 */
 	public Element getRootElement() {
 		return this.rootElement;
 	}
 
-	/**
-	 * Returns the system ID of the document type.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getSystemID()
 	 */
 	public String getSystemID() {
 		return this.systemID;
 	}
 
-	/**
-	 * Returns the text between the two given offsets. Sentinal characters are
-	 * removed.
-	 * 
-	 * @param startOffset
-	 *            character offset of the start of the text
-	 * @param endOffset
-	 *            character offset of the end of the text
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getText(int, int)
 	 */
 	public String getText(int startOffset, int endOffset) {
 		String raw = this.content.getString(startOffset, endOffset
@@ -481,29 +422,17 @@ public class Document {
 		return sb.toString();
 	}
 
-	/**
-	 * Returns the validator used to validate the document, or null if a
-	 * validator has not been set. Note that the DocumentFactory does not
-	 * automatically create a validator.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getValidator()
 	 */
 	public Validator getValidator() {
 		return this.validator;
 	}
 
-	/**
-	 * Inserts an element at the given position.
-	 * 
-	 * @param offset
-	 *            character offset at which the element is to be inserted. Must
-	 *            be greater or equal to 1 and less than the current length of
-	 *            the document, i.e. it must be within the range of the root
-	 *            element.
-	 * @param element
-	 *            element to insert
-	 * @throws DocumentValidationException
-	 *             if the change would result in an invalid document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertElement(int, org.eclipse.wst.xml.vex.core.internal.dom.Element)
 	 */
-	public void insertElement(int offset, Element element)
+	public void insertElement(int offset, IVEXElement element)
 			throws DocumentValidationException {
 
 		if (offset < 1 || offset >= this.getLength()) {
@@ -515,7 +444,7 @@ public class Document {
 
 		Validator validator = this.getValidator();
 		if (validator != null) {
-			Element parent = this.getElementAt(offset);
+			IVEXElement parent = this.getElementAt(offset);
 			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
 			String[] seq2 = new String[] { element.getName() };
@@ -529,13 +458,13 @@ public class Document {
 
 		// find the parent, and the index into its children at which
 		// this element should be inserted
-		Element parent = this.rootElement;
+		IVEXElement parent = this.rootElement;
 		int childIndex = -1;
 		while (childIndex == -1) {
 			boolean tryAgain = false;
-			Element[] children = parent.getChildElements();
+			IVEXElement[] children = parent.getChildElements();
 			for (int i = 0; i < children.length; i++) {
-				Element child = children[i];
+				IVEXElement child = children[i];
 				if (offset <= child.getStartOffset()) {
 					childIndex = i;
 					break;
@@ -567,20 +496,10 @@ public class Document {
 				edit));
 	}
 
-	/**
-	 * Inserts a document fragment at the given position.
-	 * 
-	 * @param offset
-	 *            character offset at which the element is to be inserted. Must
-	 *            be greater or equal to 1 and less than the current length of
-	 *            the document, i.e. it must be within the range of the root
-	 *            element.
-	 * @param fragment
-	 *            fragment to insert
-	 * @throws DocumentValidationException
-	 *             if the change would result in an invalid document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertFragment(int, org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment)
 	 */
-	public void insertFragment(int offset, DocumentFragment fragment)
+	public void insertFragment(int offset, IVEXDocumentFragment fragment)
 			throws DocumentValidationException {
 
 		if (offset < 1 || offset >= this.getLength()) {
@@ -588,7 +507,7 @@ public class Document {
 					"Error inserting document fragment");
 		}
 
-		Element parent = this.getElementAt(offset);
+		IVEXElement parent = this.getElementAt(offset);
 
 		if (this.validator != null) {
 			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
@@ -610,16 +529,16 @@ public class Document {
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
-		Element[] children = parent.getChildElements();
+		IVEXElement[] children = parent.getChildElements();
 		int index = 0;
 		while (index < children.length
 				&& children[index].getEndOffset() < offset) {
 			index++;
 		}
 
-		Element[] elements = fragment.getElements();
+		IVEXElement[] elements = fragment.getElements();
 		for (int i = 0; i < elements.length; i++) {
-			Element newElement = this.cloneElement(elements[i], this.content,
+			IVEXElement newElement = this.cloneElement(elements[i], this.content,
 					offset, parent);
 			parent.insertChild(index, newElement);
 			index++;
@@ -632,19 +551,8 @@ public class Document {
 				fragment.getContent().getLength(), edit));
 	}
 
-	/**
-	 * Inserts text at the given position.
-	 * 
-	 * @param offset
-	 *            character offset at which the text is to be inserted. Must be
-	 *            greater or equal to 1 and less than the current length of the
-	 *            document, i.e. it must be within the range of the root
-	 *            element.
-	 * @param text
-	 *            text to insert
-	 * @return UndoableEdit that can be used to undo the deletion
-	 * @throws DocumentValidationException
-	 *             if the change would result in an invalid document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertText(int, java.lang.String)
 	 */
 	public void insertText(int offset, String text)
 			throws DocumentValidationException {
@@ -654,7 +562,7 @@ public class Document {
 					"Offset must be between 1 and n-1");
 		}
 
-		Element parent = this.getElementAt(offset);
+		IVEXElement parent = this.getElementAt(offset);
 
 		boolean isValid = false;
 		if (this.getCharacterAt(offset - 1) != '\0') {
@@ -703,62 +611,43 @@ public class Document {
 				.length(), edit));
 	}
 
-	/**
-	 * Returns true if undo is enabled, that is, undoable edit events are fired
-	 * to registered listeners.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#isUndoEnabled()
 	 */
 	public boolean isUndoEnabled() {
 		return this.undoEnabled;
 	}
 
-	/**
-	 * Removes a document listener from the list of listeners so that it is no
-	 * longer notified of document changes.
-	 * 
-	 * @param listener
-	 *            <code>DocumentListener</code> to remove.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#removeDocumentListener(org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener)
 	 */
 	public void removeDocumentListener(DocumentListener listener) {
 		this.listeners.remove(listener);
 	}
 
-	/**
-	 * Sets the public ID for the document's document type.
-	 * 
-	 * @param publicID
-	 *            New value for the public ID.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setPublicID(java.lang.String)
 	 */
 	public void setPublicID(String publicID) {
 		this.publicID = publicID;
 	}
 
-	/**
-	 * Sets the system ID for the document's document type.
-	 * 
-	 * @param systemID
-	 *            New value for the system ID.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setSystemID(java.lang.String)
 	 */
 	public void setSystemID(String systemID) {
 		this.systemID = systemID;
 	}
 
-	/**
-	 * Sets whether undo events are enabled. Typically, undo events are disabled
-	 * while an edit is being undone or redone.
-	 * 
-	 * @param undoEnabled
-	 *            If true, undoable edit events are fired to registered
-	 *            listeners.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setUndoEnabled(boolean)
 	 */
 	public void setUndoEnabled(boolean undoEnabled) {
 		this.undoEnabled = undoEnabled;
 	}
 
-	/**
-	 * Sets the validator to use for this document.
-	 * 
-	 * @param validator
-	 *            Validator to use for this document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setValidator(org.eclipse.wst.xml.vex.core.internal.dom.Validator)
 	 */
 	public void setValidator(Validator validator) {
 		this.validator = validator;
@@ -773,9 +662,9 @@ public class Document {
 
 		private int startOffset;
 		private int endOffset;
-		private DocumentFragment frag;
+		private IVEXDocumentFragment frag;
 
-		public DeleteEdit(int startOffset, int endOffset, DocumentFragment frag) {
+		public DeleteEdit(int startOffset, int endOffset, IVEXDocumentFragment frag) {
 			this.startOffset = startOffset;
 			this.endOffset = endOffset;
 			this.frag = frag;
@@ -815,11 +704,11 @@ public class Document {
 	private class InsertElementEdit implements IUndoableEdit {
 
 		private int offset;
-		private Element element;
+		private IVEXElement element;
 
-		public InsertElementEdit(int offset, Element element) {
+		public InsertElementEdit(int offset, IVEXElement element2) {
 			this.offset = offset;
-			this.element = element;
+			this.element = element2;
 		}
 
 		public boolean combine(IUndoableEdit edit) {
@@ -856,9 +745,9 @@ public class Document {
 	private class InsertFragmentEdit implements IUndoableEdit {
 
 		private int offset;
-		private DocumentFragment frag;
+		private IVEXDocumentFragment frag;
 
-		public InsertFragmentEdit(int offset, DocumentFragment frag) {
+		public InsertFragmentEdit(int offset, IVEXDocumentFragment frag) {
 			this.offset = offset;
 			this.frag = frag;
 		}
@@ -963,8 +852,8 @@ public class Document {
 	 * @param parent
 	 *            parent for the cloned Element
 	 */
-	private Element cloneElement(Element original, Content content, int shift,
-			Element parent) {
+	private IVEXElement cloneElement(IVEXElement original, Content content, int shift,
+			IVEXElement parent) {
 
 		Element clone = new Element(original.getName());
 		clone.setContent(content, original.getStartOffset() + shift, original
@@ -981,9 +870,9 @@ public class Document {
 		}
 		clone.setParent(parent);
 
-		Element[] children = original.getChildElements();
+		IVEXElement[] children = original.getChildElements();
 		for (int i = 0; i < children.length; i++) {
-			Element cloneChild = this.cloneElement(children[i], content, shift,
+			IVEXElement cloneChild = this.cloneElement(children[i], content, shift,
 					clone);
 			clone.insertChild(i, cloneChild);
 		}
@@ -991,7 +880,7 @@ public class Document {
 		return clone;
 	}
 
-	void fireAttributeChanged(DocumentEvent e) {
+	public void fireAttributeChanged(DocumentEvent e) {
 		this.listeners.fireEvent("attributeChanged", e);
 	}
 

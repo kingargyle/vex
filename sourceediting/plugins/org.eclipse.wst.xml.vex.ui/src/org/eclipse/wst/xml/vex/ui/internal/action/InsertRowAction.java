@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
@@ -115,7 +116,7 @@ public class InsertRowAction extends AbstractVexAction {
 					Object row = rowsToInsert.get(i);
 
 					if (row instanceof Element) {
-						vexWidget.insertElement((Element) ((Element) row)
+						vexWidget.insertElement((Element) ((IVEXElement) row)
 								.clone());
 					}
 
@@ -124,7 +125,7 @@ public class InsertRowAction extends AbstractVexAction {
 					for (int j = 0; j < cellsToInsert.size(); j++) {
 						Object cell = cellsToInsert.get(j);
 						if (cell instanceof Element) {
-							vexWidget.insertElement((Element) ((Element) cell)
+							vexWidget.insertElement((Element) ((IVEXElement) cell)
 									.clone());
 							vexWidget.moveBy(+1);
 						} else {

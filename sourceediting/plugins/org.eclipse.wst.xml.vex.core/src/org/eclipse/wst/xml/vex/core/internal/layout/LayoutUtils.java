@@ -21,7 +21,8 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.Node;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode;
 
 /**
  * Tools for layout and rendering of CSS-styled boxes
@@ -37,7 +38,7 @@ public class LayoutUtils {
 	 *            Element representing the generated content.
 	 */
 	public static List createGeneratedInlines(LayoutContext context,
-			Element pseudoElement) {
+			IVEXElement pseudoElement) {
 		String text = getGeneratedContent(context, pseudoElement);
 		List list = new ArrayList();
 		if (text.length() > 0) {
@@ -77,7 +78,7 @@ public class LayoutUtils {
 	 *            returned.
 	 */
 	private static String getGeneratedContent(LayoutContext context,
-			Element pseudoElement) {
+			IVEXElement pseudoElement) {
 		Styles styles = context.getStyleSheet().getStyles(pseudoElement);
 		List content = styles.getContent();
 		StringBuffer sb = new StringBuffer();
@@ -110,19 +111,19 @@ public class LayoutUtils {
 	 *            matching elements and non-matching ranges.
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
-			Set displayStyles, Element element, int startOffset, int endOffset,
+			Set displayStyles, IVEXElement element, int startOffset, int endOffset,
 			ElementOrRangeCallback callback) {
 
 		List nonMatching = new ArrayList();
 
-		Node[] nodes = element.getChildNodes();
+		IVEXNode[] nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i].getEndOffset() <= startOffset) {
 				continue;
 			} else if (nodes[i].getStartOffset() >= endOffset) {
 				break;
 			} else {
-				Node node = nodes[i];
+				IVEXNode node = nodes[i];
 
 				if (node instanceof Element) {
 					Element childElement = (Element) node;
@@ -130,8 +131,8 @@ public class LayoutUtils {
 							.getDisplay();
 					if (displayStyles.contains(display)) {
 						if (nonMatching.size() > 0) {
-							Node firstNode = (Node) nonMatching.get(0);
-							Node lastNode = (Node) nonMatching.get(nonMatching
+							IVEXNode firstNode = (IVEXNode) nonMatching.get(0);
+							IVEXNode lastNode = (IVEXNode) nonMatching.get(nonMatching
 									.size() - 1);
 							if (lastNode instanceof Element) {
 								callback.onRange(element, firstNode
@@ -155,8 +156,8 @@ public class LayoutUtils {
 		}
 
 		if (nonMatching.size() > 0) {
-			Node firstNode = (Node) nonMatching.get(0);
-			Node lastNode = (Node) nonMatching.get(nonMatching.size() - 1);
+			IVEXNode firstNode = (IVEXNode) nonMatching.get(0);
+			IVEXNode lastNode = (IVEXNode) nonMatching.get(nonMatching.size() - 1);
 			if (lastNode instanceof Element) {
 				callback.onRange(element, firstNode.getStartOffset(), lastNode
 						.getEndOffset() + 1);
@@ -177,16 +178,16 @@ public class LayoutUtils {
 	 *            LayoutContext to use.
 	 * @param displayStyles
 	 *            Display types to be explicitly recognized.
-	 * @param element
+	 * @param table
 	 *            Element containing the children over which to iterate.
 	 * @param callback
 	 *            DisplayStyleCallback through which the caller is notified of
 	 *            matching elements and non-matching ranges.
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
-			Set displayStyles, Element element, ElementOrRangeCallback callback) {
-		iterateChildrenByDisplayStyle(styleSheet, displayStyles, element,
-				element.getStartOffset() + 1, element.getEndOffset(), callback);
+			Set displayStyles, IVEXElement table, ElementOrRangeCallback callback) {
+		iterateChildrenByDisplayStyle(styleSheet, displayStyles, table,
+				table.getStartOffset() + 1, table.getEndOffset(), callback);
 	}
 
 	/**
@@ -198,13 +199,13 @@ public class LayoutUtils {
 	 * @param element
 	 *            Element to test.
 	 */
-	public static boolean isTableChild(StyleSheet styleSheet, Element element) {
+	public static boolean isTableChild(StyleSheet styleSheet, IVEXElement element) {
 		String display = styleSheet.getStyles(element).getDisplay();
 		return TABLE_CHILD_STYLES.contains(display);
 	}
 
 	public static void iterateTableRows(final StyleSheet styleSheet,
-			final Element element, int startOffset, int endOffset,
+			final IVEXElement element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
 
 		iterateChildrenByDisplayStyle(styleSheet, nonRowStyles, element,
@@ -224,7 +225,7 @@ public class LayoutUtils {
 						}
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						// iterate over rows in range
 						iterateChildrenByDisplayStyle(styleSheet, rowStyles,
@@ -235,16 +236,16 @@ public class LayoutUtils {
 	}
 
 	public static void iterateTableCells(StyleSheet styleSheet,
-			Element element, int startOffset, int endOffset,
+			IVEXElement element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
 		iterateChildrenByDisplayStyle(styleSheet, cellStyles, element,
 				startOffset, endOffset, callback);
 	}
 
 	public static void iterateTableCells(StyleSheet styleSheet,
-			Element element, final ElementOrRangeCallback callback) {
-		iterateChildrenByDisplayStyle(styleSheet, cellStyles, element, element
-				.getStartOffset(), element.getEndOffset(), callback);
+			IVEXElement row, final ElementOrRangeCallback callback) {
+		iterateChildrenByDisplayStyle(styleSheet, cellStyles, row, row
+				.getStartOffset(), row.getEndOffset(), callback);
 	}
 
 	/**

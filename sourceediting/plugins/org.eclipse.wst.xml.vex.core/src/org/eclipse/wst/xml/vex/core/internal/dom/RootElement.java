@@ -17,9 +17,9 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
  * notify document listeners that the document has changed when the element
  * changes.
  */
-public class RootElement extends Element {
+public class RootElement extends Element implements IVEXRootElement {
 
-	private Document document;
+	private IVEXDocument document;
 
 	/**
 	 * Class constructor
@@ -31,22 +31,19 @@ public class RootElement extends Element {
 		super(name);
 	}
 
-	/**
-	 * @return The document associated with this element.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXRootElement#getDocument()
 	 */
-	public Document getDocument() {
+	public IVEXDocument getDocument() {
 		return document;
 	}
 
-	/**
-	 * Sets the document to which this element is associated. This is called by
-	 * the document constructor, so it need not be called by client code.
-	 * 
-	 * @param document
-	 *            Document to which this root element is associated.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXRootElement#setDocument(org.eclipse.wst.xml.vex.core.internal.dom.Document)
 	 */
-	public void setDocument(Document document) {
+	public void setDocument(IVEXDocument document) {
 		this.document = document;
 	}
+
 
 }

@@ -21,6 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * Box that lays out a table.
@@ -59,7 +60,7 @@ public class TableBox extends AbstractBlockBox {
 								TableBox.this, child));
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						children.add(new TableBodyBox(context, TableBox.this,
 								startOffset, endOffset));
@@ -148,7 +149,7 @@ public class TableBox extends AbstractBlockBox {
 			this.count++;
 		}
 
-		public void onRange(Element parent, int startOffset, int endOffset) {
+		public void onRange(IVEXElement parent, int startOffset, int endOffset) {
 			this.count++;
 		}
 
@@ -161,7 +162,7 @@ public class TableBox extends AbstractBlockBox {
 	 */
 	private int computeColumnCount(LayoutContext context) {
 
-		Element tableElement = this.findContainingElement();
+		IVEXElement tableElement = this.findContainingElement();
 		final int[] columnCounts = new int[1]; // work around Java's insistence
 												// on final
 		columnCounts[0] = 0;
@@ -178,7 +179,7 @@ public class TableBox extends AbstractBlockBox {
 						callback.reset();
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						LayoutUtils.iterateTableCells(styleSheet, parent,
 								startOffset, endOffset, callback);

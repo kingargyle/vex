@@ -46,7 +46,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	/**
 	 * Returns the newly built <code>Document</code> object.
 	 */
-	public Document getDocument() {
+	public IVEXDocument getDocument() {
 		return this.doc;
 	}
 
@@ -127,7 +127,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				}
 			} else {
 				element = new Element(qName);
-				Element parent = ((StackEntry) stack.getLast()).element;
+				IVEXElement parent = ((StackEntry) stack.getLast()).element;
 				parent.addChild(element);
 			}
 
@@ -256,11 +256,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		this.trimLeading = false;
 	}
 
-	private boolean isBlock(Element element) {
+	private boolean isBlock(IVEXElement element) {
 		return this.policy != null && this.policy.isBlock(element);
 	}
 
-	private boolean isPre(Element element) {
+	private boolean isPre(IVEXElement element) {
 		return this.policy != null && this.policy.isPre(element);
 	}
 

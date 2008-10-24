@@ -23,12 +23,10 @@ import junit.framework.TestCase;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -47,7 +45,7 @@ public class DocumentWriterTest extends TestCase {
 
 		URL docUrl = this.getClass().getResource("DocumentWriterTest1.xml");
 
-		Document docOrig = readDocument(new InputSource(docUrl.toString()), ss);
+		IVEXDocument docOrig = readDocument(new InputSource(docUrl.toString()), ss);
 
 		DocumentWriter dw = new DocumentWriter();
 		dw.setWhitespacePolicy(new CssWhitespacePolicy(ss));
@@ -66,18 +64,18 @@ public class DocumentWriterTest extends TestCase {
 		// }
 		// is.reset();
 
-		Document docNew = readDocument(new InputSource(is), ss);
+		IVEXDocument docNew = readDocument(new InputSource(is), ss);
 
 		assertEquals(docOrig, docNew);
 	}
 
-	private void assertEquals(Document expected, Document actual)
+	private void assertEquals(IVEXDocument expected, IVEXDocument actual)
 			throws Exception {
 
 		assertEquals(expected.getRootElement(), actual.getRootElement());
 	}
 
-	private void assertEquals(Element expected, Element actual)
+	private void assertEquals(IVEXElement expected, IVEXElement actual)
 			throws Exception {
 
 		System.out.println("Checking " + actual.getName());
@@ -94,15 +92,15 @@ public class DocumentWriterTest extends TestCase {
 			assertEquals(expectedAttrs[i], actualAttrs[i]);
 		}
 
-		Node[] expectedContent = expected.getChildNodes();
-		Node[] actualContent = actual.getChildNodes();
+		IVEXNode[] expectedContent = expected.getChildNodes();
+		IVEXNode[] actualContent = actual.getChildNodes();
 		assertEquals(expectedContent.length, actualContent.length);
 		for (int i = 0; i < expectedContent.length; i++) {
 			assertEquals(expectedContent[i].getClass(), actualContent[i]
 					.getClass());
 			if (expectedContent[i] instanceof Element) {
-				assertEquals((Element) expectedContent[i],
-						(Element) actualContent[i]);
+				assertEquals((IVEXElement) expectedContent[i],
+						(IVEXElement) actualContent[i]);
 			} else {
 				assertEquals(expectedContent[i].getText(), actualContent[i]
 						.getText());
@@ -110,7 +108,7 @@ public class DocumentWriterTest extends TestCase {
 		}
 	}
 
-	private static Document readDocument(InputSource is, StyleSheet ss)
+	private static IVEXDocument readDocument(InputSource is, StyleSheet ss)
 			throws ParserConfigurationException, SAXException, IOException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -161,7 +159,7 @@ public class DocumentWriterTest extends TestCase {
 			StyleSheetReader reader = new StyleSheetReader();
 			StyleSheet ss = reader.read(DocumentWriterTest.class
 					.getResource("test.css"));
-			Document doc = readDocument(new InputSource(fis), ss);
+			IVEXDocument doc = readDocument(new InputSource(fis), ss);
 
 			DocumentWriter writer = new DocumentWriter();
 			writer.setWhitespacePolicy(new CssWhitespacePolicy(ss));

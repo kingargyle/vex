@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;
@@ -116,7 +116,7 @@ public class Rule implements Serializable {
 	 * @param element
 	 *            Element to check.
 	 */
-	public boolean matches(Element element) {
+	public boolean matches(IVEXElement element) {
 		return matches(this.selector, element);
 	}
 
@@ -125,7 +125,7 @@ public class Rule implements Serializable {
 	/**
 	 * Returns true if the given element matches the given selector.
 	 */
-	private static boolean matches(Selector selector, Element element) {
+	private static boolean matches(Selector selector, IVEXElement element) {
 
 		if (element == null) {
 			// This can happen when, e.g., with the rule "foo > *".
@@ -189,7 +189,7 @@ public class Rule implements Serializable {
 
 		case Selector.SAC_CHILD_SELECTOR:
 			DescendantSelector ds2 = (DescendantSelector) selector;
-			Element parent = element.getParent();
+			IVEXElement parent = element.getParent();
 			if (element instanceof PseudoElement) {
 				parent = parent.getParent(); // sigh - this looks inelegant, but
 												// whatcha gonna do?
@@ -207,12 +207,12 @@ public class Rule implements Serializable {
 				// find next sibling
 
 				final Iterator i = element.getParent().getChildIterator();
-				Element e = null;
-				Element f = null;
+				IVEXElement e = null;
+				IVEXElement f = null;
 
 				while (i.hasNext() && e != element) {
 					f = e;
-					e = (Element) i.next();
+					e = (IVEXElement) i.next();
 				}
 
 				if (e == element) {
@@ -232,8 +232,8 @@ public class Rule implements Serializable {
 	 * Returns true if some ancestor of the given element matches the given
 	 * selector.
 	 */
-	private static boolean matchesAncestor(Selector selector, Element element) {
-		Element e = element;
+	private static boolean matchesAncestor(Selector selector, IVEXElement element) {
+		IVEXElement e = element;
 		while (e != null) {
 			if (matches(selector, e)) {
 				return true;
@@ -243,7 +243,7 @@ public class Rule implements Serializable {
 		return false;
 	}
 
-	private static boolean matchesCondition(Condition condition, Element element) {
+	private static boolean matchesCondition(Condition condition, IVEXElement element) {
 
 		AttributeCondition acon;
 		String attributeName;

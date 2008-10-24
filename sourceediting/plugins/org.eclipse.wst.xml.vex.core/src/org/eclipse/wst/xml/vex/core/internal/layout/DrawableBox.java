@@ -18,6 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * An inline box that draws a Drawable object. The drawable is drawn relative to
@@ -31,7 +32,7 @@ public class DrawableBox extends AbstractBox implements InlineBox {
 	public static final byte END_MARKER = 2;
 
 	private Drawable drawable;
-	private Element element;
+	private IVEXElement element;
 	private byte marker;
 
 	/**
@@ -39,11 +40,11 @@ public class DrawableBox extends AbstractBox implements InlineBox {
 	 * 
 	 * @param drawable
 	 *            Drawable to draw.
-	 * @param element
+	 * @param element2
 	 *            Element whose styles determine the color of the drawable.
 	 */
-	public DrawableBox(Drawable drawable, Element element) {
-		this(drawable, element, NO_MARKER);
+	public DrawableBox(Drawable drawable, IVEXElement element2) {
+		this(drawable, element2, NO_MARKER);
 	}
 
 	/**
@@ -52,15 +53,15 @@ public class DrawableBox extends AbstractBox implements InlineBox {
 	 * 
 	 * @param drawable
 	 *            Drawable to draw.
-	 * @param element
+	 * @param element2
 	 *            Element whose styles determine the color of the drawable.
 	 * @param marker
 	 *            which marker should be drawn. Must be one of NO_MARKER,
 	 *            START_MARKER, or END_MARKER.
 	 */
-	public DrawableBox(Drawable drawable, Element element, byte marker) {
+	public DrawableBox(Drawable drawable, IVEXElement element2, byte marker) {
 		this.drawable = drawable;
-		this.element = element;
+		this.element = element2;
 		this.marker = marker;
 		Rectangle bounds = drawable.getBounds();
 		this.setWidth(bounds.getWidth());
@@ -77,7 +78,7 @@ public class DrawableBox extends AbstractBox implements InlineBox {
 	/**
 	 * Returns the element that controls the styling for this text element.
 	 */
-	public Element getElement() {
+	public IVEXElement getElement() {
 		return this.element;
 	}
 

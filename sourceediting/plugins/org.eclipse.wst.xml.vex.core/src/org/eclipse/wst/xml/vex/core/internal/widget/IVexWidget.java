@@ -16,10 +16,11 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
@@ -184,12 +185,12 @@ public interface IVexWidget {
 	/**
 	 * Returns the element at the current caret offset.
 	 */
-	public Element getCurrentElement();
+	public IVEXElement getCurrentElement();
 
 	/**
 	 * Returns the document associated with this component.
 	 */
-	public Document getDocument();
+	public IVEXDocument getDocument();
 
 	/**
 	 * Returns the width to which the document was layed out.
@@ -210,7 +211,7 @@ public interface IVexWidget {
 	 * Returns the currently selected document fragment, or null if there is no
 	 * current selection.
 	 */
-	public DocumentFragment getSelectedFragment();
+	public IVEXDocumentFragment getSelectedFragment();
 
 	/**
 	 * Returns the currently selected string, or an empty string if there is no
@@ -267,7 +268,7 @@ public interface IVexWidget {
 	 * @param frag
 	 *            DocumentFragment to insert.
 	 */
-	public void insertFragment(DocumentFragment frag)
+	public void insertFragment(IVEXDocumentFragment frag)
 			throws DocumentValidationException;
 
 	/**
@@ -503,7 +504,7 @@ public interface IVexWidget {
 	 * @param styleSheet
 	 *            StyleSheet to use for formatting
 	 */
-	public void setDocument(Document document, StyleSheet styleSheet);
+	public void setDocument(IVEXDocument document, StyleSheet styleSheet);
 
 	/**
 	 * Sets a new document for this control.

@@ -25,6 +25,7 @@ import java.util.WeakHashMap;
 
 import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -129,9 +130,9 @@ public class StyleSheet implements Serializable {
 	 * Flush any cached styles for the given element.
 	 * 
 	 * @param element
-	 *            Element for which styles are to be flushed.
+	 *            IVEXElement for which styles are to be flushed.
 	 */
-	public void flushStyles(Element element) {
+	public void flushStyles(IVEXElement element) {
 		this.getStyleMap().remove(element);
 	}
 
@@ -142,7 +143,7 @@ public class StyleSheet implements Serializable {
 	 * @param element
 	 *            Parent element of the pseudo-element.
 	 */
-	public Element getAfterElement(Element element) {
+	public IVEXElement getAfterElement(IVEXElement element) {
 		PseudoElement pe = new PseudoElement(element, PseudoElement.AFTER);
 		Styles styles = this.getStyles(pe);
 		if (styles == null) {
@@ -159,7 +160,7 @@ public class StyleSheet implements Serializable {
 	 * @param element
 	 *            Parent element of the pseudo-element.
 	 */
-	public Element getBeforeElement(Element element) {
+	public IVEXElement getBeforeElement(IVEXElement element) {
 		PseudoElement pe = new PseudoElement(element, PseudoElement.BEFORE);
 		Styles styles = this.getStyles(pe);
 		if (styles == null) {
@@ -181,9 +182,9 @@ public class StyleSheet implements Serializable {
 	 * reasonable performance.
 	 * 
 	 * @param element
-	 *            Element for which to calculate the styles.
+	 *            IVEXElement for which to calculate the styles.
 	 */
-	public Styles getStyles(Element element) {
+	public Styles getStyles(IVEXElement element) {
 
 		Styles styles;
 		WeakReference ref = (WeakReference) this.getStyleMap().get(element);
@@ -214,7 +215,7 @@ public class StyleSheet implements Serializable {
 		return styles;
 	}
 
-	private Styles calculateStyles(Element element) {
+	private Styles calculateStyles(IVEXElement element) {
 
 		Styles styles = new Styles();
 		Styles parentStyles = null;
@@ -308,7 +309,7 @@ public class StyleSheet implements Serializable {
 	/**
 	 * Returns all the declarations that apply to the given element.
 	 */
-	private Map getApplicableDecls(Element element) {
+	private Map getApplicableDecls(IVEXElement element) {
 		// Find all the property declarations that apply to this element.
 		List declList = new ArrayList();
 		Rule[] rules = this.getRules();

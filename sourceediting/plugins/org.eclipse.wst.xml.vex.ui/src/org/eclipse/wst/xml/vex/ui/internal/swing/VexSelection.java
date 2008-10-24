@@ -16,6 +16,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
 
 /**
  * Represents a selection of a Vex document, which can be viewed as plaintext or
@@ -27,10 +28,10 @@ public class VexSelection extends StringSelection {
 	 * DataFlavor representing a Vex document fragment.
 	 */
 	public static final DataFlavor VEX_DOCUMENT_FRAGMENT_FLAVOR = new DataFlavor(
-			DocumentFragment.class, DocumentFragment.MIME_TYPE);
+			DocumentFragment.class, IVEXDocumentFragment.MIME_TYPE);
 
 	private DataFlavor[] flavors;
-	private DocumentFragment frag;
+	private IVEXDocumentFragment frag;
 
 	/**
 	 * Class constructor.
@@ -40,7 +41,7 @@ public class VexSelection extends StringSelection {
 	 * @param frag
 	 *            Document fragment representing the selection.
 	 */
-	public VexSelection(String s, DocumentFragment frag) {
+	public VexSelection(String s, IVEXDocumentFragment frag) {
 		super(s);
 		this.frag = frag;
 

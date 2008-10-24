@@ -12,8 +12,9 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 /**
  * <code>Node</code> represents a component of an XML document. .
+ *
  */
-public class Node {
+public class Node implements IVEXNode {
 
 	private Content content = null;
 	private Position start = null;
@@ -25,45 +26,43 @@ public class Node {
 	public Node() {
 	}
 
-	/**
-	 * Returns the document associated with this node. Null if the node has not
-	 * yet been inserted into a document.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getContent()
 	 */
 	public Content getContent() {
 		return this.content;
 	}
 
-	/**
-	 * Returns the character offset corresponding to the end of the node.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndOffset()
 	 */
 	public int getEndOffset() {
 		return this.end.getOffset();
 	}
 
-	/**
-	 * Returns the <code>Position</code> corresponding to the end of the node.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndPosition()
 	 */
 	public Position getEndPosition() {
 		return this.end;
 	}
 
-	/**
-	 * Returns the character offset corresponding to the start of the node.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartOffset()
 	 */
 	public int getStartOffset() {
 		return this.start.getOffset();
 	}
 
-	/**
-	 * Returns the <code>Position</code> corresponding to the start of the node.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartPosition()
 	 */
 	public Position getStartPosition() {
 		return this.start;
 	}
 
-	/**
-	 * Returns the text contained by this node. If this node is an element, the
-	 * text in all child nodes is included.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getText()
 	 */
 	public String getText() {
 		return this.content.getString(this.getStartOffset(), this
@@ -81,7 +80,7 @@ public class Node {
 	 * @param endOffset
 	 *            offset at which the node's content ends
 	 */
-	void setContent(Content content, int startOffset, int endOffset) {
+	public void setContent(Content content, int startOffset, int endOffset) {
 
 		this.content = content;
 		this.start = content.createPosition(startOffset);

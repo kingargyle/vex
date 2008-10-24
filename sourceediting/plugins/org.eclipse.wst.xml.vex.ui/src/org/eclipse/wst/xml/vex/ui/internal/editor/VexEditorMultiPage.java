@@ -64,10 +64,11 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
@@ -549,7 +550,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 	private boolean loaded;
 	private DocumentType doctype;
-	private Document doc;
+	private IVEXDocument doc;
 	private Style style;
 
 	private VexWidget vexWidget;
@@ -915,7 +916,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 	private String getLocation() {
 		List path = new ArrayList();
-		Element element = this.vexWidget.getCurrentElement();
+		IVEXElement element = this.vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
 			element = element.getParent();
@@ -945,7 +946,7 @@ public class VexEditorMultiPage extends VexEditor {
 						boolean multi = (sel != null && sel.size() > 1);
 						Validator validator = vexWidget.getDocument()
 								.getValidator();
-						return new ElementPropertySource((Element) object,
+						return new ElementPropertySource((IVEXElement) object,
 								validator, multi);
 					} else {
 						return null;

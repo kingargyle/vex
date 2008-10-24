@@ -32,6 +32,7 @@ import org.eclipse.ui.internal.registry.FileEditorMapping;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
@@ -64,7 +65,7 @@ public class NewDocumentWizard extends BasicNewResourceWizard {
 		try {
 			RootElement root = new RootElement(this.typePage
 					.getRootElementName());
-			Document doc = new Document(root);
+			IVEXDocument doc = new Document(root);
 			doc.setPublicID(this.typePage.getDocumentType().getPublicId());
 			doc.setSystemID(this.typePage.getDocumentType().getSystemId());
 

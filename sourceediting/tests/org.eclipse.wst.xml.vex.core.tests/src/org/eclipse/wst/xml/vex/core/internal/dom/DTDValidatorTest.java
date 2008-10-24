@@ -51,7 +51,7 @@ public class DTDValidatorTest extends TestCase {
 
 		assertSame(adType, adType2);
 
-		Document doc;
+		IVEXDocument doc;
 		Set expected;
 
 		doc = new Document(new RootElement("empty"));
@@ -93,8 +93,8 @@ public class DTDValidatorTest extends TestCase {
 
 	}
 
-	private Set getValidItemsAt(Document doc, int offset) {
-		Element element = doc.getElementAt(offset);
+	private Set getValidItemsAt(IVEXDocument doc, int offset) {
+		IVEXElement element = doc.getElementAt(offset);
 		String[] prefix = doc
 				.getNodeNames(element.getStartOffset() + 1, offset);
 		String[] suffix = doc.getNodeNames(offset, element.getEndOffset());

@@ -25,8 +25,9 @@ import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Position;
 
 /**
@@ -56,7 +57,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 *            Element associated with this box. anonymous box.
 	 */
 	public AbstractBlockBox(LayoutContext context, BlockBox parent,
-			Element element) {
+			IVEXElement element) {
 
 		this.parent = parent;
 		this.element = element;
@@ -86,7 +87,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		this.marginTop = 0;
 		this.marginBottom = 0;
 
-		Document doc = context.getDocument();
+		IVEXDocument doc = context.getDocument();
 		this.startPosition = doc.createPosition(startOffset);
 		this.endPosition = doc.createPosition(endOffset);
 	}
@@ -94,9 +95,9 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	/**
 	 * Walks the box tree and returns the nearest enclosing element.
 	 */
-	protected Element findContainingElement() {
+	protected IVEXElement findContainingElement() {
 		BlockBox box = this;
-		Element element = box.getElement();
+		IVEXElement element = box.getElement();
 		while (element == null) {
 			box = box.getParent();
 			element = box.getElement();
@@ -176,12 +177,12 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 				.toArray(new BlockBox[contentChildren.size()]);
 	}
 
-	public Element getElement() {
+	public IVEXElement getElement() {
 		return this.element;
 	}
 
 	public int getEndOffset() {
-		Element element = this.getElement();
+		IVEXElement element = this.getElement();
 		if (element != null) {
 			return element.getEndOffset();
 		} else if (this.getEndPosition() != null) {
@@ -202,7 +203,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 */
 	protected int getEstimatedHeight(LayoutContext context) {
 
-		Element element = this.findContainingElement();
+		IVEXElement element = this.findContainingElement();
 		Styles styles = context.getStyleSheet().getStyles(element);
 		int charCount = this.getEndOffset() - this.getStartOffset();
 
@@ -378,7 +379,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	}
 
 	public int getStartOffset() {
-		Element element = this.getElement();
+		IVEXElement element = this.getElement();
 		if (element != null) {
 			return element.getStartOffset() + 1;
 		} else if (this.getStartPosition() != null) {
@@ -505,8 +506,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	protected void paintSelectionFrame(LayoutContext context, int x, int y,
 			boolean selected) {
 
-		Element element = this.getElement();
-		Element parent = element == null ? null : element.getParent();
+		IVEXElement element = this.getElement();
+		IVEXElement parent = element == null ? null : element.getParent();
 
 		boolean paintFrame = context.isElementSelected(element)
 				&& !context.isElementSelected(parent);
@@ -646,9 +647,9 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			pendingInlines.addAll(beforeInlines);
 		}
 		
-		Document document = context.getDocument();
+		IVEXDocument document = context.getDocument();
 
-		Element element = document.findCommonElement(startOffset,
+		IVEXElement element = document.findCommonElement(startOffset,
 				endOffset);
 
 		if (startOffset == endOffset) {
@@ -733,7 +734,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 
 	private class BlockInlineIterator {
 
-		public BlockInlineIterator(LayoutContext context, Element element,
+		public BlockInlineIterator(LayoutContext context, IVEXElement element,
 				int startOffset, int endOffset) {
 			this.context = context;
 			this.element = element;
@@ -751,7 +752,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			} else if (startOffset == endOffset) {
 				return null;
 			} else {
-				Element blockElement = findNextBlockElement(this.context,
+				IVEXElement blockElement = findNextBlockElement(this.context,
 						this.element, startOffset, endOffset);
 				if (blockElement == null) {
 					if (startOffset < endOffset) {
@@ -791,7 +792,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		}
 
 		private LayoutContext context;
-		private Element element;
+		private IVEXElement element;
 		private int startOffset;
 		private int endOffset;
 		private LinkedList pushStack = new LinkedList();
@@ -881,7 +882,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	/**
 	 * Element with which we are associated. For anonymous boxes, this is null.
 	 */
-	private Element element;
+	private IVEXElement element;
 
 	/*
 	 * We cache the top and bottom margins, since they may be affected by our
@@ -913,12 +914,12 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 * @param endOffset
 	 *            The offset at which to end the search.
 	 */
-	private static Element findNextBlockElement(LayoutContext context,
-			Element element, int startOffset, int endOffset) {
+	private static IVEXElement findNextBlockElement(LayoutContext context,
+			IVEXElement element, int startOffset, int endOffset) {
 
-		Element[] children = element.getChildElements();
+		IVEXElement[] children = element.getChildElements();
 		for (int i = 0; i < children.length; i++) {
-			Element child = children[i];
+			IVEXElement child = children[i];
 			if (child.getEndOffset() < startOffset) {
 				continue;
 			} else if (child.getStartOffset() >= endOffset) {
@@ -930,7 +931,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 																// determination
 					return child;
 				} else {
-					Element fromChild = findNextBlockElement(context, child,
+					IVEXElement fromChild = findNextBlockElement(context, child,
 							startOffset, endOffset);
 					if (fromChild != null) {
 						return fromChild;
@@ -961,7 +962,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	private boolean isTableChild(LayoutContext context, Object rangeOrElement) {
 		if (rangeOrElement != null && rangeOrElement instanceof Element) {
 			return LayoutUtils.isTableChild(context.getStyleSheet(),
-					(Element) rangeOrElement);
+					(IVEXElement) rangeOrElement);
 		} else {
 			return false;
 		}

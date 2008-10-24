@@ -20,7 +20,8 @@ import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.Node;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 
 /**
@@ -71,7 +72,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			}
 
 			// :before content
-			Element beforeElement = context.getStyleSheet().getBeforeElement(
+			IVEXElement beforeElement = context.getStyleSheet().getBeforeElement(
 					element);
 			if (beforeElement != null) {
 				childList.addAll(LayoutUtils.createGeneratedInlines(context,
@@ -98,7 +99,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			childList.add(createRightMarker(element, styles));
 
 			// :after content
-			Element afterElement = context.getStyleSheet().getAfterElement(
+			IVEXElement afterElement = context.getStyleSheet().getAfterElement(
 					element);
 			if (afterElement != null) {
 				childList.addAll(LayoutUtils.createGeneratedInlines(context,
@@ -257,7 +258,7 @@ public class InlineElementBox extends CompositeInlineBox {
 	 * 
 	 * @param context
 	 *            LayoutContext to be used.
-	 * @param containingElement
+	 * @param element2
 	 *            Element containing both offsets
 	 * @param startOffset
 	 *            The start of the range to convert to inline boxes.
@@ -266,14 +267,14 @@ public class InlineElementBox extends CompositeInlineBox {
 	 * @return
 	 */
 	static InlineBoxes createInlineBoxes(LayoutContext context,
-			Element containingElement, int startOffset, int endOffset) {
+			IVEXElement element2, int startOffset, int endOffset) {
 
 		InlineBoxes result = new InlineBoxes();
 
-		Node[] nodes = containingElement.getChildNodes();
+		IVEXNode[] nodes = element2.getChildNodes();
 		for (int i = 0; i < nodes.length; i++) {
 
-			Node node = nodes[i];
+			IVEXNode node = nodes[i];
 			InlineBox child;
 
 			if (node.getStartOffset() >= endOffset) {
@@ -288,7 +289,7 @@ public class InlineElementBox extends CompositeInlineBox {
 
 				int start = Math.max(startOffset, node.getStartOffset());
 				int end = Math.min(endOffset, node.getEndOffset());
-				child = new DocumentTextBox(context, containingElement, start,
+				child = new DocumentTextBox(context, element2, start,
 						end);
 
 			} else {
@@ -299,8 +300,8 @@ public class InlineElementBox extends CompositeInlineBox {
 
 				Element childElement = (Element) node;
 				InlineBox placeholder = new PlaceholderBox(context,
-						containingElement, childElement.getStartOffset()
-								- containingElement.getStartOffset());
+						element2, childElement.getStartOffset()
+								- element2.getStartOffset());
 				result.boxes.add(placeholder);
 				if (result.firstContentBox == null) {
 					result.firstContentBox = placeholder;

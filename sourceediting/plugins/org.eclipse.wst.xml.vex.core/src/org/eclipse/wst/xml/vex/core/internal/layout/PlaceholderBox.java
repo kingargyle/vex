@@ -16,13 +16,14 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * A zero-width box that represents a single offset in the document.
  */
 public class PlaceholderBox extends AbstractBox implements InlineBox {
 
-	private Element element;
+	private IVEXElement element;
 	private int relOffset;
 	private int textTop;
 	private int baseline;
@@ -32,7 +33,7 @@ public class PlaceholderBox extends AbstractBox implements InlineBox {
 	 * 
 	 * @param context
 	 *            LayoutContext in effect.
-	 * @param element
+	 * @param element2
 	 *            Element containing this placeholder. the element is used both
 	 *            to determine the size of the box and its caret, but also as a
 	 *            base point for relOffset.
@@ -40,15 +41,15 @@ public class PlaceholderBox extends AbstractBox implements InlineBox {
 	 *            Offset of the placeholder, relative to the start of the
 	 *            element.
 	 */
-	public PlaceholderBox(LayoutContext context, Element element, int relOffset) {
+	public PlaceholderBox(LayoutContext context, IVEXElement element2, int relOffset) {
 
-		this.element = element;
+		this.element = element2;
 		this.relOffset = relOffset;
 
 		this.setWidth(0);
 
 		Graphics g = context.getGraphics();
-		Styles styles = context.getStyleSheet().getStyles(element);
+		Styles styles = context.getStyleSheet().getStyles(element2);
 		FontResource font = g.createFont(styles.getFont());
 		FontResource oldFont = g.setFont(font);
 		FontMetrics fm = g.getFontMetrics();
@@ -89,7 +90,7 @@ public class PlaceholderBox extends AbstractBox implements InlineBox {
 	/**
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.Box#getElement()
 	 */
-	public Element getElement() {
+	public IVEXElement getElement() {
 		return this.element;
 	}
 

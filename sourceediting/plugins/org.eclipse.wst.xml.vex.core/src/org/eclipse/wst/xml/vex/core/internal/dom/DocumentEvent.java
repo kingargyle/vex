@@ -19,8 +19,8 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  */
 public class DocumentEvent extends EventObject {
 
-	private Document document;
-	private Element parentElement;
+	private IVEXDocument document;
+	private IVEXElement parentElement;
 	private int offset;
 	private int length;
 	private String attributeName;
@@ -33,7 +33,7 @@ public class DocumentEvent extends EventObject {
 	 * 
 	 * @param document
 	 *            Document that changed.
-	 * @param parentElement
+	 * @param e1
 	 *            Element containing the change.
 	 * @param offset
 	 *            offset at which the change occurred.
@@ -42,12 +42,12 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(Document document, Element parentElement, int offset,
+	public DocumentEvent(IVEXDocument document, IVEXElement e1, int offset,
 			int length, IUndoableEdit undoableEdit) {
 
 		super(document);
 		this.document = document;
-		this.parentElement = parentElement;
+		this.parentElement = e1;
 		this.offset = offset;
 		this.length = length;
 		this.undoableEdit = undoableEdit;
@@ -69,7 +69,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(Document document, Element parentElement,
+	public DocumentEvent(IVEXDocument document, Element parentElement,
 			String attributeName, String oldAttributeValue,
 			String newAttributeValue, IUndoableEdit undoableEdit) {
 
@@ -99,7 +99,7 @@ public class DocumentEvent extends EventObject {
 	/**
 	 * Returns the element containing the change.
 	 */
-	public Element getParentElement() {
+	public IVEXElement getParentElement() {
 		return this.parentElement;
 	}
 
@@ -129,7 +129,7 @@ public class DocumentEvent extends EventObject {
 	/**
 	 * @return the document for which this event was generated
 	 */
-	public Document getDocument() {
+	public IVEXDocument getDocument() {
 		return document;
 	}
 

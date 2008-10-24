@@ -19,6 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * Container for TableRowBox objects. May correspond to an element with
@@ -76,7 +77,7 @@ public class TableRowGroupBox extends AbstractBlockBox {
 								TableRowGroupBox.this, child));
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						children.add(new TableRowBox(context,
 								TableRowGroupBox.this, startOffset, endOffset));

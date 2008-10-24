@@ -18,75 +18,67 @@ import java.io.Serializable;
 /**
  * Represents a fragment of an XML document.
  */
-public class DocumentFragment implements Serializable {
-
-	/**
-	 * Mime type representing document fragments: "text/x-vex-document-fragment"
-	 */
-	public static final String MIME_TYPE = "application/x-vex-document-fragment";
+public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 
 	private Content content;
-	private Element[] elements;
+	private IVEXElement[] elements;
 
 	/**
 	 * Class constructor.
 	 * 
 	 * @param content
 	 *            Content holding the fragment's content.
-	 * @param elements
+	 * @param elementArray
 	 *            Elements that make up this fragment.
 	 */
-	public DocumentFragment(Content content, Element[] elements) {
+	public DocumentFragment(Content content, IVEXElement[] elementArray) {
 		this.content = content;
-		this.elements = elements;
+		this.elements = elementArray;
 	}
 
-	/**
-	 * Returns the Content object holding this fragment's content.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getContent()
 	 */
 	public Content getContent() {
 		return this.content;
 	}
 
-	/**
-	 * Returns the number of characters, including sentinels, represented by the
-	 * fragment.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getLength()
 	 */
 	public int getLength() {
 		return this.content.getLength();
 	}
 
-	/**
-	 * Returns the elements that make up this fragment.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getElements()
 	 */
-	public Element[] getElements() {
+	public IVEXElement[] getElements() {
 		return this.elements;
 	}
 
-	/**
-	 * Returns an array of element names and Validator.PCDATA representing the
-	 * content of the fragment.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodeNames()
 	 */
 	public String[] getNodeNames() {
 
-		Node[] nodes = this.getNodes();
+		IVEXNode[] nodes = this.getNodes();
 		String[] names = new String[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] instanceof Text) {
 				names[i] = Validator.PCDATA;
 			} else {
-				names[i] = ((Element) nodes[i]).getName();
+				names[i] = ((IVEXElement) nodes[i]).getName();
 			}
 		}
 
 		return names;
 	}
 
-	/**
-	 * Returns the nodes that make up this fragment, including elements and
-	 * <code>Text</code> objects.
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodes()
 	 */
-	public Node[] getNodes() {
+	public IVEXNode[] getNodes() {
 		return Document.createNodeArray(this.getContent(), 0, this.getContent()
 				.getLength(), this.getElements());
 	}
@@ -105,7 +97,7 @@ public class DocumentFragment implements Serializable {
 		}
 	}
 
-	private void writeElement(Element element, ObjectOutputStream out)
+	private void writeElement(IVEXElement element, ObjectOutputStream out)
 			throws IOException {
 
 		out.writeObject(element.getName());
@@ -117,7 +109,7 @@ public class DocumentFragment implements Serializable {
 			out.writeObject(attrNames[i]);
 			out.writeObject(element.getAttribute(attrNames[i]));
 		}
-		Element[] children = element.getChildElements();
+		IVEXElement[] children = element.getChildElements();
 		out.writeInt(children.length);
 		for (int i = 0; i < children.length; i++) {
 			this.writeElement(children[i], out);

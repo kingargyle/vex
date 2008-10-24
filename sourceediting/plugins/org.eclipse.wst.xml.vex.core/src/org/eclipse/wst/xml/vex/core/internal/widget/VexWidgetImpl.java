@@ -29,13 +29,14 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.dom.Position;
@@ -85,7 +86,7 @@ public class VexWidgetImpl implements IVexWidget {
 	private int layoutWidth = 500; // something reasonable to handle a document
 	// being set before the widget is sized
 
-	private Document document;
+	private IVEXDocument document;
 	private StyleSheet styleSheet;
 	private BoxFactory boxFactory = new CssBoxFactory();
 
@@ -107,7 +108,7 @@ public class VexWidgetImpl implements IVexWidget {
 	private int selectionStart;
 	private int selectionEnd;
 
-	private Element currentElement;
+	private IVEXElement currentElement;
 
 	private boolean caretVisible = true;
 	private Caret caret;
@@ -189,9 +190,9 @@ public class VexWidgetImpl implements IVexWidget {
 	 * @param frag
 	 *            DocumentFragment to be inserted.
 	 */
-	public boolean canInsertFragment(DocumentFragment frag) {
+	public boolean canInsertFragment(IVEXDocumentFragment frag) {
 
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		if (doc == null) {
 			return false;
 		}
@@ -208,7 +209,7 @@ public class VexWidgetImpl implements IVexWidget {
 			endOffset = this.getSelectionEnd();
 		}
 
-		Element parent = this.getDocument().getElementAt(startOffset);
+		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
 		String[] seq2 = frag.getNodeNames();
@@ -223,7 +224,7 @@ public class VexWidgetImpl implements IVexWidget {
 	 */
 	public boolean canInsertText() {
 
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		if (doc == null) {
 			return false;
 		}
@@ -240,7 +241,7 @@ public class VexWidgetImpl implements IVexWidget {
 			endOffset = this.getSelectionEnd();
 		}
 
-		Element parent = this.getDocument().getElementAt(startOffset);
+		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
 		String[] seq2 = new String[] { Validator.PCDATA };
@@ -269,7 +270,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public boolean canUnwrap() {
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		if (doc == null) {
 			return false;
 		}
@@ -279,8 +280,8 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		Element element = doc.getElementAt(this.getCaretOffset());
-		Element parent = element.getParent();
+		IVEXElement element = doc.getElementAt(this.getCaretOffset());
+		IVEXElement parent = element.getParent();
 		if (parent == null) {
 			// can't unwrap the root
 			return false;
@@ -312,9 +313,9 @@ public class VexWidgetImpl implements IVexWidget {
 			this.deleteSelection();
 		} else {
 			int offset = this.getCaretOffset();
-			Document doc = this.getDocument();
+			IVEXDocument doc = this.getDocument();
 			int n = doc.getLength() - 1;
-			Element element = doc.getElementAt(offset);
+			IVEXElement element = doc.getElementAt(offset);
 
 			if (offset == n) {
 				// nop
@@ -349,8 +350,8 @@ public class VexWidgetImpl implements IVexWidget {
 			this.deleteSelection();
 		} else {
 			int offset = this.getCaretOffset();
-			Document doc = this.getDocument();
-			Element element = doc.getElementAt(offset);
+			IVEXDocument doc = this.getDocument();
+			IVEXElement element = doc.getElementAt(offset);
 
 			if (offset == 1) {
 				// nop
@@ -515,11 +516,11 @@ public class VexWidgetImpl implements IVexWidget {
 		return this.caretOffset;
 	}
 
-	public Element getCurrentElement() {
+	public IVEXElement getCurrentElement() {
 		return this.currentElement;
 	}
 
-	public Document getDocument() {
+	public IVEXDocument getDocument() {
 		return this.document;
 	}
 
@@ -533,7 +534,7 @@ public class VexWidgetImpl implements IVexWidget {
 
 	public String[] getValidInsertElements() {
 
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		if (doc == null) {
 			return new String[0];
 		}
@@ -550,7 +551,7 @@ public class VexWidgetImpl implements IVexWidget {
 			endOffset = this.getSelectionEnd();
 		}
 
-		Element parent = doc.getElementAt(startOffset);
+		IVEXElement parent = doc.getElementAt(startOffset);
 		String[] prefix = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
 		String[] suffix = doc.getNodeNames(endOffset, parent.getEndOffset());
@@ -588,7 +589,7 @@ public class VexWidgetImpl implements IVexWidget {
 
 	public String[] getValidMorphElements() {
 
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		if (doc == null) {
 			return new String[0];
 		}
@@ -598,8 +599,8 @@ public class VexWidgetImpl implements IVexWidget {
 			return new String[0];
 		}
 
-		Element element = doc.getElementAt(this.getCaretOffset());
-		Element parent = element.getParent();
+		IVEXElement element = doc.getElementAt(this.getCaretOffset());
+		IVEXElement parent = element.getParent();
 		if (parent == null) {
 			// can't morph the root
 			return new String[0];
@@ -637,7 +638,7 @@ public class VexWidgetImpl implements IVexWidget {
 		return this.selectionStart;
 	}
 
-	public DocumentFragment getSelectedFragment() {
+	public IVEXDocumentFragment getSelectedFragment() {
 		if (this.hasSelection()) {
 			return this.document.getFragment(this.getSelectionStart(), this
 					.getSelectionEnd());
@@ -683,7 +684,7 @@ public class VexWidgetImpl implements IVexWidget {
 		this.moveBy(+1);
 	}
 
-	public void insertFragment(DocumentFragment frag)
+	public void insertFragment(IVEXDocumentFragment frag)
 			throws DocumentValidationException {
 
 		if (this.hasSelection()) {
@@ -701,7 +702,7 @@ public class VexWidgetImpl implements IVexWidget {
 		try {
 			this.beginWork();
 
-			DocumentFragment frag = null;
+			IVEXDocumentFragment frag = null;
 			if (this.hasSelection()) {
 				frag = this.getSelectedFragment();
 				this.deleteSelection();
@@ -754,9 +755,9 @@ public class VexWidgetImpl implements IVexWidget {
 
 	public void morph(Element element) throws DocumentValidationException {
 
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		int offset = this.getCaretOffset();
-		Element currentElement = doc.getElementAt(offset);
+		IVEXElement currentElement = doc.getElementAt(offset);
 
 		if (currentElement == doc.getRootElement()) {
 			throw new DocumentValidationException(
@@ -768,7 +769,7 @@ public class VexWidgetImpl implements IVexWidget {
 			this.beginWork();
 			this.moveTo(currentElement.getStartOffset() + 1, false);
 			this.moveTo(currentElement.getEndOffset(), true);
-			DocumentFragment frag = this.getSelectedFragment();
+			IVEXDocumentFragment frag = this.getSelectedFragment();
 			this.deleteSelection();
 			this.moveBy(-1, false);
 			this.moveBy(2, true);
@@ -805,7 +806,7 @@ public class VexWidgetImpl implements IVexWidget {
 			this.repaintCaret();
 			this.repaintRange(this.getSelectionStart(), this.getSelectionEnd());
 
-			Element oldElement = this.currentElement;
+			IVEXElement oldElement = this.currentElement;
 
 			this.caretOffset = offset;
 
@@ -817,10 +818,10 @@ public class VexWidgetImpl implements IVexWidget {
 
 				// move selectionStart and selectionEnd to make sure we don't
 				// select a partial element
-				Element commonElement = this.document.findCommonElement(
+				IVEXElement commonElement = this.document.findCommonElement(
 						this.selectionStart, this.selectionEnd);
 
-				Element element = this.document
+				IVEXElement element = this.document
 						.getElementAt(this.selectionStart);
 				while (element != commonElement) {
 					this.selectionStart = element.getStartOffset();
@@ -847,7 +848,7 @@ public class VexWidgetImpl implements IVexWidget {
 			LayoutContext context = this.createLayoutContext(g);
 			this.caret = this.rootBox.getCaret(context, offset);
 
-			Element element = this.getCurrentElement();
+			IVEXElement element = this.getCurrentElement();
 			if (element != oldElement) {
 				this.caretColor = Color.BLACK;
 				while (element != null) {
@@ -910,7 +911,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void moveToNextWord(boolean select) {
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		int n = doc.getLength() - 1;
 		int offset = this.getCaretOffset();
 		while (offset < n
@@ -948,7 +949,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void moveToPreviousWord(boolean select) {
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		int offset = this.getCaretOffset();
 		while (offset > 1
 				&& !Character.isLetterOrDigit(doc.getCharacterAt(offset - 1))) {
@@ -1036,7 +1037,7 @@ public class VexWidgetImpl implements IVexWidget {
 
 	public void removeAttribute(String attributeName) {
 		try {
-			Element element = this.getCurrentElement();
+			IVEXElement element = this.getCurrentElement();
 			if (element.getAttribute(attributeName) != null) {
 				element.removeAttribute(attributeName);
 			}
@@ -1060,7 +1061,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void selectWord() {
-		Document doc = this.getDocument();
+		IVEXDocument doc = this.getDocument();
 		int startOffset = this.getCaretOffset();
 		int endOffset = this.getCaretOffset();
 		while (startOffset > 1
@@ -1092,7 +1093,7 @@ public class VexWidgetImpl implements IVexWidget {
 
 	public void setAttribute(String attributeName, String value) {
 		try {
-			Element element = this.getCurrentElement();
+			IVEXElement element = this.getCurrentElement();
 			if (value == null) {
 				this.removeAttribute(attributeName);
 			} else if (!value.equals(element.getAttribute(attributeName))) {
@@ -1114,7 +1115,7 @@ public class VexWidgetImpl implements IVexWidget {
 		this.debugging = debugging;
 	}
 
-	public void setDocument(Document document, StyleSheet styleSheet) {
+	public void setDocument(IVEXDocument document, StyleSheet styleSheet) {
 
 		if (this.document != null) {
 			this.document.removeDocumentListener(this.documentListener);
@@ -1149,7 +1150,7 @@ public class VexWidgetImpl implements IVexWidget {
 			}
 		});
 
-		Document doc = reader.read(docUrl);
+		IVEXDocument doc = reader.read(docUrl);
 		this.setDocument(doc, ss);
 	}
 
@@ -1192,8 +1193,8 @@ public class VexWidgetImpl implements IVexWidget {
 
 		long start = System.currentTimeMillis();
 
-		Document doc = this.getDocument();
-		Element element = doc.getElementAt(this.getCaretOffset());
+		IVEXDocument doc = this.getDocument();
+		IVEXElement element = doc.getElementAt(this.getCaretOffset());
 		Styles styles = this.getStyleSheet().getStyles(element);
 		while (!styles.isBlock()) {
 			element = element.getParent();
@@ -1209,7 +1210,7 @@ public class VexWidgetImpl implements IVexWidget {
 				doc.insertText(offset, "\n");
 				this.moveTo(offset + 1);
 			} else {
-				DocumentFragment frag = null;
+				IVEXDocumentFragment frag = null;
 				int offset = this.getCaretOffset();
 				boolean atEnd = (offset == element.getEndOffset());
 				if (!atEnd) {
@@ -1358,7 +1359,7 @@ public class VexWidgetImpl implements IVexWidget {
 	 * @param element
 	 *            Element for which to search.
 	 */
-	private void invalidateElementBox(final Element element) {
+	private void invalidateElementBox(final IVEXElement element) {
 
 		BlockBox elementBox = (BlockBox) this
 				.findInnermostBox(new IBoxFilter() {
@@ -1387,8 +1388,8 @@ public class VexWidgetImpl implements IVexWidget {
 		if (offset <= 1 || offset >= this.getDocument().getLength() - 1) {
 			return false;
 		}
-		Element e1 = this.getDocument().getElementAt(offset - 1);
-		Element e2 = this.getDocument().getElementAt(offset + 1);
+		IVEXElement e1 = this.getDocument().getElementAt(offset - 1);
+		IVEXElement e2 = this.getDocument().getElementAt(offset + 1);
 		return e1 != e2 && e1.getParent() == e2.getParent()
 				&& e1.getName().equals(e2.getName());
 	}
@@ -1458,9 +1459,9 @@ public class VexWidgetImpl implements IVexWidget {
 		try {
 			this.beginWork();
 			this.moveTo(offset + 1);
-			Element element = this.getCurrentElement();
+			IVEXElement element = this.getCurrentElement();
 			boolean moveContent = !element.isEmpty();
-			DocumentFragment frag = null;
+			IVEXDocumentFragment frag = null;
 			if (moveContent) {
 				this.moveTo(element.getEndOffset(), true);
 				frag = this.getSelectedFragment();

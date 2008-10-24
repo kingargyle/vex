@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockElementBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
@@ -53,7 +52,7 @@ public class BlockElementBoxTest extends TestCase {
 		String docString = "<root><small/><medium/><large/></root>";
 		DocumentReader docReader = new DocumentReader();
 		docReader.setDebugging(true);
-		Document doc = docReader.read(docString);
+		IVEXDocument doc = docReader.read(docString);
 		context.setDocument(doc);
 		
 		RootBox parentBox = new RootBox(context, doc.getRootElement(), 500);

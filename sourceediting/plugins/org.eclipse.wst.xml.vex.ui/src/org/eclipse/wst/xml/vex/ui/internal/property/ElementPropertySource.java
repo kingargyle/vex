@@ -17,7 +17,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.wst.xml.vex.core.internal.dom.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 
@@ -37,7 +37,7 @@ public class ElementPropertySource implements IPropertySource2 {
 	 *            True if multiple elements are selected. In this case the "id"
 	 *            attribute will not be editable.
 	 */
-	public ElementPropertySource(Element element, Validator validator,
+	public ElementPropertySource(IVEXElement element, Validator validator,
 			boolean multi) {
 		this.element = element;
 		this.validator = validator;
@@ -153,7 +153,7 @@ public class ElementPropertySource implements IPropertySource2 {
 
 	private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
-	private Element element;
+	private IVEXElement element;
 	private Validator validator;
 	private boolean multi;
 

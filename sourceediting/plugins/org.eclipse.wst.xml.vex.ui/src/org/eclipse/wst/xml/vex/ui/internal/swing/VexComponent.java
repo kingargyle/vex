@@ -63,10 +63,11 @@ import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.HostComponent;
@@ -238,9 +239,9 @@ public class VexComponent extends JComponent implements Scrollable,
 			return this.canPasteText();
 		}
 
-		DocumentFragment frag;
+		IVEXDocumentFragment frag;
 		try {
-			frag = (DocumentFragment) tfbl.getTransferData(flavor);
+			frag = (IVEXDocumentFragment) tfbl.getTransferData(flavor);
 		} catch (UnsupportedFlavorException ex) {
 			return false;
 		} catch (IOException ex) {
@@ -439,7 +440,7 @@ public class VexComponent extends JComponent implements Scrollable,
 			Transferable tfbl = this.clipboard.getContents(null);
 			DataFlavor flavor = VexSelection.VEX_DOCUMENT_FRAGMENT_FLAVOR;
 			if (tfbl.isDataFlavorSupported(flavor)) {
-				DocumentFragment frag = (DocumentFragment) tfbl
+				IVEXDocumentFragment frag = (IVEXDocumentFragment) tfbl
 						.getTransferData(flavor);
 				this.impl.insertFragment(frag);
 			} else {
@@ -512,11 +513,11 @@ public class VexComponent extends JComponent implements Scrollable,
 		return this.impl.getCaretOffset();
 	}
 
-	public Element getCurrentElement() {
+	public IVEXElement getCurrentElement() {
 		return this.impl.getCurrentElement();
 	}
 
-	public Document getDocument() {
+	public IVEXDocument getDocument() {
 		return this.impl.getDocument();
 	}
 
@@ -532,7 +533,7 @@ public class VexComponent extends JComponent implements Scrollable,
 		return this.impl.getSelectionStart();
 	}
 
-	public DocumentFragment getSelectedFragment() {
+	public IVEXDocumentFragment getSelectedFragment() {
 		return this.impl.getSelectedFragment();
 	}
 
@@ -564,7 +565,7 @@ public class VexComponent extends JComponent implements Scrollable,
 		this.impl.insertChar(c);
 	}
 
-	public void insertFragment(DocumentFragment frag)
+	public void insertFragment(IVEXDocumentFragment frag)
 			throws DocumentValidationException {
 		this.impl.insertFragment(frag);
 	}
@@ -657,7 +658,7 @@ public class VexComponent extends JComponent implements Scrollable,
 		impl.setDebugging(debugging);
 	}
 
-	public void setDocument(Document doc, StyleSheet styleSheet) {
+	public void setDocument(IVEXDocument doc, StyleSheet styleSheet) {
 		this.impl.setDocument(doc, styleSheet);
 	}
 

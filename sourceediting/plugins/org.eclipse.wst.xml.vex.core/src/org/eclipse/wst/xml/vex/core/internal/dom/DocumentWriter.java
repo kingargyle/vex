@@ -128,7 +128,7 @@ public class DocumentWriter {
 		this.wrapColumn = wrapColumn;
 	}
 
-	public void write(Document doc, OutputStream os) throws IOException {
+	public void write(IVEXDocument doc, OutputStream os) throws IOException {
 
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		PrintWriter pw = new PrintWriter(osw);
@@ -156,7 +156,7 @@ public class DocumentWriter {
 
 	// ====================================================== PRIVATE
 
-	private void writeNode(Node node, PrintWriter pw, String indent) {
+	private void writeNode(IVEXNode node, PrintWriter pw, String indent) {
 
 		if (node instanceof Text) {
 			TextWrapper wrapper = new TextWrapper();
@@ -182,7 +182,7 @@ public class DocumentWriter {
 			}
 
 			boolean hasBlockChild = false;
-			Element[] children = element.getChildElements();
+			IVEXElement[] children = element.getChildElements();
 			for (int i = 0; i < children.length; i++) {
 				if (this.whitespacePolicy != null
 						&& this.whitespacePolicy.isBlock(children[i])) {
@@ -214,7 +214,7 @@ public class DocumentWriter {
 				pw.println(">");
 
 				String childIndent = indent + this.indent;
-				Node[] content = element.getChildNodes();
+				IVEXNode[] content = element.getChildNodes();
 				for (int i = 0; i < content.length; i++) {
 					this.writeNode(content[i], pw, childIndent);
 				}
@@ -236,20 +236,20 @@ public class DocumentWriter {
 		}
 	}
 
-	private void writeNodeNoWrap(Node node, PrintWriter pw) {
+	private void writeNodeNoWrap(IVEXNode node, PrintWriter pw) {
 
 		if (node instanceof Text) {
 			pw.print(escape(node.getText()));
 		} else {
 
-			Element element = (Element) node;
+			IVEXElement element = (IVEXElement) node;
 
 			pw.print("<");
 			pw.print(element.getName());
 			pw.print(this.getAttributeString(element));
 			pw.print(">");
 
-			Node[] content = element.getChildNodes();
+			IVEXNode[] content = element.getChildNodes();
 			for (int i = 0; i < content.length; i++) {
 				this.writeNodeNoWrap(content[i], pw);
 			}
@@ -270,12 +270,12 @@ public class DocumentWriter {
 		return sb.toString();
 	}
 
-	private void addNode(Node node, TextWrapper wrapper) {
+	private void addNode(IVEXNode node, TextWrapper wrapper) {
 		if (node instanceof Text) {
 			wrapper.add(escape(node.getText()));
 		} else {
-			Element element = (Element) node;
-			Node[] content = element.getChildNodes();
+			IVEXElement element = (IVEXElement) node;
+			IVEXNode[] content = element.getChildNodes();
 			String[] attrs = element.getAttributeNames();
 			Arrays.sort(attrs);
 
@@ -318,7 +318,7 @@ public class DocumentWriter {
 		}
 	}
 
-	private String getAttributeString(Element element) {
+	private String getAttributeString(IVEXElement element) {
 
 		Validator validator = element.getDocument().getValidator();
 
@@ -339,7 +339,7 @@ public class DocumentWriter {
 	}
 
 	private static boolean attrHasDefaultValue(Validator validator,
-			Element element, String attribute) {
+			IVEXElement element, String attribute) {
 		if (validator != null) {
 			AttributeDefinition ad = validator.getAttributeDefinition(element
 					.getName(), attribute);

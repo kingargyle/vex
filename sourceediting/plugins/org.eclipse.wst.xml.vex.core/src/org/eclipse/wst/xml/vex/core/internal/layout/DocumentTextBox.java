@@ -14,8 +14,9 @@ import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 
 /**
@@ -52,7 +53,7 @@ public class DocumentTextBox extends TextBox {
 	 * @param endOffset
 	 *            end offset of the text
 	 */
-	public DocumentTextBox(LayoutContext context, Element element,
+	public DocumentTextBox(LayoutContext context, IVEXElement element,
 			int startOffset, int endOffset) {
 		super(element);
 
@@ -96,7 +97,7 @@ public class DocumentTextBox extends TextBox {
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.TextBox#getText()
 	 */
 	public String getText() {
-		Document doc = this.getElement().getDocument();
+		IVEXDocument doc = this.getElement().getDocument();
 		return doc.getText(this.getStartOffset(), this.getEndOffset() + 1);
 	}
 

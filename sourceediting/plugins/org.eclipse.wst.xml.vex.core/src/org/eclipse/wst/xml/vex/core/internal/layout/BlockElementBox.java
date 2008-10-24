@@ -21,9 +21,10 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
- * A block box corresponding to a DOM Element. Block boxes lay their children
+ * A block box corresponding to a DOM IVEXElement. Block boxes lay their children
  * out stacked top to bottom. Block boxes correspond to the
  * <code>display: block;</code> CSS property.
  */
@@ -49,10 +50,10 @@ public class BlockElementBox extends AbstractBlockBox {
 	 * @param parent
 	 *            This box's parent box.
 	 * @param element
-	 *            Element to which this box corresponds.
+	 *            IVEXElement to which this box corresponds.
 	 */
 	public BlockElementBox(LayoutContext context, BlockBox parent,
-			Element element) {
+			IVEXElement element) {
 		super(context, parent, element);
 	}
 
@@ -126,7 +127,7 @@ public class BlockElementBox extends AbstractBlockBox {
 			start = System.currentTimeMillis();
 		}
 
-		Element element = this.getElement();
+		IVEXElement element = this.getElement();
 		int width = this.getWidth();
 
 		List childList = new ArrayList();
@@ -134,7 +135,7 @@ public class BlockElementBox extends AbstractBlockBox {
 		StyleSheet ss = context.getStyleSheet();
 
 		// element and styles for generated boxes
-		Element genElement;
+		IVEXElement genElement;
 		Styles genStyles;
 
 		// :before content
@@ -228,7 +229,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	/**
 	 * Returns a Drawable that draws a circle-style list item bullet.
 	 */
-	private static InlineBox createCircleBullet(Element element, Styles styles) {
+	private static InlineBox createCircleBullet(IVEXElement element, Styles styles) {
 		final int size = Math.round(0.5f * styles.getFontSize());
 		final int lift = Math.round(0.1f * styles.getFontSize());
 		Drawable drawable = new Drawable() {
@@ -248,7 +249,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	/**
 	 * Returns a Drawable that draws a disc-style list item bullet.
 	 */
-	private static InlineBox createDiscBullet(Element element, Styles styles) {
+	private static InlineBox createDiscBullet(IVEXElement element, Styles styles) {
 		final int size = Math.round(0.5f * styles.getFontSize());
 		final int lift = Math.round(0.1f * styles.getFontSize());
 		Drawable drawable = new Drawable() {
@@ -266,7 +267,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	/**
 	 * Returns a Drawable that draws a square-style list item bullet.
 	 */
-	private static InlineBox createSquareBullet(Element element, Styles styles) {
+	private static InlineBox createSquareBullet(IVEXElement element, Styles styles) {
 		final int size = Math.round(0.5f * styles.getFontSize());
 		final int lift = Math.round(0.1f * styles.getFontSize());
 		Drawable drawable = new Drawable() {
@@ -306,15 +307,15 @@ public class BlockElementBox extends AbstractBlockBox {
 	 * with 1.
 	 */
 	private int getItemNumber() {
-		Element element = this.getElement();
-		Element parent = element.getParent();
+		IVEXElement element = this.getElement();
+		IVEXElement parent = element.getParent();
 
 		if (parent == null) {
 			return 1;
 		}
 
 		int item = 1;
-		Element[] children = parent.getChildElements();
+		IVEXElement[] children = parent.getChildElements();
 		for (int i = 0; i < children.length; i++) {
 			if (children[i] == element) {
 				return item;

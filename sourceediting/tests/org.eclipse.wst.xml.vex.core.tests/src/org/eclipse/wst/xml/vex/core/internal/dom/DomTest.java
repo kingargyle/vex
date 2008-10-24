@@ -11,9 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 
@@ -30,9 +28,9 @@ public class DomTest extends TestCase {
 		// Document initialisation
 		//
 		RootElement root = new RootElement("article");
-		Document doc = new Document(root);
-		Node[] content;
-		Element[] children;
+		IVEXDocument doc = new Document(root);
+		IVEXNode[] content;
+		IVEXElement[] children;
 
 		// root
 		// | |
@@ -116,14 +114,14 @@ public class DomTest extends TestCase {
 
 	public void testFragments() throws Exception {
 
-		Document doc;
-		DocumentFragment frag;
-		Element[] elements;
-		Node[] nodes;
-		Element root;
-		Element x;
-		Element y;
-		Element z;
+		IVEXDocument doc;
+		IVEXDocumentFragment frag;
+		IVEXElement[] elements;
+		IVEXNode[] nodes;
+		IVEXElement root;
+		IVEXElement x;
+		IVEXElement y;
+		IVEXElement z;
 
 		// Case 1: just text
 		//
@@ -270,7 +268,7 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[0], "a", 1, 2);
 		assertIsElement(nodes[1], "z", doc.getRootElement(), 2, 14);
 		assertIsText(nodes[2], "i", 15, 16);
-		z = (Element) nodes[1];
+		z = (IVEXElement) nodes[1];
 		nodes = z.getChildNodes();
 		assertEquals(5, nodes.length);
 		assertIsText(nodes[0], "bc", 3, 5);
@@ -278,8 +276,8 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[2], "e", 8, 9);
 		assertIsElement(nodes[3], "y", z, 9, 11);
 		assertIsText(nodes[4], "gh", 12, 14);
-		x = (Element) nodes[1];
-		y = (Element) nodes[3];
+		x = (IVEXElement) nodes[1];
+		y = (IVEXElement) nodes[3];
 		nodes = x.getChildNodes();
 		assertEquals(1, nodes.length);
 		assertIsText(nodes[0], "d", 6, 7);
@@ -299,7 +297,7 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[0], "a", 1, 2);
 		assertIsElement(nodes[1], "z", doc.getRootElement(), 2, 14);
 		assertIsText(nodes[2], "i", 15, 16);
-		z = (Element) nodes[1];
+		z = (IVEXElement) nodes[1];
 		nodes = z.getChildNodes();
 		assertEquals(5, nodes.length);
 		assertIsText(nodes[0], "bc", 3, 5);
@@ -307,8 +305,8 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[2], "e", 8, 9);
 		assertIsElement(nodes[3], "y", z, 9, 11);
 		assertIsText(nodes[4], "gh", 12, 14);
-		x = (Element) nodes[1];
-		y = (Element) nodes[3];
+		x = (IVEXElement) nodes[1];
+		y = (IVEXElement) nodes[3];
 		nodes = x.getChildNodes();
 		assertEquals(1, nodes.length);
 		assertIsText(nodes[0], "d", 6, 7);
@@ -318,17 +316,17 @@ public class DomTest extends TestCase {
 
 	}
 
-	public void assertIsElement(Node node, String name, Element parent,
+	public void assertIsElement(IVEXNode node, String name, IVEXElement parent,
 			int startOffset, int endOffset) {
 
 		assertTrue(node instanceof Element);
-		assertEquals(name, ((Element) node).getName());
-		assertEquals(parent, ((Element) node).getParent());
+		assertEquals(name, ((IVEXElement) node).getName());
+		assertEquals(parent, ((IVEXElement) node).getParent());
 		assertEquals(startOffset, node.getStartOffset());
 		assertEquals(endOffset, node.getEndOffset());
 	}
 
-	public void assertIsText(Node node, String text, int startOffset,
+	public void assertIsText(IVEXNode node, String text, int startOffset,
 			int endOffset) {
 
 		assertTrue(node instanceof Text);

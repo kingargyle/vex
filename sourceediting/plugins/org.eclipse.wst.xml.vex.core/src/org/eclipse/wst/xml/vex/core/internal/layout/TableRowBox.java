@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * Box representing a row in a table.
@@ -36,7 +37,7 @@ public class TableRowBox extends AbstractBlockBox {
 
 		final List children = new ArrayList();
 
-		Element element = this.findContainingElement();
+		IVEXElement element = this.findContainingElement();
 		final int[] widths = this.getTableBox().getColumnWidths();
 
 		LayoutUtils.iterateTableCells(context.getStyleSheet(), element, this
@@ -49,7 +50,7 @@ public class TableRowBox extends AbstractBlockBox {
 								TableRowBox.this, child, widths[column++]));
 					}
 
-					public void onRange(Element parent, int startOffset,
+					public void onRange(IVEXElement parent, int startOffset,
 							int endOffset) {
 						children.add(new TableCellBox(context,
 								TableRowBox.this, startOffset, endOffset,

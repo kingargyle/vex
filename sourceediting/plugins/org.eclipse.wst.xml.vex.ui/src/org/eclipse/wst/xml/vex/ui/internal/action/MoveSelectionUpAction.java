@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
@@ -56,7 +57,7 @@ public class MoveSelectionUpAction extends AbstractVexAction {
 			// would
 			// be a VERY large change.)
 			System.out.println("Box is " + box);
-			Element element = box.getElement();
+			IVEXElement element = box.getElement();
 			if (element != null) {
 				vexWidget.moveTo(element.getEndOffset());
 				vexWidget.moveTo(element.getStartOffset(), true);

@@ -16,6 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 
 /**
  * A wrapper for the top level <code>BlockElementBox</code> that applies its
@@ -23,7 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Element;
  */
 public class RootBox extends AbstractBox implements BlockBox {
 
-	private Element element;
+	private IVEXElement element;
 	private BlockElementBox childBox;
 	private Box[] children = new Box[1];
 
@@ -37,7 +38,7 @@ public class RootBox extends AbstractBox implements BlockBox {
 	 * @param width
 	 *            width of this box
 	 */
-	public RootBox(LayoutContext context, Element element, int width) {
+	public RootBox(LayoutContext context, IVEXElement element, int width) {
 		this.element = element;
 		this.setWidth(width);
 
@@ -67,7 +68,7 @@ public class RootBox extends AbstractBox implements BlockBox {
 	/**
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.Box#getElement()
 	 */
-	public Element getElement() {
+	public IVEXElement getElement() {
 		return this.element;
 	}
 
