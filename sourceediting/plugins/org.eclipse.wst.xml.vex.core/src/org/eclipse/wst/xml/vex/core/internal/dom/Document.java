@@ -21,11 +21,11 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
  * Represents an XML document.
- * @model
+ * 
  */
 public class Document implements IVEXDocument {
 
-	private Content content;
+	private IContent content;
 	private RootElement rootElement;
 	private ListenerList listeners = new ListenerList(DocumentListener.class,
 			DocumentEvent.class);
@@ -42,7 +42,7 @@ public class Document implements IVEXDocument {
 	 * @param rootElement
 	 *            root element of the document. The document property of this
 	 *            RootElement is set by this constructor.
-	 * @model
+	 * 
 	 */
 	public Document(RootElement rootElement) {
 		this.content = new GapContent(100);
@@ -60,16 +60,16 @@ public class Document implements IVEXDocument {
 	 *            Content object used to store the document's content.
 	 * @param rootElement
 	 *            RootElement of the document.
-	 * @model
+	 * 
 	 */
-	public Document(Content content, RootElement rootElement) {
+	public Document(IContent content, RootElement rootElement) {
 		this.content = content;
 		this.rootElement = rootElement;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#addDocumentListener(org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener)
-	 * @model
+	 * 
 	 */
 	public void addDocumentListener(DocumentListener listener) {
 		this.listeners.add(listener);
@@ -77,7 +77,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#canInsertFragment(int, org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment)
-	 * @model
+	 * 
 	 */
 	public boolean canInsertFragment(int offset, IVEXDocumentFragment fragment) {
 
@@ -95,7 +95,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#canInsertText(int)
-	 * @model
+	 * 
 	 */
 	public boolean canInsertText(int offset) {
 
@@ -114,15 +114,15 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#createPosition(int)
-	 * @model
+	 * 
 	 */
-	public Position createPosition(int offset) {
+	public IPosition createPosition(int offset) {
 		return this.content.createPosition(offset);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#delete(int, int)
-	 * @model
+	 * 
 	 */
 	public void delete(int startOffset, int endOffset)
 			throws DocumentValidationException {
@@ -172,7 +172,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#findCommonElement(int, int)
-	 * @model
+	 * 
 	 */
 	public IVEXElement findCommonElement(int offset1, int offset2) {
 		IVEXElement element = this.rootElement;
@@ -199,7 +199,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getCharacterAt(int)
-	 * @model
+	 * 
 	 */
 	public char getCharacterAt(int offset) {
 		return this.content.getString(offset, 1).charAt(0);
@@ -207,7 +207,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getElementAt(int)
-	 * @model
+	 * 
 	 */
 	public IVEXElement getElementAt(int offset) {
 		if (offset < 1 || offset >= this.getLength()) {
@@ -237,7 +237,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getEncoding()
-	 * @model
+	 * 
 	 */
 	public String getEncoding() {
 		return this.encoding;
@@ -245,7 +245,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getFragment(int, int)
-	 * @model
+	 * 
 	 */
 	public IVEXDocumentFragment getFragment(int startOffset, int endOffset) {
 
@@ -266,7 +266,7 @@ public class Document implements IVEXDocument {
 
 		IVEXElement[] children = e1.getChildElements();
 
-		Content newContent = new GapContent(endOffset - startOffset);
+		IContent newContent = new GapContent(endOffset - startOffset);
 		String s = this.content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
 		List newChildren = new ArrayList();
@@ -289,7 +289,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getLength()
-	 * @model
+	 * 
 	 */
 	public int getLength() {
 		return this.content.getLength();
@@ -297,7 +297,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodeNames(int, int)
-	 * @model
+	 * 
 	 */
 	public String[] getNodeNames(int startOffset, int endOffset) {
 
@@ -318,7 +318,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodes(int, int)
-	 * @model
+	 * 
 	 */
 	public IVEXNode[] getNodes(int startOffset, int endOffset) {
 
@@ -372,7 +372,7 @@ public class Document implements IVEXDocument {
 	 * @param elements
 	 *            child elements that are within the run
 	 */
-	static IVEXNode[] createNodeArray(Content content, int startOffset,
+	static IVEXNode[] createNodeArray(IContent content, int startOffset,
 			int endOffset, IVEXElement[] elements) {
 
 		List nodes = new ArrayList();
@@ -395,7 +395,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getPublicID()
-	 * @model
+	 * 
 	 */
 	public String getPublicID() {
 		return this.publicID;
@@ -403,7 +403,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getRawText(int, int)
-	 * @model
+	 * 
 	 */
 	public String getRawText(int startOffset, int endOffset) {
 		return this.content.getString(startOffset, endOffset - startOffset);
@@ -411,7 +411,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getRootElement()
-	 * @model
+	 * 
 	 */
 	public Element getRootElement() {
 		return this.rootElement;
@@ -419,7 +419,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getSystemID()
-	 * @model
+	 * 
 	 */
 	public String getSystemID() {
 		return this.systemID;
@@ -427,7 +427,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getText(int, int)
-	 * @model
+	 * 
 	 */
 	public String getText(int startOffset, int endOffset) {
 		String raw = this.content.getString(startOffset, endOffset
@@ -444,7 +444,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getValidator()
-	 * @model
+	 * 
 	 */
 	public Validator getValidator() {
 		return this.validator;
@@ -452,7 +452,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertElement(int, org.eclipse.wst.xml.vex.core.internal.dom.Element)
-	 * @model
+	 * 
 	 */
 	public void insertElement(int offset, IVEXElement element)
 			throws DocumentValidationException {
@@ -520,7 +520,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertFragment(int, org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment)
-	 * @model
+	 * 
 	 */
 	public void insertFragment(int offset, IVEXDocumentFragment fragment)
 			throws DocumentValidationException {
@@ -548,7 +548,7 @@ public class Document implements IVEXDocument {
 		this.fireBeforeContentInserted(new DocumentEvent(this, parent, offset,
 				2, null));
 
-		Content c = fragment.getContent();
+		IContent c = fragment.getContent();
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
@@ -576,7 +576,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#insertText(int, java.lang.String)
-	 * @model
+	 * 
 	 */
 	public void insertText(int offset, String text)
 			throws DocumentValidationException {
@@ -637,7 +637,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#isUndoEnabled()
-	 * @model
+	 * 
 	 */
 	public boolean isUndoEnabled() {
 		return this.undoEnabled;
@@ -645,7 +645,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#removeDocumentListener(org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener)
-	 * @model
+	 * 
 	 */
 	public void removeDocumentListener(DocumentListener listener) {
 		this.listeners.remove(listener);
@@ -653,7 +653,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setPublicID(java.lang.String)
-	 * @model
+	 * 
 	 */
 	public void setPublicID(String publicID) {
 		this.publicID = publicID;
@@ -661,7 +661,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setSystemID(java.lang.String)
-	 * @model
+	 * 
 	 */
 	public void setSystemID(String systemID) {
 		this.systemID = systemID;
@@ -669,7 +669,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setUndoEnabled(boolean)
-	 * @model
+	 * 
 	 */
 	public void setUndoEnabled(boolean undoEnabled) {
 		this.undoEnabled = undoEnabled;
@@ -677,7 +677,7 @@ public class Document implements IVEXDocument {
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setValidator(org.eclipse.wst.xml.vex.core.internal.dom.Validator)
-	 * @model
+	 * 
 	 */
 	public void setValidator(Validator validator) {
 		this.validator = validator;
@@ -882,7 +882,7 @@ public class Document implements IVEXDocument {
 	 * @param parent
 	 *            parent for the cloned Element
 	 */
-	private IVEXElement cloneElement(IVEXElement original, Content content, int shift,
+	private IVEXElement cloneElement(IVEXElement original, IContent content, int shift,
 			IVEXElement parent) {
 
 		Element clone = new Element(original.getName());

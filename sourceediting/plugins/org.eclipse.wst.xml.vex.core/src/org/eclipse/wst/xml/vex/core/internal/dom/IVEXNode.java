@@ -1,6 +1,6 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-/*
+/**
  * @model
  */
 public interface IVEXNode {
@@ -11,35 +11,35 @@ public interface IVEXNode {
 	 * 
 	 * @model
 	 */
-	public abstract Content getContent();
+	public  IContent getContent();
 
 	/**
 	 * Returns the character offset corresponding to the end of the node.
 	 * 
 	 * @model
 	 */
-	public abstract int getEndOffset();
+	public  int getEndOffset();
 
 	/**
 	 * Returns the <code>Position</code> corresponding to the end of the node.
 	 * 
 	 * @model
 	 */
-	public abstract Position getEndPosition();
+	public  IPosition getEndPosition();
 
 	/**
 	 * Returns the character offset corresponding to the start of the node.
 	 * 
 	 * @model
 	 */
-	public abstract int getStartOffset();
+	public  int getStartOffset();
 
 	/**
 	 * Returns the <code>Position</code> corresponding to the start of the node.
 	 * 
 	 * @model
 	 */
-	public abstract Position getStartPosition();
+	public  IPosition getStartPosition();
 
 	/**
 	 * Returns the text contained by this node. If this node is an element, the
@@ -47,6 +47,6 @@ public interface IVEXNode {
 	 * 
 	 * @model
 	 */
-	public abstract String getText();
+	public  String getText();
 
 }

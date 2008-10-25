@@ -194,7 +194,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	private boolean trimLeading = false;
 
 	// Content object to hold document content
-	private Content content = new GapContent(100);
+	private IContent content = new GapContent(100);
 
 	// Stack of StackElement objects
 	private LinkedList stack = new LinkedList();

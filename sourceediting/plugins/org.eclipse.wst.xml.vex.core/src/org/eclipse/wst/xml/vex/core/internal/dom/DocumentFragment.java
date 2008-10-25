@@ -20,7 +20,7 @@ import java.io.Serializable;
  */
 public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 
-	private Content content;
+	private IContent content;
 	private IVEXElement[] elements;
 
 	/**
@@ -31,7 +31,7 @@ public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 	 * @param elementArray
 	 *            Elements that make up this fragment.
 	 */
-	public DocumentFragment(Content content, IVEXElement[] elementArray) {
+	public DocumentFragment(IContent content, IVEXElement[] elementArray) {
 		this.content = content;
 		this.elements = elementArray;
 	}
@@ -39,7 +39,7 @@ public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getContent()
 	 */
-	public Content getContent() {
+	public IContent getContent() {
 		return this.content;
 	}
 

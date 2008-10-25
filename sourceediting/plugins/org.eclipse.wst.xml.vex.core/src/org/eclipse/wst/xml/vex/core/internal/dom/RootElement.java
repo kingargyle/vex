@@ -17,7 +17,7 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
  * notify document listeners that the document has changed when the element
  * changes.
  */
-public class RootElement extends Element implements IVEXRootElement {
+public class RootElement extends Element implements IVEXElement {
 
 	private IVEXDocument document;
 

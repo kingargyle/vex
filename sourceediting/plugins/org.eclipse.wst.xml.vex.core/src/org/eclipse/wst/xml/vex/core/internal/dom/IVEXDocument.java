@@ -1,6 +1,8 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-/*
+/**
+ * 
+ * @author dcarver
  * @model
  */
 public interface IVEXDocument {
@@ -13,7 +15,7 @@ public interface IVEXDocument {
 	 *            <code>DocumentListener</code> to add.
 	 * @model
 	 */
-	public abstract void addDocumentListener(DocumentListener listener);
+	public void addDocumentListener(DocumentListener listener);
 
 	/**
 	 * Returns true if the given document fragment can be inserted at the given
@@ -25,8 +27,7 @@ public interface IVEXDocument {
 	 *            fragment to be inserted
 	 * @model
 	 */
-	public abstract boolean canInsertFragment(int offset,
-			IVEXDocumentFragment fragment);
+	public boolean canInsertFragment(int offset, IVEXDocumentFragment fragment);
 
 	/**
 	 * Returns true if text can be inserted at the given offset.
@@ -35,7 +36,7 @@ public interface IVEXDocument {
 	 *            offset where the insertion is to occur
 	 * @model
 	 */
-	public abstract boolean canInsertText(int offset);
+	public boolean canInsertText(int offset);
 
 	/**
 	 * Creates a <code>Position</code> object at the given character offset.
@@ -44,7 +45,7 @@ public interface IVEXDocument {
 	 *            initial character offset of the position
 	 * @model
 	 */
-	public abstract Position createPosition(int offset);
+	public IPosition createPosition(int offset);
 
 	/**
 	 * Deletes a portion of the document. No element may straddle the deletion
@@ -58,7 +59,7 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public abstract void delete(int startOffset, int endOffset)
+	public void delete(int startOffset, int endOffset)
 			throws DocumentValidationException;
 
 	/**
@@ -70,14 +71,14 @@ public interface IVEXDocument {
 	 *            the second offset
 	 * @model
 	 */
-	public abstract IVEXElement findCommonElement(int offset1, int offset2);
+	public IVEXElement findCommonElement(int offset1, int offset2);
 
 	/**
 	 * Returns the character at the given offset.
 	 * 
 	 * @model
 	 */
-	public abstract char getCharacterAt(int offset);
+	public char getCharacterAt(int offset);
 
 	/**
 	 * Returns the element at the given offset. The given offset must be greater
@@ -85,7 +86,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public abstract IVEXElement getElementAt(int offset);
+	public IVEXElement getElementAt(int offset);
 
 	/**
 	 * Returns the encoding used for this document, or null if no encoding has
@@ -93,7 +94,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public abstract String getEncoding();
+	public String getEncoding();
 
 	/**
 	 * Create a <code>DocumentFragment</code> representing the given range of
@@ -103,7 +104,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public abstract IVEXDocumentFragment getFragment(int startOffset, int endOffset);
+	public IVEXDocumentFragment getFragment(int startOffset, int endOffset);
 
 	/**
 	 * Returns the length of the document in characters, including the null
@@ -111,7 +112,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public abstract int getLength();
+	public int getLength();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
@@ -122,9 +123,9 @@ public interface IVEXDocument {
 	 *            the offset at which the sequence begins
 	 * @param endOffset
 	 *            the offset at which the sequence ends
-	 * @model
+	 * @model containment="true"
 	 */
-	public abstract String[] getNodeNames(int startOffset, int endOffset);
+	public String[] getNodeNames(int startOffset, int endOffset);
 
 	/**
 	 * Returns an array of Nodes representing the selected range. The given
@@ -134,17 +135,11 @@ public interface IVEXDocument {
 	 *            the offset at which the sequence begins
 	 * @param endOffset
 	 *            the offset at which the sequence ends
-	 *            
-	 * @model
-	 */
-	public abstract IVEXNode[] getNodes(int startOffset, int endOffset);
-
-	/**
-	 * Returns the public ID of the document type.
 	 * 
-	 * @model
+	 * @model type="IVEXNode" containment="true"
 	 */
-	public abstract String getPublicID();
+	public IVEXNode[] getNodes(int startOffset, int endOffset);
+
 
 	/**
 	 * Returns the text between the two given offsets. Unlike getText, sentinel
@@ -156,19 +151,15 @@ public interface IVEXDocument {
 	 *            character offset of the end of the text
 	 * @model
 	 */
-	public abstract String getRawText(int startOffset, int endOffset);
+	public String getRawText(int startOffset, int endOffset);
 
 	/**
 	 * Returns the root element of this document.
 	 * 
 	 * @model
 	 */
-	public abstract IVEXElement getRootElement();
+	public IVEXElement getRootElement();
 
-	/**
-	 * Returns the system ID of the document type.
-	 */
-	public abstract String getSystemID();
 
 	/**
 	 * Returns the text between the two given offsets. Sentinal characters are
@@ -180,15 +171,16 @@ public interface IVEXDocument {
 	 *            character offset of the end of the text
 	 * @model
 	 */
-	public abstract String getText(int startOffset, int endOffset);
+	public String getText(int startOffset, int endOffset);
 
 	/**
 	 * Returns the validator used to validate the document, or null if a
 	 * validator has not been set. Note that the DocumentFactory does not
 	 * automatically create a validator.
+	 * 
 	 * @model
 	 */
-	public abstract Validator getValidator();
+	public Validator getValidator();
 
 	/**
 	 * Inserts an element at the given position.
@@ -204,7 +196,7 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public abstract void insertElement(int offset, IVEXElement defaults)
+	public void insertElement(int offset, IVEXElement defaults)
 			throws DocumentValidationException;
 
 	/**
@@ -221,7 +213,7 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public abstract void insertFragment(int offset, IVEXDocumentFragment fragment)
+	public void insertFragment(int offset, IVEXDocumentFragment fragment)
 			throws DocumentValidationException;
 
 	/**
@@ -239,15 +231,16 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public abstract void insertText(int offset, String text)
+	public void insertText(int offset, String text)
 			throws DocumentValidationException;
 
 	/**
 	 * Returns true if undo is enabled, that is, undoable edit events are fired
 	 * to registered listeners.
+	 * 
 	 * @model
 	 */
-	public abstract boolean isUndoEnabled();
+	public boolean isUndoEnabled();
 
 	/**
 	 * Removes a document listener from the list of listeners so that it is no
@@ -257,16 +250,22 @@ public interface IVEXDocument {
 	 *            <code>DocumentListener</code> to remove.
 	 * @model
 	 */
-	public abstract void removeDocumentListener(DocumentListener listener);
+	public void removeDocumentListener(DocumentListener listener);
 
+	/**
+	 * Returns the public ID of the document type.
+	 * @model
+	 */
+	public String getPublicID();
+	
 	/**
 	 * Sets the public ID for the document's document type.
 	 * 
 	 * @param publicID
 	 *            New value for the public ID.
-	 * @model
+	 * @model 
 	 */
-	public abstract void setPublicID(String publicID);
+	public void setPublicID(String publicID);
 
 	/**
 	 * Sets the system ID for the document's document type.
@@ -275,8 +274,13 @@ public interface IVEXDocument {
 	 *            New value for the system ID.
 	 * @model
 	 */
-	public abstract void setSystemID(String systemID);
+	public void setSystemID(String systemID);
 
+	/**
+	 * Returns the system ID of the document type.
+	 */
+	public String getSystemID();
+	
 	/**
 	 * Sets whether undo events are enabled. Typically, undo events are disabled
 	 * while an edit is being undone or redone.
@@ -286,7 +290,7 @@ public interface IVEXDocument {
 	 *            listeners.
 	 * @model
 	 */
-	public abstract void setUndoEnabled(boolean undoEnabled);
+	public void setUndoEnabled(boolean undoEnabled);
 
 	/**
 	 * Sets the validator to use for this document.
@@ -295,12 +299,12 @@ public interface IVEXDocument {
 	 *            Validator to use for this document.
 	 * @model
 	 */
-	public abstract void setValidator(Validator validator);
+	public void setValidator(Validator validator);
 
 	/**
 	 * @param documentEvent
- 	 * @model
+	 * @model
 	 */
-	public abstract void fireAttributeChanged(DocumentEvent documentEvent);
+	public void fireAttributeChanged(DocumentEvent documentEvent);
 
 }

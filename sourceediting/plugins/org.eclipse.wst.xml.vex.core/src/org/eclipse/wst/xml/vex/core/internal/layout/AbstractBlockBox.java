@@ -28,7 +28,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.Position;
+import org.eclipse.wst.xml.vex.core.internal.dom.IPosition;
 
 /**
  * Base class of block boxes that can contain other block boxes. This class
@@ -895,12 +895,12 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 * Start position of an anonymous box. For non-anonymous boxes, this is
 	 * null.
 	 */
-	private Position startPosition;
+	private IPosition startPosition;
 
 	/**
 	 * End position of an anonymous box. For non-anonymous boxes, this is null.
 	 */
-	private Position endPosition;
+	private IPosition endPosition;
 
 	/**
 	 * Searches for the next block-formatted child.
@@ -947,7 +947,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 * Return the end position of an anonymous box. The default implementation
 	 * returns null.
 	 */
-	private Position getEndPosition() {
+	private IPosition getEndPosition() {
 		return this.endPosition;
 	}
 
@@ -955,7 +955,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 * Return the start position of an anonymous box. The default implementation
 	 * returns null.
 	 */
-	private Position getStartPosition() {
+	private IPosition getStartPosition() {
 		return this.startPosition;
 	}
 

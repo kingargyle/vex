@@ -39,7 +39,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.dom.Position;
+import org.eclipse.wst.xml.vex.core.internal.dom.IPosition;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
@@ -400,7 +400,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void doWork(boolean savePosition, Runnable runnable) {
-		Position position = null;
+		IPosition position = null;
 
 		if (savePosition) {
 			position = this.getDocument().createPosition(this.getCaretOffset());
@@ -1047,7 +1047,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void savePosition(Runnable runnable) {
-		Position pos = this.getDocument().createPosition(this.getCaretOffset());
+		IPosition pos = this.getDocument().createPosition(this.getCaretOffset());
 		try {
 			runnable.run();
 		} finally {

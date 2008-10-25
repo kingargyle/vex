@@ -14,11 +14,13 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
  * Represents a logical location in a document. As the document is modified,
  * existing <code>Position</code> objects are updated to reflect the appropriate
  * character offset in the document.
+ * @model
  */
-public interface Position {
+public interface IPosition {
 
 	/**
 	 * Returns the character offset corresponding to the position.
+	 * @model
 	 */
 	public int getOffset();
 }

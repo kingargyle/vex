@@ -118,7 +118,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 			root = root.getParent();
 		}
 		if (root instanceof RootElement) {
-			return ((IVEXRootElement) root).getDocument();
+			return ((IVEXElement) root).getDocument();
 		} else {
 			return null;
 		}

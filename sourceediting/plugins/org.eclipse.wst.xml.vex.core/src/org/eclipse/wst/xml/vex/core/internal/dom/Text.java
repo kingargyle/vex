@@ -27,7 +27,7 @@ public class Text extends Node {
 	 * @param endOffset
 	 *            character offset of the end of the run
 	 */
-	public Text(Content content, int startOffset, int endOffset) {
+	public Text(IContent content, int startOffset, int endOffset) {
 		this.setContent(content, startOffset, endOffset);
 	}
 

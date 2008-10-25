@@ -1,5 +1,5 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
-/*
+/**
  * @model
  */
 public interface IVEXDocumentFragment {
@@ -15,7 +15,7 @@ public interface IVEXDocumentFragment {
 	 * 
 	 * @model
 	 */
-	public abstract Content getContent();
+	public  IContent getContent();
 
 	/**
 	 * Returns the number of characters, including sentinels, represented by the
@@ -23,29 +23,29 @@ public interface IVEXDocumentFragment {
 	 * 
 	 * @model
 	 */
-	public abstract int getLength();
+	public  int getLength();
 
 	/**
 	 * Returns the elements that make up this fragment.
 	 * 
-	 * @model
+	 * @model type="IVEXElement" containment="true"
 	 */
-	public abstract IVEXElement[] getElements();
+	public  IVEXElement[] getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
 	 * content of the fragment.
 	 * 
-	 * @model
+	 * @model type="String" containment="true"
 	 */
-	public abstract String[] getNodeNames();
+	public  String[] getNodeNames();
 
 	/**
 	 * Returns the nodes that make up this fragment, including elements and
 	 * <code>Text</code> objects.
 	 * 
-	 * @model
+	 * @model type="IVEXNode" containment="true"
 	 */
-	public abstract IVEXNode[] getNodes();
+	public  IVEXNode[] getNodes();
 
 }

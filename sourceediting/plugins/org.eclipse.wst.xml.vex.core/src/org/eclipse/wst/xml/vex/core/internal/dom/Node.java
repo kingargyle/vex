@@ -16,9 +16,9 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
  */
 public class Node implements IVEXNode {
 
-	private Content content = null;
-	private Position start = null;
-	private Position end = null;
+	private IContent content = null;
+	private IPosition start = null;
+	private IPosition end = null;
 
 	/**
 	 * Class constructor.
@@ -29,7 +29,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getContent()
 	 */
-	public Content getContent() {
+	public IContent getContent() {
 		return this.content;
 	}
 
@@ -43,7 +43,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndPosition()
 	 */
-	public Position getEndPosition() {
+	public IPosition getEndPosition() {
 		return this.end;
 	}
 
@@ -57,7 +57,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartPosition()
 	 */
-	public Position getStartPosition() {
+	public IPosition getStartPosition() {
 		return this.start;
 	}
 
@@ -80,7 +80,7 @@ public class Node implements IVEXNode {
 	 * @param endOffset
 	 *            offset at which the node's content ends
 	 */
-	public void setContent(Content content, int startOffset, int endOffset) {
+	public void setContent(IContent content, int startOffset, int endOffset) {
 
 		this.content = content;
 		this.start = content.createPosition(startOffset);
