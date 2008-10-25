@@ -1,5 +1,8 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+/*
+ * @model
+ */
 public interface IVEXDocument {
 
 	/**
@@ -175,6 +178,7 @@ public interface IVEXDocument {
 	 *            character offset of the start of the text
 	 * @param endOffset
 	 *            character offset of the end of the text
+	 * @model
 	 */
 	public abstract String getText(int startOffset, int endOffset);
 
@@ -182,6 +186,7 @@ public interface IVEXDocument {
 	 * Returns the validator used to validate the document, or null if a
 	 * validator has not been set. Note that the DocumentFactory does not
 	 * automatically create a validator.
+	 * @model
 	 */
 	public abstract Validator getValidator();
 
@@ -197,6 +202,7 @@ public interface IVEXDocument {
 	 *            element to insert
 	 * @throws DocumentValidationException
 	 *             if the change would result in an invalid document.
+	 * @model
 	 */
 	public abstract void insertElement(int offset, IVEXElement defaults)
 			throws DocumentValidationException;
@@ -213,6 +219,7 @@ public interface IVEXDocument {
 	 *            fragment to insert
 	 * @throws DocumentValidationException
 	 *             if the change would result in an invalid document.
+	 * @model
 	 */
 	public abstract void insertFragment(int offset, IVEXDocumentFragment fragment)
 			throws DocumentValidationException;
@@ -230,6 +237,7 @@ public interface IVEXDocument {
 	 * @return UndoableEdit that can be used to undo the deletion
 	 * @throws DocumentValidationException
 	 *             if the change would result in an invalid document.
+	 * @model
 	 */
 	public abstract void insertText(int offset, String text)
 			throws DocumentValidationException;
@@ -237,6 +245,7 @@ public interface IVEXDocument {
 	/**
 	 * Returns true if undo is enabled, that is, undoable edit events are fired
 	 * to registered listeners.
+	 * @model
 	 */
 	public abstract boolean isUndoEnabled();
 
@@ -246,6 +255,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param listener
 	 *            <code>DocumentListener</code> to remove.
+	 * @model
 	 */
 	public abstract void removeDocumentListener(DocumentListener listener);
 
@@ -254,6 +264,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param publicID
 	 *            New value for the public ID.
+	 * @model
 	 */
 	public abstract void setPublicID(String publicID);
 
@@ -262,6 +273,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param systemID
 	 *            New value for the system ID.
+	 * @model
 	 */
 	public abstract void setSystemID(String systemID);
 
@@ -272,6 +284,7 @@ public interface IVEXDocument {
 	 * @param undoEnabled
 	 *            If true, undoable edit events are fired to registered
 	 *            listeners.
+	 * @model
 	 */
 	public abstract void setUndoEnabled(boolean undoEnabled);
 
@@ -280,9 +293,14 @@ public interface IVEXDocument {
 	 * 
 	 * @param validator
 	 *            Validator to use for this document.
+	 * @model
 	 */
 	public abstract void setValidator(Validator validator);
 
+	/**
+	 * @param documentEvent
+ 	 * @model
+	 */
 	public abstract void fireAttributeChanged(DocumentEvent documentEvent);
 
 }

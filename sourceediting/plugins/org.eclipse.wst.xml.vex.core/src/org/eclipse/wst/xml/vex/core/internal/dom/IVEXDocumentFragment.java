@@ -1,5 +1,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
-
+/*
+ * @model
+ */
 public interface IVEXDocumentFragment {
 
 	/**

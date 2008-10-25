@@ -45,9 +45,9 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#addChild(org.eclipse.wst.xml.vex.core.internal.dom.Element)
 	 */
-	public void addChild(Element child) {
+	public void addChild(IVEXElement child) {
 		this.children.add(child);
-		child.parent = this;
+		child.setParent(this);
 	}
 
 	/* (non-Javadoc)

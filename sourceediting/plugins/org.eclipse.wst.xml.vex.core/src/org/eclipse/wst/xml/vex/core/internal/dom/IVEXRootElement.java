@@ -18,7 +18,7 @@ public interface IVEXRootElement extends IVEXElement{
 	 * 
 	 * @param document
 	 *            Document to which this root element is associated.
-	 *            
+	 * @model           
 	 */
 	public abstract void setDocument(IVEXDocument document);
 
