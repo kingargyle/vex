@@ -66,7 +66,7 @@ public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 		String[] names = new String[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] instanceof Text) {
-				names[i] = Validator.PCDATA;
+				names[i] = IValidator.PCDATA;
 			} else {
 				names[i] = ((IVEXElement) nodes[i]).getName();
 			}

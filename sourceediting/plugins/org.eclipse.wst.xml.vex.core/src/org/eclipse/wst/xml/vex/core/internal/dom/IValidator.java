@@ -16,12 +16,14 @@ import java.util.Set;
 /**
  * Represents an object that can validate the structure of a document.
  * Validators must be serializable.
+ * @model
  */
-public interface Validator extends Serializable {
+public interface IValidator extends Serializable {
 
 	/**
 	 * String indicating that character data is allowed at the given point in
 	 * the document.
+	 * @model
 	 */
 	public static final String PCDATA = "#PCDATA";
 
@@ -32,6 +34,7 @@ public interface Validator extends Serializable {
 	 *            Name of the element.
 	 * @param attribute
 	 *            Name of the attribute.
+	 * @model
 	 */
 	public AttributeDefinition getAttributeDefinition(String element,
 			String attribute);
@@ -41,12 +44,14 @@ public interface Validator extends Serializable {
 	 * 
 	 * @param element
 	 *            Name of the element to check.
+	 * @model
 	 */
 	public AttributeDefinition[] getAttributeDefinitions(String element);
 
 	/**
 	 * Returns a set of Strings representing valid root elements for the given
 	 * document type.
+	 * @model type="IVEXElement" containment="true"
 	 */
 	public Set getValidRootElements();
 
@@ -63,6 +68,7 @@ public interface Validator extends Serializable {
 	 * @param suffix
 	 *            Array of strings representing nodes coming after the insertion
 	 *            point
+	 * @model type="String" containment="true"
 	 */
 	public Set getValidItems(String element, String[] prefix, String[] suffix);
 
@@ -77,6 +83,7 @@ public interface Validator extends Serializable {
 	 *            Array of element names and Validator.PCDATA.
 	 * @param partial
 	 *            If true, an valid but incomplete sequence is acceptable.
+	 * @model
 	 */
 	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial);
@@ -98,6 +105,7 @@ public interface Validator extends Serializable {
 	 *            empty.
 	 * @param partial
 	 *            If true, an valid but incomplete sequence is acceptable.
+	 * @model
 	 */
 	public boolean isValidSequence(String element, String[] seq1,
 			String[] seq2, String[] seq3, boolean partial);

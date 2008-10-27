@@ -122,7 +122,7 @@ public interface IVEXElement extends IVEXNode {
 	 * 
 	 * @param parent
 	 *            Parent element.
-	 * @model
+	 * 
 	 */
 	public void setParent(IVEXElement parent);
 

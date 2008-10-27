@@ -40,7 +40,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.dom.IPosition;
-import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
@@ -197,7 +197,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		Validator validator = doc.getValidator();
+		IValidator validator = doc.getValidator();
 		if (validator == null) {
 			return true;
 		}
@@ -229,7 +229,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		Validator validator = this.document.getValidator();
+		IValidator validator = this.document.getValidator();
 		if (validator == null) {
 			return true;
 		}
@@ -244,7 +244,7 @@ public class VexWidgetImpl implements IVexWidget {
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] seq2 = new String[] { Validator.PCDATA };
+		String[] seq2 = new String[] { IValidator.PCDATA };
 		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
@@ -275,7 +275,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		Validator validator = doc.getValidator();
+		IValidator validator = doc.getValidator();
 		if (validator == null) {
 			return false;
 		}
@@ -539,7 +539,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return new String[0];
 		}
 
-		Validator validator = doc.getValidator();
+		IValidator validator = doc.getValidator();
 		if (validator == null) {
 			return new String[0];
 		}
@@ -558,7 +558,7 @@ public class VexWidgetImpl implements IVexWidget {
 		List candidates = new ArrayList();
 		candidates.addAll(validator.getValidItems(parent.getName(), prefix,
 				suffix));
-		candidates.remove(Validator.PCDATA);
+		candidates.remove(IValidator.PCDATA);
 
 		// If there's a selection, root out those candidates that can't
 		// contain it.
@@ -594,7 +594,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return new String[0];
 		}
 
-		Validator validator = doc.getValidator();
+		IValidator validator = doc.getValidator();
 		if (validator == null) {
 			return new String[0];
 		}
@@ -614,7 +614,7 @@ public class VexWidgetImpl implements IVexWidget {
 		List candidates = new ArrayList();
 		candidates.addAll(validator.getValidItems(parent.getName(), prefix,
 				suffix));
-		candidates.remove(Validator.PCDATA);
+		candidates.remove(IValidator.PCDATA);
 
 		// root out those that can't contain the current content
 		String[] content = doc.getNodeNames(element.getStartOffset() + 1,

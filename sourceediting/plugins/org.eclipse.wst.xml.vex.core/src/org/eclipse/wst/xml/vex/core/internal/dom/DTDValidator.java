@@ -132,7 +132,7 @@ public class DTDValidator extends AbstractValidator {
 
 		validator.anySet = new HashSet();
 		validator.anySet.addAll(validator.elementDFAs.keySet());
-		validator.anySet.add(Validator.PCDATA);
+		validator.anySet.add(IValidator.PCDATA);
 
 		return validator;
 	}
@@ -156,7 +156,7 @@ public class DTDValidator extends AbstractValidator {
 		return this.elementDFAs.keySet();
 	}
 
-	/** @see Validator#getValidItems */
+	/** @see IValidator#getValidItems */
 	public Set getValidItems(String element, String[] prefix, String[] suffix) {
 
 		// First, get a set of candidates. We'll later test to see if each is
@@ -176,10 +176,10 @@ public class DTDValidator extends AbstractValidator {
 			// If the last transition was due to PCDATA, adding more PCDATA
 			// is also valid
 			if (prefix.length > 0
-					&& prefix[prefix.length - 1].equals(Validator.PCDATA)) {
+					&& prefix[prefix.length - 1].equals(IValidator.PCDATA)) {
 				candidates = new HashSet();
 				candidates.addAll(target.getValidSymbols());
-				candidates.add(Validator.PCDATA);
+				candidates.add(IValidator.PCDATA);
 			} else {
 				candidates = target.getValidSymbols();
 			}
@@ -204,7 +204,7 @@ public class DTDValidator extends AbstractValidator {
 	}
 
 	/**
-	 * @see Validator#isValidSequence
+	 * @see IValidator#isValidSequence
 	 */
 	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial) {
@@ -239,7 +239,7 @@ public class DTDValidator extends AbstractValidator {
 			node = DFABuilder.createSymbolNode(name);
 
 		} else if (item instanceof DTDPCData) {
-			node = DFABuilder.createSymbolNode(Validator.PCDATA);
+			node = DFABuilder.createSymbolNode(IValidator.PCDATA);
 
 		} else if (item instanceof DTDChoice) {
 			Iterator iter = ((DTDContainer) item).getItemsVec().iterator();
@@ -265,7 +265,7 @@ public class DTDValidator extends AbstractValidator {
 				}
 			}
 			DFABuilder.Node pcdata = DFABuilder
-					.createSymbolNode(Validator.PCDATA);
+					.createSymbolNode(IValidator.PCDATA);
 			node = DFABuilder.createChoiceNode(node, pcdata);
 
 		} else if (item instanceof DTDSequence) {

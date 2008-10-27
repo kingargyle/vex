@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 /**
  * <code>AttributeDefinition</code> represents an attribute definition in a DTD.
+ * @model
  */
 public class AttributeDefinition implements Comparable, Serializable {
 
@@ -27,6 +28,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Enumeration of attribute types.
+	 * 
 	 */
 	public static final class Type implements Serializable {
 
@@ -107,6 +109,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 	 * 
 	 * @param other
 	 *            The attribute to which this one is to be compared.
+	 *
 	 */
 	public int compareTo(Object other) {
 		return this.name.compareTo(((AttributeDefinition) other).name);
@@ -114,6 +117,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Returns the attribute's type.
+	 * @model
 	 */
 	public Type getType() {
 		return this.type;
@@ -121,6 +125,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Returns the default value of the attribute.
+	 * @model
 	 */
 	public String getDefaultValue() {
 		return defaultValue;
@@ -128,6 +133,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Returns true if the attribute value is fixed.
+	 * @model
 	 */
 	public boolean isFixed() {
 		return fixed;
@@ -135,6 +141,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Returns the name of the attribute.
+	 * @model
 	 */
 	public String getName() {
 		return name;
@@ -142,6 +149,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 
 	/**
 	 * Returns true if the attribute is required.
+	 * @model
 	 */
 	public boolean isRequired() {
 		return required;
@@ -150,6 +158,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 	/**
 	 * Returns an array of acceptable values for the attribute. If null is
 	 * returned, any value is acceptable for the attribute.
+	 * @model type="String" containment="true"
 	 */
 	public String[] getValues() {
 		return values;

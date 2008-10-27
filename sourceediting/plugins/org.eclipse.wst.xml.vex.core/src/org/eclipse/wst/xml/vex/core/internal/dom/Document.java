@@ -34,7 +34,7 @@ public class Document implements IVEXDocument {
 	private String publicID;
 	private String systemID;
 	private String encoding;
-	private Validator validator;
+	private IValidator validator;
 
 	/**
 	 * Class constructor.
@@ -105,7 +105,7 @@ public class Document implements IVEXDocument {
 
 		IVEXElement element = this.getElementAt(offset);
 		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
-		String[] seq2 = new String[] { Validator.PCDATA };
+		String[] seq2 = new String[] { IValidator.PCDATA };
 		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
 
 		return this.validator.isValidSequence(element.getName(), seq1, seq2,
@@ -134,7 +134,7 @@ public class Document implements IVEXDocument {
 					+ " to " + endOffset + " is unbalanced");
 		}
 
-		Validator validator = this.getValidator();
+		IValidator validator = this.getValidator();
 		if (validator != null) {
 			String[] seq1 = this.getNodeNames(e1.getStartOffset() + 1,
 					startOffset);
@@ -309,7 +309,7 @@ public class Document implements IVEXDocument {
 			if (node instanceof Element) {
 				names[i] = ((IVEXElement) node).getName();
 			} else {
-				names[i] = Validator.PCDATA;
+				names[i] = IValidator.PCDATA;
 			}
 		}
 
@@ -446,7 +446,7 @@ public class Document implements IVEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getValidator()
 	 * 
 	 */
-	public Validator getValidator() {
+	public IValidator getValidator() {
 		return this.validator;
 	}
 
@@ -464,7 +464,7 @@ public class Document implements IVEXDocument {
 					+ (this.getLength() - 1));
 		}
 
-		Validator validator = this.getValidator();
+		IValidator validator = this.getValidator();
 		if (validator != null) {
 			IVEXElement parent = this.getElementAt(offset);
 			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
@@ -594,11 +594,11 @@ public class Document implements IVEXDocument {
 		} else if (this.getCharacterAt(offset) != '\0') {
 			isValid = true;
 		} else {
-			Validator validator = this.getValidator();
+			IValidator validator = this.getValidator();
 			if (validator != null) {
 				String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 						offset);
-				String[] seq2 = new String[] { Validator.PCDATA };
+				String[] seq2 = new String[] { IValidator.PCDATA };
 				String[] seq3 = this
 						.getNodeNames(offset, parent.getEndOffset());
 				isValid = validator.isValidSequence(parent.getName(), seq1,
@@ -679,7 +679,7 @@ public class Document implements IVEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setValidator(org.eclipse.wst.xml.vex.core.internal.dom.Validator)
 	 * 
 	 */
-	public void setValidator(Validator validator) {
+	public void setValidator(IValidator validator) {
 		this.validator = validator;
 	}
 

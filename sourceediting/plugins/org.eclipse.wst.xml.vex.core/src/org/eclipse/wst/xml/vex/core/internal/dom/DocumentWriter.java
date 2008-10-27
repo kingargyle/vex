@@ -286,7 +286,7 @@ public class DocumentWriter {
 					wrapper.add("<" + element.getName() + ">");
 				}
 			} else {
-				Validator validator = element.getDocument().getValidator();
+				IValidator validator = element.getDocument().getValidator();
 				StringBuffer sb = new StringBuffer();
 				for (int i = 0; i < attrs.length; i++) {
 					sb.setLength(0);
@@ -320,7 +320,7 @@ public class DocumentWriter {
 
 	private String getAttributeString(IVEXElement element) {
 
-		Validator validator = element.getDocument().getValidator();
+		IValidator validator = element.getDocument().getValidator();
 
 		String[] attrs = element.getAttributeNames();
 		Arrays.sort(attrs);
@@ -338,7 +338,7 @@ public class DocumentWriter {
 		return sb.toString();
 	}
 
-	private static boolean attrHasDefaultValue(Validator validator,
+	private static boolean attrHasDefaultValue(IValidator validator,
 			IVEXElement element, String attribute) {
 		if (validator != null) {
 			AttributeDefinition ad = validator.getAttributeDefinition(element

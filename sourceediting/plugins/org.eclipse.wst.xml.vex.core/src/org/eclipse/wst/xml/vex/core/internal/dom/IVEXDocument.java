@@ -180,7 +180,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public Validator getValidator();
+	public IValidator getValidator();
 
 	/**
 	 * Inserts an element at the given position.
@@ -263,7 +263,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param publicID
 	 *            New value for the public ID.
-	 * @model 
+	 *  
 	 */
 	public void setPublicID(String publicID);
 
@@ -272,7 +272,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param systemID
 	 *            New value for the system ID.
-	 * @model
+	 * 
 	 */
 	public void setSystemID(String systemID);
 
@@ -288,7 +288,7 @@ public interface IVEXDocument {
 	 * @param undoEnabled
 	 *            If true, undoable edit events are fired to registered
 	 *            listeners.
-	 * @model
+	 * 
 	 */
 	public void setUndoEnabled(boolean undoEnabled);
 
@@ -297,9 +297,9 @@ public interface IVEXDocument {
 	 * 
 	 * @param validator
 	 *            Validator to use for this document.
-	 * @model
+	 * 
 	 */
-	public void setValidator(Validator validator);
+	public void setValidator(IValidator validator);
 
 	/**
 	 * @param documentEvent

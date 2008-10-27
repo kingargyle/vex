@@ -16,6 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
  * Encapsulation of the details of a document change
+ * @model
  */
 public class DocumentEvent extends EventObject {
 
@@ -84,6 +85,7 @@ public class DocumentEvent extends EventObject {
 
 	/**
 	 * Returns the length of the change.
+	 * @model
 	 */
 	public int getLength() {
 		return this.length;
@@ -91,6 +93,7 @@ public class DocumentEvent extends EventObject {
 
 	/**
 	 * Returns the offset at which the change occurred.
+	 * @model
 	 */
 	public int getOffset() {
 		return this.offset;
@@ -98,6 +101,7 @@ public class DocumentEvent extends EventObject {
 
 	/**
 	 * Returns the element containing the change.
+	 * @model
 	 */
 	public IVEXElement getParentElement() {
 		return this.parentElement;
@@ -106,6 +110,7 @@ public class DocumentEvent extends EventObject {
 	/**
 	 * @return the value of the attribute before the change. If null, indicates
 	 *         that the attribute was removed.
+	 * @model
 	 */
 	public String getNewAttributeValue() {
 		return newAttributeValue;
@@ -114,6 +119,7 @@ public class DocumentEvent extends EventObject {
 	/**
 	 * @return the value of the attribute after the change. If null, indicates
 	 *         the attribute did not exist before the change.
+	 * @model
 	 */
 	public String getOldAttributeValue() {
 		return oldAttributeValue;
@@ -121,6 +127,7 @@ public class DocumentEvent extends EventObject {
 
 	/**
 	 * @return the name of the attribute that was changed.
+	 * @model
 	 */
 	public String getAttributeName() {
 		return attributeName;
@@ -128,6 +135,7 @@ public class DocumentEvent extends EventObject {
 
 	/**
 	 * @return the document for which this event was generated
+	 * @model
 	 */
 	public IVEXDocument getDocument() {
 		return document;
@@ -136,6 +144,7 @@ public class DocumentEvent extends EventObject {
 	/**
 	 * Returns the undoable edit that can be used to undo the action. May be
 	 * null, in which case the action cannot be undone.
+	 * @model
 	 */
 	public IUndoableEdit getUndoableEdit() {
 		return undoableEdit;
