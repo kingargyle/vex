@@ -40,9 +40,9 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         return this.labelProvider;
     }
 
-    public Element getOutlineElement(final Element child) {
+    public IVEXElement getOutlineElement(final IVEXElement child) {
     	
-    	Element element = child;
+    	IVEXElement element = child;
     	while (( element.getParent() != null) 
     			&& !isTitledElement(element) ) {
     		element = element.getParent();    		
@@ -60,11 +60,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         }
 
         public Object[] getChildren(final Object parentElement) {
-            return getOutlineChildren((Element) parentElement);
+            return getOutlineChildren((IVEXElement) parentElement);
         }
 
         public Object getParent(final Object element) {
-            final Element parent = ((Element) element).getParent();
+            final IVEXElement parent = ((IVEXElement) element).getParent();
             if (parent == null) {
                 return element;
             } else {
@@ -73,11 +73,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         }
 
         public boolean hasChildren(final Object element) {
-            return getOutlineChildren((Element) element).length > 0;
+            return getOutlineChildren((IVEXElement) element).length > 0;
         }
 
         public Object[] getElements(final Object inputElement) {
-            final Document document = (Document) inputElement;
+            final IVEXDocument document = (IVEXDocument) inputElement;
             return new Object[] { document.getRootElement() };
         }
         
@@ -90,26 +90,26 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @param element
      * @return
      */
-    private Element[] getOutlineChildren(final Element element) {
+    private IVEXElement[] getOutlineChildren(final IVEXElement element) {
         final List children = new ArrayList();
-        final Element[] childElements = element.getChildElements();
+        final IVEXElement[] childElements = element.getChildElements();
         for (int i = 0; i < childElements.length; i++) {
             if (titledElements.contains(childElements[i].getName())) {
                 children.add(childElements[i]);
             }
         }
-        return (Element[]) children.toArray(new Element[children.size()]);
+        return (IVEXElement[]) children.toArray(new IVEXElement[children.size()]);
     }
 
     
     private final ILabelProvider labelProvider = new LabelProvider() {
         public String getText(final Object o) {
-            final Element e = (Element) o;
-            Element titleChild = findChild(e, "title");
+            final IVEXElement e = (IVEXElement) o;
+            IVEXElement titleChild = findChild(e, "title");
             if (titleChild != null) {
                 return titleChild.getText();
             } else {
-                Element infoChild = findChild(e, e.getName() + "info");
+                IVEXElement infoChild = findChild(e, e.getName() + "info");
                 if (infoChild != null) {
                     titleChild = findChild(infoChild, "title");
                     if (titleChild != null) {
@@ -133,11 +133,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @param element
      * @return
      */
-    private boolean isTitledElement( final Element e ) {
+    private boolean isTitledElement( final IVEXElement e ) {
     	
     	if( titledElements.contains(e.getName() )
      			|| e.getParent() == null ) {
-    		final Element [] children = e.getChildElements();
+    		final IVEXElement [] children = e.getChildElements();
     		if( (children.length > 0 && children[0].getName().equals("title"))
     		 || (children.length > 1 && children[1].getName().equals("title"))  		
     		  ) {
@@ -152,10 +152,10 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * null if none found. We should move this to XPath when we gain that
      * facility.
      */
-    private Element findChild(Element parent, String childName) {
-        Element[] children = parent.getChildElements();
+    private IVEXElement findChild(IVEXElement parent, String childName) {
+        IVEXElement[] children = parent.getChildElements();
         for (int i = 0; i < children.length; i++) {
-            Element child = children[i];
+            IVEXElement child = children[i];
             if (child.getName().equals(childName)) {
                 return child;
             }

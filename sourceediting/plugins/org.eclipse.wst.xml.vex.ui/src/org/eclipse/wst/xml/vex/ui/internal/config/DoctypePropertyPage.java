@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
@@ -283,7 +283,7 @@ public class DoctypePropertyPage extends PropertyPage {
 		final String resourcePath = ((IFile) this.getElement())
 				.getProjectRelativePath().toString();
 
-		final Validator validator = (Validator) ((ConfigSource) this
+		final IValidator validator = (IValidator) ((ConfigSource) this
 				.getPluginProject()).getParsedResource(resourcePath);
 
 		if (validator != null) {

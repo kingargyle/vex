@@ -70,7 +70,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
@@ -371,7 +371,7 @@ public class VexEditor extends EditorPart {
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			Validator validator = this.doctype.getValidator();
+			IValidator validator = this.doctype.getValidator();
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {
@@ -1042,7 +1042,7 @@ public class VexEditor extends EditorPart {
 						IStructuredSelection sel = (IStructuredSelection) vexWidget
 								.getSelection();
 						boolean multi = (sel != null && sel.size() > 1);
-						Validator validator = vexWidget.getDocument()
+						IValidator validator = vexWidget.getDocument()
 								.getValidator();
 						return new ElementPropertySource((IVEXElement) object,
 								validator, multi);

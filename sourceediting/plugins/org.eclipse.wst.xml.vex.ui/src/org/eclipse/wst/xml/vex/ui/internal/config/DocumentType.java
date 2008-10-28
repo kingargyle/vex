@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
@@ -133,8 +133,8 @@ public class DocumentType extends ConfigItem implements Comparable {
 		this.systemId = systemId;
 	}
 
-	public Validator getValidator() {
-		return (Validator) this.getConfig().getParsedResource(
+	public IValidator getValidator() {
+		return (IValidator) this.getConfig().getParsedResource(
 				this.getResourcePath());
 	}
 

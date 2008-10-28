@@ -24,7 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidator;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
 
 import junit.framework.TestCase;
 
@@ -32,7 +32,7 @@ public class DTDValidatorTest extends TestCase {
 
 	public void testAll() throws Exception {
 		URL url = DTDValidatorTest.class.getResource("test1.dtd");
-		Validator validator = DTDValidator.create(url);
+		IValidator validator = DTDValidator.create(url);
 
 		AttributeDefinition.Type adType = validator
 				.getAttributeDefinitions("section")[0].getType();
@@ -44,7 +44,7 @@ public class DTDValidatorTest extends TestCase {
 
 		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		validator = (Validator) ois.readObject();
+		validator = (IValidator) ois.readObject();
 
 		AttributeDefinition.Type adType2 = validator
 				.getAttributeDefinitions("section")[0].getType();
@@ -61,7 +61,7 @@ public class DTDValidatorTest extends TestCase {
 		doc = new Document(new RootElement("any"));
 		doc.setValidator(validator);
 		Set anySet = new HashSet();
-		anySet.add(Validator.PCDATA);
+		anySet.add(IValidator.PCDATA);
 		anySet.add("any");
 		anySet.add("empty");
 		anySet.add("section");
@@ -79,7 +79,7 @@ public class DTDValidatorTest extends TestCase {
 		doc.insertElement(5, new Element("para"));
 
 		assertEquals(Collections.EMPTY_SET, getValidItemsAt(doc, 1));
-		expected = Collections.singleton(Validator.PCDATA);
+		expected = Collections.singleton(IValidator.PCDATA);
 		assertEquals(expected, getValidItemsAt(doc, 2));
 		assertEquals(expected, getValidItemsAt(doc, 3));
 		assertEquals(expected, getValidItemsAt(doc, 4));
@@ -87,7 +87,7 @@ public class DTDValidatorTest extends TestCase {
 		assertEquals(expected, getValidItemsAt(doc, 5));
 		assertEquals(expected, getValidItemsAt(doc, 7));
 		expected = new HashSet();
-		expected.add(Validator.PCDATA);
+		expected.add(IValidator.PCDATA);
 		expected.add("emphasis");
 		assertEquals(expected, getValidItemsAt(doc, 6));
 

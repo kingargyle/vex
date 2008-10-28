@@ -27,7 +27,7 @@ appendix {
 	display: block;
 }
 
-article,book {
+article,book,chapter {
 	font-family: "Times New Roman", serif;
 	font-size: 16px;
 	display: block;
@@ -192,10 +192,6 @@ caution:before,important:before,note:before,tip:before,warning:before {
 caution:before {
 	content: 'CAUTION';
 	color: yellow;
-}
-
-chapter {
-	display: block;
 }
 
 citetitle {
