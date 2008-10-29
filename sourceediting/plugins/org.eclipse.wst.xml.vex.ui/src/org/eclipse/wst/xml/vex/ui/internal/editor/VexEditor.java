@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -62,7 +64,12 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
+import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
@@ -336,10 +343,11 @@ public class VexEditor extends EditorPart {
 			long start = System.currentTimeMillis();
 
 			IPath inputPath = null;
+			IFile file = null;
 
 			if (input instanceof IFileEditorInput) {
-				inputPath = ((IFileEditorInput) input).getFile()
-						.getRawLocation();
+				file = ((IFileEditorInput) input).getFile();
+				inputPath = file.getRawLocation();
 			} else if (input instanceof ILocationProvider) {
 				// Yuck, this a crappy way for Eclipse to do this
 				// How about an exposed IJavaFileEditorInput, pleeze?
@@ -352,14 +360,16 @@ public class VexEditor extends EditorPart {
 				return;
 			}
 
-			URL url = inputPath.toFile().toURL();
+		    IDOMDocument modelDocument = getDOMDocument(file);
+			
+//			URL url = inputPath.toFile().toURL();
 
-			DocumentReader reader = new DocumentReader();
+			DOMDocumentReader reader = new DOMDocumentReader();
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
 			this.doctype = null;
-			this.doc = reader.read(url);
+			this.doc = reader.read(modelDocument);
 
 			if (this.debugging) {
 				long end = System.currentTimeMillis();
@@ -447,6 +457,21 @@ public class VexEditor extends EditorPart {
 
 			this.showLabel(msg);
 		}
+	}
+
+	private IDOMDocument getDOMDocument(IFile file) throws IOException,
+			CoreException {
+		IStructuredModel model = StructuredModelManager.getModelManager().getModelForRead(file);
+		IDOMDocument modelDocument = null;
+		try {
+		  if (model instanceof IDOMModel) {
+		    modelDocument = ((IDOMModel)model).getDocument();
+		  }
+		} finally {
+		  if (model != null)
+		    model.releaseFromRead();
+		}
+		return modelDocument;
 	}
 
 	public boolean isDirty() {

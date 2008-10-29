@@ -356,12 +356,12 @@ public class VexEditorMultiPage extends VexEditor {
 
 			URL url = inputPath.toFile().toURL();
 
-			DOMDocumentReader reader = new DOMDocumentReader();
+			DocumentReader reader = new DocumentReader();
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
 			doctype = null;
-			doc = reader.read(domDoc);
+			doc = reader.read(url);
 
 			if (this.debugging) {
 				long end = System.currentTimeMillis();
