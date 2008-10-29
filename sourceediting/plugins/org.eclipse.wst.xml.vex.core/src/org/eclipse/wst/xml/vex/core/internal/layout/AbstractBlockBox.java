@@ -26,9 +26,9 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * Base class of block boxes that can contain other block boxes. This class

@@ -16,7 +16,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
 
 /**
  * Represents a selection of a Vex document, which can be viewed as plaintext or

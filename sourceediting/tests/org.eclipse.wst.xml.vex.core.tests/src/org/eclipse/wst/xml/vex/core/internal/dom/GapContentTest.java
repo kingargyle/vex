@@ -11,7 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.GapContent;
-import org.eclipse.wst.xml.vex.core.internal.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
 
 import junit.framework.TestCase;
 

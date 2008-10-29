@@ -11,6 +11,8 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.*;
+import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder;
+import org.eclipse.wst.xml.vex.core.internal.validator.DFAState;
 
 import junit.framework.*;
 

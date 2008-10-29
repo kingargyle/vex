@@ -12,6 +12,8 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.EventObject;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**

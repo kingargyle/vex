@@ -15,10 +15,10 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.eclipse.wst.xml.vex.core.internal.dom.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 
 /**

@@ -1,6 +1,8 @@
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.util.Iterator;
+
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 
 /**
  * 

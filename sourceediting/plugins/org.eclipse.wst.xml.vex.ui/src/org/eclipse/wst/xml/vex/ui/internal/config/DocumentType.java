@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**

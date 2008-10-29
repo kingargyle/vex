@@ -20,9 +20,9 @@ import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 import junit.framework.TestCase;
 

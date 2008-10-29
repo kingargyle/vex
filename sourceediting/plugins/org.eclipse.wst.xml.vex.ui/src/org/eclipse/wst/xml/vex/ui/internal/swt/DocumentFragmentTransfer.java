@@ -19,7 +19,7 @@ import java.io.ObjectOutputStream;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
 
 /**
  * Transfer object that handles Vex DocumentFragments.

@@ -12,9 +12,9 @@ package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 

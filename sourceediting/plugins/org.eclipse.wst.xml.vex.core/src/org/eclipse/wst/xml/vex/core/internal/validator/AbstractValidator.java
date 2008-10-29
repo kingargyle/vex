@@ -8,10 +8,12 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 
 /**
  * Partial implementation of the Validator interface.

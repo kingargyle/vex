@@ -15,6 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
@@ -45,10 +52,10 @@ public class Document implements IVEXDocument {
 	 * 
 	 */
 	public Document(RootElement rootElement) {
-		this.content = new GapContent(100);
+		content = new GapContent(100);
 		this.rootElement = rootElement;
 		rootElement.setDocument(this);
-		this.content.insertString(0, "\0\0");
+		content.insertString(0, "\0\0");
 		rootElement.setContent(this.content, 0, 1);
 	}
 

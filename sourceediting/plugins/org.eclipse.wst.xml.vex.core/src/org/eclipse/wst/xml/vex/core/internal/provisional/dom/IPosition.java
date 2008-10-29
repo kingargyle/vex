@@ -8,20 +8,19 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 /**
- * Factory for returning a WhitespacePolicy object given a document type public
- * ID. This is required by DocumentBuilder, since we don't know what
- * WhitespacePolicy we need before we begin parsing the document.
+ * Represents a logical location in a document. As the document is modified,
+ * existing <code>Position</code> objects are updated to reflect the appropriate
+ * character offset in the document.
+ * @model
  */
-public interface IWhitespacePolicyFactory {
+public interface IPosition {
 
 	/**
-	 * Return a WhitespacePolicy for documents with the given public ID.
-	 * 
-	 * @param publicId
-	 *            Public ID of the document type associated with the document.
+	 * Returns the character offset corresponding to the position.
+	 * @model
 	 */
-	public IWhitespacePolicy getPolicy(String publicId);
+	public int getOffset();
 }

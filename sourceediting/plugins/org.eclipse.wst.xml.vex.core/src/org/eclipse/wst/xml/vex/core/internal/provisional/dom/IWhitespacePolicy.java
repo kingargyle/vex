@@ -8,7 +8,8 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
+
 
 /**
  * Determines whitespace policy for document elements. For example, a CSS

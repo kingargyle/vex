@@ -1,4 +1,5 @@
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
+
 
 /**
  * @model

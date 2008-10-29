@@ -8,10 +8,12 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.io.Serializable;
 import java.util.Set;
+
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
 /**
  * Represents an object that can validate the structure of a document.

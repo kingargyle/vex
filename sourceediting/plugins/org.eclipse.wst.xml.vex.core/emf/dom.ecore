@@ -190,9 +190,9 @@
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="StringArray_1" instanceClassName="java.lang.String[]"
       abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IVEXElementArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement[]"
+  <eClassifiers xsi:type="ecore:EClass" name="IVEXElementArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.provisional.IVEXElement[]"
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Serializable" instanceClassName="java.io.Serializable"
       abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinitionArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.AttributeDefinition[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinitionArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition[]"/>
 </ecore:EPackage>

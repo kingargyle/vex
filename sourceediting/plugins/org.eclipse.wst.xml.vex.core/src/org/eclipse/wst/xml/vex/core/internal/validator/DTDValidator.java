@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +19,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
+import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder.Node;
 
 import com.wutka.dtd.DTD;
 import com.wutka.dtd.DTDAny;

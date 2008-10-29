@@ -16,7 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * A zero-width box that represents a single offset in the document.

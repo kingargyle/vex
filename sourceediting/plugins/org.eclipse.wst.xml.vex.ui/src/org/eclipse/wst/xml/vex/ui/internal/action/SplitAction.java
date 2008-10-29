@@ -17,9 +17,9 @@ import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**

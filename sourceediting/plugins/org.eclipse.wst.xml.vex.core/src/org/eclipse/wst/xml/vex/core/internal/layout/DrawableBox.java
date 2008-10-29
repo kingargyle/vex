@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * An inline box that draws a Drawable object. The drawable is drawn relative to

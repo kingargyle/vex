@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.*;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;

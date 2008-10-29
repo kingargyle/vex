@@ -66,18 +66,21 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
+import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
@@ -125,6 +128,8 @@ public class VexEditor extends EditorPart {
 	 * ID of this editor extension.
 	 */
 	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"; //$NON-NLS-1$
+	
+	private ModelQuery modelQuery = null;
 
 	/**
 	 * Class constructor.
@@ -361,6 +366,10 @@ public class VexEditor extends EditorPart {
 			}
 
 		    IDOMDocument modelDocument = getDOMDocument(file);
+  	        modelQuery = ModelQueryUtil.getModelQuery(modelDocument);
+  	        IDOMElement documentElement = (IDOMElement)modelDocument.getDocumentElement();
+  	        
+
 			
 //			URL url = inputPath.toFile().toURL();
 

@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;

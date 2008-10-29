@@ -11,6 +11,12 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.LinkedList;
+
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;

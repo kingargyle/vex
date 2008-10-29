@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+
 /**
  * Implementation of the <code>Content</code> interface that manages changes
  * efficiently. Implements a buffer that keeps its free space (the "gap") at the

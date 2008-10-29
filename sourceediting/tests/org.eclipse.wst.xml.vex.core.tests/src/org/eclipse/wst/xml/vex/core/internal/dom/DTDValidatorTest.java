@@ -19,12 +19,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.AttributeDefinition;
-import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidator;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
+import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 
 import junit.framework.TestCase;
 

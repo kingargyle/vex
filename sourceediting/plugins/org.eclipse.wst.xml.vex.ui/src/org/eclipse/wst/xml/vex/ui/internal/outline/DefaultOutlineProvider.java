@@ -18,9 +18,9 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 

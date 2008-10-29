@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+
 /**
  * <code>Node</code> represents a component of an XML document. .
  *

@@ -1,4 +1,8 @@
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
+
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 
 /**
  * 

@@ -15,6 +15,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+
 /**
  * Represents a fragment of an XML document.
  */

@@ -19,7 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * Container for TableRowBox objects. May correspond to an element with

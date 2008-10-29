@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+
 
 /**
  * Tools for building a deterministic finite automaton (DFA) recognizer for

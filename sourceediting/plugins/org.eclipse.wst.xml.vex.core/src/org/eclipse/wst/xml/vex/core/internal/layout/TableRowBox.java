@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * Box representing a row in a table.

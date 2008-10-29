@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+
 /**
  * The root element of a document. Keeps track of the document to which it is
  * associated. Any element can find the document to which it is associated by

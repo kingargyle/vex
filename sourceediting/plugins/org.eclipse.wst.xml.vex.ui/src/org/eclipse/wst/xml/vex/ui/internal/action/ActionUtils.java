@@ -17,14 +17,14 @@ import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.ElementOrRangeCallback;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutUtils;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 

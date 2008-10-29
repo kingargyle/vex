@@ -16,6 +16,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
+
 /**
  * Writes a document to an output stream, using a stylesheet to provide
  * formatting hints.

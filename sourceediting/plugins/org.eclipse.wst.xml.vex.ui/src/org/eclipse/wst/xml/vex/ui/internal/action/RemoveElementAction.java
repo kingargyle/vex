@@ -11,8 +11,8 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**

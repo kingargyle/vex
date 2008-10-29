@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * An inline box containing text. The <code>getText</code> and

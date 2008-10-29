@@ -20,9 +20,9 @@ import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
 
 /**
  * An inline box that represents an inline element. This box is responsible for
