@@ -54,7 +54,7 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 import org.xml.sax.SAXException;
 
 /**
- * A Swing component that allows the display and edit of an XML document with an
+ * A component that allows the display and edit of an XML document with an
  * associated CSS stylesheet.
  */
 public class VexWidgetImpl implements IVexWidget {

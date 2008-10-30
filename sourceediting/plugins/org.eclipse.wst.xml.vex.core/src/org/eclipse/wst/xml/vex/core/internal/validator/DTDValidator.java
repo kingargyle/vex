@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     David Carver (STAR) - Migrated to WTP Content Model
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
@@ -20,27 +21,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
+import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
+import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder.Node;
-
-import com.wutka.dtd.DTD;
-import com.wutka.dtd.DTDAny;
-import com.wutka.dtd.DTDAttribute;
-import com.wutka.dtd.DTDCardinal;
-import com.wutka.dtd.DTDChoice;
-import com.wutka.dtd.DTDContainer;
-import com.wutka.dtd.DTDDecl;
-import com.wutka.dtd.DTDElement;
-import com.wutka.dtd.DTDEmpty;
-import com.wutka.dtd.DTDEnumeration;
-import com.wutka.dtd.DTDItem;
-import com.wutka.dtd.DTDMixed;
-import com.wutka.dtd.DTDName;
-import com.wutka.dtd.DTDNotationList;
-import com.wutka.dtd.DTDPCData;
-import com.wutka.dtd.DTDParser;
-import com.wutka.dtd.DTDSequence;
 
 /**
  * A validator driven by a DTD.
@@ -69,67 +63,68 @@ public class DTDValidator extends AbstractValidator {
 	 * @param url
 	 *            URL of the DTD file to use.
 	 */
+	@SuppressWarnings( { "restriction", "unchecked" })
 	public static DTDValidator create(URL url) throws IOException {
 
 		// Compute the DFAs for each element in the DTD
 
-		DTDParser parser = new DTDParser(url);
-		DTD dtd = parser.parse();
+		ContentModelManager contentModelManager = ContentModelManager
+				.getInstance();
+		String resolved = url.toString();
+		CMDocument contentModel = contentModelManager.createCMDocument(
+				resolved, null);
 
 		DTDValidator validator = new DTDValidator();
-		Iterator iter = dtd.elements.values().iterator();
+		Iterator iter = contentModel.getElements().iterator();
 		while (iter.hasNext()) {
-			DTDElement element = (DTDElement) iter.next();
+			CMElementDeclaration element = (CMElementDeclaration) iter.next();
+			String elementName = element.getNodeName();
+			int elementContentType = element.getContentType();
 			DFAState dfa;
-			if (element.getContent() instanceof DTDEmpty) {
+			if (element.getContentType() == CMElementDeclaration.EMPTY) {
 				dfa = emptyDFA;
-			} else if (element.getContent() instanceof DTDAny) {
+			} else if (element.getContentType() == CMElementDeclaration.ANY) {
 				dfa = null;
 			} else {
-				DFABuilder.Node node = createDFANode(element.getContent());
+				DFABuilder.Node node = createDFANode(element);
 				dfa = DFABuilder.createDFA(node);
 			}
-			validator.elementDFAs.put(element.getName(), dfa);
+			validator.elementDFAs.put(element.getElementName(), dfa);
 
 			Map defMap = new HashMap();
-			AttributeDefinition[] defArray = new AttributeDefinition[element.attributes
-					.size()];
+			AttributeDefinition[] defArray = new AttributeDefinition[element
+					.getAttributes().getLength()];
 			int i = 0;
-			Iterator iter2 = element.attributes.values().iterator();
+
+			Iterator iter2 = element.getAttributes().iterator();
 			while (iter2.hasNext()) {
-				DTDAttribute attr = (DTDAttribute) iter2.next();
+				CMAttributeDeclaration attr = (CMAttributeDeclaration) iter2
+						.next();
 				AttributeDefinition.Type type;
 				String[] values = null;
-				if (attr.getType() instanceof DTDEnumeration) {
+				if (attr.getAttrType().equals(CMDataType.ENUM)) {
 					type = AttributeDefinition.Type.ENUMERATION;
-					values = ((DTDEnumeration) attr.getType()).getItems();
-				} else if (attr.getType() instanceof DTDNotationList) {
+					values = attr.getAttrType().getEnumeratedValues();
+				} else if (attr.getAttrType().equals(CMDataType.NOTATION)) {
 					type = AttributeDefinition.Type.ENUMERATION;
-					values = ((DTDNotationList) attr.getType()).getItems();
-				} else if (attr.getType() instanceof String) {
-					type = AttributeDefinition.Type
-							.get((String) attr.getType());
-				} else {
-					throw new RuntimeException(
-							"Unrecognized attribute type for element "
-									+ element.getName() + " attribute "
-									+ attr.getName() + " type "
-									+ attr.getType().getClass().getName());
-				}
+					values = attr.getAttrType().getEnumeratedValues();
+				} else
+					type = AttributeDefinition.Type.get(attr.getAttrType()
+							.getDataTypeName());
 
-				AttributeDefinition ad = new AttributeDefinition(
-						attr.getName(), type, attr.getDefaultValue(), values,
-						attr.getDecl() == DTDDecl.REQUIRED,
-						attr.getDecl() == DTDDecl.FIXED);
+				AttributeDefinition ad = new AttributeDefinition(attr
+						.getAttrName(), type, attr.getDefaultValue(), values,
+						attr.getUsage() == CMAttributeDeclaration.REQUIRED,
+						attr.getUsage() == CMAttributeDeclaration.FIXED);
 
-				defMap.put(attr.getName(), ad);
+				defMap.put(attr.getAttrName(), ad);
 				defArray[i] = ad;
 
 				i++;
 			}
-			validator.attributeMaps.put(element.getName(), defMap);
+			validator.attributeMaps.put(element.getElementName(), defMap);
 			Arrays.sort(defArray);
-			validator.attributeArrays.put(element.getName(), defArray);
+			validator.attributeArrays.put(element.getElementName(), defArray);
 		}
 
 		// Calculate anySet
@@ -194,6 +189,10 @@ public class DTDValidator extends AbstractValidator {
 		// cases. Consider a <section> with an optional <title>; if
 		// we're at the first offset of the <section> and a <title>
 		// already exists, we should not allow another <title>.
+		
+		if (candidates.isEmpty()) {
+			return Collections.EMPTY_SET;
+		}
 
 		Set results = new HashSet();
 		String[] middle = new String[1];
@@ -203,6 +202,7 @@ public class DTDValidator extends AbstractValidator {
 				results.add(middle[0]);
 			}
 		}
+		
 
 		return Collections.unmodifiableSet(results);
 	}
@@ -220,8 +220,16 @@ public class DTDValidator extends AbstractValidator {
 		}
 
 		DFAState target = dfa.getState(Arrays.asList(nodes));
-
-		return target != null && (partial || target.isAccepting());
+		
+		boolean returnValue;
+		if (target != null) {
+			returnValue = (partial || target.isAccepting());
+		} else {
+			returnValue = partial;
+		}
+			
+		
+		return returnValue;
 	}
 
 	// ==================================================== PRIVATE
@@ -235,57 +243,66 @@ public class DTDValidator extends AbstractValidator {
 	/**
 	 * Create a DFABuilder.Node corresponding to the given DTDItem.
 	 */
-	private static DFABuilder.Node createDFANode(DTDItem item) {
+	@SuppressWarnings("restriction")
+	private static DFABuilder.Node createDFANode(CMContent content) {
 		DFABuilder.Node node = null;
 
-		if (item instanceof DTDName) {
-			String name = ((DTDName) item).getValue();
-			node = DFABuilder.createSymbolNode(name);
-
-		} else if (item instanceof DTDPCData) {
-			node = DFABuilder.createSymbolNode(IValidator.PCDATA);
-
-		} else if (item instanceof DTDChoice) {
-			Iterator iter = ((DTDContainer) item).getItemsVec().iterator();
-			while (iter.hasNext()) {
-				DTDItem child = (DTDItem) iter.next();
+		if (content == null) {
+			return DFABuilder.createSymbolNode(IValidator.PCDATA);
+		}
+		
+		if (content instanceof CMElementDeclaration) {
+			CMElementDeclaration element = (CMElementDeclaration) content;
+			String elementName = element.getNodeName();
+			if (element.getContentType() == CMElementDeclaration.PCDATA) {
+				node = DFABuilder.createSymbolNode(IValidator.PCDATA);
+			} else if (element.getContentType() == CMElementDeclaration.MIXED) {
+				CMContent child = element.getContent();
 				DFABuilder.Node newNode = createDFANode(child);
 				if (node == null) {
 					node = newNode;
 				} else {
 					node = DFABuilder.createChoiceNode(node, newNode);
 				}
-			}
+				DFABuilder.Node pcdata = DFABuilder
+						.createSymbolNode(IValidator.PCDATA);
+				node = DFABuilder.createChoiceNode(node, pcdata);
 
-		} else if (item instanceof DTDMixed) {
-			Iterator iter = ((DTDContainer) item).getItemsVec().iterator();
-			while (iter.hasNext()) {
-				DTDItem child = (DTDItem) iter.next();
-				DFABuilder.Node newNode = createDFANode(child);
-				if (node == null) {
-					node = newNode;
-				} else {
-					node = DFABuilder.createChoiceNode(node, newNode);
+			} else if (element.getContent() != null) {
+				CMContent child = element.getContent();
+				node = createDFANode(child);
+			} else {
+				String name = content.getNodeName();
+				node = DFABuilder.createSymbolNode(name);
+			}
+		} else if (content instanceof CMGroup) {
+			CMGroup group = (CMGroup) content;
+			if (group.getOperator() == CMGroup.CHOICE) {
+				CMNodeList childNodes = group.getChildNodes();
+				for (int cnt = 0; cnt < childNodes.getLength(); cnt++) {
+					CMContent child = (CMContent) childNodes.item(cnt);
+					DFABuilder.Node newNode = createDFANode(child);
+					if (node == null) {
+						node = newNode;
+					} else {
+						node = DFABuilder.createChoiceNode(node, newNode);
+					}
 				}
-			}
-			DFABuilder.Node pcdata = DFABuilder
-					.createSymbolNode(IValidator.PCDATA);
-			node = DFABuilder.createChoiceNode(node, pcdata);
-
-		} else if (item instanceof DTDSequence) {
-			Iterator iter = ((DTDContainer) item).getItemsVec().iterator();
-			while (iter.hasNext()) {
-				DTDItem child = (DTDItem) iter.next();
-				DFABuilder.Node newNode = createDFANode(child);
-				if (node == null) {
-					node = newNode;
-				} else {
-					node = DFABuilder.createSequenceNode(node, newNode);
+			} else if (group.getOperator() == CMGroup.SEQUENCE) {
+				CMNodeList childNodes = group.getChildNodes();
+				for (int cnt = 0; cnt < childNodes.getLength(); cnt++) {
+					CMContent child = (CMContent) childNodes.item(cnt);
+					DFABuilder.Node newNode = createDFANode(child);
+					if (node == null) {
+						node = newNode;
+					} else {
+						node = DFABuilder.createSequenceNode(node, newNode);
+					}
 				}
 			}
 		} else {
-			throw new RuntimeException("Unexpected DTDItem subclass: "
-					+ item.getClass().getName());
+			String name = content.getNodeName();
+			node = DFABuilder.createSymbolNode(name);
 		}
 
 		// Cardinality is moot if it's a null node
@@ -293,12 +310,12 @@ public class DTDValidator extends AbstractValidator {
 			return node;
 		}
 
-		if (item.cardinal == DTDCardinal.OPTIONAL) {
-			node = DFABuilder.createOptionalNode(node);
-		} else if (item.cardinal == DTDCardinal.ZEROMANY) {
+		if (content.getMinOccur() == 0 && content.getMaxOccur() == -1) {
 			node = DFABuilder.createRepeatingNode(node, 0);
-		} else if (item.cardinal == DTDCardinal.ONEMANY) {
+		} else if (content.getMinOccur() > 0 && content.getMaxOccur() == -1) {
 			node = DFABuilder.createRepeatingNode(node, 1);
+		} else if (content.getMinOccur() == 0) {
+			node = DFABuilder.createOptionalNode(node);
 		}
 
 		return node;

@@ -15,7 +15,6 @@ import java.net.URL;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 
-import com.wutka.dtd.DTDParseException;
 
 /**
  * Factory for DocumentType objects.
@@ -79,17 +78,18 @@ public class DoctypeFactory implements IConfigItemFactory {
 		return Messages.getString("DoctypeFactory.pluralName"); //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("restriction")
 	public Object parseResource(URL baseUrl, String resourcePath,
 			IBuildProblemHandler problemHandler) throws IOException {
 		try {
 			return DTDValidator.create(new URL(baseUrl, resourcePath));
-		} catch (DTDParseException ex) {
+		} catch (IOException ex) {
 			if (problemHandler != null) {
 				BuildProblem problem = new BuildProblem();
 				problem.setSeverity(BuildProblem.SEVERITY_ERROR);
 				problem.setResourcePath(resourcePath);
 				problem.setMessage(ex.getMessage());
-				problem.setLineNumber(ex.getLineNumber());
+				//problem.setLineNumber(ex.getLineNumber());
 				problemHandler.foundProblem(problem);
 			}
 			throw ex;
