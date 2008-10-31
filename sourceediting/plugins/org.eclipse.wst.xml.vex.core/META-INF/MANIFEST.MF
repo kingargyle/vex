@@ -20,7 +20,10 @@ Export-Package: org.eclipse.wst.xml.vex.core.internal;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.undo;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.util;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.validator;x-internal:=true,
- org.eclipse.wst.xml.vex.core.internal.widget;x-internal:=true
+ org.eclipse.wst.xml.vex.core.internal.widget;x-internal:=true,
+ org.w3c.flute.parser,
+ org.w3c.flute.parser.selectors,
+ org.w3c.flute.util
 Bundle-Activator: org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin
 Bundle-Localization: plugin
 Bundle-ClassPath: lib/flute.jar,
