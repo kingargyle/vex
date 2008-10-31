@@ -44,6 +44,7 @@
          </rootElement>
       </doctype>
    </extension>
+   <!--
    <extension
          id="sdocbook1_1"
          name="%doctype.sdocbook1_1"
@@ -79,6 +80,7 @@
          </rootElement>
             </doctype>
    </extension>
+   -->
    <extension
          id="docbook-plain"
          name="%style.docbook-plain"
