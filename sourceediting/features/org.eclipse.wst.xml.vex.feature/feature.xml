@@ -24,10 +24,12 @@
       <update label="%updateSiteName" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
+<!-- at wrong level of abstraction? 
    <includes
          id="org.eclipse.wst.xml.vex.docbook.feature"
          version="0.0.0"
          optional="true"/>
+-->
 
    <requires>
       <import plugin="org.eclipse.wst.xml.vex.core" version="0.5.0" match="greaterOrEqual"/>
