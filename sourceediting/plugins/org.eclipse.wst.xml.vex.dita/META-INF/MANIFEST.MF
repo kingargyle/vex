@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %plugin.name
+Bundle-Version: 0.5.0.qualifier
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.eclipse.wst.xml.vex.dita;singleton:=true
+Require-Bundle: org.eclipse.wst.xml.vex.core;bundle-version="[0.5.0,1.0.0)",
+ org.eclipse.wst.xml.vex.ui;bundle-version="[0.5.0,1.0.0)"
+Bundle-Localization: plugin
+
+
+

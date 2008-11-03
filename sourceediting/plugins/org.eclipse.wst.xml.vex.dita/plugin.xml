@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="concept"
+         name="%doctype.concept"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="concept.dtd"
+            dtd="dita11/concept.dtd"
+            publicId="-//OASIS//DTD DITA 1.1 Concept//EN">
+         <rootElement
+               name="concept">
+         </rootElement>
+      </doctype>
+   </extension>
+   <extension
+         id="composite"
+         name="%doctype.composite"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="ditabase.dtd"
+            dtd="dita11/ditabase.dtd"
+            publicId="-//OASIS//DTD DITA Composite//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="reference"
+         name="%doctype.reference"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="reference.dtd"
+            dtd="dita11/reference.dtd"
+            publicId="-//OASIS//DTD DITA Reference//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="task"
+         name="%doctype.task"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="task.dtd"
+            dtd="dita11/task.dtd"
+            publicId="-//OASIS//DTD DITA Task//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="topic"
+         name="%doctype.topic"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="topic.dtd"
+            dtd="dita11/topic.dtd"
+            publicId="-//OASIS//DTD DITA Topic//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="map"
+         name="%doctype.map"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="map.dtd"
+            dtd="dita11/map.dtd"
+            publicId="-//OASIS//DTD DITA Map//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="classed"
+         name="%style.classed"
+         point="org.eclipse.wst.xml.vex.ui.styles">
+      <style
+            css="css/dita_classed_shell_vex.css">
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA Reference//EN">
+         </doctypeRef>
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA Task//EN">
+         </doctypeRef>
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA Topic//EN">
+         </doctypeRef>
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA Composite//EN">
+         </doctypeRef>
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA 1.1 Concept//EN">
+         </doctypeRef>
+      </style>
+   </extension>
+   
+   <extension
+         id="mapStyle"
+         name="%style.mapStyle"
+         point="org.eclipse.wst.xml.vex.ui.styles">
+      <style
+            css="css/map_shell.css">
+         <doctypeRef
+               publicId="-//OASIS//DTD DITA Map//EN">
+         </doctypeRef>
+      </style>
+   </extension>
+</plugin>

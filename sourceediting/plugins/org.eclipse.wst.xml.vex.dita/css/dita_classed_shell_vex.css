@@ -1,0 +1,23 @@
+/*
+ | Wrapper for dita_shell.css that overcomes some of Vex's CSS limitations.
+ */
+
+@import url(dita_classed_shell.css);
+
+
+/* Elements that can contain block-formatted children must be explicitly block-formatted */
+*[class~="topic\/body"] {
+  display: block;
+}
+
+*[class~="topic\/ol"] {
+  display: block;
+  list-style-type: decimal;
+  margin: 20px 0;
+}
+
+*[class~="topic\/li"] {
+  display: list-item;
+  margin-left: 40px;
+}
+
