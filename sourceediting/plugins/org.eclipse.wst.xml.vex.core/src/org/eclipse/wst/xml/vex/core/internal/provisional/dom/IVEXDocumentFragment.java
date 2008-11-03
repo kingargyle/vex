@@ -38,7 +38,7 @@ public interface IVEXDocumentFragment {
 	 * Returns an array of element names and Validator.PCDATA representing the
 	 * content of the fragment.
 	 * 
-	 * @model type="String" containment="true"
+	 * @model 
 	 */
 	public  String[] getNodeNames();
 
@@ -46,7 +46,7 @@ public interface IVEXDocumentFragment {
 	 * Returns the nodes that make up this fragment, including elements and
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode" containment="true"
+	 * @model type="IVEXNode"
 	 */
 	public  IVEXNode[] getNodes();
 

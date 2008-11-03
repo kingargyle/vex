@@ -7,185 +7,188 @@
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Dom" basePackage="org.eclipse.wst.xml.vex.core.internal" disposableProviderFactory="true"
       ecorePackage="dom.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//AttributeDefinition"/>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//DocumentEvent"/>
-    <genDataTypes ecoreDataType="dom.ecore#//DocumentListener"/>
-    <genDataTypes ecoreDataType="dom.ecore#//DocumentValidationException"/>
-    <genDataTypes ecoreDataType="dom.ecore#//StringArray"/>
-    <genDataTypes ecoreDataType="dom.ecore#//AttributeDefinitionArray"/>
-    <genClasses ecoreClass="dom.ecore#//IContent">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IContent/length"/>
-      <genOperations ecoreOperation="dom.ecore#//IContent/createPosition">
-        <genParameters ecoreParameter="dom.ecore#//IContent/createPosition/offset"/>
+  </genPackages>
+  <genPackages prefix="Dom" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
+      disposableProviderFactory="true" ecorePackage="dom1.ecore#/">
+    <genDataTypes ecoreDataType="dom1.ecore#//DocumentListener"/>
+    <genDataTypes ecoreDataType="dom1.ecore#//DocumentValidationException"/>
+    <genDataTypes ecoreDataType="dom1.ecore#//StringArray"/>
+    <genDataTypes ecoreDataType="dom1.ecore#//AttributeDefinitionArray"/>
+    <genClasses ecoreClass="dom1.ecore#//IContent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IContent/length"/>
+      <genOperations ecoreOperation="dom1.ecore#//IContent/createPosition">
+        <genParameters ecoreParameter="dom1.ecore#//IContent/createPosition/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IContent/insertString">
-        <genParameters ecoreParameter="dom.ecore#//IContent/insertString/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IContent/insertString/s"/>
+      <genOperations ecoreOperation="dom1.ecore#//IContent/insertString">
+        <genParameters ecoreParameter="dom1.ecore#//IContent/insertString/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IContent/insertString/s"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IContent/remove">
-        <genParameters ecoreParameter="dom.ecore#//IContent/remove/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IContent/remove/length"/>
+      <genOperations ecoreOperation="dom1.ecore#//IContent/remove">
+        <genParameters ecoreParameter="dom1.ecore#//IContent/remove/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IContent/remove/length"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IContent/getString">
-        <genParameters ecoreParameter="dom.ecore#//IContent/getString/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IContent/getString/length"/>
-      </genOperations>
-    </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IPosition">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IPosition/offset"/>
-    </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IVEXDocument">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXDocument/encoding"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXDocument/length"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocument/rootElement"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocument/validator"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXDocument/undoEnabled"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXDocument/publicID"/>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/addDocumentListener">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/addDocumentListener/listener"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/canInsertFragment">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/canInsertFragment/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/canInsertFragment/fragment"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/canInsertText">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/canInsertText/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/createPosition">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/createPosition/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/delete">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/delete/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/delete/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/findCommonElement">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/findCommonElement/offset1"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/findCommonElement/offset2"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getCharacterAt">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getCharacterAt/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getElementAt">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getElementAt/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getFragment">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getFragment/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getFragment/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getNodeNames">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getNodeNames/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getNodeNames/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getNodes">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getNodes/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getNodes/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getRawText">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getRawText/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getRawText/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/getText">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getText/startOffset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/getText/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/insertElement">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertElement/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertElement/defaults"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/insertFragment">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertFragment/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertFragment/fragment"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/insertText">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertText/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/insertText/text"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/removeDocumentListener">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/removeDocumentListener/listener"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXDocument/fireAttributeChanged">
-        <genParameters ecoreParameter="dom.ecore#//IVEXDocument/fireAttributeChanged/documentEvent"/>
+      <genOperations ecoreOperation="dom1.ecore#//IContent/getString">
+        <genParameters ecoreParameter="dom1.ecore#//IContent/getString/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IContent/getString/length"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IVEXDocumentFragment">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocumentFragment/content"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXDocumentFragment/length"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocumentFragment/elements"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocumentFragment/nodeNames"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom.ecore#//IVEXDocumentFragment/nodes"/>
+    <genClasses ecoreClass="dom1.ecore#//IPosition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IPosition/offset"/>
     </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IVEXElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/attributeNames"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/childIterator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/childElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/childNodes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/document"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXElement/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXElement/empty"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXElement/parent"/>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/addChild">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/addChild/child"/>
+    <genClasses ecoreClass="dom1.ecore#//IVEXDocument">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/length"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/rootElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/validator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/undoEnabled"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/publicID"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/addDocumentListener">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/addDocumentListener/listener"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/clone"/>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/getAttribute">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/getAttribute/name"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/canInsertFragment">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/fragment"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/removeAttribute">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/removeAttribute/name"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/canInsertText">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertText/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/setAttribute">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/setAttribute/name"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/setAttribute/value"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/createPosition">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/createPosition/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/toString"/>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/setContent">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/setContent/content"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/setContent/offset"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/setContent/i"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/delete">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/delete/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/delete/endOffset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IVEXElement/insertChild">
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/insertChild/index"/>
-        <genParameters ecoreParameter="dom.ecore#//IVEXElement/insertChild/child"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/findCommonElement">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/findCommonElement/offset1"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/findCommonElement/offset2"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getCharacterAt">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getCharacterAt/offset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getElementAt">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getElementAt/offset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getFragment">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getFragment/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getFragment/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getNodeNames">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodeNames/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodeNames/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getNodes">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodes/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodes/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getRawText">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getRawText/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getRawText/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getText">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getText/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getText/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertElement">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertElement/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertElement/defaults"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertFragment">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertFragment/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertFragment/fragment"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertText">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/text"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/removeDocumentListener">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/removeDocumentListener/listener"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/fireAttributeChanged">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/fireAttributeChanged/documentEvent"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IVEXNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXNode/content"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXNode/endOffset"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXNode/endPosition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXNode/startOffset"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom.ecore#//IVEXNode/startPosition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom.ecore#//IVEXNode/text"/>
+    <genClasses ecoreClass="dom1.ecore#//IVEXDocumentFragment">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocumentFragment/length"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/elements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocumentFragment/nodeNames"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/nodes"/>
     </genClasses>
-    <genClasses ecoreClass="dom.ecore#//IValidator">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom.ecore#//IValidator/validRootElements"/>
-      <genOperations ecoreOperation="dom.ecore#//IValidator/getAttributeDefinition">
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getAttributeDefinition/element"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getAttributeDefinition/attribute"/>
+    <genClasses ecoreClass="dom1.ecore#//IVEXElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/attributeNames"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childIterator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/document"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/empty"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/parent"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/addChild">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/addChild/child"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IValidator/getAttributeDefinitions">
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getAttributeDefinitions/element"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/clone"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/getAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/getAttribute/name"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IValidator/getValidItems">
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getValidItems/element"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getValidItems/prefix"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/getValidItems/suffix"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/removeAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/removeAttribute/name"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IValidator/isValidSequence">
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence/element"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence/nodes"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence/partial"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/setAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/name"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/value"/>
       </genOperations>
-      <genOperations ecoreOperation="dom.ecore#//IValidator/isValidSequence.1">
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence.1/element"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence.1/seq1"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence.1/seq2"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence.1/seq3"/>
-        <genParameters ecoreParameter="dom.ecore#//IValidator/isValidSequence.1/partial"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/toString"/>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/setContent">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/content"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/i"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/insertChild">
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/insertChild/index"/>
+        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/insertChild/child"/>
       </genOperations>
     </genClasses>
-    <genClasses image="false" ecoreClass="dom.ecore#//String"/>
-    <genClasses image="false" ecoreClass="dom.ecore#//StringArray_1"/>
-    <genClasses image="false" ecoreClass="dom.ecore#//IVEXElementArray"/>
-    <genClasses image="false" ecoreClass="dom.ecore#//Serializable"/>
+    <genClasses ecoreClass="dom1.ecore#//IVEXNode">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/endOffset"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/endPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/startOffset"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/startPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/text"/>
+    </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//IValidator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IValidator/validRootElements"/>
+      <genOperations ecoreOperation="dom1.ecore#//IValidator/getAttributeDefinition">
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinition/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinition/attribute"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IValidator/getAttributeDefinitions">
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinitions/element"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IValidator/getValidItems">
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/prefix"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/suffix"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IValidator/isValidSequence">
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/nodes"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/partial"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//IValidator/isValidSequence.1">
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq1"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq2"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq3"/>
+        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/partial"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="dom1.ecore#//Serializable"/>
+  </genPackages>
+  <genPackages prefix="Validator" basePackage="org.eclipse.wst.xml.vex.core.internal"
+      disposableProviderFactory="true" ecorePackage="validator.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="validator.ecore#//AttributeDefinition"/>
   </genPackages>
 </genmodel:GenModel>

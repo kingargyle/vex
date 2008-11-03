@@ -41,7 +41,7 @@ public interface IVEXElement extends IVEXNode {
 	/**
 	 * Returns an array of names of the attributes in the element.
 	 * 
-	 * @model containment="true"
+	 * @model 
 	 */
 	public String[] getAttributeNames();
 
@@ -56,7 +56,7 @@ public interface IVEXElement extends IVEXNode {
 	/**
 	 * Returns an array of the elements children.
 	 * 
-	 * @model containment="true"
+	 * @model type="IVEXElement" containment="true"
 	 */
 	public IVEXElement[] getChildElements();
 

@@ -35,6 +35,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	private List children = new ArrayList();
 	private Map attributes = new HashMap();
 
+	
 	/**
 	 * Class constructor.
 	 * 
