@@ -1,0 +1,65 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Verifizierung</h1>
+      	
+      		
+      <p>Bei der Verifizierung einer Signatur (<em>core validation</em>) müssen alle beiden Schritte erfolgreich verlaufen. Zunächst erfolgt die Überprüfung der Ressourcen (<em>reference validation</em>), anschließend die Verifizierung der Signatur (<em>signature validation</em>). Die in den URI Attributen der <a href="signatures_syntax_signedinfo.html#Reference">Reference</a> Elemente angegeben signierten Daten müssen dafür zugänglich sein.
+      </p>
+      		
+      <p>
+         			<strong>Reference Validation (Verifikation der Reference-Elemente)</strong>
+         		
+      </p>
+      		
+      <ol>
+         			
+         <li>Zunächst wird die Kanonisierung des <a href="signatures_syntax_signedinfo.html">SignedInfo</a> Elements mit der angegebenen <a href="signatures_syntax_signedinfo.html#CanonicalizationMethod">CanonicalizationMethod</a> durchgeführt.
+         </li>
+         			
+         <li>Für jedes Reference Element in SignedInfo werden</li>
+         			
+         				
+         <li>die signierten Daten ermittelt und die möglicherweise bei der Generierung der Signatur angewandten Transformationen durchgeführt.</li>
+         				
+         <li>Von den transformierten Daten wird mit dem in der <a href="signatures_syntax_signaturemethod.html#DigestMethod">DigestMethod</a> angegebenen Algorithmus der Hashwert berechnet.
+         </li>
+         				
+         <li>Anschließend wird der berechnete Hashwert mit dem im <a href="signatures_syntax_signaturemethod.html#DigestValue">DigestValue</a> übermittelten Hashwert verglichen. Jeglicher Unterschied lässt die gesamte Verifizierung scheitern (auch wenn nur ein Hashwert
+            von vielen eine Abweichung aufweist).
+         </li>
+         			
+         		
+      </ol>
+      		
+      <p>
+         			<strong>Signature Validation (Verifikation der Signatur)</strong>
+         		
+      </p>
+      		
+      <ol>
+         			
+         <li>Der öffentliche Schlüssel wird aus dem <a href="signatures_syntax_keyinfo.html">KeyInfo</a> Element oder einer externen Quelle ermittelt.
+         </li>
+         			
+         <li>Das <a href="signatures_syntax_signedinfo.html">SignedInfo</a> Element wird kanonisiert. Mit den Schlüsselinformationen und dem kanonisierten <a href="signatures_syntax_signedinfo.html">SignedInfo</a> Element wird der <a href="signatures_syntax_signaturevalue.html">SignatureValue</a> berechnet und mit dem übermittelten Wert verglichen.
+         </li>
+         		
+      </ol>
+      		
+      <p>Ein möglicherweise durch eine Referenz ebenfalls signiertes <a href="signatures_syntax_keyinfo.html">KeyInfo</a> Element wird auf die gleiche Art verifiziert.
+      </p>
+      		
+      <p>Ist bei der Verifizierung auch nur eine der angegebenen Referenzen ungültig oder stimmen zwei Werte nicht überein, schreibt
+         die Empfehlung des W3C vor, dass die gesamte Signatur ungültig wird. Die Signatur wird ebenfalls ungültig, wenn ein URI nicht
+         aufgelöst werden kann, die Daten somit nicht erreichbar sind. Alle Schritte der Verifizierung müssen damit für eine gültige
+         Signatur erfolgreich abgeschlossen werden.
+      </p>
+      	
+      
+   </body>
+</html>

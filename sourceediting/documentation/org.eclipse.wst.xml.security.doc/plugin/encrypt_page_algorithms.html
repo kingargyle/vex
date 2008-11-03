@@ -1,0 +1,57 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Algorithms</h1>
+      	
+      		
+      <p>Auf der letzten Seite müssen Sie noch die verschiedenen erforderlichen Algorithmen und für die Schlüsseldatei auch die Schlüssellänge
+         festlegen. Erforderlich ist außerdem die Angabe einer Datei, in welcher Sie den erzeugten Schlüssel speichern möchten. Diese
+         Datei wird später zur <a href="decrypt.html">Entschlüsselung</a> wieder benötigt! Die Angabe einer ID für die Verschlüsselung ist optional, wird aber sehr empfohlen.
+      </p>
+      		
+      <div align="center"><img src="../images/enc-2.jpg" alt="Algorithms" width="275" height="261"><p><em>Algorithms</em></p>
+      </div>
+      		
+      <p>Zunächst müssen Sie die drei erforderlichen Algorithmen für die Verschlüsselung der Daten (<em>Encryption Algorithm</em>), zum Schlüsseltransport (<em>Key Wrap Algorithm</em>) sowie zur Erzeugung des benötigten symmetrischen Schlüssels (<em>Key File Algorithm</em>) auswählen. Beim letzten Algorithmus müssen Sie zusätzlich noch die gewünschte Schlüssellänge auswählen. Das dazugehörige
+         Auswahlfeld passt die angebotenen Schlüssellängen automatisch an Ihre Algorithmenauswahl an.
+      </p>
+      		
+      <p>Der Key Wrap Algorithmus dient dem sicheren Schlüsseltransport von einem Teilnehmer zu einem oder mehreren anderen (bspw.
+         bei einer ungesicherten Übertragung über das Internet).
+      </p>
+      		
+      <p>Der symmetrische Algorithmus wird sowohl als <em>Content Encryption Key</em> (CEK) als auch als <em>Key Encryption Key</em> (KEK) verwendet. Der CEK verschlüsselt die Nutzdaten einer Kommunikation, wohingegen der KEK nur einen Schlüssel, also den
+         CEK, und keine Nutzdaten verschlüsselt.
+      </p>
+      		
+      <p>Nicht auf jeder Plattform stehen alle Algorithmen in allen möglichen Schlüssellängen zur Verfügung. Bei der Erzeugung der
+         Verschlüsselung wird unter Umständen eine Fehlermeldung ausgegeben und die Verschlüsselung abgebrochen. Bitte verwenden Sie
+         in diesem Fall einen anderen Algorithmus oder eine kürzere Schlüssellänge.
+      </p>
+      		
+      <p>Anschließend müssen Sie noch festlegen, wo der erzeugte Schlüssel gespeichert werden soll. Bitte bewahren Sie diese Datei
+         gut auf! Ohne diese kann das verschlüsselte XML-Dokument (zumindest nach derzeitigem Kenntnisstand der Kryptografie) nicht
+         mehr entschlüsselt werden. Diese Datei besitzt <strong>keine Endung</strong>. Geben Sie daher einfach den gewünschten Pfad und Dateinamen an oder wählen ihn über das Dialogfeld aus (z.B. <em>C:\xml-security\key1</em>).
+      </p>
+      		
+      <p>Beachten Sie, dass dieser Key nichts mit den Java Keystores der <a href="sign.html">digitalen Signaturen</a> zu tun hat. Wenn Sie also ein XML-Dokument signieren und anschließend verschlüsseln, besitzen Sie einen zugehörigen <em>Java Keystore</em> von der digitalen Signatur (z.B. <em>Signatur.jks</em>) und ein <em>Key File</em> von der Verschlüsselung (z.B. <em>Key</em>). Das Key File benötigen Sie später wieder zur <a href="decrypt.html">Entschlüsselung</a>, den Keystore können Sie für zukünftige Signaturen verwenden. Wenn Sie den Key einer Verschlüsselung beim Generieren einer
+         weiteren Verschlüsselung überschreiben können Sie das XML-Dokument nicht mehr entschlüsseln (auch wenn Sie denselben Algorithmus
+         verwenden)!
+      </p>
+      		
+      <p>Die Angabe der ID für die Verschlüsselung ist optional. Hier können Sie beliebige Zeichen außer den fünf bekannten XML Entity-Referenzen
+         <strong>&lt;</strong>, <strong>&amp;</strong>, <strong>&gt;</strong>, <strong>"</strong> und <strong>'</strong> bis zu einer maximalen Länge von 20 Zeichen eingeben. Diese ID muss im XML-Dokument eindeutig sein, d.h. sie darf von keiner
+         anderen Verschlüsselung verwendet werden.
+      </p>
+      		
+      <p>Nach der Angabe aller erforderlichen Daten und dem Klick auf <strong>Finish</strong> erzeugt das Plug-in das verschlüsselte XML-Dokument. Der gewählte Klartext wird dabei automatisch entfernt und durch den
+         Chiffretext ersetzt.
+      </p>
+      	
+      
+   </body>
+</html>

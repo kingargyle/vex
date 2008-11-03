@@ -1,0 +1,47 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Das CipherData Element</h1>
+      	
+      		
+      <p>Das Pflichtelement <strong>CipherData</strong> enthält die eigentlichen verschlüsselten Daten. Die verschlüsselten Daten können dabei entweder eingehüllt oder referenziert
+         werden.
+      </p>
+      		
+      <p id="CipherValue">Bei eingehüllten Daten (<em>enveloping encryption</em>) werden die verschlüsselten Daten im Base-64 encoding im Kindelement <strong>CipherValue</strong> direkt im XML-Dokument angezeigt.
+      </p>
+      		
+      <div align="center"><img src="../images/encryption_enveloping.png" alt="Enveloping Encryption" width="425" height="284"><p><em>Enveloping Encryption</em></p>
+      </div>
+      		
+      <p>Das Element hat bei einer eingehüllten Verschlüsselung den folgenden Aufbau:</p>
+      		
+      <div class="code"><pre>&lt;CipherData&gt;
+  &lt;CipherValue&gt;
+  &lt;/CipherValue&gt;
+&lt;/CipherData&gt;</pre></div>
+      		
+      <p id="CipherReference">Werden die Daten referenziert (<em>detached encryption</em>) wird durch das Element <strong>CipherReference</strong> und einem <em>URI</em> Attribut auf die externen verschlüsselten Daten verwiesen.
+      </p>
+      		
+      <div align="center"><img src="../images/encryption_detached.png" alt="Detached Encryption" width="425" height="284"><p><em>Detached Encryption</em></p>
+      </div>
+      		
+      <p>Das Element hat bei einer referenzierten Verschlüsselung den folgenden Aufbau:</p>
+      		
+      <div class="code"><pre>&lt;CipherData&gt;
+  &lt;CipherReference URI/&gt;
+&lt;/CipherData&gt;</pre></div>
+      		
+      <h2 id="Transforms">Transforms</h2>
+      		
+      <p>Das optionale Kindelement <strong>Transforms</strong> erlaubt bei einer <em>detached encryption</em>, wie bei der <a href="signatures_transform.html">digitalen Signatur</a>, vor der Verschlüsselung verschiedene Transformationen der referenzierten Daten in einer bestimmten Reihenfolge durchzuführen.
+      </p>
+      	
+      
+   </body>
+</html>

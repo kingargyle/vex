@@ -1,0 +1,27 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Enveloped Signature</h1>
+      	
+      		
+      <p>Bei einer <strong>enveloped signature</strong> stellt das zu signierende Dokument das Elternelement zum <a href="signatures_syntax_signature.html">Signature</a> Element dar. Das <a href="signatures_syntax_signature.html">Signature</a> Element ist somit vom zu signierenden Dokument umgeben und damit in der Baumstruktur der zu signierenden Daten enthalten.
+         Diese Variante ist mit einer herkömmlichen handschriftlichen Unterschrift vergleichbar.
+      </p>
+      		
+      <div align="center"><img src="../images/signatures_enveloped.png" alt="Enveloped Signature" width="425" height="284"><p><em>Enveloped Signature</em></p>
+      </div>
+      		
+      <p>Der XML-Baum hat damit den folgenden Aufbau:</p>
+      		
+      <div class="code"><pre>&lt;DocumentData&gt;
+  &lt;Signature&gt;
+  &lt;/Signature&gt;
+&lt;/DocumentData&gt;</pre></div>
+      	
+      
+   </body>
+</html>

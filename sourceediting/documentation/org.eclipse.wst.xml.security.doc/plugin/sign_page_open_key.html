@@ -1,0 +1,34 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Open an existing Key</h1>
+      	
+      		
+      <p>Auf dieser zweiten Seite des <em>Digital Signature Wizard</em> müssen Sie zunächst den gewünschten Keystore und ein darin enthaltenes Zertifikat auswählen sowie die zugehörigen Passwörter
+         angeben.
+      </p>
+      		
+      <div align="center"><img src="../images/dsig-2a.png" alt="Open an existing Certificate" width="275" height="392"><p><em>Open an existing Certificate</em></p>
+      </div>
+      		
+      <p>Zunächst müssen Sie eine Java Keystore Datei (mit der Dateiendung <em>.jks</em>) auswählen. Über den Button <strong>Open...</strong> öffnen Sie das Standarddialogfeld zur Auswahl einer solchen Datei.
+      </p>
+      		
+      <p>Anschließend sind weitere Angaben zum Keystore und Zertifikat erforderlich. Alle angegebenen Felder sind Pflichtfelder. Mit
+         den <strong>Punkt</strong> Buttons rechts neben den Passwortfeldern können sie den Klartext in einem Passwortfeld anzeigen lassen und Ihre Eingabe kontrollieren.
+      </p>
+      		
+      <p>Mit dem <em>Keystore Password</em> kann der Keystore selbst geöffnet werden. Anschließend legen Sie mit dem <em>Certificate Alias</em> fest, welches Zertifikat aus dem Keystore geladen werden soll. Dieses Zertifikat wird zur Erzeugung des <a href="../basics/signatures_syntax_keyinfo.html">KeyInfo</a> Elements und später zur <a href="verify.html">Verification</a> der Signatur benötigt. Eine Signatur lässt sich zwar auch ohne Angabe des <em>Certificate Alias</em> erzeugen, kann dann aber nicht mit dem XML-Security Plug-In verifiziert werden. Die Angabe des Alias ist daher ebenfalls
+         erforderlich. Zum Abschluss müssen Sie noch das Passwort des Zertifikats angeben.
+      </p>
+      		
+      <p>Nach der korrekten Eingabe aller erforderlichen Daten können Sie mit dem <strong>Next</strong> Button auf die nächste Seite des Digital Signature Wizards wechseln: <a href="sign_page_algorithms.html">Algorithms and Signature Properties</a>.
+      </p>
+      	
+      
+   </body>
+</html>

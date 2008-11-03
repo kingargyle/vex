@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+	<context id="signselection">
+		<description>Select a resource to sign (the complete document or a fragment of it), the signature type (enveloping, enveloped or detached) and a key option (create a new one or use an existing one). The Basic Security Profile option increases interoperability of Web Service Security.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/sign_page_resource.html" label="Resource and Signature Type"/>
+	</context>
+	<context id="signopenkey">
+		<description>Provide all required information for the key to use in the current signing process.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/sign_page_open_key.html" label="Open Key"/>
+	</context>
+	<context id="signcreatekey">
+		<description>Provide all required information to create a new key in an existing keystore. This key will be used in the current signing process and is stored in the selected keystore.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/sign_page_create_key.html" label="Create Key"/>
+	</context>
+	<context id="signcreatekeystore">
+		<description>Provide all required information to create a new keystore together with a new key. This key will be used in the current signing process and is stored in the current project folder as [Keystore Name].jks.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/sign_page_create_keystore.html" label="Create Keystore and Key"/>
+	</context>
+	<context id="signalgorithms">
+		<description>Select a canonicalization and a transformation algorithm, a message digest and a signature algorithm. The signature properties are optional. A new property can be added by clicking on the + button. The signature id is optional but makes it much easier to identify the signature. The characters &lt;, &gt;, &amp;, &quot;, &apos; and blanks are not allowed as id (signature id and signature property id), the maximum length is 20 characters. Selecting the Start Encryption Wizard afterwards checkbox opens the Encryption Wizard after a successful digital signature operation.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/sign_page_algorithms.html" label="Algorithms and Signature Properties"/>
+	</context>
+	<context id="encryptresource">
+		<description>Select the resource to encrypt (the complete document or a fragment of it), the encryption type (enveloping or detached) and a key option (create a new one or use an existing one). The Basic Security Profile option increases interoperability of Web Service Security.</description>
+		<topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+		<topic href="plugin/encrypt_page_resource.html" label="Resource and Encryption Type"/>
+	</context>
+    <context id="encryptopenkey">
+        <description>Provide all required keystore information for the public key to use in the current encryption process.</description>
+        <topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+        <topic href="plugin/encrypt_page_open_key.html" label="Open an existing Key"/>
+    </context>
+    <context id="encryptcreatekey">
+        <description>Provide all required information to create a new public/private key pair in an existing keystore. The public key will be used in the current encryption process and is stored in the selected keystore.</description>
+        <topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+        <topic href="plugin/encrypt_page_create_key.html" label="Create a new Key in an existing Keystore"/>
+    </context>
+    <context id="encryptcreatekeystore">
+        <description>Provide all required information to create a new keystore with a new public/private key pair. The public key will be used in the current encryption process and is stored in the current project folder as [Keystore Name].jks.</description>
+        <topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+        <topic href="plugin/encrypt_page_create_keystore.html" label="Create a new Key and a new Keystore"/>
+    </context>
+	<context id="encryptalgorithms">
+		<description>Select the encryption algorithms and provide a file to store the key in. The encryption id is optional but makes it much easier to identify the encryption. The characters &lt;, &gt;, &amp;, &quot;, &apos; and blanks are not allowed as id, the maximum length is 20 characters. Selecting the Start Digital Signature Wizard afterwards checkbox opens the Digital Signature Wizard after a successful encryption operation.</description>
+		<topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+		<topic href="plugin/encrypt_page_algorithms.html" label="Algorithms"/>
+	</context>
+	<context id="xpath">
+		<description>This dialog displays all elements in the current XML document as unique XPath expressions. Select the element you want to use.</description>
+		<topic href="plugin/sign.html" label="Digital Signature Wizard"/>
+		<topic href="plugin/encrypt.html" label="Encryption Wizard"/>
+	</context>
+	<context id="decryptdecrypt">
+		<description>Select the KeyStore used for encrypting this document (-fragment) and enter the password for the store. Specify the key name and enter the corresponding password. If you didn&apos;t enter an encryption id during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id and click Finish to start the decryption process.</description>
+		<topic href="plugin/decrypt.html" label="Decryption Wizard"/>
+		<topic href="plugin/decrypt_page_decryption.html" label="Decryption"/>
+	</context>
+	<context id="prefssec">
+		<description>Configure general preferences for the XML-Security Plug-In and Canonicalization.</description>
+		<topic href="plugin/canonicalize.html" label="Canonicalization"/>
+		<topic href="plugin/prefs.html" label="XML-Security Preferences"/>
+	</context>
+	<context id="prefssig">
+		<description>Configure the preferences for Quick Signature and Quick Verification.</description>
+		<topic href="plugin/quick.html" label="Quick Signature"/>
+		<topic href="plugin/prefs_sign.html" label="Quick Signature Preferences"/>
+	</context>
+	<context id="prefsenc">
+		<description>Configure the preferences for Quick Encryption and Quick Decryption.</description>
+		<topic href="plugin/quick.html" label="Quick Encryption"/>
+		<topic href="plugin/prefs_encrypt.html" label="Quick Encryption Preferences"/>
+	</context>
+    <context id="signatureview">
+        <description>Shows all XML Digital Signatures (valid, invalid and unkown) of the selected XML document. Click Refresh for a new scan of the XML document. Select one verification result and click Properties for detailed information about this digital signature.</description>
+        <topic href="plugin/verify.html" label="XML Digital Signature View"/>
+    </context>
+</contexts>

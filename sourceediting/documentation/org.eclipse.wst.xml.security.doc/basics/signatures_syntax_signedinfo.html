@@ -1,0 +1,164 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Das SignedInfo Element</h1>
+      	
+      		
+      <p>Das erste und auch komplexeste Element innerhalb von <a href="signatures_syntax_signature.html">Signature</a> ist <strong>SignedInfo</strong> und enthält die verwendeten Algorithmen zur Kanonisierung und Signierung, eine oder mehrere Referenzen auf die signierten
+         Daten, eventuelle Transformationen und die Hashwerte dieser Daten. <strong>SignedInfo</strong> enthält also alle Informationen zu den zu signierenden Ressourcen und ist damit der Teil, über den die digitale Signatur
+         erstellt wird.
+      </p>
+      		
+      <p>Mit dem Signieren der verwendeten Algorithmen erhöht sich die Sicherheit. Ein sicherer Algorithmus kann so nicht gegen einen
+         unsicheren ausgetauscht werden, ohne dass die Signatur ungültig wird.
+      </p>
+      		
+      <p>Weitere Eigenschaften, wie z.B. ein Zeitstempel oder die Seriennummer der verwendeten kryptografischen Hardware, können nur
+         durch ein oder mehrere optionale Kindelemente <a href="signatures_syntax_object.html#SignatureProperties">SignatureProperties</a> in einem <a href="signatures_syntax_object.html">Object</a> Element angegeben werden. Für einen Zeitstempel existiert dazu beispielsweise das Element <em>timestamp</em>, mit dem ein Zeitstempel vor der Erstellung der Signatur in die signierten Daten eingebunden werden kann.
+      </p>
+      		
+      <p>
+         			<strong>SignedInfo</strong> kann ein optionales Attribut <em>Id</em> enthalten mit dem das Element z.B. von anderen Signaturen referenziert werden kann. Kindelemente von <strong>SignedInfo</strong> sind die Pflichtelemente <a href="signatures_syntax_signedinfo.html#CanonicalizationMethod">CanonicalizationMethod</a> und <a href="signatures_syntax_signedinfo.html#SignatureMethod">SignatureMethod</a> sowie ein oder mehrere <a href="signatures_syntax_signedinfo.html#Reference">Reference</a> Elemente.
+      </p>
+      		
+      <h2 id="CanonicalizationMethod">CanonicalizationMethod</h2>
+      		
+      <p>Das leere Pflichtelement <strong>CanonicalizationMethod</strong> enthält ein <em>Algorithm</em> Attribut zur Identifikation des <a href="signatures_canon.html">Kanonisierungs-Algorithmus</a>, der vor der Signaturberechnung auf die Daten in <a href="signatures_syntax_signedinfo.html">SignedInfo</a> angewendet wird. Die möglichen Werte des URI finden sich in der Tabelle bei der <a href="signatures_canon.html">Kanonisierung</a>.
+      </p>
+      		
+      <h2 id="SignatureMethod">SignatureMethod</h2>
+      		
+      <p>
+         			<strong>SignatureMethod</strong> ist ebenfalls ein leeres Pflichtelement mit einem <em>Algorithm</em> Attribut und gibt den zur Signaturgenerierung (und später zur Verifizierung) verwendeten Algorithmus an. Mit diesem Algorithmus
+         wird das kanonische <a href="signatures_syntax_signedinfo.html">SignedInfo</a> Element in den <a href="signatures_syntax_signaturevalue.html">SignatureValue</a> konvertiert. Der URI kann die in der folgenden Tabelle aufgeführten Werte annehmen. Die Verwendung von weiteren Algorithmen
+         ist möglich, aber von der konkreten Implementierung abhängig.
+      </p>
+      		
+      <table cellspacing="0">
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>URI</th>
+               <th>Implementierung</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr class="uneven">
+               <td>
+                  					DSA with SHA 1 (DSS)
+                  				
+               </td>
+               <td>http://www.w3.org/2000/09/xmldsig#dsa-sha1</td>
+               <td>erforderlich</td>
+            </tr>
+            <tr class="even">
+               <td>
+                  					HMAC-SHA 1
+                  				
+               </td>
+               <td>http://www.w3.org/2000/09/xmldsig#hmac-sha1</td>
+               <td>erforderlich</td>
+            </tr>
+            <tr class="uneven">
+               <td>
+                  					RSA with SHA 1
+                  				
+               </td>
+               <td>http://www.w3.org/2000/09/xmldsig#rsa-sha1</td>
+               <td>empfohlen</td>
+            </tr>
+         </tbody>
+      </table>
+      		
+      <h2 id="Reference">Reference</h2>
+      		
+      <p>Es folgen mindestens ein oder mehrere <strong>Reference</strong> Elemente, die angeben, welche beliebigen, auch binären, Daten in die Signaturberechnung miteinbezogen werden sollen. Die
+         <strong>Reference</strong> Elemente stellen somit den Kern einer Signatur dar. Mehrere <strong>Reference</strong> Elemente entsprechen einer Sammelsignatur, also dem Signieren von mehreren Objekten mit einer Signatur. Jedes Element steht
+         dabei für einen signierten Inhalt.
+      </p>
+      		
+      <p>XML-Signaturen signieren niemals direkt die Ressourcen, sondern legen zunächst eine Liste von Hashwerten dieser an. Diese
+         Liste wird dann mit einem Signatur-Algorithmus signiert. Damit wird nicht nur die Signatur-Operation beschleunigt, sondern
+         auch ein einfacher Weg angeboten, um mehrere Ressourcen gleichzeitig zu signieren.
+      </p>
+      		
+      <p>Zum <strong>Reference</strong> Element gehören drei optionale Attribute: <em>Id</em>, <em>Type</em> und <em>URI</em>. <em>Id</em> vom Typ ID dient der Identifizierung der Referenz. Das Attribut <em>Type</em> vom Typ anyURI bestimmt mit dem als Attributwert angegebenen URI den Typ der Referenz. Das Attribut bezieht sich nicht auf
+         die referenzierten Daten, sondern auf den Container, der die Daten enthält. Damit kann angezeigt werden ob es sich bei der
+         Referenz um ein <a href="signatures_syntax_object.html">Object</a>, <a href="signatures_syntax_object.html#SignatureProperties">SignatureProperty</a> oder <a href="signatures_syntax_object.html#Manifest">Manifest</a> Element handelt.
+      </p>
+      		
+      <p>Das dritte Attribut <em>URI</em> ist ebenfalls vom Typ anyURI und enthält die Adresse, unter der die zu signierenden Daten verfügbar sind. Die Daten, auf
+         die sich die digitale Signatur bezieht, müssen nicht im <a href="signatures_syntax_signature.html">Signature</a> Element selbst vorhanden sein, sondern können auch über das lokale Dateisystem oder eine Internet-Adresse referenziert werden.
+         Enthält das Attribut also eine Webadresse handelt es sich um eine <a href="signatures_detached.html">detached signature</a>.
+      </p>
+      		
+      <p>Daneben gibt es noch URIs, die auf das aktuelle Dokument verweisen wie z.B. <em>URI=""</em>. Dieser spezielle Uniform Resource Identifier steht für alle XML-Knoten des aktuellen XML-Dokuments, jedoch ohne die möglicherweise
+         vorhandenen Kommentare. Die zur Signatur gehörenden Knoten sind in der Auswahl jedoch enthalten.
+      </p>
+      		
+      <p>Auch das gezielte Auswählen von Teildokumenten (<em>fragment identifier</em>) oder Elementen ist mittels XPointer und XPath möglich. Werden mehrere <strong>Reference</strong> Elemente angegeben darf das <em>URI</em> Attribut nur bei einem ausgelassen werden. In diesem Fall ist die Applikation dafür zuständig, die zu signierenden Daten
+         zu bestimmen.
+      </p>
+      		
+      <p>Reference besitzt drei Kindelemente: <a href="signatures_syntax_signedinfo.html#Transforms">Transforms</a> (optional) sowie die Pflichtelemente <a href="signatures_syntax_signedinfo.html#DigestMethod">DigestMethod</a> und <a href="signatures_syntax_signedinfo.html#DigestValue">DigestValue</a>.
+      </p>
+      		
+      <h2 id="Transforms">Transforms</h2>
+      		
+      <p>Wird das optionale Element <strong>Transforms</strong> angegeben, so durchlaufen die referenzierten Daten zunächst der Reihe nach sämtliche in den <strong>Transform</strong> Kindelementen aufgeführten Transformationen. Der Hashwert wird vom Ergebnis der letzten Transformation berechnet, die Reihenfolge
+         der Transformationen ist also von Bedeutung. In dem Fall wird damit nicht das ursprüngliche, sondern das transformierte Dokument(fragment)
+         signiert. Fehlt das <strong>Transforms</strong> Element wird der Hashwert vom gesamten referenzierten Objekt berechnet.
+      </p>
+      		
+      <p>Jedes <strong>Transforms</strong> Element besteht dazu aus einem <em>Algorithm</em> Attribut mit dem anzuwendenden <a href="signatures_transform.html">Transformations-Algorithmus</a>.
+      </p>
+      		
+      <h2 id="DigestMethod">DigestMethod</h2>
+      		
+      <p>Das leere Pflichtelement <strong>DigestMethod</strong> enthält im <em>Algorithm</em> Attribut ausschließlich einen URI zur Identifikation des Message Digest Algorithmus. Der URI kann die in der folgenden Tabelle
+         aufgeführten Werte annehmen.
+      </p>
+      		
+      <table cellspacing="0">
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>URI</th>
+               <th>Implementierung</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr class="uneven">
+               <td>
+                  					MD5
+                  				
+               </td>
+               <td>http://www.w3.org/2000/09/xmldsig#md5</td>
+               <td>nicht empfohlen</td>
+            </tr>
+            <tr class="even">
+               <td>
+                  					SHA 1
+                  				
+               </td>
+               <td>http://www.w3.org/2000/09/xmldsig#sha1</td>
+               <td>erforderlich</td>
+            </tr>
+         </tbody>
+      </table>
+      		
+      <h2 id="DigestValue">DigestValue</h2>
+      		
+      <p>Mit dem in <a href="signatures_syntax_signedinfo.html#DigestMethod">DigestMethod</a> angegebenen Algorithmus wird der <strong>DigestValue</strong>, ein eindeutiger Hashwert des signierten Objekts, berechnet und per Base-64 encoding in diesem Element gespeichert. Der Hashwert,
+         der auch als digitaler Fingerabdruck bezeichnet werden kann, ist meist kürzer als die signierten Daten und kann somit im folgenden
+         Schritt schneller signiert werden. Es ist praktisch unmöglich, aus einem gegebenen Hashwert die ursprüngliche Nachricht zu
+         ermitteln. Außerdem sollte es unmöglich sein, dass zwei beliebige Nachrichten denselben Hashwert ergeben (Kollision und Geburtstagsparadoxon).
+      </p>
+      	
+      
+   </body>
+</html>

@@ -1,0 +1,48 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Algorithms and Signature Properties</h1>
+      	
+      		
+      <p>Auf der letzten Seite des <em>Digital Signature Wizard</em> müssen Sie sämtliche Algorithmen zur <em>Canonicalization</em>, <em>Transformation</em> sowie den <em>Message Digest</em> und <em>Signature Algorithmus</em> festlegen. Zusätzlich können Sie zur Signature beliebige <em>Signature Properties</em> angeben und der Signatur eine optionale beliebige <em>ID</em> geben.
+      </p>
+      		
+      <div align="center"><img src="../images/dsig-3.png" alt="Algorithms and Signature Properties" width="275" height="392"><p><em>Algorithms and Signature Properties</em></p>
+      </div>
+      		
+      <p>Sie müssen in jedem der vier Auswahlfelder zu den Algorithmen eine Auswahl treffen. Lediglich beim <em>Transformation Algorithm</em> können Sie auch <em>None</em> auswählen und damit auf eine Transformation verzichten. Wenn Sie auf der <a href="sign_page_resource.html">Resource and Signature Type</a> Seite des Wizard das <em>Basic Security Profile</em> aktiviert haben sind die Einträge in allen Auswahlfeldern entsprechend eingeschränkt. Die möglichen <em>Signature Algorithm</em> hängen von dem von Ihnen gewählten Zertifikat ab (bei DSA stehen nur DSA Algorithmen zur Auswahl, bei EC nur EC Algorithmen
+         und bei RSA entsprechend nur RSA Algorithmen).
+      </p>
+      		
+      <p>Nicht auf jeder Plattform stehen alle Algorithmen in allen verfügbaren Schlüssellängen zur Verfügung. Bei der Erzeugung der
+         Signatur wird unter Umständen eine Fehlermeldung ausgegeben und die Signierung abgebrochen. Bitte verwenden Sie in diesem
+         Fall einen anderen Algorithmus oder eine kürzere Schlüssellänge. Der Algorithmus <em>RIPEMD160</em> beispielsweise steht nur auf Systemen mit zusätzlichem Kryptografieprovider (z.B. <em>BouncyCastle</em>) zur Verfügung.
+      </p>
+      		
+      <p>Als <em>Message Digest Algorithm</em> können Sie auch den Algorithmus <em>MD5</em> auswählen. Dieser gilt jedoch nicht mehr als ausreichend sicher und sollte keinesfalls zur Sicherung von wichtigen Dokumenten
+         verwendet werden. Als ausreichend sicher gelten derzeit Hashwerte ab einer Länge von 160 Bit.
+      </p>
+      		
+      <p>Bei den <a href="signatures_syntax_object.html#SignatureProperties">Signature Properties</a> können Sie zusätzliche Informationen erfassen, die ebenfalls mit signiert werden sollen. Um einen neuen Eintrag hinzuzufügen
+         klicken Sie zunächst auf den <strong>+</strong> Button neben der Tabelle. Anschließend können Sie die Informationen in der Tabelle eintragen. <em>ID</em> und <em>Target</em> sind dabei Pflichtangaben. IDs müssen außerdem im Dokument eindeutig sein. Einen markierten Eintrag löschen Sie über den
+         <strong>-</strong> Button.
+      </p>
+      		
+      <p>Eine optionale ID können Sie der Signatur mit Hilfe des Textfelds zuweisen. Erlaubt sind hierfür alle Zeichen bis auf die
+         fünf bekannten XML Entity-Referenzen <strong>&lt;</strong>, <strong>&amp;</strong>, <strong>&gt;</strong>, <strong>"</strong> und <strong>'</strong> bis zu einer maximalen Länge von 20 Zeichen. Diese ID muss im XML-Dokument eindeutig sein, d.h. sie darf von keiner anderen
+         Signatur verwendet werden.
+      </p>
+      		
+      <p>Durch das Markieren der Checkbox <em>Start Encryption Wizard afterwards</em> wird direkt nach dem erfolgreichen Signieren der <a href="encrypt.html">Encryption Wizard</a> aufgerufen.
+      </p>
+      		
+      <p>Nach der korrekten Eingabe aller erforderlichen Daten können Sie mit dem <strong>Finish</strong> Button den Digital Signature Wizard beenden und das XML-Dokument signieren lassen.
+      </p>
+      	
+      
+   </body>
+</html>

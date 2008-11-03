@@ -1,0 +1,167 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Kanonisierung</h1>
+      	
+      		
+      <p>Trotz logischer Gleichheit der reinen Dokumentdaten lassen sich Veränderungen am physischen Dokument durch die Verarbeitung,
+         beispielsweise auf verschiedenen Plattformen oder in unterschiedlichen Editoren/ Anwendungen, nicht verhindern. Um ungültige
+         Signaturen auszuschließen, wird daher vor dem Signieren ein Kanonisierungs-Algorithmus auf das wohlgeformte XML-Dokument angewandt.
+         Hiermit werden syntaktische Unterschiede - wie beispielsweise der Zeichensatz, Zeilenumbrüche, leere Tags und die Reihenfolge
+         der Attribute - von ansonsten semantisch identischen XML-Dokumenten kanonisiert. Eine andere Bezeichnung für Kanonisierung
+         ist Normalisierung. Der Kanonisierungs-Algorithmus stellt dabei sicher, dass immer dieselben Bytes in die Hashwertberechnung
+         einfließen und anschließend signiert werden. Die bei digitalen Signaturen zahlreich vorhandenen URIs werden jedoch niemals
+         kanonisiert.
+      </p>
+      		
+      <p>Auffällig ist, dass zwar die XML-Deklaration zur Kanonisierung herangezogen wird, diese Deklaration im kanonisierten XML-Dokument
+         aber nicht mehr enthalten ist. Das ist nur konsequent, die Angabe des <em>encodings</em> ist überflüssig da ein kanonisches XML-Dokument immer in einer <em>UTF-8</em> Kodierung vorliegt und eine fehlende Versionsangabe immer XML Version 1.0 bedeutet. Das erfordert allerdings, dass bei einer
+         neuen XML-Version auch die Kanonisierung überarbeitet wird.
+      </p>
+      		
+      <p>
+         			<strong>Beim Kanonisieren eines XML-Dokuments finden die folgenden Aktionen statt:</strong>
+         		
+      </p>
+      		
+      <ul>
+         			
+         <li>Das Dokument wird in UTF-8 kodiert</li>
+         			
+         <li>Zeilenumbrüche werden vor dem Parsen normalisiert zu #xA</li>
+         			
+         <li>Attributwerte werden normalisiert (wie bei einem validierenden Parser)</li>
+         			
+         <li>Character- und parsed-entity Referenzen werden ersetzt</li>
+         			
+         <li>CDATA Abschnitte werden durch ihren Inhalt ersetzt</li>
+         			
+         <li>Die XML-Deklaration und eine möglicherweise vorhandene DTD werden entfernt</li>
+         			
+         <li>Leere Elemente werden zu Start-End-Tag Paaren umgewandelt</li>
+         			
+         <li>Whitespace außerhalb des Dokumentelements und innerhalb von Start- und End-Tags wird normalisiert</li>
+         			
+         <li>Whitespace in Textknoten wird beibehalten (gilt jedoch nicht für Zeichen die bei der Normalisierung der Zeilenumbrüche entfernt
+            wurden)
+         </li>
+         			
+         <li>Attributwerte werden in doppelten Anführungsstrichen eingeschlossen</li>
+         			
+         <li>Sonderzeichen in Attributwerten und Textknoten werden durch Zeichenreferenzen ersetzt</li>
+         			
+         <li>Überflüssige Namespace Deklarationen werden von jedem Element entfernt</li>
+         			
+         <li>Defaultattribute werden zu den jeweiligen Elementen hinzugefügt</li>
+         			
+         <li>Namespace Deklarationen und Attribute werden alphanumerisch sortiert</li>
+         		
+      </ul>
+      		
+      <p>Zu kanonischem XML existieren seit 15. März 2001, 18. Juli 2002 bzw. 29. Januar 2008 drei Empfehlungen des W3C: <em>Canonical XML 1.0 (C14N 1.0)</em>, <em>Canonical XML 1.1 (C14N 1.1)</em> und <em>Exclusive XML Canonicalization 1.0</em>. Drei Empfehlungen, die alle mehr oder weniger das Gleiche tun...
+      </p>
+      		
+      <p>Nun ja, es gibt einige Unterschiede: So wird die <em>exclusive</em> Variante unter anderem für Protokolle wie SOAP und damit Web Services benötigt und sollte auch in Zusammenhang mit <strong>xml:id</strong> verwendet werden. Mit der gebräuchlicheren <em>Exclusive XML Canonicalization 1.0</em> wird ein XML-Dokument soweit wie möglich ohne den dazugehörigen Kontext (d.h. Namensräume der Vorfahren) normalisiert. Damit
+         wird eine digitale Signatur auch nicht ungültig falls ein kanonisiertes Dokumentfragment aus dem Kontext entfernt und/ oder
+         in ein anderes XML-Dokument eingefügt wird.
+      </p>
+      		
+      <p>Alternativ kann bei Verwendung von <strong>xml:id</strong> oder <strong>xml:base</strong> Attributen auch die aktualisierte <em>Canonical XML 1.1</em> Empfehlung angewendet werden, mit <em>Canonical XML 1.0</em> gibt es hier Probleme. <em>Canonical XML 1.0</em> und <em>Canonical XML 1.1</em> machen jedoch prinzipiell dasselbe, die Verwendung der aktualisierten Version 1.1 wird aber empfohlen. Es wurde weiter oben
+         schon angesprochen, bei der Kanonisierung von Dokumentfragmenten kann der übergeordnete Kontext verloren gehen. Damit das
+         XML-Dokument z.B. durch eine nach der Kanonisierung fehlende Namespace Deklaration nicht ungültig wird, werden Attribute kopiert.
+         Auch solche im xml Namespace wie z.B. <strong>xml:base</strong> und <strong>xml:id</strong>. Und mit diesen beiden gibt es Probleme. Während bei <strong>xml:base</strong> einfach auch der Attributwert (d.h. der darin enthaltene Pfad) angepasst werden muss, ist das Kopieren von <strong>xml:id</strong> schlichtweg falsch. <strong>xml:id</strong> ist eine Empfehlung vom September 2005 und beschreibt kurz gesagt eine Möglichkeit, Elemente mit eindeutigen IDs auszustatten.
+         Eine ID muss eindeutig sein, nach dem Kopieren ist das aber nicht mehr der Fall. C14N 1.1 wurde dahingehend erweitert, dass
+         <strong>xml:base</strong> Attribute angepasst werden und <strong>xml:id</strong> nicht kopiert, d.h. nicht in den Kontext eines Subdokuments übernommen werden. Bei der Verwendung von C14N 1.0 können hier
+         <em>xml:id errors</em> auftreten. Das sind zwar keine fatalen Fehler, d.h. das XML-Dokument kann weiterverarbeitet werden, trotzdem kann das XML-Dokument
+         später unbrauchbar sein.
+      </p>
+      		
+      <p>Die <em>Exclusive XML Canonicalization 1.0</em> und auch <em>Canonical XML 1.1</em> weisen dieses Feature (es handelt sich tatsächlich ein Feature und kein Bug) nicht auf, daher sollte bei XML-Dokumenten mit
+         <strong>xml:id</strong> Attributen besser auf einen dieser Kanonisierungs-Algorithmen zurückgegriffen werden.
+      </p>
+      		
+      <p>Canonical XML 1.1 ist übrigens, auch wenn es der Name andeuten mag, nicht für XML 1.1 geeignet. Für XML 1.1 steht noch keine
+         Kanonisierungsmöglichkeit zur Verfügung; XML Digitale Signaturen können daher mit XML 1.1 derzeit nicht verwendet werden.
+         Mangels Rückwärtskompatibilität wird XML 1.1 wohl ohnehin nur für wenige Anwendungsgebiete und Entwickler interessant sein,
+         daher lässt sich das wohl verschmerzen. Elliotte Rusty Harold empfiehlt XML 1.1 ohnehin nur einer eingeschränkten Zielgruppe:
+         <em>"XML 1.1 has a number of new features that make it much more suitable for use by IBM mainframe programmers and people whose
+            native language is Amharic, Burmese, or Cambodian."</em>. Alle anderen können ohne schlechtes Gewissen auch weiterhin XML 1.0 verwenden.
+      </p>
+      		
+      <p>Aber ganz egal welche Kanonisierung verwendet wird, es stehen immer jeweils zwei Möglichkeiten zur Kanonisierung zur Verfügung.
+         Bei der einen Version werden die Kommentare im kanonisierten XML-Dokument entfernt (<em>canonical XML omits comments</em>), bei der anderen Version bleiben die Kommentare erhalten (<em>canonical XML with comments</em>). Auch bei der Kanonisierung ist es möglich, nur XML-Dokumentfragmente zu kanonisieren und die restlichen Dokumentteile in
+         ihrer ursprünglichen Form zu belassen. Im Gegensatz zum vollständigen Kanonisieren eines XML-Dokuments kann es bei einer XML-Dokument
+         Untermenge (<em>document subset</em>) durchaus vorkommen, dass das resultierende XML-Dokument nicht mehr wohlgeformt ist.
+      </p>
+      		
+      <p>Die vorhandenen Kanonisierungs-Algorithmen und die zugehörigen Uniform Resource Identifier zeigt die folgende Tabelle. Identifiziert
+         wird der gewünschte Algorithmus immer über den jeweiligen URI.
+      </p>
+      		
+      <table cellspacing="0">
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>URI</th>
+               <th>Implementierung</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr class="uneven">
+               <td>
+                  					Canonical XML 1.0
+                  				
+               </td>
+               <td>http://www.w3.org/TR/2001/REC-xml-c14n-20010315</td>
+               <td>erforderlich</td>
+            </tr>
+            <tr class="even">
+               <td>
+                  					Canonical XML 1.0 with Comments
+                  				
+               </td>
+               <td>http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments</td>
+               <td>empfohlen</td>
+            </tr>
+            <tr class="uneven">
+               <td>
+                  					Canonical XML 1.1
+                  				
+               </td>
+               <td>http://www.w3.org/2006/12/xml-c14n11</td>
+               <td>erforderlich</td>
+            </tr>
+            <tr class="even">
+               <td>
+                  					Canonical XML 1.1 with Comments
+                  				
+               </td>
+               <td>http://www.w3.org/2006/12/xml-c14n11#WithComments</td>
+               <td>empfohlen</td>
+            </tr>
+            <tr class="uneven">
+               <td>
+                  					Exclusive XML Canonicalization 1.0
+                  				
+               </td>
+               <td>http://www.w3.org/2001/10/xml-exc-c14n#</td>
+               <td>optional</td>
+            </tr>
+            <tr class="even">
+               <td>
+                  					Exclusive XML Canonicalization 1.0 with Comments
+                  				
+               </td>
+               <td>http://www.w3.org/2001/10/xml-exc-c14n#WithComments</td>
+               <td>optional</td>
+            </tr>
+         </tbody>
+      </table>
+      	
+      
+   </body>
+</html>

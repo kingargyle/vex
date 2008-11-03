@@ -1,0 +1,27 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Detached Signature</h1>
+      	
+      		
+      <p>Bei einer <strong>detached signature</strong> gibt es keine Eltern-Kind-Beziehung zwischen Signatur und Dokument. Das Originaldokument ist vielmehr eine separate Ressource.
+         Das zu signierende Dokument wird bei einer <strong>detached signature</strong> nicht verändert. Der signierte Inhalt kann sich im selben Dokument wie die Signatur oder in einem anderen Dokument befinden.
+      </p>
+      		
+      <div align="center"><img src="../images/signatures_detached.png" alt="Detached Signature" width="425" height="284"><p><em>Detached Signature</em></p>
+      </div>
+      		
+      <p>Der XML-Baum hat damit den folgenden Aufbau:</p>
+      		
+      <div class="code"><pre>&lt;Signature&gt;
+&lt;/Signature&gt;
+&lt;DocumentData&gt;
+&lt;/DocumentData&gt;</pre></div>
+      	
+      
+   </body>
+</html>

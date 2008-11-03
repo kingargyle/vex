@@ -1,0 +1,54 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Resource and Signature Type</h1>
+      	
+      		
+      <p>Auf der ersten Seite des <em>Digital Signature Wizard</em> müssen Sie die zu signierende <em>Ressource</em> und die <em>Signatur-Variante</em> auswählen. Außerdem können Sie bestimmen, ob Sie ein vorhandenes Zertifikat verwenden oder im Assistenten ein neues generieren
+         möchten. Mit der Auswahl von <em>Generate a Basic Security Profile compliant signature</em> werden die Auswahlmöglichkeiten im gesamten Assistenten im Hinblick auf die <a href="../basics/bsp.html">Basic Security Profile</a> Empfehlung eingeschränkt.
+      </p>
+      		
+      <div align="center"><img src="../images/dsig-1.png" alt="Resource and Signature Type" width="275" height="392"><p><em>Resource and Signature Type</em></p>
+      </div>
+      		
+      <p>Die erste Auswahlmöglichkeit im Assistent betrifft die Wahl der zu signierenden Ressource. Der Eintrag <em>Document</em> ist immer verfügbar und signiert das vollständige Dokument. <em>Selection</em> ist nur möglich wenn Sie im Editor mindestens ein Element bzw. Elementinhalt vor dem Aufruf des Assistenten markiert haben
+         und der Assistent über das Kontextmenü eines Editors aufgerufen wurde. Die Auswahl muss wohlgeformt sein, d.h. sowohl das
+         öffnende als auch das schließende Tag müssen in der Auswahl vorhanden sein. Werden die Regeln der Wohlgeformtheit verletzt
+         kann <em>Selection</em> nicht aktiviert werden.
+      </p>
+      		
+      <p>Bei der Auswahl von <em>XPath</em> können Sie im Textfeld einen XPath-Ausdruck eingeben. Alternativ können Sie über den Button <strong>Browse...</strong> einen weiteren Dialog zur Auswahl eines XPath Ausdrucks für das aktuelle XML-Dokument öffnen.
+      </p>
+      		
+      <div align="center"><img src="../images/dsig-xpath.png" alt="XPath Selection" width="225" height="263"><p><em>XPath Selection</em></p>
+      </div>
+      		
+      <p>Damit die XPath-Ausdrücke zu jedem Element angezeigt werden können muss es sich um ein wohlgeformtes XML-Dokument handeln.
+         Insbesondere bei der Verwendung von Namensräumen muss der Namensraum auch definiert werden, d.h. ein <em>xmlns:MeinNamensraum="http://www.namensraum.de"</em> muss bei der Verwendung von <em>MeinNamensraum</em> unbedingt vorhanden sein.
+      </p>
+      		
+      <p>Anschließend müssen Sie die Signatur-Variante bestimmen. Zur Auswahl stehen <em>Enveloped</em>, <em>Enveloping</em> und <em>Detached</em> Signaturen. Nach der Auswahl von <em>Detached</em> müssen Sie im Textfeld den Pfad und Dateinamen zu der zu signierenden Datei angeben. Dies kann ein XML-Dokument oder eine
+         beliebige andere Datei sein. Über den Button <strong>Select...</strong> können Sie ein Standarddialogfeld zur Auswahl einer Datei öffnen. Die Auswahl einer <em>Detached</em> Signatur schränkt die zu signierende Ressource automatisch auf <em>Document</em> ein.
+      </p>
+      		
+      <p>In der Gruppe <em>Certificate</em> wählen Sie eine Zertifikatoption aus. Mit der Auswahl von <em>Open an existing certificate in an existing keystore</em> verwenden Sie ein vorhandenes Zertifikat aus einem Java Keystore zum Signieren. Bei <em>Create a new certificate in an existing keystore</em> erweitern Sie einen vorhandenen Keystore um ein neues Zertifikat und verwenden dieses gleich zum Signieren. Mit der Auswahl
+         von <em>Create a new certificate and a new keystore</em> legen Sie einen neuen Keystore und darin ein neues Zertifikat an. Dieses Zertifikat wird ebenfalls gleich zum Signieren verwendet.
+      </p>
+      		
+      <p>Durch das Aktivieren der <em>Basic Security Profile compliant signature</em> wird der Assistent auf zu dieser Empfehlung kompatible Einstellungen eingeschränkt. <em>Enveloping</em> Signaturen werden dadurch deaktiviert. Stattdessen wird die Verwendung von <em>Detached</em> Signaturen empfohlen. <em>Enveloped</em> Signaturen sind möglich, ihre Verwendung wird aber nicht empfohlen.
+      </p>
+      		
+      <p>Um vollständig konform zum <em>Basic Security Profile</em> zu sein muss auf der <a href="sign_page_open_certificate.html">Open an existing Certificate</a> Seite ein Zertifikat mit einem RSA Algorithmus ausgewählt oder auf der Seite <a href="sign_page_create_certificate.html">Create a new Certificate</a> bzw. <a href="sign_page_create_keystore.html">Create a new Certificate and Keystore</a> ein entsprechendes Zertifikat generiert werden. Auf der Seite <a href="sign_page_algorithms.html">Algorithms and Signature Properties</a> werden alle Algorithmen gemäß der Empfehlung eingeschränkt und nur diese zur Auswahl angezeigt.
+      </p>
+      		
+      <p>Nach der korrekten Eingabe aller erforderlichen Daten können Sie mit dem <strong>Next</strong> Button auf die nächste Seite des Digital Signature Wizards wechseln. Je nach Auswahl bei den Zertifikat Optionen unterscheidet
+         sich diese: <a href="sign_page_open_certificate.html">Open an existing Certificate</a>, <a href="sign_page_create_certificate.html">Create a new Certificate</a> oder <a href="sign_page_create_keystore.html">Create a new Certificate and Keystore</a>.
+      </p>
+      	
+      
+   </body>
+</html>

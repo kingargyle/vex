@@ -1,0 +1,64 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Entschlüsselung</h1>
+      	
+      		
+      <p>Für jeden zu entschlüsselnden <a href="encryption_syntax_encryptedtype.html">EncryptedType</a> (<a href="encryption_syntax_encrypteddata.html">EncryptedData</a> oder <a href="encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a>) müssen
+      </p>
+      		
+      <ol>
+         			
+         <li>das Element verarbeitet und der Algorithmus mit allen Parametern sowie das <a href="encryption_syntax_keyinfo.html">KeyInfo</a> Element festgelegt werden (falls eine oder mehrere dieser Informationen nicht vorhanden sind müssen diese durch die Applikation
+            festgelegt werden),
+         </li>
+         			
+         <li>der <em>data encryption key</em> samt möglicher Kindelemente lokalisiert werden. Falls dieser ebenfalls verschlüsselt ist muss dieser zunächst mit dem zugehörigen
+            Schlüssel entschlüsselt werden.
+         </li>
+         			
+         <li>Anschließend werden die verschlüsselten Daten innerhalb von <a href="encryption_syntax_cipherdata.html">CipherData</a> entschlüsselt;
+         </li>
+         			
+         				
+         <li>falls diese in einem <a href="encryption_syntax_cipherdata.html#CipherValue">CipherValue</a> Element vorliegen wird der Text abgerufen und Base-64 dekodiert um die verschlüsselte <em>octect</em> Sequenz zu erhalten
+         </li>
+         				
+         <li>falls diese in einem <a href="encryption_syntax_cipherdata.html#CipherReference">CipherReference</a> Element vorliegen wird die URI und mögliche Transformationen angewandt um die verschlüsselte <em>octect</em> Sequenz zu erhalten
+         </li>
+         				
+         <li>und anschließend die erhaltene <em>octect</em> Sequenz mit dem angegebenen Algorithmus, dessen Parametern und dem Schlüssel aus den Schritten 1 und 2 entschlüsselt.
+         </li>
+         			
+         			
+         <li>Anschließend werden die entschlüsselten Daten vom Typ <em>element</em> oder <em>content</em>
+            			
+         </li>
+         			
+         				
+         <li>als UTF-8 kodierte Daten interpretiert</li>
+         				
+         <li>und als UTF-8 kodierte XML-Daten an die Applikation zurückgegeben.</li>
+         				
+         <li>Abschließend wird der Geheimtext im XML-Dokument durch den Klartext ersetzt. Falls das Zieldokument dabei nicht als UTF-8
+            kodiertes XML-Dokument vorliegt werden die entschlüsselten Daten zunächst in das Encoding des Zieldokuments transformiert.
+         </li>
+         			
+         			
+         <li>Falls die entschlüsselten Daten nicht vom Typ <em>element</em> oder <em>content</em> sind
+         </li>
+         			
+         				
+         <li>wird der ermittelte Klartext mit den Attributen <em>Type</em>, <em>MimeType</em> und <em>Encoding</em> an die Applikation zur weiteren Verarbeitung zurückgegeben.
+         </li>
+         			
+         		
+      </ol>
+      	
+      
+   </body>
+</html>

@@ -1,0 +1,69 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Verschlüsselung</h1>
+      	
+      		
+      <p>
+         			<strong>Für jede zu verschlüsselnde Ressource</strong> (<a href="encryption_syntax_encrypteddata.html">EncryptedData</a> oder <a href="encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a>)
+      </p>
+      		
+      <ol>
+         			
+         <li>werden der Algorithmus und falls notwendig die Parameter bestimmt,</li>
+         			
+         <li>der Schlüssel ermittelt und optional abgebildet</li>
+         			
+         				
+         <li>falls der Schlüssel identifiziert werden soll (über den Namen, URI oder in einem Kindelement) muss das <a href="encryption_syntax_keyinfo.html">KeyInfo</a> Element generiert werden
+         </li>
+         				
+         <li>falls der Schlüssel selbst verschlüsselt werden soll muss das <a href="encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a> Element generiert werden. Dieses Element kann entweder als Kindelement an <a href="encryption_syntax_keyinfo.html">KeyInfo</a> oder anderswo eingefügt werden
+         </li>
+         			
+         			
+         <li>die Daten verschlüsselt</li>
+         			
+         				
+         <li>falls die zu verschlüsselnden Daten vom Typ <em>element</em> oder <em>content</em> sind werden die Daten UTF-8 kodiert abgelegt,
+         </li>
+         				
+         <li>falls die Daten nicht vom Typ <em>octect</em> sind müssen diese als Oktette serialisiert werden,
+         </li>
+         				
+         <li>anschließend werden die Daten mit dem Algorithmus und dem Schlüssel aus den Schritten 1 und 2 verschlüsselt</li>
+         				
+         <li>und der Typ der verschlüsselten Daten hinzugefügt</li>
+         			
+         			
+         <li>die <a href="encryption_syntax_encryptedtype.html">EncryptedType</a> (<a href="encryption_syntax_encrypteddata.html">EncryptedData</a> oder <a href="encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a>) Struktur erstellt
+         </li>
+         			
+         				
+         <li>falls die verschlüsselten Daten innerhalb von <a href="encryption_syntax_cipherdata.html">CipherData</a> angezeigt werden sollen wird ein <a href="encryption_syntax_cipherdata.html#CipherValue">CipherValue</a> Element mit den Base-64 kodierten Daten eingefügt
+         </li>
+         				
+         <li>falls die verschlüsselten Daten außerhalb von <a href="encryption_syntax_cipherdata.html">CipherData</a> angezeigt werden sollen werden ein oder mehrere <a href="encryption_syntax_cipherdata.html#CipherReference">CipherReference</a> Elemente mit den URIs eingefügt
+         </li>
+         			
+         			
+         <li>und zum Abschluss <a href="encryption_syntax_encrypteddata.html">EncryptedData</a> verarbeitet
+         </li>
+         			
+         				
+         <li>falls der Typ der verschlüsselten Daten <em>element</em> oder <em>content</em> ist kann der Applikation das vollständige <a href="encryption_syntax_encrypteddata.html">EncryptedData</a> Element zurückgegeben und der ursprüngliche Klartext durch den Geheimtext ersetzt werden
+         </li>
+         				
+         <li>falls der Typ der verschlüsselten Daten nicht <em>element</em> oder <em>content</em> sind muss der Applikation das vollständige <a href="encryption_syntax_encrypteddata.html">EncryptedData</a> Element zurückgegeben und der ursprüngliche Klartext durch den Geheimtext ersetzt werden.
+         </li>
+         			
+         		
+      </ol>
+      	
+      
+   </body>
+</html>

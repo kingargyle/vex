@@ -1,0 +1,79 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Beispiel - Verschlüsselt</h1>
+      	
+      		
+      <p>Die folgenden Beispiele zeigen die zwei <a href="encryption_syntax_cipherdata.html">Verschlüsselungsvarianten</a> im von oben bekanntem <a href="sample.html">Beispiel XML-Dokument</a>. Zur übersichtlicheren Darstellung wurden alle Beispiele nachträglich formatiert.
+      </p>
+      		
+      <h2 id="envelopingEncryption">Enveloping Encryption</h2>
+      		
+      <div class="code"><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+ Id="enveloping-sample" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
+ &lt;xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/&gt;
+ &lt;ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;
+  &lt;xenc:EncryptedKey&gt;
+   &lt;xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-aes128"/&gt;
+   &lt;xenc:CipherData&gt;
+    &lt;xenc:CipherValue&gt;rojIk5KAKQLdxwsvNzKL1slqdrAbvhQa&lt;/xenc:CipherValue&gt;
+   &lt;/xenc:CipherData&gt;
+  &lt;/xenc:EncryptedKey&gt;
+ &lt;/ds:KeyInfo&gt;
+ &lt;xenc:CipherData&gt;
+  &lt;xenc:CipherValue&gt;
+   IxZg5/ybM3tKnRK7krng3YE+GmosiCY7u1ZJB3s7LoTDf4KvGnSTh+CUQ50g5lz2SnRFgUj4PpxG
+   4EBX6MOPWG7Idx+JlzOx0+PCnVLU7JNIYi8MXGKtmj3yxtFr6Lx9kT6lPPqoorhWm/jaQqsdRhMc
+   XbLQLRMfY2ZqckcLpd7w55K8iMu5P8w1l4RRV4tw0XLI3TDj++204NFiBzyd5joVyDfCibuP+UXs
+   ArtPsGVGoF5zIy/1d9dW96hTpiLIeU82mYCLF3d+2dLAGi0Gd4Awp3eoYKPti9l60r3NqMfZIW+s
+   5oDzUc3b7DrtXUYEp4oxb5CXdWuVdnStFG03uBOgMqk189EZaBUZWpx0wabxAs3yHQktFIKsIHKk
+   a4MOK9dHCiqc7ja/CHDUKAhCyrg+H5xE5E60+p0JYnWUovax+wa/x+QnbjYH9JyV9+41H7wpb3pA
+   0ONHyrciJbQtZJKLvkMGOv7Q1Qx1TjM4PPiUqs71KyizqJ40Y8yG4bBlUD/2T+eyCXN1iLHZwInQ
+   SUqceU094kAtQA5IErwUh/yZlVFw90H5gVeyhddQhXb2ggQ4ENyLSWY/tgdsE0qPz7Z2bU06wmOs
+   Tj1cQUCQIiCuoGu9DqF16uExNtZ/QPwHTeFiUmCwOLi7blPPlFzz2P2r9GjJFVTrNSAODLUE7wRE
+   j+qLyIO8sUBHrl6BeDwBcGdHtmuLeTh4uSrCORib8l65Djr+pmCo0/LPHwBhH4s2o1tU1Kcvde4Q
+   Fpt3jtBsAxARueRSBqg0PqR8GDerBu6tS8FvsGDz1D4IwwY/Xq3SD0ew4XLQc2vcSMKN5hRSuYDm
+   5jEPNpy0JEXYn94OarnnfMfvHEATFi9nX/egmc8kmLXFMB5B6R9GD6SCuNcnyqvX+VM+v98yy3mb
+   ub2XOeshOnhqox3DA5r/7LXLv6BOYWWqpNjFJEOoPizOow4NQLzd5SpbHY7FJhuDkMkYrWLJGg3B
+   x/JMueEGmYOPuutVTh9m9L8bbWFflE+/etTs+ZYvl9rt4rcXJxK6Dk06hUMgzEpFNjFHCY84bbYp
+   Zkk/31x6BxhJgmAPR+E5e0cZUuqzG2Q2FNgAMt+OpOUHtWi8EPp8Am2GMlUOs3hJH/+4g9gz6WiI
+   ZZFT3e35OGyadFEQNiobzBCTbp9ymu7U+A9WAohXFg0jlRGWVUPFHByjw7QKqyGJIlSPJSyfeG1j
+   U+Gcbrb9Zy4Jv/cwgYVx9zJNbnlURbtVBt5+996YTtcIOcVRKNuxozUI8H8Q8KO7
+  &lt;/xenc:CipherValue&gt;
+ &lt;/xenc:CipherData&gt;
+&lt;/xenc:EncryptedData&gt;
+</pre></div>
+      		
+      <h2 id="detachedEncryption">Detached Encryption</h2>
+      		
+      <div class="code"><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+ Id="detached-sample" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
+ &lt;xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
+ &lt;ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;
+  &lt;xenc:EncryptedKey&gt;
+   &lt;xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#kw-tripledes"/&gt;
+   &lt;xenc:CipherData&gt;
+    &lt;xenc:CipherValue&gt;8PSWTVBjn4m5Q0fDV2Q4c6FZ2BigxoCi&lt;/xenc:CipherValue&gt;
+   &lt;/xenc:CipherData&gt;
+  &lt;/xenc:EncryptedKey&gt;
+ &lt;/ds:KeyInfo&gt;
+ &lt;xenc:CipherData&gt;
+  &lt;xenc:CipherReference URI="invoice.xml"/&gt;
+ &lt;/xenc:CipherData&gt;
+&lt;/xenc:EncryptedData&gt;
+</pre></div>
+      		
+      <p>Das Beispiel <a href="sample_signed.html">signiert</a> (<a href="sample_signed.html#envelopedSignature">enveloped</a>, <a href="sample_signed.html#envelopingSignature">enveloping</a>, <a href="sample_signed.html#detachedSignature">detached</a>) oder im <a href="sample.html">Original</a>.
+      </p>
+      	
+      
+   </body>
+</html>

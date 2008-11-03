@@ -1,0 +1,113 @@
+body {
+	background-color: #fff;
+	color: #000;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 1.5em;
+	font-style: normal;
+	color: #333;
+} 		
+
+h2 {
+	font-size: 1.3em;
+	font-style: normal;
+	color: #666;
+}		
+
+h3 {
+	font-size: 1.1em;
+	font-style: normal;
+	color: #666;
+}
+
+div {
+	font-size: 0.8em;
+	text-decoration: none;
+}
+
+p, td, ul, ol {
+	font-size: 1em;
+	text-decoration: none;
+}
+
+img {
+	border: 0;
+	vertical-align: bottom;
+}
+
+strong {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
+}
+
+table {
+	border-color: none;
+	width: 99%;
+	margin-left: 0.5%;
+}
+
+th {
+	font-size: 1em;
+	font-weight: bold;
+	color: #695d54;
+	text-decoration: none;
+	background-color: #ccc;
+	text-align: left;
+}
+
+td {
+	font-size: 1.0em;
+}
+
+tr.even {
+	font-size: 1.0em;
+	background-color: #fff;
+	vertical-align: top;
+}
+
+tr.uneven {
+	font-size: 1.0em;
+	background-color: #eee;
+	vertical-align: top;
+}
+
+div.code {
+	background-color: #fff;
+	border-left-width: 8px;
+	border-left-color: #ccc;
+	border-left-style: solid;
+	padding-left: 15px;
+	margin-left: 5px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 1.1em;
+}
+		 		 
+a:link, a:visited, a:hover, a:active {
+	font-size: 1em;
+	text-decoration: none;
+	color: #00f;
+}
+a:hover {
+	text-decoration: underline;
+}	 		   
+
+a.c:link, a.c:visited, a.c:hover, a.c:active {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 0.9em;
+	text-decoration: none;
+	color: #00f;
+}
+a.c:hover {
+	text-decoration: underline;
+}
+
+.resource {
+  background-color: #ccc;
+  padding: 3pt;
+}
+

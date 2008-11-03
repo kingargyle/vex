@@ -1,0 +1,45 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Syntax</h1>
+      	
+      		
+      <p>XML Digitale Signaturen basieren auf einer großen Anzahl verschiedener XML und kryptografischer Techniken. Die Syntax zeichnet
+         sich daher durch eine starke Strukturierung sowie eine weit reichende Erweiterbarkeit und Flexibilität aus.
+      </p>
+      		
+      <p>Zunächst einmal werden alle relevanten Signaturdaten (die signierten Ressourcen, verwendete Algorithmen, usw.) in das XML-Dokument
+         eingebettet. Der Empfänger bzw. die empfangende Applikation findet somit alle notwendigen Informationen im XML-Dokument vor
+         die für eine erfolgreiche Verifizierung benötigt werden.
+      </p>
+      		
+      <p>Innerhalb einer XML-Signatur werden wie gesagt stets die verwendeten Algorithmen angegeben. Diese Algorithmen werden mit einem
+         URI identifiziert, unter dem im Normalfall eine Beschreibung des jeweiligen Verfahrens abgelegt ist.
+      </p>
+      		
+      <p>Das folgende Listing zeigt alle vorhandenen Elemente einer XML-Signatur. <strong>?</strong> erlaubt das null- bis einmalige, <strong>+</strong> das mindestens ein- bis mehrmalige und <strong>*</strong> das null- bis mehrmalige Vorkommen als Attribut oder Element. Die vollständige Syntax beschreibt das Schema zu den digitalen
+         Signaturen mit XML.
+      </p>
+      		
+      <div class="code"><pre>&lt;ds:<a href="signatures_syntax_signature.html">Signature</a> ID?&gt;
+  &lt;ds:<a href="signatures_syntax_signedinfo.html">SignedInfo</a>&gt;
+   &lt;ds:<a href="signatures_syntax_signedinfo.html#CanonicalizationMethod">CanonicalizationMethod</a>/&gt;
+   &lt;ds:<a href="signatures_syntax_signedinfo.html#SignatureMethod">SignatureMethod</a>/&gt;
+   (&lt;ds:<a href="signatures_syntax_signedinfo.html#Reference">Reference</a> URI?&gt;
+    (&lt;ds:<a href="signatures_syntax_signedinfo.html#Transforms">Transforms</a>/&gt;)?  
+    &lt;ds:<a href="signatures_syntax_signedinfo.html#DigestMethod">DigestMethod</a>/&gt;
+    &lt;ds:<a href="signatures_syntax_signedinfo.html#DigestValue">DigestValue</a>/&gt;
+   &lt;/ds:<a href="signatures_syntax_signedinfo.html#Reference">Reference</a>&gt;)+
+  &lt;/ds:<a href="signatures_syntax_signedinfo.html">SignedInfo</a>&gt;
+  &lt;ds:<a href="signatures_syntax_signaturevalue.html">SignatureValue</a>/&gt;
+  (&lt;ds:<a href="signatures_syntax_keyinfo.html">KeyInfo</a>/&gt;)?
+  (&lt;ds:<a href="signatures_syntax_object.html">Object</a> ID?/&gt;)*
+&lt;/ds:<a href="signatures_syntax_signature.html">Signature</a>&gt;</pre></div>
+      	
+      
+   </body>
+</html>

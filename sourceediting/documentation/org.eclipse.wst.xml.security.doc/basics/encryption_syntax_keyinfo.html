@@ -1,0 +1,50 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Das KeyInfo Element</h1>
+      	
+      		
+      <p>Das Element <strong>KeyInfo</strong> stammt von den <a href="signatures_syntax_keyinfo.html">XML-Digitalen Signaturen</a> und weist dieselben Eigenschaften auf. Das Element befindet sich auch bei der XML-Verschlüsselung im Namensraum der digitalen
+         Signaturen und benötigt daher ein eigenes <em>xmlns</em> Attribut zur Deklaration des Namensraumes der digitalen Signaturen (<em>xmlns:ds="http://www.w3.org/2000/09/xmldsig#"</em>). <strong>KeyInfo</strong> stellt bei der XML-Verschlüsselung Informationen über den zur Entschlüsselung von Daten oder Schlüsseln benötigten Schlüssel
+         bereit.
+      </p>
+      		
+      <p>Zusätzlich enthält <strong>KeyInfo</strong> bei der Verschlüsselung die beiden optionalen Kindelemente <a href="encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a> und <a href="encryption_syntax_keyinfo.html#AgreementMethod">AgreementMethod</a>.
+      </p>
+      		
+      <h2 id="EncryptedKey">EncryptedKey</h2>
+      		
+      <p>Mit dem Element <strong>EncryptedKey</strong> wird der verwendete Schlüssel (<em>content encryption key</em>) innerhalb von <a href="encryption_syntax_keyinfo.html">KeyInfo</a> mit einem Public-Key-Verfahren verschlüsselt vom Sender zum Empfänger übertragen. Verschlüsselt wird dieses Element dabei
+         von einem Verschlüsselungsalgorithmus zum sicheren Schlüsselaustausch wie <em>Diffie-Hellman</em> oder einem anderen <em>Key Wrap Algorithmus</em>. Das Element ist optional und kann mehrfach vorkommen.
+      </p>
+      		
+      <p>
+         			<em>EncryptedKey</em> wird ebenfalls vom abstrakten Typ <a href="encryption_syntax_encryptedtype.html">EncryptedType</a> abgeleitet und besitzt damit alle dort definierten Elemente und Attribute. Zusätzlich enthält das Element ein optionales
+         Attribut <em>Recipient</em>, mit dem der Anwendung ein Hinweis auf den Empfänger gegeben werden kann.
+      </p>
+      		
+      <p>
+         			<em>EncryptedKey</em> besitzt außerdem die beiden optionalen Kindelemente <a href="encryption_syntax_keyinfo.html#ReferenceList">ReferenceList</a> und <a href="encryption_syntax_keyinfo.html#CarriedKeyName">CarriedKeyName</a>. Diese beiden Kindelemente können ein optionales Element <a href="signatures_transform.html">Transforms</a> enthalten, mit dessen Hilfe vor der Verschlüsselung die bereits erwähnten Transformationen durchgeführt werden können.
+      </p>
+      		
+      <p id="ReferenceList">
+         			<strong>ReferenceList</strong> verfügt über ein oder mehrere Kindelemente <strong>DataReference</strong> und <strong>KeyReference</strong>. Diese Elemente verweisen über einen URI auf verschlüsselte Daten bzw. Schlüssel, die mit Hilfe des angegebenen Schlüssels
+         chiffriert worden sind.
+      </p>
+      		
+      <p id="CarriedKeyName">Das Element <strong>CarriedKeyName</strong> dient der Identifizierung und Referenzierung des chiffrierten Schlüsselwerts mit einem eindeutigen Schlüsselnamen.
+      </p>
+      		
+      <h2 id="AgreementMethod">AgreementMethod</h2>
+      		
+      <p>
+         			<strong>AgreementMethod</strong> enthält weitere Informationen zum verwendeten Schlüssel und ein <em>Algorithm</em> Attribut zur Bestimmung des verwendeten Algorithmus zum Schlüsselaustausch (<em>key agreement algorithm</em>). Mögliche Algorithmen sind Diffie-Hellman, die SHA Varianten und RIPEMD-160.
+      </p>
+      	
+      
+   </body>
+</html>

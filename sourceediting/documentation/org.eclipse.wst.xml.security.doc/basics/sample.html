@@ -1,0 +1,59 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Beispiel</h1>
+      	
+      		
+      <p>Auf das folgende XML-Dokument wird in der Online-Hilfe (Tutorials) und den Cheat Sheets im XML-Security Plug-In immer wieder
+         zurückgegriffen. Das XML-Dokument stellt eine fiktive Rechnung dar und wird im Verlauf des Tutorials signiert und verschlüsselt
+         werden. Bei Verwendung der Cheat Sheets wird damit das XML-Dokument <strong>FirstSteps.xml</strong> in dem ebenfalls angelegten Projekt <strong>XML-Security</strong> erstellt.
+      </p>
+      		
+      <div class="code"><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Invoice&gt;
+ &lt;ID&gt;IN 2008/00645&lt;/ID&gt;
+ &lt;IssueDate&gt;2008-03-30&lt;/IssueDate&gt;
+ &lt;BuyerParty&gt;
+  &lt;ID&gt;458746&lt;/ID&gt;
+  &lt;name&gt;John Doe&lt;/name&gt;
+ &lt;/BuyerParty&gt;
+ &lt;PaymentMeans&gt;
+  &lt;PayeeFinancialAccount&gt;
+   &lt;ID&gt;07044961&lt;/ID&gt;
+   &lt;Name&gt;The Specialists Company&lt;/Name&gt;
+   &lt;AccountTypeCode&gt;Credit&lt;/AccountTypeCode&gt;
+   &lt;FinancialInstitutionBranch&gt;
+    &lt;ID&gt;776631&lt;/ID&gt;
+    &lt;Institution&gt;LOYDGB852&lt;/Institution&gt;
+   &lt;/FinancialInstitutionBranch&gt;
+  &lt;/PayeeFinancialAccount&gt;
+ &lt;/PaymentMeans&gt;
+ &lt;TotalAmount currencyID="€"&gt;382.00&lt;/TotalAmount&gt;
+ &lt;!-- item 1 --&gt;
+ &lt;InvoiceLine id="1"&gt;
+  &lt;Quantity&gt;2&lt;/Quantity&gt;
+  &lt;LineAmount currencyID="€"&gt;205.00&lt;/LineAmount&gt;
+  &lt;Item id="236WV"&gt;
+   &lt;BasePrice currencyID="€"&gt;102.50&lt;/BasePrice&gt;
+  &lt;/Item&gt;
+ &lt;/InvoiceLine&gt;
+ &lt;!-- item 2 --&gt;
+ &lt;InvoiceLine id="2"&gt;
+  &lt;Quantity&gt;1&lt;/Quantity&gt;
+  &lt;LineAmount currencyID="€"&gt;177.00&lt;/LineAmount&gt;
+  &lt;Item id="193DX"&gt;
+   &lt;BasePrice currencyID="€"&gt;177.00&lt;/BasePrice&gt;
+  &lt;/Item&gt;
+ &lt;/InvoiceLine&gt;
+&lt;/Invoice&gt;</pre></div>
+      		
+      <p>Das Beispiel <a href="sample_signed.html">signiert</a> (<a href="sample_signed.html#envelopedSignature">enveloped</a>, <a href="sample_signed.html#envelopingSignature">enveloping</a>, <a href="sample_signed.html#detachedSignature">detached</a>) oder <a href="sample_encrypted.html">verschlüsselt</a> (<a href="sample_encrypted.html#envelopingEncryption">enveloping</a>, <a href="sample_encrypted.html#detachedEncryption">detached</a>).
+      </p>
+      	
+      
+   </body>
+</html>

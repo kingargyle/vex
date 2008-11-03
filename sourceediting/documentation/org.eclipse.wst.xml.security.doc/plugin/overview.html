@@ -1,0 +1,69 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>XML-Security Plug-In</h1>
+      	
+      		
+      <p>Das XML-Security Plug-In besteht aus den fünf Komponenten <a href="canonicalize.html">Canonicalization</a>, <a href="sign.html">Digital Signature Wizard</a>, <a href="verify.html">Digital Signature View</a>, <a href="encrypt.html">Encryption Wizard</a> und <a href="decrypt.html">Decryption Wizard</a>. Der Fokus liegt stets auf der zu sichernden Ressource, Ausgangspunkt ist also immer ein beliebiges XML-Dokument in einem
+         <strong>Eclipse Editor</strong> (empfohlen) oder in der <strong>Navigator</strong> bzw. <strong>Package Explorer</strong> View. Die Wizards erfordern daher immer zunächst ein zu sicherndes XML-Dokument (-fragment) bevor Sie die Details der digitalen
+         Signatur oder Verschlüsselung festgelegen können.
+      </p>
+      		
+      <p>Ganz im Sinne einer Lernsoftware ist es das Ziel des XML-Security Plug-Ins, Ihnen die größtmöglichen Freiheiten zu lassen
+         und das Experimentieren mit der XML-Sicherheit zu fördern. Das bedeutet, dass Sie in den Wizards so viele Einstellungen wie
+         möglich selbst vornehmen müssen und Ihnen so wenige Einschränkungen wie möglich durch das Plug-in gemacht werden. Teilweise
+         hat das zur Folge, dass in den Wizards viele Angaben getätigt werden müssen, bevor das XML-Dokument verarbeitet werden kann.
+         Auf diese Art können Sie aber am Besten die umfangreichen Eigenschaften und Möglichkeiten der XML-Sicherheit kennen lernen.
+      </p>
+      		
+      <p>Die Grundlagen der Kryptografie, also digitale Signaturen und Verschlüsselung, sind nicht Bestandteil des XML-Security Plug-Ins.
+         Kenntnisse in diesem Bereich sind aber natürlich von Vorteil. Ein hervorragendes und sehr empfehlenswertes Tool hierfür ist
+         das frei erhältliche CrypTool.
+      </p>
+      		
+      <p>Zum schnellen Signieren, Verifizieren sowie Ver- und Entschlüsseln stehen die so genannten <a href="quick.html">Quick Functions</a> zur Verfügung. Die dabei verwendeten Einstellungen werden vorab in den <a href="prefs.html">Preferences</a> festgelegt wodurch das Sichern des XML-Dokuments (fast) mit einem Klick erfolgen kann. Zur einfacheren Unterscheidung sind
+         die Icons aller <a href="quick.html">Quick Functions</a> rot eingefärbt, besitzen aber dasselbe Symbol wie die normale Funktion.
+      </p>
+      		
+      <p>Alle Wizards und Befehle des XML-Security Plug-Ins lassen sich über das übersichtliche Kontextmenü an verschiedenen Stellen
+         aufrufen:
+      </p>
+      		
+      <p>Zum einen können Sie im <em>Package Explorer</em> oder <em>Navigator</em> genau <strong>ein</strong> XML-Dokument markieren. Zum anderen lassen sich sämtliche Funktionen bei einem geöffneten XML-Dokument auch über das Kontextmenü
+         in den meisten <em>Eclipse Editoren</em> erreichen. Die Funktionen des Plug-ins sind immer mit der rechten Maustaste über das Untermenü <strong>XML Security</strong> erreichbar.
+      </p>
+      		
+      <div align="center"><img src="../images/contextmenu.png" alt="Kontextmenü" width="464" height="247"><p><em>Kontextmenü</em></p>
+      </div>
+      		
+      <p>Nicht alle Eclipse Editoren erlauben eine Erweiterung (das hängt vom Editor ab). Es ist daher durchaus möglich, dass die Funktionen
+         des XML-Security Plug-Ins nicht in Ihrem bevorzugten Editor zur Verfügung stehen. In diesem Fall können Sie das XML-Security
+         Plug-In über das Navigator bzw. Package Explorer Kontextmenü verwenden oder auf einen anderen Editor ausweichen.
+      </p>
+      		
+      <p>Das Kontextmenü ist immer dasselbe, jedoch kann bei einem Aufruf über den <em>Package Explorer</em> bzw. <em>Navigator</em> in den <a href="sign.html">Signature</a> und <a href="encrypt.html">Encryption</a> Wizards nicht die Option <em>Selection</em> ausgewählt werden. Auch bei der <a href="quick.html">Quick Signature</a> und <a href="quick.html">Quick Encryption</a> ist das Sichern einer Textmarkierung nicht möglich.
+      </p>
+      		
+      <p>Um eine Textauswahl zu signieren oder zu verschlüsseln muss die Textmarkierung bereits vor dem Aufruf des Wizards im Editor
+         vorhanden sein. Ihre Textauswahl darf die Regeln der Wohlgeformtheit nicht verletzen! Das heißt, dass beim Signieren eines
+         Elements sowohl das öffnende als auch das schließende Tag mit in die Auswahl einbezogen werden müssen. Der Inhalt eines Elements
+         kann beliebig signiert oder verschlüsselt werden. Das Signieren oder Verschlüsseln von einzelnen Attributen ist nicht möglich.
+         Würde das Signieren oder Verschlüsseln Ihrer Textauswahl die Wohlgeformtheit verletzen, können Sie im jeweiligen Wizard den
+         Eintrag <em>Selection</em> nicht auswählen. Verlassen Sie in diesem Fall den Wizard wieder und korrigieren Sie die Textauswahl oder sichern Sie das
+         ganze Dokument bzw. ein durch einen XPath Ausdruck spezifiziertes Dokumentfragment.
+      </p>
+      		
+      <p>Beim Aufruf eines Wizards über das Kontextmenü eines Editors steht die Rückgängig-Funktion von Eclipse zur Verfügung. Alle
+         durch das Plug-in vorgenommenen Änderungen können so mit dieser Funktion rückgängig gemacht werden. Beim Aufruf eines Wizards
+         über den <em>Package Explorer</em> bzw. <em>Navigator</em> werden die Änderungen dagegen direkt in das XML-Dokument geschrieben und können nicht rückgängig gemacht werden. Ist das
+         XML-Dokument aber gleichzeitig in einem <em>Eclipse Editor</em> geöffnet können dort auch die Änderungen einer View rückgängig gemacht werden. Bitte beachten Sie daher, dass die Rückgängig-Funktion
+         auch ein entsprechendes Sicherheitsrisiko darstellen kann (der Klartext kann einfach wiederhergestellt werden).
+      </p>
+      	
+      
+   </body>
+</html>

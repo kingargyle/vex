@@ -1,0 +1,38 @@
+<html xmlns:sec="http://www.xml-sicherheit.de">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="../format.css">
+   </head>
+   <body>
+      	
+      <h1>Das KeyInfo Element</h1>
+      	
+      		
+      <p>Das optionale und mitunter sehr komplexe <strong>KeyInfo</strong> enthält Informationen zur Verifizierung einer XML-Signatur in Form eines öffentlichen Schlüssels oder eines X.509-Zertifikats,
+         das wiederum den öffentlichen Schlüssel enthält. Im Gegensatz zur restlichen Empfehlung ist dieses Element weit weniger spezifiziert
+         als alle anderen Elemente. Das Element ist optional da der Empfänger der Nachricht den richtigen Schlüssel zur Verifizierung
+         evtl. auch mit Hilfe der verwendeten Applikation oder über den Anwendungskontext ermitteln kann. Damit kann der Sender auch
+         bestimmen, welcher Empfänger seine Schlüsselinformationen erhalten darf oder nicht.
+      </p>
+      		
+      <p>Das <strong>KeyInfo</strong> Element wird standardmäßig nicht mit signiert, kann aber leicht über eine zusätzliche <a href="signatures_syntax_signedinfo.html#Reference">Reference</a> ebenfalls mit in die Signatur einbezogen werden.
+      </p>
+      		
+      <p>Jedes <strong>KeyInfo</strong> Element kann null bis mehrere Kindelemente besitzen, die entweder den verwendeten öffentlichen Schlüssel enthalten oder mit
+         einer Referenz auf diesen verweisen.
+      </p>
+      		
+      <p id="key">Zu den Kindelementen gehören neben einigen anderen <strong>KeyName</strong>, <strong>KeyValue</strong>, <strong>RetrievalMethod</strong> und <strong>X509Data</strong>. <strong>KeyName</strong> dient der Benennung des Schlüssels, wobei in diesem Namen auch Leerzeichen von Bedeutung sind. <strong>KeyValue</strong> enthält einen einzelnen öffentlichen Schlüssel zur Validierung der enthaltenen Signatur. Das Element <strong>X509Data</strong> beinhaltet in seinen Kindelementen den Schlüsselbezeichner oder ein bis mehrere Zertifikate nach X.509 innerhalb der XML-Struktur.
+         X.509 ist ein weit verbreiteter Standard für den Aufbau und die Kodierung von Zertifikaten und Authentifizierungsdiensten.
+      </p>
+      		
+      <p>Die Schlüsselinformationen spielen eine wichtige Rolle bei der <em>XML Key Management Specification (XKMS)</em> und damit beim Schlüsselmanagement, das im XML-Security Plug-In aber nicht behandelt wird. Kurz gesagt hat das Key Management
+         die Aufgabe, Schlüsselbeziehungen zwischen verschiedenen autorisierten Entitäten einzurichten und zu pflegen. XKMS stellt
+         dazu Protokolle bereit, um öffentliche Schlüssel zu verbreiten. Die Key Management Protokolle erfordern ihrerseits einen sicheren
+         Austausch der Schlüsselinformationen zwischen Client und Server. Diese Sicherheit beruht auf XML Encryption und XML Digital
+         Signatures. XKMS deckt damit die Sicherheitsanforderungen Authentifizierung und Vertraulichkeit ab. 
+      </p>
+      	
+      
+   </body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <!-- Help Topics -->
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>      
+   </extension>
+   <!-- Context Help -->
+   <extension
+         id="org.eclipse.wst.xml.security.doc.context"
+         name="org.eclipse.wst.xml.security.doc.context"
+         point="org.eclipse.help.contexts">
+      <contexts file="contexts.xml"/>
+   </extension>
+</plugin>
