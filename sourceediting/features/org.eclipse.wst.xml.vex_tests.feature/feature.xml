@@ -26,14 +26,17 @@
          id="org.eclipse.wst.xml.vex.core.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false" />
 
    <plugin
          id="org.eclipse.wst.xml.vex.ui.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false" />
 
+   <!-- Note: the plugin with test.xml in it, should be unpacked when installed -->
    <plugin
          id="org.eclipse.wst.xml.vex.tests"
          download-size="0"
