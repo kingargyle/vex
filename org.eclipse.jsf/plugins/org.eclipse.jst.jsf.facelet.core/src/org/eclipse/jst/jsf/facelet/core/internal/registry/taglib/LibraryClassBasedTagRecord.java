@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -75,6 +76,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.V
     private static final String             STATIC_MEMBER_NAMESPACE                                                   = "Namespace";                                                          //$NON-NLS-1$
     private static final String             METHOD_NAME_GET_NAMESPACE                                                 = "getNamespace";                                                       //$NON-NLS-1$
 
+    private final IProject _project;
     private final FaceletLibraryClassTagLib _model;
     private final ProxyFactoryRegistry      _registry;
     private final AtomicBoolean             _isInitialized                                                            = new AtomicBoolean(
@@ -87,12 +89,14 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.V
     /**
      * @param registry
      * @param model
+     * @param project 
      */
     public LibraryClassBasedTagRecord(final ProxyFactoryRegistry registry,
-            final FaceletLibraryClassTagLib model)
+            final FaceletLibraryClassTagLib model, final IProject project)
     {
         _registry = registry;
         _model = model;
+        _project = project;
     }
 
     public void initURI() throws CoreException
@@ -117,7 +121,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.V
                     "Couldn't find type proxy for " + _model.getLibraryClass())); //$NON-NLS-1$
         }
 
-        _classTypeWrapper = new BeanProxyWrapper(libFactoryTypeProxy);
+        _classTypeWrapper = new BeanProxyWrapper(_project, libFactoryTypeProxy);
 
         try
         {
