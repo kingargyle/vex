@@ -98,10 +98,15 @@ public final class FaceletRegistryManager extends
             }
         }
 
+        @Override
+        public boolean isInstance(IProject project)
+        {
+            return getGlobalManager().isInstance(project);
+        }
+
         public String getDisplayName()
         {
             return Messages.FaceletRegistryManager_REGISTRY_FACTORY_DISPLAYNAME;
         }
-        
     }
 }

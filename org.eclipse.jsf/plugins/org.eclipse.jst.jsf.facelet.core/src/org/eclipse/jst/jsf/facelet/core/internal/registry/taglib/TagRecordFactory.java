@@ -22,11 +22,13 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.F
 /*package*/class TagRecordFactory
 {
     private final ProxyFactoryRegistry                      _registry;
+    private final IProject                                  _project;
 
     public TagRecordFactory(final IProject project,
             final ProxyFactoryRegistry registry)
     {
         _registry = registry;
+        _project = project;
     }
 
     public IFaceletTagRecord createRecords(final  FaceletTaglibDefn taglibDefn)
@@ -38,7 +40,7 @@ import org.eclipse.jst.jsf.facelet.core.internal.registry.taglib.faceletTaglib.F
             if (_registry != NULL_REGISTRY)
             {
                 final LibraryClassBasedTagRecord record = new LibraryClassBasedTagRecord(
-                        _registry, (FaceletLibraryClassTagLib) taglibDefn);
+                        _registry, (FaceletLibraryClassTagLib) taglibDefn, _project);
                 try
                 {
                     record.initURI();
