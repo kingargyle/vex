@@ -3,6 +3,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import java.util.List;
 
 /**
  * 
@@ -127,7 +128,7 @@ public interface IVEXDocument {
 	 *            the offset at which the sequence begins
 	 * @param endOffset
 	 *            the offset at which the sequence ends
-	 * @model containment="true"
+	 * @model
 	 */
 	public String[] getNodeNames(int startOffset, int endOffset);
 
@@ -140,9 +141,9 @@ public interface IVEXDocument {
 	 * @param endOffset
 	 *            the offset at which the sequence ends
 	 * 
-	 * @model type="IVEXNode" containment="true"
+	 * @model 
 	 */
-	public IVEXNode[] getNodes(int startOffset, int endOffset);
+	public List<IVEXNode> getNodes(int startOffset, int endOffset);
 
 
 	/**
@@ -242,7 +243,7 @@ public interface IVEXDocument {
 	 * Returns true if undo is enabled, that is, undoable edit events are fired
 	 * to registered listeners.
 	 * 
-	 * @model
+	 * 
 	 */
 	public boolean isUndoEnabled();
 
@@ -252,7 +253,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param listener
 	 *            <code>DocumentListener</code> to remove.
-	 * @model
+	 * 
 	 */
 	public void removeDocumentListener(DocumentListener listener);
 
@@ -307,8 +308,9 @@ public interface IVEXDocument {
 
 	/**
 	 * @param documentEvent
-	 * @model
+	 * 
 	 */
 	public void fireAttributeChanged(DocumentEvent documentEvent);
+	
 
 }

@@ -2,6 +2,7 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
@@ -58,8 +59,8 @@ public class WTPVEXValidator implements IValidator {
 		return false;
 	}
 
-	public boolean isValidSequence(String element, String[] seq1,
-			String[] seq2, String[] seq3, boolean partial) {
+	public boolean isValidSequence(String element, List<String> seq1,
+			List<String> seq2, List<String> seq3, boolean partial) {
 		// TODO Auto-generated method stub
 		return false;
 	}

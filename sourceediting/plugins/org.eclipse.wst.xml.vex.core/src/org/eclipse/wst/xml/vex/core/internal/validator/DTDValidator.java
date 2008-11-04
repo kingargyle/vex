@@ -13,11 +13,13 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +58,8 @@ public class DTDValidator extends AbstractValidator {
 
 	// map element names to maps of attribute name to attribute def
 	private Map attributeMaps = new HashMap();
+	
+	private static CMDocument contentModel;
 
 	/**
 	 * Creates a instance of DtdValidator given a URL.
@@ -71,7 +75,7 @@ public class DTDValidator extends AbstractValidator {
 		ContentModelManager contentModelManager = ContentModelManager
 				.getInstance();
 		String resolved = url.toString();
-		CMDocument contentModel = contentModelManager.createCMDocument(
+		contentModel = contentModelManager.createCMDocument(
 				resolved, null);
 
 		DTDValidator validator = new DTDValidator();
@@ -151,9 +155,22 @@ public class DTDValidator extends AbstractValidator {
 		}
 	}
 
+//	public Set getValidRootElements() {
+//		return this.elementDFAs.keySet();
+//	}
+	
+	@SuppressWarnings({ "unchecked", "restriction" })
 	public Set getValidRootElements() {
-		return this.elementDFAs.keySet();
+		Set results = new HashSet();
+		
+		Iterator iterator = contentModel.getElements().iterator();
+		while (iterator.hasNext()) {
+			CMElementDeclaration element = (CMElementDeclaration) iterator.next();
+			results.add(element.getElementName());
+		}
+		return results;
 	}
+	
 
 	/** @see IValidator#getValidItems */
 	public Set getValidItems(String element, String[] prefix, String[] suffix) {
@@ -193,13 +210,24 @@ public class DTDValidator extends AbstractValidator {
 		if (candidates.isEmpty()) {
 			return Collections.EMPTY_SET;
 		}
+		
+		List<String> listSeq1 = new ArrayList<String>(prefix.length);
+		for (int i = 0; i < prefix.length; i++) {
+			listSeq1.add(prefix[i]);
+		}
+
+		List<String> listSeq2 = new ArrayList<String>(suffix.length);
+		for (int i = 0; i < suffix.length; i++) {
+			listSeq1.add(suffix[i]);
+		}
+		
 
 		Set results = new HashSet();
-		String[] middle = new String[1];
+		List<String> middle = new ArrayList<String>(1);
 		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-			middle[0] = (String) iter.next();
-			if (this.isValidSequence(element, prefix, middle, suffix, true)) {
-				results.add(middle[0]);
+			middle.add(0, (String) iter.next());
+			if (this.isValidSequence(element, listSeq1, middle, listSeq2, true)) {
+				results.add(middle.get(0));
 			}
 		}
 		

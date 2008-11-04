@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
@@ -189,10 +190,10 @@ public class DocumentWriter {
 			}
 
 			boolean hasBlockChild = false;
-			IVEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
+			List<IVEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
 				if (this.whitespacePolicy != null
-						&& this.whitespacePolicy.isBlock(children[i])) {
+						&& this.whitespacePolicy.isBlock(children.get(i))) {
 					hasBlockChild = true;
 					break;
 				}
@@ -283,10 +284,10 @@ public class DocumentWriter {
 		} else {
 			IVEXElement element = (IVEXElement) node;
 			IVEXNode[] content = element.getChildNodes();
-			String[] attrs = element.getAttributeNames();
-			Arrays.sort(attrs);
+			List<String> attrs = element.getAttributeNames();
+			//Arrays.sort(attrs);
 
-			if (attrs.length == 0) {
+			if (attrs.size() == 0) {
 				if (content.length == 0) {
 					wrapper.add("<" + element.getName() + " />");
 				} else {
@@ -295,16 +296,16 @@ public class DocumentWriter {
 			} else {
 				IValidator validator = element.getDocument().getValidator();
 				StringBuffer sb = new StringBuffer();
-				for (int i = 0; i < attrs.length; i++) {
+				for (int i = 0; i < attrs.size(); i++) {
 					sb.setLength(0);
 					if (i == 0) {
 						sb.append("<" + element.getName());
 					}
-					if (!attrHasDefaultValue(validator, element, attrs[i])) {
-						sb.append(attrToString(attrs[i], element
-								.getAttribute(attrs[i])));
+					if (!attrHasDefaultValue(validator, element, attrs.get(i))) {
+						sb.append(attrToString(attrs.get(i), element
+								.getAttribute(attrs.get(i))));
 					}
-					if (i == attrs.length - 1) {
+					if (i == attrs.size() - 1) {
 						if (content.length == 0) {
 							sb.append("/>");
 						} else {
@@ -329,17 +330,17 @@ public class DocumentWriter {
 
 		IValidator validator = element.getDocument().getValidator();
 
-		String[] attrs = element.getAttributeNames();
-		Arrays.sort(attrs);
+		List<String> attrs = element.getAttributeNames();
+		//Arrays.sort(attrs);
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < attrs.length; i++) {
-			if (attrHasDefaultValue(validator, element, attrs[i])) {
+		for (int i = 0; i < attrs.size(); i++) {
+			if (attrHasDefaultValue(validator, element, attrs.get(i))) {
 				continue;
 			}
 			sb.append(" ");
-			sb.append(attrs[i]);
+			sb.append(attrs.get(i));
 			sb.append("=\"");
-			sb.append(escape(element.getAttribute(attrs[i])));
+			sb.append(escape(element.getAttribute(attrs.get(i))));
 			sb.append("\"");
 		}
 		return sb.toString();

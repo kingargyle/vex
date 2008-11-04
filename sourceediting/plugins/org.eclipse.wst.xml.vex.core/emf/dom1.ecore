@@ -60,7 +60,7 @@
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getNodes" eType="#//IVEXNode">
+    <eOperations name="getNodes" upperBound="-1" eType="#//IVEXNode">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
@@ -84,24 +84,17 @@
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="removeDocumentListener">
-      <eParameters name="listener" eType="#//DocumentListener"/>
-    </eOperations>
-    <eOperations name="fireAttributeChanged">
-      <eParameters name="documentEvent" eType="ecore:EEnum dom.ecore#//DocumentEvent"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootElement" eType="#//IVEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="validator" eType="#//IValidator"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="undoEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IVEXDocumentFragment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//IContent"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" eType="#//IVEXElement"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//IVEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" eType="#//StringArray"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" eType="#//IVEXNode"/>
   </eClassifiers>
@@ -120,7 +113,6 @@
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eOperations name="setContent">
       <eParameters name="content" eType="#//IContent"/>
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -130,13 +122,12 @@
       <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="child" eType="#//IVEXElement"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeNames" eType="#//StringArray"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childIterator" eType="#//IVEXElement"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childElements" eType="#//IVEXElement"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childNodes" eType="#//IVEXNode"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeNames" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childIterator" eType="#//IVEXElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childElements" upperBound="-1"
+        eType="#//IVEXElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childNodes" eType="#//IVEXNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="document" eType="#//IVEXDocument"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="empty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -149,6 +140,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="startPosition" eType="#//IPosition"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespacePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IValidator" eSuperTypes="#//Serializable">
     <eOperations name="getAttributeDefinition" eType="ecore:EEnum validator.ecore#//AttributeDefinition">

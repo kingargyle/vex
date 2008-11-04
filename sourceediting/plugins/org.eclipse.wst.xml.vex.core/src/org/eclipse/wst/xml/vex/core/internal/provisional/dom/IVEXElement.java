@@ -1,6 +1,7 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 
@@ -43,29 +44,29 @@ public interface IVEXElement extends IVEXNode {
 	 * 
 	 * @model 
 	 */
-	public String[] getAttributeNames();
+	public List<String> getAttributeNames();
 
 	/**
 	 * Returns an iterator over the children. Used by
 	 * <code>Document.delete</code> to safely delete children.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * @model type="IVEXElement" 
 	 */
-	public Iterator getChildIterator();
+	public Iterator<IVEXElement> getChildIterator();
 
 	/**
 	 * Returns an array of the elements children.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * @model type="IVEXElement" 
 	 */
-	public IVEXElement[] getChildElements();
+	public List<IVEXElement> getChildElements();
 
 	/**
 	 * Returns an array of nodes representing the content of this element. The
 	 * array includes child elements and runs of text returned as
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode" containment="true"
+	 * @model type="IVEXNode" 
 	 */
 	public IVEXNode[] getChildNodes();
 
@@ -131,7 +132,7 @@ public interface IVEXElement extends IVEXNode {
 	/**
 	 * 
 	 * @return
-	 * @model
+	 * 
 	 */
 	public String toString();
 

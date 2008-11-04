@@ -315,12 +315,12 @@ public class BlockElementBox extends AbstractBlockBox {
 		}
 
 		int item = 1;
-		IVEXElement[] children = parent.getChildElements();
-		for (int i = 0; i < children.length; i++) {
-			if (children[i] == element) {
+		List<IVEXElement> children = parent.getChildElements();
+		for (int i = 0; i < children.size(); i++) {
+			if (children.get(i).equals(element)) {
 				return item;
 			}
-			if (children[i].getName().equals(element.getName())) {
+			if (children.get(i).getName().equals(element.getName())) {
 				item++;
 			}
 		}

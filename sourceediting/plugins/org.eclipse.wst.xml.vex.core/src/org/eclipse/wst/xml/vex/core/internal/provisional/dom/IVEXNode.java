@@ -49,5 +49,28 @@ public interface IVEXNode {
 	 * @model
 	 */
 	public  String getText();
-
+	
+	/**
+	 * Returns the namespace.
+	 * @model
+	 */
+	public String getNamespace();
+	
+	/**
+	 * Returns the namespace
+	 * @model
+	 */
+	public String getNamespacePrefix();
+	
+	/**
+	 * Sets the namespace.
+	 * @param namespace
+	 */
+	public void setNamespace(String namespace);
+	
+	/**
+	 * Sets the namespace prefix.
+	 * @param prefix
+	 */
+	public void setNamespacePrefix(String prefix);
 }

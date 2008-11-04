@@ -76,10 +76,10 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 
 		public Object[] getChildren(Object parentElement) {
 			List blockChildren = new ArrayList();
-			IVEXElement[] children = ((IVEXElement) parentElement).getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				if (whitespacePolicy.isBlock(children[i])) {
-					blockChildren.add(children[i]);
+			List<IVEXElement> children = ((IVEXElement) parentElement).getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				if (whitespacePolicy.isBlock(children.get(i))) {
+					blockChildren.add(children.get(i));
 				}
 			}
 			return blockChildren.toArray();
@@ -109,9 +109,9 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 		// ====================================================== PRIVATE
 
 		private boolean hasBlockChild(IVEXElement element) {
-			IVEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				if (whitespacePolicy.isBlock(children[i])) {
+			List<IVEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				if (whitespacePolicy.isBlock(children.get(i))) {
 					return true;
 				}
 			}

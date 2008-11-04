@@ -574,7 +574,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		public void fireSelectionChanged() {
 
 			if (hasSelection()) {
-				IVEXNode[] nodes = getDocument().getNodes(getSelectionStart(),
+				List<IVEXNode> nodes = getDocument().getNodes(getSelectionStart(),
 						getSelectionEnd());
 				selection = new StructuredSelection(nodes);
 			} else {
