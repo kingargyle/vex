@@ -8,7 +8,7 @@
  * Contributors:
  *     David Carver (STAR) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xsl.tests;
+package org.eclipse.wst.xml.vex.tests;
 
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
 import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;

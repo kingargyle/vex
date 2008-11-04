@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 public class ResourceTrackerTest extends TestCase {
 
 	public void testAll() throws Exception {
-
+		    // as a placeholder, always return "passed", until real tests filled in
+			assertTrue(true);
 	}
 }
