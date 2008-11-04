@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
@@ -84,24 +85,29 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getAttributeNames()
 	 */
-	public String[] getAttributeNames() {
-		Collection names = this.attributes.keySet();
-		return (String[]) names.toArray(new String[names.size()]);
+	public List<String> getAttributeNames() {
+		Set set = this.attributes.keySet();
+		Iterator<String> iterator = set.iterator();
+		ArrayList<String> attributeNames = new ArrayList<String>(set.size());
+		while (iterator.hasNext()) {
+			String attrName = iterator.next();
+			attributeNames.add(attrName);
+		}
+		return attributeNames;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildIterator()
 	 */
-	public Iterator getChildIterator() {
-		return this.children.iterator();
+	public Iterator<IVEXElement> getChildIterator() {
+		return children.iterator();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildElements()
 	 */
-	public IVEXElement[] getChildElements() {
-		int size = this.children.size();
-		return (IVEXElement[]) this.children.toArray(new IVEXElement[size]);
+	public List<IVEXElement> getChildElements() {
+		return children;
 	}
 
 	/* (non-Javadoc)
@@ -243,16 +249,16 @@ public class Element extends Node implements Cloneable, IVEXElement {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<");
 		sb.append(this.getName());
-		String[] attrs = this.getAttributeNames();
+		List<String> attrs = this.getAttributeNames();
 
-		for (int i = 0; i < attrs.length; i++) {
+		for (int i = 0; i < attrs.size(); i++) {
 			if (i > 0) {
 				sb.append(",");
 			}
 			sb.append(" ");
-			sb.append(attrs[i]);
+			sb.append(attrs.get(i));
 			sb.append("=\"");
-			sb.append(this.getAttribute(attrs[i]));
+			sb.append(this.getAttribute(attrs.get(i)));
 			sb.append("\"");
 		}
 

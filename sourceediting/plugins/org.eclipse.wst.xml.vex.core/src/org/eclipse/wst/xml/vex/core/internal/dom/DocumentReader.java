@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     David Carver (STAR) - added namespace awareness.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -92,10 +93,10 @@ public class DocumentReader {
 			ParserConfigurationException, SAXException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setValidating(false); // TODO: experimental--SWT implementation
+		factory.setValidating(false);
+		factory.setNamespaceAware(true);
 		XMLReader xmlReader = factory.newSAXParser().getXMLReader();
-		// xmlReader.setFeature("http://xml.org/sax/features/validation",
-		// false);
+		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
 		final org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder builder = new org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder(
 				this.getWhitespacePolicyFactory());
 

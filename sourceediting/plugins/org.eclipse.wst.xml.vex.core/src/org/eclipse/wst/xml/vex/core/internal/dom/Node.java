@@ -23,6 +23,8 @@ public class Node implements IVEXNode {
 	private IContent content = null;
 	private IPosition start = null;
 	private IPosition end = null;
+	private String namespace = null;
+	private String namespacePrefix = null;
 
 	/**
 	 * Class constructor.
@@ -89,6 +91,22 @@ public class Node implements IVEXNode {
 		this.content = content;
 		this.start = content.createPosition(startOffset);
 		this.end = content.createPosition(endOffset);
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+
+	public String getNamespacePrefix() {
+		return namespacePrefix;
+	}
+
+	public void setNamespacePrefix(String namespacePrefix) {
+		this.namespacePrefix = namespacePrefix;
 	}
 
 }

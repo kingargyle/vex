@@ -1,5 +1,6 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
+import java.util.List;
 
 /**
  * @model
@@ -30,9 +31,9 @@ public interface IVEXDocumentFragment {
 	/**
 	 * Returns the elements that make up this fragment.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * @model type="IVEXElement" 
 	 */
-	public  IVEXElement[] getElements();
+	public  List<IVEXElement> getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the

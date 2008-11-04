@@ -212,10 +212,23 @@ public class VexWidgetImpl implements IVexWidget {
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
+		List<String> listSeq1 = new ArrayList<String>(seq1.length);
+		for (int i = 0; i < seq1.length; i++) {
+			listSeq1.add(seq1[i]);
+		}
 		String[] seq2 = frag.getNodeNames();
+		List<String> listSeq2 = new ArrayList<String>(seq2.length);
+		for (int i = 0; i < seq2.length; i++) {
+			listSeq2.add(seq2[i]);
+		}
+		
 		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
+		List<String> listSeq3 = new ArrayList<String>(seq3.length);
+		for (int i = 0; i < seq3.length; i++) {
+			listSeq3.add(seq3[i]);
+		}
 
-		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
+		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
 				true);
 	}
 
@@ -244,10 +257,24 @@ public class VexWidgetImpl implements IVexWidget {
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] seq2 = new String[] { IValidator.PCDATA };
-		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
+		List<String> listSeq1 = new ArrayList<String>(seq1.length);
+		for (int i = 0; i < seq1.length; i++) {
+			listSeq1.add(seq1[i]);
+		}
 
-		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
+		String[] seq2 = new String[] { IValidator.PCDATA };
+		List<String> listSeq2 = new ArrayList<String>(seq2.length);
+		for (int i = 0; i < seq2.length; i++) {
+			listSeq2.add(seq2[i]);
+		}
+
+		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
+		List<String> listSeq3 = new ArrayList<String>(seq3.length);
+		for (int i = 0; i < seq3.length; i++) {
+			listSeq3.add(seq3[i]);
+		}
+
+		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
 				true);
 	}
 
@@ -289,12 +316,26 @@ public class VexWidgetImpl implements IVexWidget {
 
 		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
 				.getStartOffset());
+		List<String> listSeq1 = new ArrayList<String>(seq1.length);
+		for (int i = 0; i < seq1.length; i++) {
+			listSeq1.add(seq1[i]);
+		}
+
 		String[] seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
 				.getEndOffset());
+		List<String> listSeq2 = new ArrayList<String>(seq2.length);
+		for (int i = 0; i < seq2.length; i++) {
+			listSeq2.add(seq2[i]);
+		}
+		
 		String[] seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
 				.getEndOffset());
+		List<String> listSeq3 = new ArrayList<String>(seq3.length);
+		for (int i = 0; i < seq3.length; i++) {
+			listSeq3.add(seq3[i]);
+		}
 
-		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
+		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
 				true);
 	}
 

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     David Carver (STAR) - added namespace awareness.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -23,6 +24,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * A SAX handler that builds a Vex document. This builder collapses whitespace
@@ -37,6 +39,11 @@ import org.xml.sax.ext.LexicalHandler;
  * </ul>
  */
 public class DocumentBuilder implements ContentHandler, LexicalHandler {
+	
+	 private NamespaceSupport namespaces;
+	 private boolean needNewContext = true;
+
+
 
 	/**
 	 * Class constructor.
@@ -48,6 +55,8 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	public DocumentBuilder(IWhitespacePolicyFactory policyFactory) {
 		this.policyFactory = policyFactory;
 	}
+	
+	
 
 	/**
 	 * Returns the newly built <code>Document</code> object.
@@ -99,6 +108,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void endPrefixMapping(java.lang.String prefix) {
+		namespaces.popContext();
 	}
 
 	public void ignorableWhitespace(char[] ch, int start, int length) {
@@ -115,6 +125,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void startDocument() {
+		namespaces = new NamespaceSupport();
 	}
 
 	public void startElement(String namespaceURI, String localName,
@@ -136,6 +147,9 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				IVEXElement parent = ((StackEntry) stack.getLast()).element;
 				parent.addChild(element);
 			}
+			element.setNamespace(namespaceURI);
+			element.setNamespacePrefix(namespaces.getPrefix(namespaceURI));
+
 
 			int n = attrs.getLength();
 			for (int i = 0; i < n; i++) {
@@ -158,6 +172,12 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void startPrefixMapping(String prefix, String uri) {
+		 if (needNewContext) {
+		      namespaces.pushContext();
+		      needNewContext = false;
+		    }
+		    namespaces.declarePrefix(prefix, uri);
+		
 	}
 
 	// ============================================== LexicalHandler methods

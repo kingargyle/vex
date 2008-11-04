@@ -917,9 +917,9 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	private static IVEXElement findNextBlockElement(LayoutContext context,
 			IVEXElement element, int startOffset, int endOffset) {
 
-		IVEXElement[] children = element.getChildElements();
-		for (int i = 0; i < children.length; i++) {
-			IVEXElement child = children[i];
+		List<IVEXElement> children = element.getChildElements();
+		for (int i = 0; i < children.size(); i++) {
+			IVEXElement child = children.get(i);
 			if (child.getEndOffset() < startOffset) {
 				continue;
 			} else if (child.getStartOffset() >= endOffset) {

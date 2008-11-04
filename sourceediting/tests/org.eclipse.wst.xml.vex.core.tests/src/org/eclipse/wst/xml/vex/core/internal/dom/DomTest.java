@@ -7,8 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     David Carver - refactored unit tests
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
+
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
@@ -24,57 +27,71 @@ import junit.framework.TestCase;
 /**
  * Test the <code>org.eclipse.wst.vex.core.internal.dom</code> package.
  */
+@SuppressWarnings("restriction")
+
 public class DomTest extends TestCase {
-
-	public void testDom() throws Exception {
-
-		//
-		// Document initialisation
-		//
+	
+	public void testRootElement() throws Exception {
 		RootElement root = new RootElement("article");
 		IVEXDocument doc = new Document(root);
-		IVEXNode[] content;
-		IVEXElement[] children;
-
-		// root
-		// | |
-		// * *
-
+		
 		assertEquals(2, doc.getLength());
 		assertEquals(root, doc.getRootElement());
 		assertEquals(0, root.getStartOffset());
-		assertEquals(1, root.getEndOffset());
-
+		assertEquals(1, root.getEndOffset());		
+	}
+	
+	public void testRootElementNoChildren() throws Exception {
+		RootElement root = new RootElement("article");
+		IVEXDocument doc = new Document(root);
+		IVEXNode[] content;
+		List<IVEXElement> children;
+		
 		content = root.getChildNodes();
 		assertEquals(0, content.length);
 		children = root.getChildElements();
-		assertEquals(0, children.length);
-
-		// root
-		// | |
-		// * a c *
-
+		assertEquals(0, children.size());
+	}
+	
+	public void testIllegaArgumentException() throws Exception {
+		RootElement root = new RootElement("article");
+		IVEXDocument doc = new Document(root);
 		try {
 			doc.insertText(0, "ac");
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException ex) {
 		}
-
+		
 		try {
 			doc.insertText(2, "ac");
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException ex) {
 		}
+		
+	}
+	
+	public void testInsertTextIntoDocument() throws Exception {
+		RootElement root = new RootElement("article");
+		IVEXDocument doc = new Document(root);
+		IVEXNode[] content;
 
 		doc.insertText(1, "ac");
 		assertEquals(4, doc.getLength());
 		content = root.getChildNodes();
 		assertEquals(1, content.length);
+		
 		assertIsText(content[0], "ac", 1, 3);
+		
 		assertEquals(1, content[0].getStartPosition().getOffset());
 		assertEquals(3, content[0].getEndPosition().getOffset());
 		assertEquals(0, root.getStartOffset());
 		assertEquals(3, root.getEndOffset());
+		
+	}
+	
+	public void testInsertAtIllegalOffset() {
+		RootElement root = new RootElement("article");
+		IVEXDocument doc = new Document(root);
 
 		//
 		// Try inserting at illegal offset
@@ -92,14 +109,15 @@ public class DomTest extends TestCase {
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException ex) {
 		}
-
-		// root
-		// | |
-		// | z |
-		// | | | |
-		// * a * * c *
-		// 0 1 2 3 4 5 6
-		//
+		
+	}
+	
+	public void testElementInsert() throws Exception {
+		RootElement root = new RootElement("article");
+		IVEXDocument doc = new Document(root);
+		IVEXNode[] content;
+		doc.insertText(1, "ac");
+		Element element = new Element("b");
 		doc.insertElement(2, element);
 		assertEquals(root, element.getParent());
 		assertEquals(6, doc.getLength());
@@ -113,84 +131,92 @@ public class DomTest extends TestCase {
 		assertIsElement(content[1], "x", root, 2, 3);
 		assertIsElement(content[2], "b", root, 4, 5);
 		assertIsText(content[3], "c", 6, 7);
-
 	}
+	
+	public void testTextFragment22() {
+		IVEXDocument doc;
+		IVEXDocumentFragment frag;
+		doc = new Document(new RootElement("root"));
+		doc.insertText(1, "abc");
+		
+		try {
+			frag = doc.getFragment(2, 2);
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException ex) {
+		}
 
-	public void testFragments() throws Exception {
+		
+	}
+	
+	public void testTextFragmentFailure() {
+		IVEXDocument doc;
+		IVEXDocumentFragment frag;
+		doc = new Document(new RootElement("root"));
+		doc.insertText(1, "abc");
+		
+		try {
+			frag = doc.getFragment(-1, 0);
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException ex) {
+		}
+
+		try {
+			frag = doc.getFragment(4, 5);
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException ex) {
+		}
+		
+	}
+	
+	public void testgetFragment() throws Exception {
+		IVEXDocument doc = new Document(new RootElement("root"));
+		doc.insertText(1, "abc");
+
+		IVEXDocumentFragment frag = doc.getFragment(2, 3);
+		assertEquals(1, frag.getContent().getLength());
+		assertEquals(0, frag.getElements().size());
+
+		IVEXNode[] nodes = frag.getNodes();
+		assertEquals(1, nodes.length);
+		assertIsText(nodes[0], "b", 0, 1);
+	}
+	
+	public void testgetFragment2() throws Exception {
+		
+		IVEXDocument doc = new Document(new RootElement("root"));
+		doc.insertText(1, "ac");
+		doc.insertElement(2, new Element("z"));
+		doc.insertText(3, "b");
+
+		IVEXDocumentFragment frag = doc.getFragment(1, 6);
+		
+		List<IVEXElement> elements = frag.getElements();
+		assertEquals(1, elements.size());
+		this.assertIsElement(elements.get(0), "z", null, 1, 3);
+		
+		IVEXNode[] nodes = frag.getNodes();
+		assertEquals(3, nodes.length);
+		assertIsText(nodes[0], "a", 0, 1);
+		assertIsElement(nodes[1], "z", null, 1, 3);
+		assertIsText(nodes[2], "c", 4, 5);
+		nodes = elements.get(0).getChildNodes();
+		assertEquals(1, nodes.length);
+		assertIsText(nodes[0], "b", 2, 3);
+	}
+	
+	public void testComplexChildElementFragments() throws Exception {
 
 		IVEXDocument doc;
 		IVEXDocumentFragment frag;
-		IVEXElement[] elements;
+		List<IVEXElement> elements;
 		IVEXNode[] nodes;
 		IVEXElement root;
 		IVEXElement x;
 		IVEXElement y;
 		IVEXElement z;
 
-		// Case 1: just text
-		//
-		// root
-		// * a b c *
-		// 0 1 2 3 4 5
-		doc = new Document(new RootElement("root"));
-		doc.insertText(1, "abc");
 
-		try {
-			frag = doc.getFragment(2, 2);
-			fail();
-		} catch (IllegalArgumentException ex) {
-		}
 
-		try {
-			frag = doc.getFragment(-1, 0);
-			fail();
-		} catch (IllegalArgumentException ex) {
-		}
-
-		try {
-			frag = doc.getFragment(4, 5);
-			fail();
-		} catch (IllegalArgumentException ex) {
-		}
-
-		frag = doc.getFragment(2, 3);
-		assertEquals(1, frag.getContent().getLength());
-		assertEquals(0, frag.getElements().length);
-		nodes = frag.getNodes();
-		assertEquals(1, nodes.length);
-		this.assertIsText(nodes[0], "b", 0, 1);
-
-		// Case 2: single element, no children
-		//        
-		// root
-		// | |
-		// | z |
-		// | | | |
-		// * a * b * c *
-		// 0 1 2 3 4 5 6 7
-
-		// z
-		// | |
-		// a * b * c
-		// 0 1 2 3 4 5
-
-		doc = new Document(new RootElement("root"));
-		doc.insertText(1, "ac");
-		doc.insertElement(2, new Element("z"));
-		doc.insertText(3, "b");
-
-		frag = doc.getFragment(1, 6);
-		elements = frag.getElements();
-		assertEquals(1, elements.length);
-		this.assertIsElement(elements[0], "z", null, 1, 3);
-		nodes = frag.getNodes();
-		assertEquals(3, nodes.length);
-		assertIsText(nodes[0], "a", 0, 1);
-		assertIsElement(nodes[1], "z", null, 1, 3);
-		assertIsText(nodes[2], "c", 4, 5);
-		nodes = elements[0].getChildNodes();
-		assertEquals(1, nodes.length);
-		assertIsText(nodes[0], "b", 2, 3);
 
 		// Case 3: complex with child elements
 		//        
@@ -222,9 +248,9 @@ public class DomTest extends TestCase {
 		assertEquals(9, frag.getContent().getLength());
 
 		elements = frag.getElements();
-		assertEquals(2, elements.length);
-		assertIsElement(elements[0], "x", null, 1, 3);
-		assertIsElement(elements[1], "y", null, 5, 7);
+		assertEquals(2, elements.size());
+		assertIsElement(elements.get(0), "x", null, 1, 3);
+		assertIsElement(elements.get(1), "y", null, 5, 7);
 
 		nodes = frag.getNodes();
 		assertEquals(5, nodes.length);
@@ -244,14 +270,14 @@ public class DomTest extends TestCase {
 		assertEquals(13, frag.getContent().getLength());
 
 		elements = frag.getElements();
-		assertEquals(1, elements.length);
-		assertIsElement(elements[0], "z", null, 0, 12);
+		assertEquals(1, elements.size());
+		assertIsElement(elements.get(0), "z", null, 0, 12);
 
 		nodes = frag.getNodes();
 		assertEquals(1, nodes.length);
 		assertIsElement(nodes[0], "z", null, 0, 12);
 
-		z = elements[0];
+		z = elements.get(0);
 		nodes = z.getChildNodes();
 		assertEquals(5, nodes.length);
 		assertIsText(nodes[0], "bc", 1, 3);

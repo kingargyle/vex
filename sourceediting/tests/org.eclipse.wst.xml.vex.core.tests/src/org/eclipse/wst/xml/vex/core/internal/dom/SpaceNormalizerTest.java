@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -171,31 +172,31 @@ public class SpaceNormalizerTest extends TestCase {
 		assertContent(element, new String[] { "<block>", "<block>", "<block>",
 				"<block>" });
 
-		IVEXElement[] children = element.getChildElements();
+		List<IVEXElement> children = element.getChildElements();
 
 		// --- Block 0 ---
 
-		assertContent(children[0], new String[] { "foo ", "<inline>", " baz" });
-		IVEXElement[] c2 = children[0].getChildElements();
-		assertContent(c2[0], new String[] { "foo bar" });
+		assertContent(children.get(0), new String[] { "foo ", "<inline>", " baz" });
+		List<IVEXElement> c2 = children.get(0).getChildElements();
+		assertContent(c2.get(0), new String[] { "foo bar" });
 
 		// --- Block 1 ---
 
-		assertContent(children[1], new String[] { "foo", "<block>", "baz" });
-		c2 = children[1].getChildElements();
-		assertContent(c2[0], new String[] { "bar" });
+		assertContent(children.get(1), new String[] { "foo", "<block>", "baz" });
+		c2 = children.get(1).getChildElements();
+		assertContent(c2.get(0), new String[] { "bar" });
 
 		// --- Block 2 ---
 
-		assertContent(children[2], new String[] { "foo", "<inline>", "baz" });
-		c2 = children[2].getChildElements();
-		assertContent(c2[0], new String[] { "foo bar" });
+		assertContent(children.get(2), new String[] { "foo", "<inline>", "baz" });
+		c2 = children.get(2).getChildElements();
+		assertContent(c2.get(0), new String[] { "foo bar" });
 
 		// --- Block 3 ---
 
-		assertContent(children[3], new String[] { "foo", "<block>", "baz" });
-		c2 = children[3].getChildElements();
-		assertContent(c2[0], new String[] { "bar" });
+		assertContent(children.get(3), new String[] { "foo", "<block>", "baz" });
+		c2 = children.get(3).getChildElements();
+		assertContent(c2.get(0), new String[] { "bar" });
 
 	}
 
@@ -210,7 +211,7 @@ public class SpaceNormalizerTest extends TestCase {
 		IVEXElement element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		IVEXElement pre = element.getChildElements()[0];
+		IVEXElement pre = element.getChildElements().get(0);
 		assertContent(pre, new String[] { "\n foo\n" });
 	}
 
@@ -224,8 +225,8 @@ public class SpaceNormalizerTest extends TestCase {
 		IVEXDocument doc = createDocument(input, getStyleSheet());
 
 		IVEXElement element = doc.getRootElement();
-		IVEXElement pre = element.getChildElements()[0];
-		IVEXElement inline = pre.getChildElements()[0];
+		IVEXElement pre = element.getChildElements().get(0);
+		IVEXElement inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n foo\n bar\n " });
 	}
 
@@ -242,11 +243,11 @@ public class SpaceNormalizerTest extends TestCase {
 		IVEXElement element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		IVEXElement pre = element.getChildElements()[0];
+		IVEXElement pre = element.getChildElements().get(0);
 		assertContent(pre,
 				new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
 
-		IVEXElement inline = pre.getChildElements()[0];
+		IVEXElement inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n\t foo\n\t bar\n\t " });
 	}
 

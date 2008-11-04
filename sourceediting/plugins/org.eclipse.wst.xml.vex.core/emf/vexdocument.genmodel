@@ -41,7 +41,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/length"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/rootElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/validator"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/undoEnabled"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/publicID"/>
       <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/addDocumentListener">
         <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/addDocumentListener/listener"/>
@@ -102,12 +101,6 @@
         <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/offset"/>
         <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/text"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/removeDocumentListener">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/removeDocumentListener/listener"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/fireAttributeChanged">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/fireAttributeChanged/documentEvent"/>
-      </genOperations>
     </genClasses>
     <genClasses ecoreClass="dom1.ecore#//IVEXDocumentFragment">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/content"/>
@@ -139,7 +132,6 @@
         <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/name"/>
         <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/value"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/toString"/>
       <genOperations ecoreOperation="dom1.ecore#//IVEXElement/setContent">
         <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/content"/>
         <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/offset"/>
@@ -157,6 +149,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/startOffset"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/startPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/namespacePrefix"/>
     </genClasses>
     <genClasses ecoreClass="dom1.ecore#//IValidator">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IValidator/validRootElements"/>

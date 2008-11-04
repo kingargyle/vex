@@ -94,10 +94,25 @@ public class Document implements IVEXDocument {
 
 		IVEXElement element = this.getElementAt(offset);
 		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		List<String> listSeq1 = new ArrayList<String>(seq1.length);
+		for (int i = 0; i < seq1.length; i++) {
+			listSeq1.add(seq1[i]);
+		}
+
 		String[] seq2 = fragment.getNodeNames();
+		List<String> listSeq2 = new ArrayList<String>(seq2.length);
+		for (int i = 0; i < seq2.length; i++) {
+			listSeq2.add(seq2[i]);
+		}
+
 		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
-		return this.validator.isValidSequence(element.getName(), seq1, seq2,
-				seq3, true);
+		List<String> listSeq3 = new ArrayList<String>(seq3.length);
+		for (int i = 0; i < seq3.length; i++) {
+			listSeq3.add(seq3[i]);
+		}
+
+		return this.validator.isValidSequence(element.getName(), listSeq1, listSeq2,
+				listSeq3, true);
 	}
 
 	/* (non-Javadoc)
@@ -112,11 +127,26 @@ public class Document implements IVEXDocument {
 
 		IVEXElement element = this.getElementAt(offset);
 		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
-		String[] seq2 = new String[] { IValidator.PCDATA };
-		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
+		List<String> listSeq1 = new ArrayList<String>(seq1.length);
+		for (int i = 0; i < seq1.length; i++) {
+			listSeq1.add(seq1[i]);
+		}
 
-		return this.validator.isValidSequence(element.getName(), seq1, seq2,
-				seq3, true);
+		String[] seq2 = new String[] { IValidator.PCDATA };
+		List<String> listSeq2 = new ArrayList<String>(seq2.length);
+		for (int i = 0; i < seq2.length; i++) {
+			listSeq2.add(seq2[i]);
+		}
+
+		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
+		List<String> listSeq3 = new ArrayList<String>(seq3.length);
+		for (int i = 0; i < seq3.length; i++) {
+			listSeq3.add(seq3[i]);
+		}
+
+
+		return this.validator.isValidSequence(element.getName(), listSeq1, listSeq2,
+				listSeq3, true);
 	}
 
 	/* (non-Javadoc)
@@ -145,9 +175,19 @@ public class Document implements IVEXDocument {
 		if (validator != null) {
 			String[] seq1 = this.getNodeNames(e1.getStartOffset() + 1,
 					startOffset);
+			List<String> listSeq1 = new ArrayList<String>(seq1.length);
+			for (int i = 0; i < seq1.length; i++) {
+				listSeq1.add(seq1[i]);
+			}
+
 			String[] seq2 = this.getNodeNames(endOffset, e1.getEndOffset());
+			List<String> listSeq2 = new ArrayList<String>(seq2.length);
+			for (int i = 0; i < seq2.length; i++) {
+				listSeq2.add(seq2[i]);
+			}
+
 			if (!validator
-					.isValidSequence(e1.getName(), seq1, seq2, null, true)) {
+					.isValidSequence(e1.getName(), listSeq1, listSeq2, null, true)) {
 				throw new DocumentValidationException("Unable to delete from "
 						+ startOffset + " to " + endOffset);
 			}
@@ -185,14 +225,14 @@ public class Document implements IVEXDocument {
 		IVEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			IVEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				if (offset1 > children[i].getStartOffset()
-						&& offset2 > children[i].getStartOffset()
-						&& offset1 <= children[i].getEndOffset()
-						&& offset2 <= children[i].getEndOffset()) {
+			List<IVEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				if (offset1 > children.get(i).getStartOffset()
+						&& offset2 > children.get(i).getStartOffset()
+						&& offset1 <= children.get(i).getEndOffset()
+						&& offset2 <= children.get(i).getEndOffset()) {
 
-					element = children[i];
+					element = children.get(i);
 					tryAgain = true;
 					break;
 				}
@@ -224,9 +264,9 @@ public class Document implements IVEXDocument {
 		IVEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			IVEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				IVEXElement child = children[i];
+			List<IVEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				IVEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
 					return element;
 				} else if (offset <= child.getEndOffset()) {
@@ -271,26 +311,25 @@ public class Document implements IVEXDocument {
 					+ " to " + endOffset + " is unbalanced");
 		}
 
-		IVEXElement[] children = e1.getChildElements();
+		List<IVEXElement> children = e1.getChildElements();
 
 		IContent newContent = new GapContent(endOffset - startOffset);
 		String s = this.content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
-		List newChildren = new ArrayList();
-		for (int i = 0; i < children.length; i++) {
-			IVEXElement child = children[i];
+		List<IVEXElement> newChildren = new ArrayList<IVEXElement>();
+		for (int i = 0; i < children.size(); i++) {
+			IVEXElement child = children.get(i);
 			if (child.getEndOffset() <= startOffset) {
 				continue;
 			} else if (child.getStartOffset() >= endOffset) {
 				break;
 			} else {
-				newChildren.add(this.cloneElement(child, newContent,
+				newChildren.add(cloneElement(child, newContent,
 						-startOffset, null));
 			}
 		}
 
-		IVEXElement[] elementArray = (IVEXElement[]) newChildren
-				.toArray(new IVEXElement[newChildren.size()]);
+		List<IVEXElement> elementArray = newChildren;
 		return new DocumentFragment(newContent, elementArray);
 	}
 
@@ -308,11 +347,11 @@ public class Document implements IVEXDocument {
 	 */
 	public String[] getNodeNames(int startOffset, int endOffset) {
 
-		IVEXNode[] nodes = this.getNodes(startOffset, endOffset);
-		String[] names = new String[nodes.length];
+		List<IVEXNode> nodes = this.getNodes(startOffset, endOffset);
+		String[] names = new String[nodes.size()];
 
-		for (int i = 0; i < nodes.length; i++) {
-			IVEXNode node = nodes[i];
+		for (int i = 0; i < nodes.size(); i++) {
+			IVEXNode node = nodes.get(i);
 			if (node instanceof Element) {
 				names[i] = ((IVEXElement) node).getName();
 			} else {
@@ -327,7 +366,7 @@ public class Document implements IVEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodes(int, int)
 	 * 
 	 */
-	public IVEXNode[] getNodes(int startOffset, int endOffset) {
+	public List<IVEXNode> getNodes(int startOffset, int endOffset) {
 
 		IVEXElement element = this.getElementAt(startOffset);
 		if (element != this.getElementAt(endOffset)) {
@@ -362,7 +401,7 @@ public class Document implements IVEXDocument {
 			}
 		}
 
-		return (IVEXNode[]) list.toArray(new IVEXNode[list.size()]);
+		return list;
 	}
 
 	/**
@@ -380,17 +419,17 @@ public class Document implements IVEXDocument {
 	 *            child elements that are within the run
 	 */
 	static IVEXNode[] createNodeArray(IContent content, int startOffset,
-			int endOffset, IVEXElement[] elements) {
+			int endOffset, List<IVEXElement> elements) {
 
 		List nodes = new ArrayList();
 		int offset = startOffset;
-		for (int i = 0; i < elements.length; i++) {
-			int start = elements[i].getStartOffset();
+		for (int i = 0; i < elements.size(); i++) {
+			int start = elements.get(i).getStartOffset();
 			if (offset < start) {
 				nodes.add(new Text(content, offset, start));
 			}
-			nodes.add(elements[i]);
-			offset = elements[i].getEndOffset() + 1;
+			nodes.add(elements.get(i));
+			offset = elements.get(i).getEndOffset() + 1;
 		}
 
 		if (offset < endOffset) {
@@ -476,9 +515,24 @@ public class Document implements IVEXDocument {
 			IVEXElement parent = this.getElementAt(offset);
 			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
+			List<String> listSeq1 = new ArrayList<String>(seq1.length);
+			for (int i = 0; i < seq1.length; i++) {
+				listSeq1.add(seq1[i]);
+			}
+
 			String[] seq2 = new String[] { element.getName() };
+			List<String> listSeq2 = new ArrayList<String>(seq2.length);
+			for (int i = 0; i < seq1.length; i++) {
+				listSeq2.add(seq2[i]);
+			}
+
 			String[] seq3 = this.getNodeNames(offset, parent.getEndOffset());
-			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
+			List<String> listSeq3 = new ArrayList<String>(seq3.length);
+			for (int i = 0; i < seq3.length; i++) {
+				listSeq3.add(seq3[i]);
+			}
+
+			if (!validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
 					true)) {
 				throw new DocumentValidationException("Cannot insert element "
 						+ element.getName() + " at offset " + offset);
@@ -491,9 +545,9 @@ public class Document implements IVEXDocument {
 		int childIndex = -1;
 		while (childIndex == -1) {
 			boolean tryAgain = false;
-			IVEXElement[] children = parent.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				IVEXElement child = children[i];
+			List<IVEXElement> children = parent.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				IVEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
 					childIndex = i;
 					break;
@@ -504,7 +558,7 @@ public class Document implements IVEXDocument {
 				}
 			}
 			if (!tryAgain && childIndex == -1) {
-				childIndex = children.length;
+				childIndex = children.size();
 				break;
 			}
 		}
@@ -542,9 +596,24 @@ public class Document implements IVEXDocument {
 		if (this.validator != null) {
 			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
+			List<String> listSeq1 = new ArrayList<String>(seq1.length);
+			for (int i = 0; i < seq1.length; i++) {
+				listSeq1.add(seq1[i]);
+			}
+
 			String[] seq2 = fragment.getNodeNames();
+			List<String> listSeq2 = new ArrayList<String>(seq2.length);
+			for (int i = 0; i < seq1.length; i++) {
+				listSeq2.add(seq2[i]);
+			}
+
 			String[] seq3 = this.getNodeNames(offset, parent.getEndOffset());
-			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
+			List<String> listSeq3 = new ArrayList<String>(seq3.length);
+			for (int i = 0; i < seq3.length; i++) {
+				listSeq3.add(seq3[i]);
+			}
+
+			if (!validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
 					true)) {
 
 				throw new DocumentValidationException(
@@ -559,16 +628,16 @@ public class Document implements IVEXDocument {
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
-		IVEXElement[] children = parent.getChildElements();
+		List<IVEXElement> children = parent.getChildElements();
 		int index = 0;
-		while (index < children.length
-				&& children[index].getEndOffset() < offset) {
+		while (index < children.size()
+				&& children.get(index).getEndOffset() < offset) {
 			index++;
 		}
 
-		IVEXElement[] elements = fragment.getElements();
-		for (int i = 0; i < elements.length; i++) {
-			IVEXElement newElement = this.cloneElement(elements[i], this.content,
+		List<IVEXElement> elements = fragment.getElements();
+		for (int i = 0; i < elements.size(); i++) {
+			IVEXElement newElement = this.cloneElement(elements.get(i), this.content,
 					offset, parent);
 			parent.insertChild(index, newElement);
 			index++;
@@ -605,11 +674,26 @@ public class Document implements IVEXDocument {
 			if (validator != null) {
 				String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 						offset);
+				List<String> listSeq1 = new ArrayList<String>(seq1.length);
+				for (int i = 0; i < seq1.length; i++) {
+					listSeq1.add(seq1[i]);
+				}
+
 				String[] seq2 = new String[] { IValidator.PCDATA };
+				List<String> listSeq2 = new ArrayList<String>(seq2.length);
+				for (int i = 0; i < seq2.length; i++) {
+					listSeq2.add(seq2[i]);
+				}
+
 				String[] seq3 = this
 						.getNodeNames(offset, parent.getEndOffset());
-				isValid = validator.isValidSequence(parent.getName(), seq1,
-						seq2, seq3, true);
+				List<String> listSeq3 = new ArrayList<String>(seq3.length);
+				for (int i = 0; i < seq3.length; i++) {
+					listSeq3.add(seq3[i]);
+				}
+
+				isValid = validator.isValidSequence(parent.getName(), listSeq1,
+						listSeq2, listSeq3, true);
 			} else {
 				isValid = true;
 			}
@@ -896,20 +980,21 @@ public class Document implements IVEXDocument {
 		clone.setContent(content, original.getStartOffset() + shift, original
 				.getEndOffset()
 				+ shift);
-		String[] attrNames = original.getAttributeNames();
-		for (int i = 0; i < attrNames.length; i++) {
+		List<String> attrNames = original.getAttributeNames();
+		for (int i = 0; i < attrNames.size(); i++) {
+			String attributeName = attrNames.get(i);
 			try {
-				clone.setAttribute(attrNames[i], original
-						.getAttribute(attrNames[i]));
+				clone.setAttribute(attributeName, original
+						.getAttribute(attributeName));
 			} catch (DocumentValidationException ex) {
 				throw new RuntimeException("Unexpected exception: " + ex);
 			}
 		}
 		clone.setParent(parent);
 
-		IVEXElement[] children = original.getChildElements();
-		for (int i = 0; i < children.length; i++) {
-			IVEXElement cloneChild = this.cloneElement(children[i], content, shift,
+		List<IVEXElement> children = original.getChildElements();
+		for (int i = 0; i < children.size(); i++) {
+			IVEXElement cloneChild = this.cloneElement(children.get(i), content, shift,
 					clone);
 			clone.insertChild(i, cloneChild);
 		}
