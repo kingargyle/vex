@@ -210,25 +210,17 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
-		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		List<String> listSeq1 = new ArrayList<String>(seq1.length);
-		for (int i = 0; i < seq1.length; i++) {
-			listSeq1.add(seq1[i]);
-		}
 		String[] seq2 = frag.getNodeNames();
 		List<String> listSeq2 = new ArrayList<String>(seq2.length);
 		for (int i = 0; i < seq2.length; i++) {
 			listSeq2.add(seq2[i]);
 		}
 		
-		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
-		List<String> listSeq3 = new ArrayList<String>(seq3.length);
-		for (int i = 0; i < seq3.length; i++) {
-			listSeq3.add(seq3[i]);
-		}
+		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
-		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
+		return validator.isValidSequence(parent.getName(), seq1, listSeq2, seq3,
 				true);
 	}
 
@@ -255,12 +247,8 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
-		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		List<String> listSeq1 = new ArrayList<String>(seq1.length);
-		for (int i = 0; i < seq1.length; i++) {
-			listSeq1.add(seq1[i]);
-		}
 
 		String[] seq2 = new String[] { IValidator.PCDATA };
 		List<String> listSeq2 = new ArrayList<String>(seq2.length);
@@ -268,13 +256,9 @@ public class VexWidgetImpl implements IVexWidget {
 			listSeq2.add(seq2[i]);
 		}
 
-		String[] seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
-		List<String> listSeq3 = new ArrayList<String>(seq3.length);
-		for (int i = 0; i < seq3.length; i++) {
-			listSeq3.add(seq3[i]);
-		}
+		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
-		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
+		return validator.isValidSequence(parent.getName(), seq1, listSeq2, seq3,
 				true);
 	}
 
@@ -314,28 +298,16 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		String[] seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
 				.getStartOffset());
-		List<String> listSeq1 = new ArrayList<String>(seq1.length);
-		for (int i = 0; i < seq1.length; i++) {
-			listSeq1.add(seq1[i]);
-		}
 
-		String[] seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
+		List<String> seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
 				.getEndOffset());
-		List<String> listSeq2 = new ArrayList<String>(seq2.length);
-		for (int i = 0; i < seq2.length; i++) {
-			listSeq2.add(seq2[i]);
-		}
 		
-		String[] seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
+		List<String> seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
 				.getEndOffset());
-		List<String> listSeq3 = new ArrayList<String>(seq3.length);
-		for (int i = 0; i < seq3.length; i++) {
-			listSeq3.add(seq3[i]);
-		}
 
-		return validator.isValidSequence(parent.getName(), listSeq1, listSeq2, listSeq3,
+		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 				true);
 	}
 
@@ -593,9 +565,9 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		IVEXElement parent = doc.getElementAt(startOffset);
-		String[] prefix = doc.getNodeNames(parent.getStartOffset() + 1,
+		List<String> prefix = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] suffix = doc.getNodeNames(endOffset, parent.getEndOffset());
+		List<String> suffix = doc.getNodeNames(endOffset, parent.getEndOffset());
 		List candidates = new ArrayList();
 		candidates.addAll(validator.getValidItems(parent.getName(), prefix,
 				suffix));
@@ -604,7 +576,7 @@ public class VexWidgetImpl implements IVexWidget {
 		// If there's a selection, root out those candidates that can't
 		// contain it.
 		if (this.hasSelection()) {
-			String[] selectedNodes = doc.getNodeNames(startOffset, endOffset);
+			List<String> selectedNodes = doc.getNodeNames(startOffset, endOffset);
 			for (Iterator iter = candidates.iterator(); iter.hasNext();) {
 				String candidate = (String) iter.next();
 				if (!validator.isValidSequence(candidate, selectedNodes, true)) {
@@ -614,6 +586,7 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		Collections.sort(candidates);
+		
 		return (String[]) candidates.toArray(new String[candidates.size()]);
 	}
 
@@ -647,9 +620,9 @@ public class VexWidgetImpl implements IVexWidget {
 			return new String[0];
 		}
 
-		String[] prefix = doc.getNodeNames(parent.getStartOffset() + 1, element
+		List<String> prefix = doc.getNodeNames(parent.getStartOffset() + 1, element
 				.getStartOffset());
-		String[] suffix = doc.getNodeNames(element.getEndOffset() + 1, parent
+		List<String> suffix = doc.getNodeNames(element.getEndOffset() + 1, parent
 				.getEndOffset());
 
 		List candidates = new ArrayList();
@@ -658,7 +631,7 @@ public class VexWidgetImpl implements IVexWidget {
 		candidates.remove(IValidator.PCDATA);
 
 		// root out those that can't contain the current content
-		String[] content = doc.getNodeNames(element.getStartOffset() + 1,
+		List<String> content = doc.getNodeNames(element.getStartOffset() + 1,
 				element.getEndOffset());
 		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
 			String candidate = (String) iter.next();
