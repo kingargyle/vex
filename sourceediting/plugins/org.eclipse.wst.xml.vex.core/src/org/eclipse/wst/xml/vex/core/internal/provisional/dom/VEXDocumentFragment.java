@@ -49,6 +49,6 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  VEXNode[] getNodes();
+	public  List<VEXNode> getNodes();
 
 }
