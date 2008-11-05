@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 
 /**
  * An inline box containing text. The <code>getText</code> and
@@ -27,7 +27,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
  */
 public abstract class TextBox extends AbstractBox implements InlineBox {
 
-	private IVEXElement element;
+	private VEXElement element;
 	private int baseline;
 
 	public static final char NEWLINE_CHAR = 0xa;
@@ -40,7 +40,7 @@ public abstract class TextBox extends AbstractBox implements InlineBox {
 	 *            Element containing the text. This is used for styling
 	 *            information.
 	 */
-	public TextBox(IVEXElement element) {
+	public TextBox(VEXElement element) {
 		this.element = element;
 	}
 
@@ -98,7 +98,7 @@ public abstract class TextBox extends AbstractBox implements InlineBox {
 	/**
 	 * Returns the element that controls the styling for this text element.
 	 */
-	public IVEXElement getElement() {
+	public VEXElement getElement() {
 		return this.element;
 	}
 
@@ -142,7 +142,7 @@ public abstract class TextBox extends AbstractBox implements InlineBox {
 		Graphics g = context.getGraphics();
 
 		boolean inSelectedBlock = false;
-		IVEXElement e = this.getElement();
+		VEXElement e = this.getElement();
 		while (e != null) {
 			Styles styles = context.getStyleSheet().getStyles(e);
 			if (styles.isBlock()) {

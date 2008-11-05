@@ -11,7 +11,7 @@
 package org.eclipse.wst.xml.vex.ui.internal.action;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
@@ -24,7 +24,7 @@ public class DuplicateSelectionAction extends AbstractVexAction {
 		vexWidget.doWork(new Runnable() {
 			public void run() {
 				if (!vexWidget.hasSelection()) {
-					IVEXElement element = vexWidget.getCurrentElement();
+					VEXElement element = vexWidget.getCurrentElement();
 					if (element.getParent() == null) {
 						// Can't dup the root element
 						return;

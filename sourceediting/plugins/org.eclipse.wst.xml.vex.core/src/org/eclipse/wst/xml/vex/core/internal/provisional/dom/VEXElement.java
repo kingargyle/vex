@@ -11,7 +11,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
  * 
  * @model
  */
-public interface IVEXElement extends IVEXNode {
+public interface VEXElement extends VEXNode {
 
 	/**
 	 * Adds the given child to the end of the child list. Sets the parent
@@ -19,7 +19,7 @@ public interface IVEXElement extends IVEXNode {
 	 * 
 	 * @model
 	 */
-	public void addChild(IVEXElement child);
+	public void addChild(VEXElement child);
 
 	/**
 	 * Clones the element and its attributes. The returned element has no parent
@@ -50,32 +50,32 @@ public interface IVEXElement extends IVEXNode {
 	 * Returns an iterator over the children. Used by
 	 * <code>Document.delete</code> to safely delete children.
 	 * 
-	 * @model type="IVEXElement" 
+	 *   
 	 */
-	public Iterator<IVEXElement> getChildIterator();
+	public Iterator<VEXElement> getChildIterator();
 
 	/**
 	 * Returns an array of the elements children.
 	 * 
-	 * @model type="IVEXElement" 
+	 * @model 
 	 */
-	public List<IVEXElement> getChildElements();
+	public List<VEXElement> getChildElements();
 
 	/**
 	 * Returns an array of nodes representing the content of this element. The
 	 * array includes child elements and runs of text returned as
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode" 
+	 * @model  
 	 */
-	public IVEXNode[] getChildNodes();
+	public List<VEXNode> getChildNodes();
 
 	/**
 	 * @return The document to which this element belongs. Returns null if this
 	 *         element is part of a document fragment.
 	 * @model
 	 */
-	public IVEXDocument getDocument();
+	public VEXDocument getDocument();
 
 	/**
 	 * Returns the name of the element.
@@ -116,9 +116,9 @@ public interface IVEXElement extends IVEXNode {
 	/**
 	 * Returns the parent of this element, or null if this is the root element.
 	 * 
-	 * @model type="IVEXElement"
+	 * @model
 	 */
-	public IVEXElement getParent();
+	public VEXElement getParent();
 
 	/**
 	 * Sets the parent of this element.
@@ -127,7 +127,7 @@ public interface IVEXElement extends IVEXNode {
 	 *            Parent element.
 	 * 
 	 */
-	public void setParent(IVEXElement parent);
+	public void setParent(VEXElement parent);
 
 	/**
 	 * 
@@ -143,7 +143,7 @@ public interface IVEXElement extends IVEXNode {
 	 * @param i
 	 * @model
 	 */
-	public void setContent(IContent content, int offset, int i);
+	public void setContent(Content content, int offset, int i);
 
 	/**
 	 * 
@@ -151,6 +151,6 @@ public interface IVEXElement extends IVEXNode {
 	 * @param child
 	 * @model
 	 */
-	public void insertChild(int index, IVEXElement child);
+	public void insertChild(int index, VEXElement child);
 
 }

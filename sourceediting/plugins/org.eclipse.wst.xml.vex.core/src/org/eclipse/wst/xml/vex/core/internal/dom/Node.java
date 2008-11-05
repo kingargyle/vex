@@ -10,19 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
 
 /**
  * <code>Node</code> represents a component of an XML document. .
  *
  */
-public class Node implements IVEXNode {
+public class Node implements VEXNode {
 
-	private IContent content = null;
-	private IPosition start = null;
-	private IPosition end = null;
+	private Content content = null;
+	private Position start = null;
+	private Position end = null;
 	private String namespace = null;
 	private String namespacePrefix = null;
 
@@ -35,7 +35,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getContent()
 	 */
-	public IContent getContent() {
+	public Content getContent() {
 		return this.content;
 	}
 
@@ -49,7 +49,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndPosition()
 	 */
-	public IPosition getEndPosition() {
+	public Position getEndPosition() {
 		return this.end;
 	}
 
@@ -63,7 +63,7 @@ public class Node implements IVEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartPosition()
 	 */
-	public IPosition getStartPosition() {
+	public Position getStartPosition() {
 		return this.start;
 	}
 
@@ -86,7 +86,7 @@ public class Node implements IVEXNode {
 	 * @param endOffset
 	 *            offset at which the node's content ends
 	 */
-	public void setContent(IContent content, int startOffset, int endOffset) {
+	public void setContent(Content content, int startOffset, int endOffset) {
 
 		this.content = content;
 		this.start = content.createPosition(startOffset);

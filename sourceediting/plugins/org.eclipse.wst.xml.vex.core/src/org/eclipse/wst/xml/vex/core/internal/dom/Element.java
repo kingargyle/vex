@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
@@ -29,10 +30,10 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  * <code>Element</code> represents a tag in an XML document. Methods are
  * available for managing the element's attributes and children.
  */
-public class Element extends Node implements Cloneable, IVEXElement {
+public class Element extends Node implements Cloneable, VEXElement {
 
 	private String name;
-	private IVEXElement parent = null;
+	private VEXElement parent = null;
 	private List children = new ArrayList();
 	private Map attributes = new HashMap();
 
@@ -50,7 +51,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#addChild(org.eclipse.wst.xml.vex.core.internal.dom.Element)
 	 */
-	public void addChild(IVEXElement child) {
+	public void addChild(VEXElement child) {
 		this.children.add(child);
 		child.setParent(this);
 	}
@@ -60,7 +61,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	 */
 	public Object clone() {
 		try {
-			IVEXElement element = new Element(this.getName());
+			VEXElement element = new Element(this.getName());
 			for (Iterator it = this.attributes.keySet().iterator(); it
 					.hasNext();) {
 				String attrName = (String) it.next();
@@ -99,36 +100,37 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildIterator()
 	 */
-	public Iterator<IVEXElement> getChildIterator() {
+	public Iterator<VEXElement> getChildIterator() {
 		return children.iterator();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildElements()
 	 */
-	public List<IVEXElement> getChildElements() {
+	public List<VEXElement> getChildElements() {
 		return children;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildNodes()
 	 */
-	public IVEXNode[] getChildNodes() {
-		return Document.createNodeArray(this.getContent(), this
+	public List<VEXNode> getChildNodes() {
+		List nodes = Arrays.asList(Document.createNodeArray(this.getContent(), this
 				.getStartOffset() + 1, this.getEndOffset(), this
-				.getChildElements());
+				.getChildElements()));
+		return nodes;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getDocument()
 	 */
-	public IVEXDocument getDocument() {
-		IVEXElement root = this;
+	public VEXDocument getDocument() {
+		VEXElement root = this;
 		while (root.getParent() != null) {
 			root = root.getParent();
 		}
 		if (root instanceof RootElement) {
-			return ((IVEXElement) root).getDocument();
+			return ((VEXElement) root).getDocument();
 		} else {
 			return null;
 		}
@@ -144,7 +146,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getParent()
 	 */
-	public IVEXElement getParent() {
+	public VEXElement getParent() {
 		return this.parent;
 	}
 
@@ -167,7 +169,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 	 * Inserts the given element as a child at the given child index. Sets the
 	 * parent attribute of the given element to this element.
 	 */
-	public void insertChild(int index, IVEXElement child) {
+	public void insertChild(int index, VEXElement child) {
 		this.children.add(index, child);
 		child.setParent(this); 
 	}
@@ -189,7 +191,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 		if (oldValue != null) {
 			this.attributes.remove(name);
 		}
-		IVEXDocument doc = this.getDocument();
+		VEXDocument doc = this.getDocument();
 		if (doc != null) { // doc may be null, e.g. when we're cloning an
 							// element
 			// to produce a document fragment
@@ -218,7 +220,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 			return;
 		} else {
 			this.attributes.put(name, value);
-			IVEXDocument doc = this.getDocument();
+			VEXDocument doc = this.getDocument();
 			if (doc != null) { // doc may be null, e.g. when we're cloning an
 								// element
 				// to produce a document fragment
@@ -290,7 +292,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 		}
 
 		public void undo() throws CannotUndoException {
-			IVEXDocument doc = getDocument();
+			VEXDocument doc = getDocument();
 			try {
 				doc.setUndoEnabled(false);
 				setAttribute(name, oldValue);
@@ -302,7 +304,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 		}
 
 		public void redo() throws CannotRedoException {
-			IVEXDocument doc = getDocument();
+			VEXDocument doc = getDocument();
 			try {
 				doc.setUndoEnabled(false);
 				setAttribute(name, newValue);
@@ -314,7 +316,7 @@ public class Element extends Node implements Cloneable, IVEXElement {
 		}
 	}
 
-	public void setParent(IVEXElement parent) {
+	public void setParent(VEXElement parent) {
 		this.parent = parent;
 	}
 

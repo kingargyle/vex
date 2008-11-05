@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @model
  */
-public interface IVEXDocumentFragment {
+public interface VEXDocumentFragment {
 
 	/**
 	 * Mime type representing document fragments: "text/x-vex-document-fragment"
@@ -18,7 +18,7 @@ public interface IVEXDocumentFragment {
 	 * 
 	 * @model
 	 */
-	public  IContent getContent();
+	public  Content getContent();
 
 	/**
 	 * Returns the number of characters, including sentinels, represented by the
@@ -31,9 +31,9 @@ public interface IVEXDocumentFragment {
 	/**
 	 * Returns the elements that make up this fragment.
 	 * 
-	 * @model type="IVEXElement" 
+	 * @model 
 	 */
-	public  List<IVEXElement> getElements();
+	public  List<VEXElement> getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
@@ -47,8 +47,8 @@ public interface IVEXDocumentFragment {
 	 * Returns the nodes that make up this fragment, including elements and
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode"
+	 * @model 
 	 */
-	public  IVEXNode[] getNodes();
+	public  VEXNode[] getNodes();
 
 }

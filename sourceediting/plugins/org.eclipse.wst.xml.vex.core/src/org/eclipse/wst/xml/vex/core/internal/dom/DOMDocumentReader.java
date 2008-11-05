@@ -18,7 +18,7 @@ import java.io.StringReader;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -34,7 +34,7 @@ public class DOMDocumentReader extends DocumentReader {
 	 * @param domDocument
 	 *            IDOMDocument from which to load the document.
 	 */
-	public IVEXDocument read(IDOMDocument domDocument) throws IOException,
+	public VEXDocument read(IDOMDocument domDocument) throws IOException,
 			ParserConfigurationException, SAXException {
 		Reader reader = new StringReader(domDocument.getSource());
 		return read(new InputSource(new BufferedReader(reader)));

@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * 
  * @author dcarver
- * @model
+ * @model name="Document"
  */
-public interface IVEXDocument {
+public interface VEXDocument {
 
 	/**
 	 * Adds a document listener to the list of listeners to be notified of
@@ -32,7 +32,7 @@ public interface IVEXDocument {
 	 *            fragment to be inserted
 	 * @model
 	 */
-	public boolean canInsertFragment(int offset, IVEXDocumentFragment fragment);
+	public boolean canInsertFragment(int offset, VEXDocumentFragment fragment);
 
 	/**
 	 * Returns true if text can be inserted at the given offset.
@@ -50,7 +50,7 @@ public interface IVEXDocument {
 	 *            initial character offset of the position
 	 * @model
 	 */
-	public IPosition createPosition(int offset);
+	public Position createPosition(int offset);
 
 	/**
 	 * Deletes a portion of the document. No element may straddle the deletion
@@ -76,7 +76,7 @@ public interface IVEXDocument {
 	 *            the second offset
 	 * @model
 	 */
-	public IVEXElement findCommonElement(int offset1, int offset2);
+	public VEXElement findCommonElement(int offset1, int offset2);
 
 	/**
 	 * Returns the character at the given offset.
@@ -91,7 +91,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public IVEXElement getElementAt(int offset);
+	public VEXElement getElementAt(int offset);
 
 	/**
 	 * Returns the encoding used for this document, or null if no encoding has
@@ -109,7 +109,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public IVEXDocumentFragment getFragment(int startOffset, int endOffset);
+	public VEXDocumentFragment getFragment(int startOffset, int endOffset);
 
 	/**
 	 * Returns the length of the document in characters, including the null
@@ -143,7 +143,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model 
 	 */
-	public List<IVEXNode> getNodes(int startOffset, int endOffset);
+	public List<VEXNode> getNodes(int startOffset, int endOffset);
 
 
 	/**
@@ -163,7 +163,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public IVEXElement getRootElement();
+	public VEXElement getRootElement();
 
 
 	/**
@@ -185,7 +185,7 @@ public interface IVEXDocument {
 	 * 
 	 * @model
 	 */
-	public IValidator getValidator();
+	public Validator getValidator();
 
 	/**
 	 * Inserts an element at the given position.
@@ -201,7 +201,7 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public void insertElement(int offset, IVEXElement defaults)
+	public void insertElement(int offset, VEXElement defaults)
 			throws DocumentValidationException;
 
 	/**
@@ -218,7 +218,7 @@ public interface IVEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public void insertFragment(int offset, IVEXDocumentFragment fragment)
+	public void insertFragment(int offset, VEXDocumentFragment fragment)
 			throws DocumentValidationException;
 
 	/**
@@ -304,7 +304,7 @@ public interface IVEXDocument {
 	 *            Validator to use for this document.
 	 * 
 	 */
-	public void setValidator(IValidator validator);
+	public void setValidator(Validator validator);
 
 	/**
 	 * @param documentEvent

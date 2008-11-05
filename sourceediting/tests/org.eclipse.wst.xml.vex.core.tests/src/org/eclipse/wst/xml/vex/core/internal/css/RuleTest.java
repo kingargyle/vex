@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 
 import junit.framework.TestCase;
 
@@ -49,7 +49,7 @@ public class RuleTest extends TestCase {
 		e.setAttribute("color", "red blue");
 		f.setAttribute("color", "bluered");
 
-		IVEXDocument doc = new Document(a);
+		VEXDocument doc = new Document(a);
 		doc.insertElement(1, b);
 		doc.insertElement(2, c);
 		doc.insertElement(3, d);
