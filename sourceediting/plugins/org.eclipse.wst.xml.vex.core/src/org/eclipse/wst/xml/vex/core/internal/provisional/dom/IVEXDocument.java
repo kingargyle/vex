@@ -18,7 +18,7 @@ public interface IVEXDocument {
 	 * 
 	 * @param listener
 	 *            <code>DocumentListener</code> to add.
-	 * @model
+	 * 
 	 */
 	public void addDocumentListener(DocumentListener listener);
 
