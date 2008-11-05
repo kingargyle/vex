@@ -176,9 +176,9 @@ public class DomTest extends TestCase {
 		assertEquals(1, frag.getContent().getLength());
 		assertEquals(0, frag.getElements().size());
 
-		VEXNode[] nodes = frag.getNodes();
-		assertEquals(1, nodes.length);
-		assertIsText(nodes[0], "b", 0, 1);
+		List<VEXNode> nodes = frag.getNodes();
+		assertEquals(1, nodes.size());
+		assertIsText(nodes.get(0), "b", 0, 1);
 	}
 	
 	public void testgetFragment2() throws Exception {
@@ -194,11 +194,11 @@ public class DomTest extends TestCase {
 		assertEquals(1, elements.size());
 		this.assertIsElement(elements.get(0), "z", null, 1, 3);
 		
-		VEXNode[] nodes = frag.getNodes();
-		assertEquals(3, nodes.length);
-		assertIsText(nodes[0], "a", 0, 1);
-		assertIsElement(nodes[1], "z", null, 1, 3);
-		assertIsText(nodes[2], "c", 4, 5);
+		List<VEXNode> nodes = frag.getNodes();
+		assertEquals(3, nodes.size());
+		assertIsText(nodes.get(0), "a", 0, 1);
+		assertIsElement(nodes.get(1), "z", null, 1, 3);
+		assertIsText(nodes.get(2), "c", 4, 5);
 		List<VEXNode>nodes2 = elements.get(0).getChildNodes();
 		assertEquals(1, nodes2.size());
 		assertIsText(nodes2.get(0), "b", 2, 3);
@@ -209,7 +209,7 @@ public class DomTest extends TestCase {
 		VEXDocument doc;
 		VEXDocumentFragment frag;
 		List<VEXElement> elements;
-		VEXNode[] nodes;
+		List<VEXNode> nodes;
 		VEXElement root;
 		VEXElement x;
 		VEXElement y;
@@ -253,12 +253,12 @@ public class DomTest extends TestCase {
 		assertIsElement(elements.get(1), "y", null, 5, 7);
 
 		nodes = frag.getNodes();
-		assertEquals(5, nodes.length);
-		assertIsText(nodes[0], "c", 0, 1);
-		assertIsElement(nodes[1], "x", null, 1, 3);
-		assertIsText(nodes[2], "e", 4, 5);
-		assertIsElement(nodes[3], "y", null, 5, 7);
-		assertIsText(nodes[4], "g", 8, 9);
+		assertEquals(5, nodes.size());
+		assertIsText(nodes.get(0), "c", 0, 1);
+		assertIsElement(nodes.get(1), "x", null, 1, 3);
+		assertIsText(nodes.get(2), "e", 4, 5);
+		assertIsElement(nodes.get(3), "y", null, 5, 7);
+		assertIsText(nodes.get(4), "g", 8, 9);
 
 		// 3b:
 		// z
@@ -274,8 +274,8 @@ public class DomTest extends TestCase {
 		assertIsElement(elements.get(0), "z", null, 0, 12);
 
 		nodes = frag.getNodes();
-		assertEquals(1, nodes.length);
-		assertIsElement(nodes[0], "z", null, 0, 12);
+		assertEquals(1, nodes.size());
+		assertIsElement(nodes.get(0), "z", null, 0, 12);
 
 		z = elements.get(0);
 		List<VEXNode>nodes2 = z.getChildNodes();
