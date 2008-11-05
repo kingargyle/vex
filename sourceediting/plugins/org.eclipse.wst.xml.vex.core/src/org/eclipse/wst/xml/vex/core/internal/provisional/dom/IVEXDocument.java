@@ -130,7 +130,7 @@ public interface IVEXDocument {
 	 *            the offset at which the sequence ends
 	 * @model
 	 */
-	public String[] getNodeNames(int startOffset, int endOffset);
+	public List<String> getNodeNames(int startOffset, int endOffset);
 
 	/**
 	 * Returns an array of Nodes representing the selected range. The given

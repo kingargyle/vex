@@ -53,8 +53,8 @@ public abstract class AbstractValidator implements IValidator {
 			}
 		}
 
-		String[] nodes = (String[]) list.toArray(new String[list.size()]);
-		return this.isValidSequence(element, nodes, partial);
+		
+		return this.isValidSequence(element, list, partial);
 	}
 
 }

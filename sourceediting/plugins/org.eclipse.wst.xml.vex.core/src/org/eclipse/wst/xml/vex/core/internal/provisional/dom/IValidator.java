@@ -73,7 +73,7 @@ public interface IValidator extends Serializable {
 	 *            point
 	 * @model type="String" containment="true"
 	 */
-	public Set getValidItems(String element, String[] prefix, String[] suffix);
+	public Set<String> getValidItems(String element, List<String> prefix, List<String> suffix);
 
 	/**
 	 * Returns true if the given sequence is valid for the given element.
@@ -88,7 +88,7 @@ public interface IValidator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, String[] nodes,
+	public boolean isValidSequence(String element, List<String> nodes,
 			boolean partial);
 
 	/**

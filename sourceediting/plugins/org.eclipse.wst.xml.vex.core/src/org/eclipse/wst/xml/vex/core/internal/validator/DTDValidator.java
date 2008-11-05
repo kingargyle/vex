@@ -173,7 +173,7 @@ public class DTDValidator extends AbstractValidator {
 	
 
 	/** @see IValidator#getValidItems */
-	public Set getValidItems(String element, String[] prefix, String[] suffix) {
+	public Set<String> getValidItems(String element, List<String> prefix, List<String> suffix) {
 
 		// First, get a set of candidates. We'll later test to see if each is
 		// valid to insert here.
@@ -191,8 +191,8 @@ public class DTDValidator extends AbstractValidator {
 		} else {
 			// If the last transition was due to PCDATA, adding more PCDATA
 			// is also valid
-			if (prefix.length > 0
-					&& prefix[prefix.length - 1].equals(IValidator.PCDATA)) {
+			if (prefix.size() > 0
+					&& prefix.get(prefix.size() - 1).equals(IValidator.PCDATA)) {
 				candidates = new HashSet();
 				candidates.addAll(target.getValidSymbols());
 				candidates.add(IValidator.PCDATA);
@@ -211,15 +211,11 @@ public class DTDValidator extends AbstractValidator {
 			return Collections.EMPTY_SET;
 		}
 		
-		List<String> listSeq1 = new ArrayList<String>(prefix.length);
-		for (int i = 0; i < prefix.length; i++) {
-			listSeq1.add(prefix[i]);
-		}
+		List<String> listSeq1 = new ArrayList<String>(prefix.size());
+		listSeq1.addAll(prefix);
 
-		List<String> listSeq2 = new ArrayList<String>(suffix.length);
-		for (int i = 0; i < suffix.length; i++) {
-			listSeq1.add(suffix[i]);
-		}
+		List<String> listSeq2 = new ArrayList<String>(suffix.size());
+		listSeq2.addAll(suffix);
 		
 
 		Set results = new HashSet();
@@ -238,7 +234,7 @@ public class DTDValidator extends AbstractValidator {
 	/**
 	 * @see IValidator#isValidSequence
 	 */
-	public boolean isValidSequence(String element, String[] nodes,
+	public boolean isValidSequence(String element, List<String> nodes,
 			boolean partial) {
 
 		DFAState dfa = (DFAState) this.elementDFAs.get(element);
@@ -247,7 +243,7 @@ public class DTDValidator extends AbstractValidator {
 			return true;
 		}
 
-		DFAState target = dfa.getState(Arrays.asList(nodes));
+		DFAState target = dfa.getState(nodes);
 		
 		boolean returnValue;
 		if (target != null) {

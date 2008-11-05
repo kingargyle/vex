@@ -44,7 +44,7 @@ public class WTPVEXValidator implements IValidator {
 		return null;
 	}
 
-	public Set getValidItems(String element, String[] prefix, String[] suffix) {
+	public Set<String> getValidItems(String element, List<String> prefix, List<String> suffix) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class WTPVEXValidator implements IValidator {
 		return null;
 	}
 
-	public boolean isValidSequence(String element, String[] nodes,
+	public boolean isValidSequence(String element, List<String> nodes,
 			boolean partial) {
 		// TODO Auto-generated method stub
 		return false;

@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
@@ -127,9 +128,9 @@ public class DTDValidatorTest extends TestCase {
 
 	private Set getValidItemsAt(IVEXDocument doc, int offset) {
 		IVEXElement element = doc.getElementAt(offset);
-		String[] prefix = doc
+		List<String> prefix = doc
 				.getNodeNames(element.getStartOffset() + 1, offset);
-		String[] suffix = doc.getNodeNames(offset, element.getEndOffset());
+		List<String> suffix = doc.getNodeNames(offset, element.getEndOffset());
 		return doc.getValidator().getValidItems(element.getName(), prefix,
 				suffix);
 	}
