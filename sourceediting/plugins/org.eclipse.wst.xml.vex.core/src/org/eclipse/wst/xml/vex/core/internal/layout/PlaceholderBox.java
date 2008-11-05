@@ -16,14 +16,14 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 
 /**
  * A zero-width box that represents a single offset in the document.
  */
 public class PlaceholderBox extends AbstractBox implements InlineBox {
 
-	private IVEXElement element;
+	private VEXElement element;
 	private int relOffset;
 	private int textTop;
 	private int baseline;
@@ -41,7 +41,7 @@ public class PlaceholderBox extends AbstractBox implements InlineBox {
 	 *            Offset of the placeholder, relative to the start of the
 	 *            element.
 	 */
-	public PlaceholderBox(LayoutContext context, IVEXElement element2, int relOffset) {
+	public PlaceholderBox(LayoutContext context, VEXElement element2, int relOffset) {
 
 		this.element = element2;
 		this.relOffset = relOffset;
@@ -90,7 +90,7 @@ public class PlaceholderBox extends AbstractBox implements InlineBox {
 	/**
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.Box#getElement()
 	 */
-	public IVEXElement getElement() {
+	public VEXElement getElement() {
 		return this.element;
 	}
 

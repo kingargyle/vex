@@ -7,9 +7,9 @@ import java.util.Set;
 
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
 
-public class WTPVEXValidator implements IValidator {
+public class WTPVEXValidator implements Validator {
 
 	/**
 	 * 

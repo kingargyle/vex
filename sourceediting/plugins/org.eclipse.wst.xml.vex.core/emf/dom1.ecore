@@ -3,8 +3,8 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="dom"
     nsURI="http:///org/eclipse/wst/xml/vex/core/internal/provisional/dom.ecore" nsPrefix="org.eclipse.wst.xml.vex.core.internal.provisional.dom">
-  <eClassifiers xsi:type="ecore:EClass" name="IContent">
-    <eOperations name="createPosition" eType="#//IPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="Content">
+    <eOperations name="createPosition" eType="#//Position">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
     <eOperations name="insertString">
@@ -21,35 +21,35 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="Position">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IVEXDocument">
+  <eClassifiers xsi:type="ecore:EClass" name="VEXDocument">
     <eOperations name="canInsertFragment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-      <eParameters name="fragment" eType="#//IVEXDocumentFragment"/>
+      <eParameters name="fragment" eType="#//VEXDocumentFragment"/>
     </eOperations>
     <eOperations name="canInsertText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="createPosition" eType="#//IPosition">
+    <eOperations name="createPosition" eType="#//Position">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
     <eOperations name="delete" eExceptions="#//DocumentValidationException">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="findCommonElement" eType="#//IVEXElement">
+    <eOperations name="findCommonElement" eType="#//VEXElement">
       <eParameters name="offset1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="offset2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
     <eOperations name="getCharacterAt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getElementAt" eType="#//IVEXElement">
+    <eOperations name="getElementAt" eType="#//VEXElement">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getFragment" eType="#//IVEXDocumentFragment">
+    <eOperations name="getFragment" eType="#//VEXDocumentFragment">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
@@ -57,7 +57,7 @@
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getNodes" upperBound="-1" eType="#//IVEXNode">
+    <eOperations name="getNodes" upperBound="-1" eType="#//VEXNode">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
@@ -71,11 +71,11 @@
     </eOperations>
     <eOperations name="insertElement" eExceptions="#//DocumentValidationException">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-      <eParameters name="defaults" eType="#//IVEXElement"/>
+      <eParameters name="defaults" eType="#//VEXElement"/>
     </eOperations>
     <eOperations name="insertFragment" eExceptions="#//DocumentValidationException">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-      <eParameters name="fragment" eType="#//IVEXDocumentFragment"/>
+      <eParameters name="fragment" eType="#//VEXDocumentFragment"/>
     </eOperations>
     <eOperations name="insertText" eExceptions="#//DocumentValidationException">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -83,22 +83,22 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rootElement" eType="#//IVEXElement"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="validator" eType="#//IValidator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootElement" eType="#//VEXElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="validator" eType="#//Validator"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IVEXDocumentFragment">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//IContent"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VEXDocumentFragment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//IVEXElement"/>
+        eType="#//VEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" eType="#//IVEXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodes" eType="#//VEXNodeArray"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IVEXElement" eSuperTypes="#//IVEXNode">
+  <eClassifiers xsi:type="ecore:EClass" name="VEXElement" eSuperTypes="#//VEXNode">
     <eOperations name="addChild">
-      <eParameters name="child" eType="#//IVEXElement"/>
+      <eParameters name="child" eType="#//VEXElement"/>
     </eOperations>
     <eOperations name="clone" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     <eOperations name="getAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -112,36 +112,36 @@
       <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="setContent">
-      <eParameters name="content" eType="#//IContent"/>
+      <eParameters name="content" eType="#//Content"/>
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="i" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
     <eOperations name="insertChild">
       <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-      <eParameters name="child" eType="#//IVEXElement"/>
+      <eParameters name="child" eType="#//VEXElement"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeNames" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childIterator" eType="#//IVEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="childElements" upperBound="-1"
-        eType="#//IVEXElement"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childNodes" eType="#//IVEXNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="document" eType="#//IVEXDocument"/>
+        eType="#//VEXElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childNodes" upperBound="-1"
+        eType="#//VEXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="document" eType="#//VEXDocument"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="empty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//IVEXElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//VEXElement"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IVEXNode">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//IContent"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VEXNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="endPosition" eType="#//IPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endPosition" eType="#//Position"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="startPosition" eType="#//IPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="startPosition" eType="#//Position"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespacePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IValidator" eSuperTypes="#//Serializable">
+  <eClassifiers xsi:type="ecore:EClass" name="Validator" eSuperTypes="#//Serializable">
     <eOperations name="getAttributeDefinition" eType="ecore:EEnum validator.ecore#//AttributeDefinition">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="attribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -166,10 +166,11 @@
       <eParameters name="seq3" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="partial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="validRootElements" eType="#//IVEXElement"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="validRootElements" eType="#//VEXElement"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="DocumentValidationException" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="VEXNodeArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode[]"/>
   <eClassifiers xsi:type="ecore:EClass" name="Serializable" instanceClassName="java.io.Serializable"
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinitionArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition[]"/>

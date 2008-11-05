@@ -21,7 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 
 import junit.framework.TestCase;
 
@@ -56,7 +56,7 @@ public class TestBlocksInInlines extends TestCase {
 
 	public void testBlockInInline() throws Exception {
 		RootElement root = new RootElement("root");
-		IVEXDocument doc = new Document(root);
+		VEXDocument doc = new Document(root);
 		context.setDocument(doc);
 
 		doc.insertText(1, "one  five");

@@ -22,7 +22,7 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -63,7 +63,7 @@ public class DocumentReader {
 	 * @param url
 	 *            URL from which to load the document.
 	 */
-	public IVEXDocument read(URL url) throws IOException,
+	public VEXDocument read(URL url) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		return read(new InputSource(url.toString()));
@@ -76,7 +76,7 @@ public class DocumentReader {
 	 * @param s
 	 *            String containing the document to be read.
 	 */
-	public IVEXDocument read(String s) throws IOException,
+	public VEXDocument read(String s) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		Reader reader = new CharArrayReader(s.toCharArray());
@@ -89,7 +89,7 @@ public class DocumentReader {
 	 * @param is
 	 *            SAX InputSource from which to load the document.
 	 */
-	public IVEXDocument read(InputSource is) throws IOException,
+	public VEXDocument read(InputSource is) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();

@@ -1,183 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.xml.vex.core/src"
-    modelPluginID="org.eclipse.wst.xml.vex.core" modelName="Vexdocument" importerID="org.eclipse.emf.importer.java"
-    complianceLevel="5.0" copyrightFields="false">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.xml.vex.core/src-emf"
+    modelPluginID="org.eclipse.wst.xml.vex.core" modelName="Vexdocument" modelPluginClass=""
+    importerID="org.eclipse.emf.importer.java" complianceLevel="5.0" copyrightFields="false">
   <foreignModel>@model</foreignModel>
-  <genPackages prefix="Dom" basePackage="org.eclipse.wst.xml.vex.core.internal" disposableProviderFactory="true"
-      ecorePackage="dom.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="dom.ecore#//DocumentEvent"/>
-  </genPackages>
-  <genPackages prefix="Dom" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
+  <genPackages prefix="DomEMF" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
       disposableProviderFactory="true" ecorePackage="dom1.ecore#/">
     <genDataTypes ecoreDataType="dom1.ecore#//DocumentValidationException"/>
+    <genDataTypes ecoreDataType="dom1.ecore#//VEXNodeArray"/>
     <genDataTypes ecoreDataType="dom1.ecore#//AttributeDefinitionArray"/>
-    <genClasses ecoreClass="dom1.ecore#//IContent">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IContent/length"/>
-      <genOperations ecoreOperation="dom1.ecore#//IContent/createPosition">
-        <genParameters ecoreParameter="dom1.ecore#//IContent/createPosition/offset"/>
+    <genClasses ecoreClass="dom1.ecore#//Content">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//Content/length"/>
+      <genOperations ecoreOperation="dom1.ecore#//Content/createPosition">
+        <genParameters ecoreParameter="dom1.ecore#//Content/createPosition/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IContent/insertString">
-        <genParameters ecoreParameter="dom1.ecore#//IContent/insertString/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IContent/insertString/s"/>
+      <genOperations ecoreOperation="dom1.ecore#//Content/insertString">
+        <genParameters ecoreParameter="dom1.ecore#//Content/insertString/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//Content/insertString/s"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IContent/remove">
-        <genParameters ecoreParameter="dom1.ecore#//IContent/remove/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IContent/remove/length"/>
+      <genOperations ecoreOperation="dom1.ecore#//Content/remove">
+        <genParameters ecoreParameter="dom1.ecore#//Content/remove/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//Content/remove/length"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IContent/getString">
-        <genParameters ecoreParameter="dom1.ecore#//IContent/getString/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IContent/getString/length"/>
-      </genOperations>
-    </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IPosition">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IPosition/offset"/>
-    </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IVEXDocument">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/encoding"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/length"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/rootElement"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/validator"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/publicID"/>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/canInsertFragment">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/fragment"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/canInsertText">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertText/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/createPosition">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/createPosition/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/delete">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/delete/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/delete/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/findCommonElement">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/findCommonElement/offset1"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/findCommonElement/offset2"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getCharacterAt">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getCharacterAt/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getElementAt">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getElementAt/offset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getFragment">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getFragment/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getFragment/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getNodeNames">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodeNames/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodeNames/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getNodes">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodes/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getNodes/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getRawText">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getRawText/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getRawText/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/getText">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getText/startOffset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/getText/endOffset"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertElement">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertElement/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertElement/defaults"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertFragment">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertFragment/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertFragment/fragment"/>
-      </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/insertText">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/insertText/text"/>
+      <genOperations ecoreOperation="dom1.ecore#//Content/getString">
+        <genParameters ecoreParameter="dom1.ecore#//Content/getString/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//Content/getString/length"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IVEXDocumentFragment">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/content"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocumentFragment/length"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/elements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocumentFragment/nodeNames"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocumentFragment/nodes"/>
+    <genClasses ecoreClass="dom1.ecore#//Position">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//Position/offset"/>
     </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IVEXElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/attributeNames"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childIterator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/childNodes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/document"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXElement/empty"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXElement/parent"/>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/addChild">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/addChild/child"/>
+    <genClasses ecoreClass="dom1.ecore#//VEXDocument">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocument/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocument/length"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXDocument/rootElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXDocument/validator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocument/publicID"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/canInsertFragment">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/canInsertFragment/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/canInsertFragment/fragment"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/clone"/>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/getAttribute">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/getAttribute/name"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/canInsertText">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/canInsertText/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/removeAttribute">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/removeAttribute/name"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/createPosition">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/createPosition/offset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/setAttribute">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/name"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setAttribute/value"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/delete">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/delete/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/delete/endOffset"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/setContent">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/content"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/offset"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/setContent/i"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/findCommonElement">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/findCommonElement/offset1"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/findCommonElement/offset2"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXElement/insertChild">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/insertChild/index"/>
-        <genParameters ecoreParameter="dom1.ecore#//IVEXElement/insertChild/child"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getCharacterAt">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getCharacterAt/offset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getElementAt">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getElementAt/offset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getFragment">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getFragment/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getFragment/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getNodeNames">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getNodeNames/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getNodeNames/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getNodes">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getNodes/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getNodes/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getRawText">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getRawText/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getRawText/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/getText">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getText/startOffset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/getText/endOffset"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/insertElement">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertElement/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertElement/defaults"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/insertFragment">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertFragment/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertFragment/fragment"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXDocument/insertText">
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertText/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXDocument/insertText/text"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IVEXNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/content"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/endOffset"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/endPosition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/startOffset"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXNode/startPosition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/text"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/namespace"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXNode/namespacePrefix"/>
+    <genClasses ecoreClass="dom1.ecore#//VEXDocumentFragment">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXDocumentFragment/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocumentFragment/length"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom1.ecore#//VEXDocumentFragment/elements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocumentFragment/nodeNames"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocumentFragment/nodes"/>
     </genClasses>
-    <genClasses ecoreClass="dom1.ecore#//IValidator">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//IValidator/validRootElements"/>
-      <genOperations ecoreOperation="dom1.ecore#//IValidator/getAttributeDefinition">
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinition/element"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinition/attribute"/>
+    <genClasses ecoreClass="dom1.ecore#//VEXElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/attributeNames"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom1.ecore#//VEXElement/childElements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom1.ecore#//VEXElement/childNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXElement/document"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/empty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference dom1.ecore#//VEXElement/parent"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/addChild">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/addChild/child"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IValidator/getAttributeDefinitions">
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getAttributeDefinitions/element"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/clone"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/getAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/getAttribute/name"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IValidator/getValidItems">
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/element"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/prefix"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/getValidItems/suffix"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/removeAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/removeAttribute/name"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IValidator/isValidSequence">
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/element"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/nodes"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence/partial"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/setAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setAttribute/name"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setAttribute/value"/>
       </genOperations>
-      <genOperations ecoreOperation="dom1.ecore#//IValidator/isValidSequence.1">
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/element"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq1"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq2"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/seq3"/>
-        <genParameters ecoreParameter="dom1.ecore#//IValidator/isValidSequence.1/partial"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/setContent">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setContent/content"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setContent/offset"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setContent/i"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/insertChild">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/insertChild/index"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/insertChild/child"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//VEXNode">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/endOffset"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/endPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/startOffset"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/startPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/namespacePrefix"/>
+    </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//Validator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dom1.ecore#//Validator/validRootElements"/>
+      <genOperations ecoreOperation="dom1.ecore#//Validator/getAttributeDefinition">
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getAttributeDefinition/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getAttributeDefinition/attribute"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//Validator/getAttributeDefinitions">
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getAttributeDefinitions/element"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//Validator/getValidItems">
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getValidItems/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getValidItems/prefix"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/getValidItems/suffix"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//Validator/isValidSequence">
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence/nodes"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence/partial"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//Validator/isValidSequence.1">
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence.1/element"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence.1/seq1"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence.1/seq2"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence.1/seq3"/>
+        <genParameters ecoreParameter="dom1.ecore#//Validator/isValidSequence.1/partial"/>
       </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="dom1.ecore#//Serializable"/>
   </genPackages>
-  <genPackages prefix="Validator" basePackage="org.eclipse.wst.xml.vex.core.internal"
-      disposableProviderFactory="true" ecorePackage="validator.ecore#/">
+  <genPackages prefix="ValidatorEMF" ecorePackage="validator.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="validator.ecore#//AttributeDefinition"/>
   </genPackages>
 </genmodel:GenModel>

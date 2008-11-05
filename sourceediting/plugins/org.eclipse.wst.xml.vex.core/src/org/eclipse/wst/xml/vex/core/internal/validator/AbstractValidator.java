@@ -13,15 +13,15 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
 
 /**
  * Partial implementation of the Validator interface.
  */
-public abstract class AbstractValidator implements IValidator {
+public abstract class AbstractValidator implements Validator {
 
 	/**
-	 * @see IValidator#isValidSequence
+	 * @see Validator#isValidSequence
 	 */
 	public boolean isValidSequence(String element, List<String> seq1,
 			List<String> seq2, List<String> seq3, boolean partial) {
@@ -32,9 +32,9 @@ public abstract class AbstractValidator implements IValidator {
 		}
 		if (seq2 != null) {
 			for (int i = 0; i < seq2.size(); i++) {
-				if (i == 0 && seq2.get(i).equals(IValidator.PCDATA)
+				if (i == 0 && seq2.get(i).equals(Validator.PCDATA)
 						&& list.size() > 0
-						&& list.get(list.size() - 1).equals(IValidator.PCDATA)) {
+						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}
@@ -43,9 +43,9 @@ public abstract class AbstractValidator implements IValidator {
 		}
 		if (seq3 != null) {
 			for (int i = 0; i < seq3.size(); i++) {
-				if (i == 0 && seq3.get(i).equals(IValidator.PCDATA)
+				if (i == 0 && seq3.get(i).equals(Validator.PCDATA)
 						&& list.size() > 0
-						&& list.get(list.size() - 1).equals(IValidator.PCDATA)) {
+						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}

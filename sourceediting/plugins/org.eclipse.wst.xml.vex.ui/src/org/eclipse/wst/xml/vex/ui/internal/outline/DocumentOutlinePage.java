@@ -29,7 +29,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.editor.IVexEditorListener;
@@ -214,8 +214,8 @@ public class DocumentOutlinePage extends Page implements IContentOutlinePage {
 
 				VexWidget vexWidget = (VexWidget) event.getSource();
 				if (vexWidget.isFocusControl() && getTreeViewer() != null) {
-					IVEXElement element = vexWidget.getCurrentElement();
-					IVEXElement outlineElement = outlineProvider
+					VEXElement element = vexWidget.getCurrentElement();
+					VEXElement outlineElement = outlineProvider
 							.getOutlineElement(element);
 					getTreeViewer().refresh(outlineElement);
 					getTreeViewer().setSelection(

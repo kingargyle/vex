@@ -24,7 +24,7 @@ public interface IWhitespacePolicy {
 	 * @param element
 	 *            Element to test.
 	 */
-	public boolean isBlock(IVEXElement element);
+	public boolean isBlock(VEXElement element);
 
 	/**
 	 * Returns true if the given element is pre-formatted, that is, all of its
@@ -33,5 +33,5 @@ public interface IWhitespacePolicy {
 	 * @param element
 	 *            Element to test.
 	 */
-	public boolean isPre(IVEXElement element);
+	public boolean isPre(VEXElement element);
 }
