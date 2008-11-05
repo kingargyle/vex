@@ -212,15 +212,11 @@ public class VexWidgetImpl implements IVexWidget {
 		IVEXElement parent = this.getDocument().getElementAt(startOffset);
 		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] seq2 = frag.getNodeNames();
-		List<String> listSeq2 = new ArrayList<String>(seq2.length);
-		for (int i = 0; i < seq2.length; i++) {
-			listSeq2.add(seq2[i]);
-		}
+		List<String> seq2 = frag.getNodeNames();
 		
 		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
-		return validator.isValidSequence(parent.getName(), seq1, listSeq2, seq3,
+		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 				true);
 	}
 

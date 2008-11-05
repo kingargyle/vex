@@ -25,9 +25,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IVEXDocument">
-    <eOperations name="addDocumentListener">
-      <eParameters name="listener" eType="#//DocumentListener"/>
-    </eOperations>
     <eOperations name="canInsertFragment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="fragment" eType="#//IVEXDocumentFragment"/>
@@ -56,7 +53,7 @@
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getNodeNames" eType="#//StringArray">
+    <eOperations name="getNodeNames" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
@@ -95,7 +92,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//IVEXElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" eType="#//StringArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" eType="#//IVEXNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IVEXElement" eSuperTypes="#//IVEXNode">
@@ -153,27 +151,25 @@
     </eOperations>
     <eOperations name="getValidItems" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="prefix" eType="#//StringArray"/>
-      <eParameters name="suffix" eType="#//StringArray"/>
+      <eParameters name="prefix" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="suffix" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="isValidSequence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="nodes" eType="#//StringArray"/>
+      <eParameters name="nodes" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="partial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
     <eOperations name="isValidSequence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="seq1" eType="#//StringArray"/>
-      <eParameters name="seq2" eType="#//StringArray"/>
-      <eParameters name="seq3" eType="#//StringArray"/>
+      <eParameters name="seq1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="seq2" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="seq3" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="partial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="validRootElements" eType="#//IVEXElement"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="DocumentListener" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DocumentValidationException" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="StringArray" instanceClassName="java.lang.String[]"/>
   <eClassifiers xsi:type="ecore:EClass" name="Serializable" instanceClassName="java.io.Serializable"
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinitionArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition[]"/>

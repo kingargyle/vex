@@ -95,15 +95,11 @@ public class Document implements IVEXDocument {
 		IVEXElement element = this.getElementAt(offset);
 		List<String> seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
 
-		String[] seq2 = fragment.getNodeNames();
-		List<String> listSeq2 = new ArrayList<String>(seq2.length);
-		for (int i = 0; i < seq2.length; i++) {
-			listSeq2.add(seq2[i]);
-		}
+		List<String> seq2 = fragment.getNodeNames();
 
 		List<String> seq3 = this.getNodeNames(offset, element.getEndOffset());
 
-		return this.validator.isValidSequence(element.getName(), seq1, listSeq2,
+		return this.validator.isValidSequence(element.getName(), seq1, seq2,
 				seq3, true);
 	}
 
@@ -564,15 +560,11 @@ public class Document implements IVEXDocument {
 			List<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
 
-			String[] seq2 = fragment.getNodeNames();
-			List<String> listSeq2 = new ArrayList<String>(seq2.length);
-			for (int i = 0; i < seq2.length; i++) {
-				listSeq2.add(seq2[i]);
-			}
+			List<String> seq2 = fragment.getNodeNames();
 
 			List<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
 
-			if (!validator.isValidSequence(parent.getName(), seq1, listSeq2, seq3,
+			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 					true)) {
 
 				throw new DocumentValidationException(

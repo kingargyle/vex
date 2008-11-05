@@ -41,7 +41,7 @@ public interface IVEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  String[] getNodeNames();
+	public  List<String> getNodeNames();
 
 	/**
 	 * Returns the nodes that make up this fragment, including elements and

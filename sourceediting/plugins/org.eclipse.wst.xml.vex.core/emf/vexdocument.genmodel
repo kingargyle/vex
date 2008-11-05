@@ -11,9 +11,7 @@
   </genPackages>
   <genPackages prefix="Dom" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
       disposableProviderFactory="true" ecorePackage="dom1.ecore#/">
-    <genDataTypes ecoreDataType="dom1.ecore#//DocumentListener"/>
     <genDataTypes ecoreDataType="dom1.ecore#//DocumentValidationException"/>
-    <genDataTypes ecoreDataType="dom1.ecore#//StringArray"/>
     <genDataTypes ecoreDataType="dom1.ecore#//AttributeDefinitionArray"/>
     <genClasses ecoreClass="dom1.ecore#//IContent">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IContent/length"/>
@@ -42,9 +40,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/rootElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//IVEXDocument/validator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//IVEXDocument/publicID"/>
-      <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/addDocumentListener">
-        <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/addDocumentListener/listener"/>
-      </genOperations>
       <genOperations ecoreOperation="dom1.ecore#//IVEXDocument/canInsertFragment">
         <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/offset"/>
         <genParameters ecoreParameter="dom1.ecore#//IVEXDocument/canInsertFragment/fragment"/>

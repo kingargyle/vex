@@ -68,15 +68,15 @@ public class DocumentFragment implements Serializable, IVEXDocumentFragment {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodeNames()
 	 */
-	public String[] getNodeNames() {
+	public List<String> getNodeNames() {
 
 		IVEXNode[] nodes = this.getNodes();
-		String[] names = new String[nodes.length];
+		List<String> names = new ArrayList(nodes.length);
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] instanceof Text) {
-				names[i] = IValidator.PCDATA;
+				names.add(IValidator.PCDATA);
 			} else {
-				names[i] = ((IVEXElement) nodes[i]).getName();
+				names.add(((IVEXElement) nodes[i]).getName());
 			}
 		}
 
