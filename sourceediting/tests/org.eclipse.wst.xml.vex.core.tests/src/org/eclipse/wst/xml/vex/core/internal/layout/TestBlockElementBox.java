@@ -22,7 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.BlockPseudoElementBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 
 import junit.framework.TestCase;
 
@@ -47,7 +47,7 @@ public class TestBlockElementBox extends TestCase {
  
 	public void testBeforeAfter() throws Exception {
 		RootElement root = new RootElement("root");
-		IVEXDocument doc = new Document(root);
+		VEXDocument doc = new Document(root);
 		doc.insertElement(1, new Element("beforeBlock"));
 		context.setDocument(doc);
 

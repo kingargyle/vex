@@ -3,26 +3,47 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMAnyElement;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNamedNodeMap;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.core.internal.contentmodel.internal.modelqueryimpl.ModelQueryExtensionManagerImpl;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtension;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtensionManager;
+import org.eclipse.wst.xml.core.internal.contentmodel.modelqueryimpl.ModelQueryImpl.AvailableContentCMVisitor;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.CMDocumentCache;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.CMVisitor;
+import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceTable;
+import org.eclipse.wst.xml.core.internal.modelquery.XMLModelQueryImpl;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.w3c.dom.Element;
 
 @SuppressWarnings("restriction")
-public class WTPVEXValidator implements IValidator {
+public class WTPVEXValidator implements Validator {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7632029717211069257L;
 	private static CMDocument contentModel;
+
 	public static CMDocument getContentModel() {
 		return contentModel;
 	}
@@ -44,7 +65,7 @@ public class WTPVEXValidator implements IValidator {
 				.getInstance();
 		String resolved = url.toString();
 		setContentModel(contentModelManager.createCMDocument(resolved, null));
-	
+
 		return new WTPVEXValidator();
 
 	}
@@ -104,10 +125,53 @@ public class WTPVEXValidator implements IValidator {
 		return vexAttr;
 	}
 
-	public Set getValidItems(String element, String[] prefix, String[] suffix) {
-		// FIXME: This needs to actually get the items that are valid at this
-		// spot.
-		return getValidRootElements();
+	public Set<String> getValidItems(String element) {
+		CMElementDeclaration elementDec = (CMElementDeclaration) contentModel
+				.getElements().getNamedItem(element);
+		List<CMNode> nodes = getAvailableContent(element, elementDec);
+		Set<String> results = new HashSet<String>();
+		Iterator iter = nodes.iterator();
+		while (iter.hasNext()) {
+			CMNode node = (CMNode) iter.next();
+			if (node instanceof CMElementDeclaration) {
+				CMElementDeclaration elem = (CMElementDeclaration) node;
+				results.add(elem.getElementName());
+			}
+		}
+		return results;
+	}
+
+	/**
+	 * Returns a list of all CMNode 'meta data' that may be potentially added to
+	 * the element.
+	 */
+	protected List getAvailableContent(String element, CMElementDeclaration ed) {
+//		VEXAvailableContentCMVisitor visitor = new VEXAvailableContentCMVisitor(
+//				element, ed);
+		List<CMNode> list = new ArrayList<CMNode>();
+		// List list = visitor
+		// .computeAvailableContent(ModelQuery.INCLUDE_CHILD_NODES);
+		if (ed.getContentType() == CMElementDeclaration.ELEMENT
+				|| ed.getContentType() == CMElementDeclaration.MIXED) {
+			CMGroup groupContent = (CMGroup) ed.getContent();
+			list.addAll(getAllChildren(groupContent));
+		}
+		return list;
+	}
+	
+	private List<CMNode> getAllChildren(CMGroup group) {
+		List<CMNode> list = new ArrayList<CMNode>();
+		CMNodeList nodeList = group.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			CMNode node = nodeList.item(i);
+			if (node instanceof CMElementDeclaration) {
+				String e = node.getNodeName();
+				list.add(node);
+			} else if (node instanceof CMGroup) {
+				list.addAll(getAllChildren((CMGroup)node));
+			}
+		}
+		return list;
 	}
 
 	public Set getValidRootElements() {
@@ -124,14 +188,11 @@ public class WTPVEXValidator implements IValidator {
 
 	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	public boolean isValidSequence(String element, String[] seq1,
 			String[] seq2, String[] seq3, boolean partial) {
-		// TODO Auto-generated method stub
 		return true;
 	}
-
 }

@@ -20,9 +20,9 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.xml.sax.SAXException;
@@ -185,12 +185,12 @@ public interface IVexWidget {
 	/**
 	 * Returns the element at the current caret offset.
 	 */
-	public IVEXElement getCurrentElement();
+	public VEXElement getCurrentElement();
 
 	/**
 	 * Returns the document associated with this component.
 	 */
-	public IVEXDocument getDocument();
+	public VEXDocument getDocument();
 
 	/**
 	 * Returns the width to which the document was layed out.
@@ -211,7 +211,7 @@ public interface IVexWidget {
 	 * Returns the currently selected document fragment, or null if there is no
 	 * current selection.
 	 */
-	public IVEXDocumentFragment getSelectedFragment();
+	public VEXDocumentFragment getSelectedFragment();
 
 	/**
 	 * Returns the currently selected string, or an empty string if there is no
@@ -268,7 +268,7 @@ public interface IVexWidget {
 	 * @param frag
 	 *            DocumentFragment to insert.
 	 */
-	public void insertFragment(IVEXDocumentFragment frag)
+	public void insertFragment(VEXDocumentFragment frag)
 			throws DocumentValidationException;
 
 	/**
@@ -504,7 +504,7 @@ public interface IVexWidget {
 	 * @param styleSheet
 	 *            StyleSheet to use for formatting
 	 */
-	public void setDocument(IVEXDocument document, StyleSheet styleSheet);
+	public void setDocument(VEXDocument document, StyleSheet styleSheet);
 
 	/**
 	 * Sets a new document for this control.

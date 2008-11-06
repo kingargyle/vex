@@ -4,7 +4,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 /**
  * @model
  */
-public interface IVEXDocumentFragment {
+public interface VEXDocumentFragment {
 
 	/**
 	 * Mime type representing document fragments: "text/x-vex-document-fragment"
@@ -30,9 +30,9 @@ public interface IVEXDocumentFragment {
 	/**
 	 * Returns the elements that make up this fragment.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * @model 
 	 */
-	public  IVEXElement[] getElements();
+	public  VEXElement[] getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
@@ -46,8 +46,8 @@ public interface IVEXDocumentFragment {
 	 * Returns the nodes that make up this fragment, including elements and
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode"
+	 * @model 
 	 */
-	public  IVEXNode[] getNodes();
+	public  VEXNode[] getNodes();
 
 }

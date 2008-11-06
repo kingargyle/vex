@@ -14,10 +14,10 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
 
 import junit.framework.TestCase;
 
@@ -32,9 +32,9 @@ public class DomTest extends TestCase {
 		// Document initialisation
 		//
 		RootElement root = new RootElement("article");
-		IVEXDocument doc = new Document(root);
-		IVEXNode[] content;
-		IVEXElement[] children;
+		VEXDocument doc = new Document(root);
+		VEXNode[] content;
+		VEXElement[] children;
 
 		// root
 		// | |
@@ -118,14 +118,14 @@ public class DomTest extends TestCase {
 
 	public void testFragments() throws Exception {
 
-		IVEXDocument doc;
-		IVEXDocumentFragment frag;
-		IVEXElement[] elements;
-		IVEXNode[] nodes;
-		IVEXElement root;
-		IVEXElement x;
-		IVEXElement y;
-		IVEXElement z;
+		VEXDocument doc;
+		VEXDocumentFragment frag;
+		VEXElement[] elements;
+		VEXNode[] nodes;
+		VEXElement root;
+		VEXElement x;
+		VEXElement y;
+		VEXElement z;
 
 		// Case 1: just text
 		//
@@ -272,7 +272,7 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[0], "a", 1, 2);
 		assertIsElement(nodes[1], "z", doc.getRootElement(), 2, 14);
 		assertIsText(nodes[2], "i", 15, 16);
-		z = (IVEXElement) nodes[1];
+		z = (VEXElement) nodes[1];
 		nodes = z.getChildNodes();
 		assertEquals(5, nodes.length);
 		assertIsText(nodes[0], "bc", 3, 5);
@@ -280,8 +280,8 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[2], "e", 8, 9);
 		assertIsElement(nodes[3], "y", z, 9, 11);
 		assertIsText(nodes[4], "gh", 12, 14);
-		x = (IVEXElement) nodes[1];
-		y = (IVEXElement) nodes[3];
+		x = (VEXElement) nodes[1];
+		y = (VEXElement) nodes[3];
 		nodes = x.getChildNodes();
 		assertEquals(1, nodes.length);
 		assertIsText(nodes[0], "d", 6, 7);
@@ -301,7 +301,7 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[0], "a", 1, 2);
 		assertIsElement(nodes[1], "z", doc.getRootElement(), 2, 14);
 		assertIsText(nodes[2], "i", 15, 16);
-		z = (IVEXElement) nodes[1];
+		z = (VEXElement) nodes[1];
 		nodes = z.getChildNodes();
 		assertEquals(5, nodes.length);
 		assertIsText(nodes[0], "bc", 3, 5);
@@ -309,8 +309,8 @@ public class DomTest extends TestCase {
 		assertIsText(nodes[2], "e", 8, 9);
 		assertIsElement(nodes[3], "y", z, 9, 11);
 		assertIsText(nodes[4], "gh", 12, 14);
-		x = (IVEXElement) nodes[1];
-		y = (IVEXElement) nodes[3];
+		x = (VEXElement) nodes[1];
+		y = (VEXElement) nodes[3];
 		nodes = x.getChildNodes();
 		assertEquals(1, nodes.length);
 		assertIsText(nodes[0], "d", 6, 7);
@@ -320,17 +320,17 @@ public class DomTest extends TestCase {
 
 	}
 
-	public void assertIsElement(IVEXNode node, String name, IVEXElement parent,
+	public void assertIsElement(VEXNode node, String name, VEXElement parent,
 			int startOffset, int endOffset) {
 
 		assertTrue(node instanceof Element);
-		assertEquals(name, ((IVEXElement) node).getName());
-		assertEquals(parent, ((IVEXElement) node).getParent());
+		assertEquals(name, ((VEXElement) node).getName());
+		assertEquals(parent, ((VEXElement) node).getParent());
 		assertEquals(startOffset, node.getStartOffset());
 		assertEquals(endOffset, node.getEndOffset());
 	}
 
-	public void assertIsText(IVEXNode node, String text, int startOffset,
+	public void assertIsText(VEXNode node, String text, int startOffset,
 			int endOffset) {
 
 		assertTrue(node instanceof Text);

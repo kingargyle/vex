@@ -13,8 +13,8 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 import java.util.LinkedList;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.Attributes;
@@ -52,7 +52,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	/**
 	 * Returns the newly built <code>Document</code> object.
 	 */
-	public IVEXDocument getDocument() {
+	public VEXDocument getDocument() {
 		return this.doc;
 	}
 
@@ -133,7 +133,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				}
 			} else {
 				element = new Element(qName);
-				IVEXElement parent = ((StackEntry) stack.getLast()).element;
+				VEXElement parent = ((StackEntry) stack.getLast()).element;
 				parent.addChild(element);
 			}
 
@@ -262,11 +262,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		this.trimLeading = false;
 	}
 
-	private boolean isBlock(IVEXElement element) {
+	private boolean isBlock(VEXElement element) {
 		return this.policy != null && this.policy.isBlock(element);
 	}
 
-	private boolean isPre(IVEXElement element) {
+	private boolean isPre(VEXElement element) {
 		return this.policy != null && this.policy.isPre(element);
 	}
 

@@ -20,7 +20,7 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
  * Validators must be serializable.
  * @model
  */
-public interface IValidator extends Serializable {
+public interface Validator extends Serializable {
 
 	/**
 	 * String indicating that character data is allowed at the given point in
@@ -53,7 +53,7 @@ public interface IValidator extends Serializable {
 	/**
 	 * Returns a set of Strings representing valid root elements for the given
 	 * document type.
-	 * @model type="IVEXElement" containment="true"
+	 * @model 
 	 */
 	public Set getValidRootElements();
 
@@ -64,15 +64,9 @@ public interface IValidator extends Serializable {
 	 * 
 	 * @param element
 	 *            Name of the parent element.
-	 * @param prefix
-	 *            Array of strings representing nodes coming before the
-	 *            insertion point
-	 * @param suffix
-	 *            Array of strings representing nodes coming after the insertion
-	 *            point
-	 * @model type="String" containment="true"
+	 * @model 
 	 */
-	public Set getValidItems(String element, String[] prefix, String[] suffix);
+	public Set<String> getValidItems(String element);
 
 	/**
 	 * Returns true if the given sequence is valid for the given element.

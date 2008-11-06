@@ -21,8 +21,8 @@ import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 
 import junit.framework.TestCase;
 
@@ -187,8 +187,8 @@ public class CssTest extends TestCase {
 	 */
 	public void testDefaultInheritance() throws Exception {
 		RootElement simple = new RootElement("simple");
-		IVEXElement defaults = new Element("defaults");
-		IVEXDocument doc = new Document(simple);
+		VEXElement defaults = new Element("defaults");
+		VEXDocument doc = new Document(simple);
 		doc.insertElement(1, defaults);
 
 		StyleSheet ss = parseStyleSheetResource("test2.css");
@@ -449,7 +449,7 @@ public class CssTest extends TestCase {
 	public void testForcedInheritance() throws Exception {
 		RootElement simple = new RootElement("simple");
 		Element inherit = new Element("inherit");
-		IVEXDocument doc = new Document(simple);
+		VEXDocument doc = new Document(simple);
 		doc.insertElement(1, inherit);
 
 		StyleSheet ss = parseStyleSheetResource("test2.css");
@@ -491,7 +491,7 @@ public class CssTest extends TestCase {
 
 	public void testImportant() throws Exception {
 		StyleSheet ss = parseStyleSheetResource("testImportant.css");
-		IVEXElement a = new Element("a");
+		VEXElement a = new Element("a");
 		Styles styles = ss.getStyles(a);
 
 		Color black = new Color(0, 0, 0);
@@ -508,7 +508,7 @@ public class CssTest extends TestCase {
 	public void testMarginInheritance() throws Exception {
 		StyleSheet ss = parseStyleSheetResource("test2.css");
 		Element root = new Element("margin1");
-		IVEXElement child = new Element("defaults");
+		VEXElement child = new Element("defaults");
 		child.setParent(root);
 		Styles styles = ss.getStyles(child);
 

@@ -32,7 +32,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder.Node;
 
@@ -131,7 +131,7 @@ public class DTDValidator extends AbstractValidator {
 
 		validator.anySet = new HashSet();
 		validator.anySet.addAll(validator.elementDFAs.keySet());
-		validator.anySet.add(IValidator.PCDATA);
+		validator.anySet.add(Validator.PCDATA);
 
 		return validator;
 	}
@@ -155,60 +155,63 @@ public class DTDValidator extends AbstractValidator {
 		return this.elementDFAs.keySet();
 	}
 
-	/** @see IValidator#getValidItems */
-	public Set getValidItems(String element, String[] prefix, String[] suffix) {
+	/** @see Validator#getValidItems */
+	/**
+	 * @deprecated
+	 */
+	public Set<String> getValidItems(String element) {
 
 		// First, get a set of candidates. We'll later test to see if each is
 		// valid to insert here.
 
 		Set candidates = null;
-		DFAState dfa = (DFAState) elementDFAs.get(element);
-		if (dfa == null) {
-			// Anything goes!
-			return this.anySet;
-		}
-
-		DFAState target = dfa.getState(Arrays.asList(prefix));
-		if (target == null) {
-			return Collections.EMPTY_SET;
-		} else {
-			// If the last transition was due to PCDATA, adding more PCDATA
-			// is also valid
-			if (prefix.length > 0
-					&& prefix[prefix.length - 1].equals(IValidator.PCDATA)) {
-				candidates = new HashSet();
-				candidates.addAll(target.getValidSymbols());
-				candidates.add(IValidator.PCDATA);
-			} else {
-				candidates = target.getValidSymbols();
-			}
-		}
-
-		// Now, see if each candidate can be inserted at the given
-		// offset. This second test is necessary in some simple
-		// cases. Consider a <section> with an optional <title>; if
-		// we're at the first offset of the <section> and a <title>
-		// already exists, we should not allow another <title>.
+//		DFAState dfa = (DFAState) elementDFAs.get(element);
+//		if (dfa == null) {
+//			// Anything goes!
+//			return this.anySet;
+//		}
+//
+//		DFAState target = dfa.getState(Arrays.asList(prefix));
+//		if (target == null) {
+//			return Collections.EMPTY_SET;
+//		} else {
+//			// If the last transition was due to PCDATA, adding more PCDATA
+//			// is also valid
+//			if (prefix.length > 0
+//					&& prefix[prefix.length - 1].equals(Validator.PCDATA)) {
+//				candidates = new HashSet();
+//				candidates.addAll(target.getValidSymbols());
+//				candidates.add(Validator.PCDATA);
+//			} else {
+//				candidates = target.getValidSymbols();
+//			}
+//		}
+//
+//		// Now, see if each candidate can be inserted at the given
+//		// offset. This second test is necessary in some simple
+//		// cases. Consider a <section> with an optional <title>; if
+//		// we're at the first offset of the <section> and a <title>
+//		// already exists, we should not allow another <title>.
+//		
+//		if (candidates.isEmpty()) {
+//			return Collections.EMPTY_SET;
+//		}
+//
+//		Set results = new HashSet();
+//		String[] middle = new String[1];
+//		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
+//			middle[0] = (String) iter.next();
+//			if (this.isValidSequence(element, prefix, middle, suffix, true)) {
+//				results.add(middle[0]);
+//			}
+//		}
 		
-		if (candidates.isEmpty()) {
-			return Collections.EMPTY_SET;
-		}
 
-		Set results = new HashSet();
-		String[] middle = new String[1];
-		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-			middle[0] = (String) iter.next();
-			if (this.isValidSequence(element, prefix, middle, suffix, true)) {
-				results.add(middle[0]);
-			}
-		}
-		
-
-		return Collections.unmodifiableSet(results);
+		return candidates;
 	}
 
 	/**
-	 * @see IValidator#isValidSequence
+	 * @see Validator#isValidSequence
 	 */
 	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial) {
@@ -248,14 +251,14 @@ public class DTDValidator extends AbstractValidator {
 		DFABuilder.Node node = null;
 
 		if (content == null) {
-			return DFABuilder.createSymbolNode(IValidator.PCDATA);
+			return DFABuilder.createSymbolNode(Validator.PCDATA);
 		}
 		
 		if (content instanceof CMElementDeclaration) {
 			CMElementDeclaration element = (CMElementDeclaration) content;
 			String elementName = element.getNodeName();
 			if (element.getContentType() == CMElementDeclaration.PCDATA) {
-				node = DFABuilder.createSymbolNode(IValidator.PCDATA);
+				node = DFABuilder.createSymbolNode(Validator.PCDATA);
 			} else if (element.getContentType() == CMElementDeclaration.MIXED) {
 				CMContent child = element.getContent();
 				DFABuilder.Node newNode = createDFANode(child);
@@ -265,7 +268,7 @@ public class DTDValidator extends AbstractValidator {
 					node = DFABuilder.createChoiceNode(node, newNode);
 				}
 				DFABuilder.Node pcdata = DFABuilder
-						.createSymbolNode(IValidator.PCDATA);
+						.createSymbolNode(Validator.PCDATA);
 				node = DFABuilder.createChoiceNode(node, pcdata);
 
 			} else if (element.getContent() != null) {

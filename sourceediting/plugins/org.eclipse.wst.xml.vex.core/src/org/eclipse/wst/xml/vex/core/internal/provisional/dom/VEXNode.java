@@ -4,7 +4,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 /**
  * @model
  */
-public interface IVEXNode {
+public interface VEXNode {
 
 	/**
 	 * Returns the document associated with this node. Null if the node has not

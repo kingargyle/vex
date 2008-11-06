@@ -22,9 +22,9 @@ import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.ElementOrRangeCallback;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutUtils;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
@@ -135,7 +135,7 @@ public class ActionUtils {
 	 */
 	public static int getCurrentColumnIndex(IVexWidget vexWidget) {
 
-		IVEXElement row = getCurrentTableRow(vexWidget);
+		VEXElement row = getCurrentTableRow(vexWidget);
 
 		if (row == null) {
 			return -1;
@@ -155,7 +155,7 @@ public class ActionUtils {
 						i++;
 					}
 
-					public void onRange(IVEXElement parent, int startOffset,
+					public void onRange(VEXElement parent, int startOffset,
 							int endOffset) {
 						i++;
 					}
@@ -171,10 +171,10 @@ public class ActionUtils {
 	 * @param vexWidget
 	 *            IVexWidget to use.
 	 */
-	public static IVEXElement getCurrentTableRow(IVexWidget vexWidget) {
+	public static VEXElement getCurrentTableRow(IVexWidget vexWidget) {
 
 		StyleSheet ss = vexWidget.getStyleSheet();
-		IVEXElement element = vexWidget.getCurrentElement();
+		VEXElement element = vexWidget.getCurrentElement();
 
 		while (element != null) {
 			if (ss.getStyles(element).getDisplay().equals(CSS.TABLE_ROW)) {
@@ -213,10 +213,10 @@ public class ActionUtils {
 		}
 
 		int previousSiblingStart = -1;
-		IVEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
-		IVEXNode[] children = parent.getChildNodes();
+		VEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
+		VEXNode[] children = parent.getChildNodes();
 		for (int i = 0; i < children.length; i++) {
-			IVEXNode child = children[i];
+			VEXNode child = children[i];
 			if (startOffset == child.getStartOffset()) {
 				break;
 			}
@@ -336,7 +336,7 @@ public class ActionUtils {
 								cellIndex++;
 							}
 
-							public void onRange(IVEXElement parent,
+							public void onRange(VEXElement parent,
 									int startOffset, int endOffset) {
 								callback.onCell(row, new IntRange(startOffset,
 										endOffset), rowIndex[0], cellIndex);
@@ -349,7 +349,7 @@ public class ActionUtils {
 				rowIndex[0]++;
 			}
 
-			public void onRange(IVEXElement parent, final int startOffset,
+			public void onRange(VEXElement parent, final int startOffset,
 					final int endOffset) {
 
 				final IntRange row = new IntRange(startOffset, endOffset);
@@ -366,7 +366,7 @@ public class ActionUtils {
 								cellIndex++;
 							}
 
-							public void onRange(IVEXElement parent,
+							public void onRange(VEXElement parent,
 									int startOffset, int endOffset) {
 								callback.onCell(row, new IntRange(startOffset,
 										endOffset), rowIndex[0], cellIndex);
@@ -450,13 +450,13 @@ public class ActionUtils {
 			ElementOrRangeCallback callback) {
 
 		final StyleSheet ss = vexWidget.getStyleSheet();
-		final IVEXDocument doc = vexWidget.getDocument();
+		final VEXDocument doc = vexWidget.getDocument();
 		final int offset = vexWidget.getCaretOffset();
 
 		// This may or may not be a table
 		// In any case, it's the element that contains the top-level table
 		// children
-		IVEXElement table = doc.getElementAt(offset);
+		VEXElement table = doc.getElementAt(offset);
 
 		while (table != null && !LayoutUtils.isTableChild(ss, table)) {
 			table = table.getParent();
@@ -483,7 +483,7 @@ public class ActionUtils {
 						tableChildren.add(child);
 					}
 
-					public void onRange(IVEXElement parent, int startOffset,
+					public void onRange(VEXElement parent, int startOffset,
 							int endOffset) {
 						if (!found[0]) {
 							tableChildren.clear();
