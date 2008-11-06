@@ -32,7 +32,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.TextBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
@@ -111,7 +111,7 @@ public class LayoutTestSuite extends TestCase {
 				return new CssWhitespacePolicy(ss);
 			}
 		});
-		VEXDocument doc = docReader.read(this.doc);
+		IVEXDocument doc = docReader.read(this.doc);
 		context.setDocument(doc);
 
 		RootBox rootBox = new RootBox(context, doc.getRootElement(),

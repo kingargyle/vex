@@ -21,8 +21,8 @@ import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
 
 /**
  * An inline box that represents an inline element. This box is responsible for
@@ -72,7 +72,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			}
 
 			// :before content
-			VEXElement beforeElement = context.getStyleSheet().getBeforeElement(
+			IVEXElement beforeElement = context.getStyleSheet().getBeforeElement(
 					element);
 			if (beforeElement != null) {
 				childList.addAll(LayoutUtils.createGeneratedInlines(context,
@@ -99,7 +99,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			childList.add(createRightMarker(element, styles));
 
 			// :after content
-			VEXElement afterElement = context.getStyleSheet().getAfterElement(
+			IVEXElement afterElement = context.getStyleSheet().getAfterElement(
 					element);
 			if (afterElement != null) {
 				childList.addAll(LayoutUtils.createGeneratedInlines(context,
@@ -267,14 +267,14 @@ public class InlineElementBox extends CompositeInlineBox {
 	 * @return
 	 */
 	static InlineBoxes createInlineBoxes(LayoutContext context,
-			VEXElement element2, int startOffset, int endOffset) {
+			IVEXElement element2, int startOffset, int endOffset) {
 
 		InlineBoxes result = new InlineBoxes();
 
-		List<VEXNode> nodes = element2.getChildNodes();
-		for (int i = 0; i < nodes.size(); i++) {
+		IVEXNode[] nodes = element2.getChildNodes();
+		for (int i = 0; i < nodes.length; i++) {
 
-			VEXNode node = nodes.get(i);
+			IVEXNode node = nodes[i];
 			InlineBox child;
 
 			if (node.getStartOffset() >= endOffset) {

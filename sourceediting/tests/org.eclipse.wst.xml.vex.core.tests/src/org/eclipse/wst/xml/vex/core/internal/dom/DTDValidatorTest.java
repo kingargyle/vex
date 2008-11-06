@@ -17,15 +17,14 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 
@@ -33,7 +32,7 @@ import junit.framework.TestCase;
 
 @SuppressWarnings("restriction")
 public class DTDValidatorTest extends TestCase {
-	Validator validator = null;
+	IValidator validator = null;
 
 	protected void setUp() {
 		try {
@@ -55,7 +54,7 @@ public class DTDValidatorTest extends TestCase {
 
 		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		validator = (Validator) ois.readObject();
+		validator = (IValidator) ois.readObject();
 
 		AttributeDefinition.Type adType2 = validator
 				.getAttributeDefinitions("section")[0].getType();
@@ -65,7 +64,7 @@ public class DTDValidatorTest extends TestCase {
 	}
 	
 	public void testEmptyDTD() throws Exception {
-		VEXDocument doc;
+		IVEXDocument doc;
 		Set expected;
 
 		doc = new Document(new RootElement("empty"));
@@ -74,13 +73,13 @@ public class DTDValidatorTest extends TestCase {
 	}
 	
 	public void testAnyDTD() throws Exception {
-		VEXDocument doc;
+		IVEXDocument doc;
 		Set expected;
 
 		doc = new Document(new RootElement("any"));
 		doc.setValidator(validator);
 		Set anySet = new HashSet();
-		anySet.add(Validator.PCDATA);
+		anySet.add(IValidator.PCDATA);
 		anySet.add("any");
 		anySet.add("empty");
 		anySet.add("section");
@@ -92,7 +91,7 @@ public class DTDValidatorTest extends TestCase {
 	}
 	
 	public void testSectionElement() {
-		VEXDocument doc;
+		IVEXDocument doc;
 		Set expected;
 
 		// <section> <title> a b </title> <para> </para> </section>
@@ -126,11 +125,11 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 
-	private Set getValidItemsAt(VEXDocument doc, int offset) {
-		VEXElement element = doc.getElementAt(offset);
-		List<String> prefix = doc
+	private Set getValidItemsAt(IVEXDocument doc, int offset) {
+		IVEXElement element = doc.getElementAt(offset);
+		String[] prefix = doc
 				.getNodeNames(element.getStartOffset() + 1, offset);
-		List<String> suffix = doc.getNodeNames(offset, element.getEndOffset());
+		String[] suffix = doc.getNodeNames(offset, element.getEndOffset());
 		return doc.getValidator().getValidItems(element.getName(), prefix,
 				suffix);
 	}

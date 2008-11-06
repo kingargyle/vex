@@ -15,21 +15,21 @@ import java.util.List;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * Implements a Block
  */
 public class BlockPseudoElementBox extends AbstractBox implements BlockBox {
 
-	private VEXElement pseudoElement;
+	private IVEXElement pseudoElement;
 	private BlockBox parent;
 	private ParagraphBox para;
 
 	private int marginTop;
 	private int marginBottom;
 
-	public BlockPseudoElementBox(LayoutContext context, VEXElement pseudoElement,
+	public BlockPseudoElementBox(LayoutContext context, IVEXElement pseudoElement,
 			BlockBox parent, int width) {
 
 		this.pseudoElement = pseudoElement;
@@ -71,7 +71,7 @@ public class BlockPseudoElementBox extends AbstractBox implements BlockBox {
 	/**
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.Box#getElement()
 	 */
-	public VEXElement getElement() {
+	public IVEXElement getElement() {
 		return this.pseudoElement;
 	}
 

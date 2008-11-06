@@ -4,7 +4,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 /**
  * @model
  */
-public interface VEXNode {
+public interface IVEXNode {
 
 	/**
 	 * Returns the document associated with this node. Null if the node has not
@@ -12,7 +12,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  Content getContent();
+	public  IContent getContent();
 
 	/**
 	 * Returns the character offset corresponding to the end of the node.
@@ -26,7 +26,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  Position getEndPosition();
+	public  IPosition getEndPosition();
 
 	/**
 	 * Returns the character offset corresponding to the start of the node.
@@ -40,7 +40,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  Position getStartPosition();
+	public  IPosition getStartPosition();
 
 	/**
 	 * Returns the text contained by this node. If this node is an element, the
@@ -49,28 +49,5 @@ public interface VEXNode {
 	 * @model
 	 */
 	public  String getText();
-	
-	/**
-	 * Returns the namespace.
-	 * @model
-	 */
-	public String getNamespace();
-	
-	/**
-	 * Returns the namespace
-	 * @model
-	 */
-	public String getNamespacePrefix();
-	
-	/**
-	 * Sets the namespace.
-	 * @param namespace
-	 */
-	public void setNamespace(String namespace);
-	
-	/**
-	 * Sets the namespace prefix.
-	 * @param prefix
-	 */
-	public void setNamespacePrefix(String prefix);
+
 }

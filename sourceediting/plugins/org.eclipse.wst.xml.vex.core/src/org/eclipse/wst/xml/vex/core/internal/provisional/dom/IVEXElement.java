@@ -1,7 +1,6 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 
@@ -11,7 +10,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
  * 
  * @model
  */
-public interface VEXElement extends VEXNode {
+public interface IVEXElement extends IVEXNode {
 
 	/**
 	 * Adds the given child to the end of the child list. Sets the parent
@@ -19,7 +18,7 @@ public interface VEXElement extends VEXNode {
 	 * 
 	 * @model
 	 */
-	public void addChild(VEXElement child);
+	public void addChild(IVEXElement child);
 
 	/**
 	 * Clones the element and its attributes. The returned element has no parent
@@ -44,38 +43,38 @@ public interface VEXElement extends VEXNode {
 	 * 
 	 * @model 
 	 */
-	public List<String> getAttributeNames();
+	public String[] getAttributeNames();
 
 	/**
 	 * Returns an iterator over the children. Used by
 	 * <code>Document.delete</code> to safely delete children.
 	 * 
-	 *   
+	 * @model type="IVEXElement" containment="true"
 	 */
-	public Iterator<VEXElement> getChildIterator();
+	public Iterator getChildIterator();
 
 	/**
 	 * Returns an array of the elements children.
 	 * 
-	 * @model 
+	 * @model type="IVEXElement" containment="true"
 	 */
-	public List<VEXElement> getChildElements();
+	public IVEXElement[] getChildElements();
 
 	/**
 	 * Returns an array of nodes representing the content of this element. The
 	 * array includes child elements and runs of text returned as
 	 * <code>Text</code> objects.
 	 * 
-	 * @model  
+	 * @model type="IVEXNode" containment="true"
 	 */
-	public List<VEXNode> getChildNodes();
+	public IVEXNode[] getChildNodes();
 
 	/**
 	 * @return The document to which this element belongs. Returns null if this
 	 *         element is part of a document fragment.
 	 * @model
 	 */
-	public VEXDocument getDocument();
+	public IVEXDocument getDocument();
 
 	/**
 	 * Returns the name of the element.
@@ -116,9 +115,9 @@ public interface VEXElement extends VEXNode {
 	/**
 	 * Returns the parent of this element, or null if this is the root element.
 	 * 
-	 * @model
+	 * @model type="IVEXElement"
 	 */
-	public VEXElement getParent();
+	public IVEXElement getParent();
 
 	/**
 	 * Sets the parent of this element.
@@ -127,12 +126,12 @@ public interface VEXElement extends VEXNode {
 	 *            Parent element.
 	 * 
 	 */
-	public void setParent(VEXElement parent);
+	public void setParent(IVEXElement parent);
 
 	/**
 	 * 
 	 * @return
-	 * 
+	 * @model
 	 */
 	public String toString();
 
@@ -143,7 +142,7 @@ public interface VEXElement extends VEXNode {
 	 * @param i
 	 * @model
 	 */
-	public void setContent(Content content, int offset, int i);
+	public void setContent(IContent content, int offset, int i);
 
 	/**
 	 * 
@@ -151,6 +150,6 @@ public interface VEXElement extends VEXNode {
 	 * @param child
 	 * @model
 	 */
-	public void insertChild(int index, VEXElement child);
+	public void insertChild(int index, IVEXElement child);
 
 }

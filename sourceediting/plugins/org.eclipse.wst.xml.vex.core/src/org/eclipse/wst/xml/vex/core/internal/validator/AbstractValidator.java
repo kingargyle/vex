@@ -13,48 +13,48 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 
 /**
  * Partial implementation of the Validator interface.
  */
-public abstract class AbstractValidator implements Validator {
+public abstract class AbstractValidator implements IValidator {
 
 	/**
-	 * @see Validator#isValidSequence
+	 * @see IValidator#isValidSequence
 	 */
-	public boolean isValidSequence(String element, List<String> seq1,
-			List<String> seq2, List<String> seq3, boolean partial) {
+	public boolean isValidSequence(String element, String[] seq1,
+			String[] seq2, String[] seq3, boolean partial) {
 
 		List list = new ArrayList();
-		for (int i = 0; i < seq1.size(); i++) {
-			list.add(seq1.get(i));
+		for (int i = 0; i < seq1.length; i++) {
+			list.add(seq1[i]);
 		}
 		if (seq2 != null) {
-			for (int i = 0; i < seq2.size(); i++) {
-				if (i == 0 && seq2.get(i).equals(Validator.PCDATA)
+			for (int i = 0; i < seq2.length; i++) {
+				if (i == 0 && seq2[i].equals(IValidator.PCDATA)
 						&& list.size() > 0
-						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
+						&& list.get(list.size() - 1).equals(IValidator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}
-				list.add(seq2.get(i));
+				list.add(seq2[i]);
 			}
 		}
 		if (seq3 != null) {
-			for (int i = 0; i < seq3.size(); i++) {
-				if (i == 0 && seq3.get(i).equals(Validator.PCDATA)
+			for (int i = 0; i < seq3.length; i++) {
+				if (i == 0 && seq3[i].equals(IValidator.PCDATA)
 						&& list.size() > 0
-						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
+						&& list.get(list.size() - 1).equals(IValidator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}
-				list.add(seq3.get(i));
+				list.add(seq3[i]);
 			}
 		}
 
-		
-		return this.isValidSequence(element, list, partial);
+		String[] nodes = (String[]) list.toArray(new String[list.size()]);
+		return this.isValidSequence(element, nodes, partial);
 	}
 
 }

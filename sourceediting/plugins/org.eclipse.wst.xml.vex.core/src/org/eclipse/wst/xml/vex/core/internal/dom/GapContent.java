@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
 
 /**
  * Implementation of the <code>Content</code> interface that manages changes
@@ -25,7 +25,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
  * Deletions that end of the gap are also very efficent. Furthermore, changes
  * near the gap require relatively few characters to be moved.
  */
-public class GapContent implements Content {
+public class GapContent implements IContent {
 
 	private char[] content;
 	private int gapStart;
@@ -53,11 +53,11 @@ public class GapContent implements Content {
 	 * @param offset
 	 *            initial offset of the position
 	 */
-	public Position createPosition(int offset) {
+	public IPosition createPosition(int offset) {
 
 		assertOffset(offset, 0, this.getLength());
 
-		Position pos = new GapContentPosition(offset);
+		IPosition pos = new GapContentPosition(offset);
 		this.positions.put(pos, pos);
 
 		return pos;
@@ -174,7 +174,7 @@ public class GapContent implements Content {
 	/**
 	 * Implementation of the Position interface.
 	 */
-	private static class GapContentPosition implements Position {
+	private static class GapContentPosition implements IPosition {
 
 		private int offset;
 

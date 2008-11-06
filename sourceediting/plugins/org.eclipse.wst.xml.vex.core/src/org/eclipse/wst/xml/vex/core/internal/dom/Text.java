@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
 
 /**
  * <code>Text</code> represents a run of text in a document. Text objects are
@@ -29,7 +29,7 @@ public class Text extends Node {
 	 * @param endOffset
 	 *            character offset of the end of the run
 	 */
-	public Text(Content content, int startOffset, int endOffset) {
+	public Text(IContent content, int startOffset, int endOffset) {
 		this.setContent(content, startOffset, endOffset);
 	}
 

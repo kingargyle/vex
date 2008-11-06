@@ -12,7 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.widget;
 
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 
 /**
@@ -30,11 +30,11 @@ public class CssWhitespacePolicy implements IWhitespacePolicy {
 		this.styleSheet = styleSheet;
 	}
 
-	public boolean isBlock(VEXElement element) {
+	public boolean isBlock(IVEXElement element) {
 		return this.styleSheet.getStyles(element).isBlock();
 	}
 
-	public boolean isPre(VEXElement element) {
+	public boolean isPre(IVEXElement element) {
 		return CSS.PRE.equals(this.styleSheet.getStyles(element)
 				.getWhiteSpace());
 	}

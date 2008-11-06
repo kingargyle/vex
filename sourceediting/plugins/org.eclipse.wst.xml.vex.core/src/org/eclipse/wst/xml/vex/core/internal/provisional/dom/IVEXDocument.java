@@ -3,14 +3,13 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import java.util.List;
 
 /**
  * 
  * @author dcarver
- * @model name="Document"
+ * @model
  */
-public interface VEXDocument {
+public interface IVEXDocument {
 
 	/**
 	 * Adds a document listener to the list of listeners to be notified of
@@ -18,7 +17,7 @@ public interface VEXDocument {
 	 * 
 	 * @param listener
 	 *            <code>DocumentListener</code> to add.
-	 * 
+	 * @model
 	 */
 	public void addDocumentListener(DocumentListener listener);
 
@@ -32,7 +31,7 @@ public interface VEXDocument {
 	 *            fragment to be inserted
 	 * @model
 	 */
-	public boolean canInsertFragment(int offset, VEXDocumentFragment fragment);
+	public boolean canInsertFragment(int offset, IVEXDocumentFragment fragment);
 
 	/**
 	 * Returns true if text can be inserted at the given offset.
@@ -50,7 +49,7 @@ public interface VEXDocument {
 	 *            initial character offset of the position
 	 * @model
 	 */
-	public Position createPosition(int offset);
+	public IPosition createPosition(int offset);
 
 	/**
 	 * Deletes a portion of the document. No element may straddle the deletion
@@ -76,7 +75,7 @@ public interface VEXDocument {
 	 *            the second offset
 	 * @model
 	 */
-	public VEXElement findCommonElement(int offset1, int offset2);
+	public IVEXElement findCommonElement(int offset1, int offset2);
 
 	/**
 	 * Returns the character at the given offset.
@@ -91,7 +90,7 @@ public interface VEXDocument {
 	 * 
 	 * @model
 	 */
-	public VEXElement getElementAt(int offset);
+	public IVEXElement getElementAt(int offset);
 
 	/**
 	 * Returns the encoding used for this document, or null if no encoding has
@@ -109,7 +108,7 @@ public interface VEXDocument {
 	 * 
 	 * @model
 	 */
-	public VEXDocumentFragment getFragment(int startOffset, int endOffset);
+	public IVEXDocumentFragment getFragment(int startOffset, int endOffset);
 
 	/**
 	 * Returns the length of the document in characters, including the null
@@ -128,9 +127,9 @@ public interface VEXDocument {
 	 *            the offset at which the sequence begins
 	 * @param endOffset
 	 *            the offset at which the sequence ends
-	 * @model
+	 * @model containment="true"
 	 */
-	public List<String> getNodeNames(int startOffset, int endOffset);
+	public String[] getNodeNames(int startOffset, int endOffset);
 
 	/**
 	 * Returns an array of Nodes representing the selected range. The given
@@ -141,9 +140,9 @@ public interface VEXDocument {
 	 * @param endOffset
 	 *            the offset at which the sequence ends
 	 * 
-	 * @model 
+	 * @model type="IVEXNode" containment="true"
 	 */
-	public List<VEXNode> getNodes(int startOffset, int endOffset);
+	public IVEXNode[] getNodes(int startOffset, int endOffset);
 
 
 	/**
@@ -163,7 +162,7 @@ public interface VEXDocument {
 	 * 
 	 * @model
 	 */
-	public VEXElement getRootElement();
+	public IVEXElement getRootElement();
 
 
 	/**
@@ -185,7 +184,7 @@ public interface VEXDocument {
 	 * 
 	 * @model
 	 */
-	public Validator getValidator();
+	public IValidator getValidator();
 
 	/**
 	 * Inserts an element at the given position.
@@ -201,7 +200,7 @@ public interface VEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public void insertElement(int offset, VEXElement defaults)
+	public void insertElement(int offset, IVEXElement defaults)
 			throws DocumentValidationException;
 
 	/**
@@ -218,7 +217,7 @@ public interface VEXDocument {
 	 *             if the change would result in an invalid document.
 	 * @model
 	 */
-	public void insertFragment(int offset, VEXDocumentFragment fragment)
+	public void insertFragment(int offset, IVEXDocumentFragment fragment)
 			throws DocumentValidationException;
 
 	/**
@@ -243,7 +242,7 @@ public interface VEXDocument {
 	 * Returns true if undo is enabled, that is, undoable edit events are fired
 	 * to registered listeners.
 	 * 
-	 * 
+	 * @model
 	 */
 	public boolean isUndoEnabled();
 
@@ -253,7 +252,7 @@ public interface VEXDocument {
 	 * 
 	 * @param listener
 	 *            <code>DocumentListener</code> to remove.
-	 * 
+	 * @model
 	 */
 	public void removeDocumentListener(DocumentListener listener);
 
@@ -304,13 +303,12 @@ public interface VEXDocument {
 	 *            Validator to use for this document.
 	 * 
 	 */
-	public void setValidator(Validator validator);
+	public void setValidator(IValidator validator);
 
 	/**
 	 * @param documentEvent
-	 * 
+	 * @model
 	 */
 	public void fireAttributeChanged(DocumentEvent documentEvent);
-	
 
 }

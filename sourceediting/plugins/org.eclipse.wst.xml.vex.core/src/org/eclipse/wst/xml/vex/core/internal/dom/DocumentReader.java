@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
- *     David Carver (STAR) - added namespace awareness.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -22,7 +21,7 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -63,7 +62,7 @@ public class DocumentReader {
 	 * @param url
 	 *            URL from which to load the document.
 	 */
-	public VEXDocument read(URL url) throws IOException,
+	public IVEXDocument read(URL url) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		return read(new InputSource(url.toString()));
@@ -76,7 +75,7 @@ public class DocumentReader {
 	 * @param s
 	 *            String containing the document to be read.
 	 */
-	public VEXDocument read(String s) throws IOException,
+	public IVEXDocument read(String s) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		Reader reader = new CharArrayReader(s.toCharArray());
@@ -89,14 +88,14 @@ public class DocumentReader {
 	 * @param is
 	 *            SAX InputSource from which to load the document.
 	 */
-	public VEXDocument read(InputSource is) throws IOException,
+	public IVEXDocument read(InputSource is) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setValidating(false);
-		factory.setNamespaceAware(true);
+		factory.setValidating(false); // TODO: experimental--SWT implementation
 		XMLReader xmlReader = factory.newSAXParser().getXMLReader();
-		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		// xmlReader.setFeature("http://xml.org/sax/features/validation",
+		// false);
 		final org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder builder = new org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder(
 				this.getWhitespacePolicyFactory());
 

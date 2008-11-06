@@ -1,11 +1,10 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
-import java.util.List;
 
 /**
  * @model
  */
-public interface VEXDocumentFragment {
+public interface IVEXDocumentFragment {
 
 	/**
 	 * Mime type representing document fragments: "text/x-vex-document-fragment"
@@ -18,7 +17,7 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model
 	 */
-	public  Content getContent();
+	public  IContent getContent();
 
 	/**
 	 * Returns the number of characters, including sentinels, represented by the
@@ -31,9 +30,9 @@ public interface VEXDocumentFragment {
 	/**
 	 * Returns the elements that make up this fragment.
 	 * 
-	 * @model 
+	 * @model type="IVEXElement" containment="true"
 	 */
-	public  List<VEXElement> getElements();
+	public  IVEXElement[] getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
@@ -41,14 +40,14 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  List<String> getNodeNames();
+	public  String[] getNodeNames();
 
 	/**
 	 * Returns the nodes that make up this fragment, including elements and
 	 * <code>Text</code> objects.
 	 * 
-	 * @model 
+	 * @model type="IVEXNode"
 	 */
-	public  List<VEXNode> getNodes();
+	public  IVEXNode[] getNodes();
 
 }
