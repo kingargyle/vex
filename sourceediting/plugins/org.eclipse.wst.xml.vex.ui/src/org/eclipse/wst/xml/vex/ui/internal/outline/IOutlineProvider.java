@@ -12,7 +12,7 @@ package org.eclipse.wst.xml.vex.ui.internal.outline;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
@@ -49,5 +49,5 @@ public interface IOutlineProvider {
 	 * @param child
 	 *            Element for which to find the outline element.
 	 */
-	public VEXElement getOutlineElement(VEXElement child);
+	public IVEXElement getOutlineElement(IVEXElement child);
 }

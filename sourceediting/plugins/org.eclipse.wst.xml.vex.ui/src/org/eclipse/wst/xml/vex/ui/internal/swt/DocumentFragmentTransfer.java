@@ -19,7 +19,7 @@ import java.io.ObjectOutputStream;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
 
 /**
  * Transfer object that handles Vex DocumentFragments.
@@ -49,7 +49,7 @@ public class DocumentFragmentTransfer extends ByteArrayTransfer {
 			return;
 
 		if (isSupportedType(transferData)) {
-			VEXDocumentFragment frag = (VEXDocumentFragment) object;
+			IVEXDocumentFragment frag = (IVEXDocumentFragment) object;
 			try {
 				// write data to a byte array and then ask super to convert to
 				// pMedium
@@ -89,9 +89,9 @@ public class DocumentFragmentTransfer extends ByteArrayTransfer {
 
 	// =================================================== PRIVATE
 
-	private static final String[] typeNames = { VEXDocumentFragment.MIME_TYPE };
+	private static final String[] typeNames = { IVEXDocumentFragment.MIME_TYPE };
 	private static final int[] typeIds = { ByteArrayTransfer
-			.registerType(VEXDocumentFragment.MIME_TYPE) };
+			.registerType(IVEXDocumentFragment.MIME_TYPE) };
 
 	private static DocumentFragmentTransfer instance;
 

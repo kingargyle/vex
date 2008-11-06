@@ -67,9 +67,9 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
@@ -373,7 +373,7 @@ public class VexEditorMultiPage extends VexEditor {
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			Validator validator = this.doctype.getValidator();
+			IValidator validator = this.doctype.getValidator();
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {
@@ -550,7 +550,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 	private boolean loaded;
 	private DocumentType doctype;
-	private VEXDocument doc;
+	private IVEXDocument doc;
 	private Style style;
 
 	private VexWidget vexWidget;
@@ -916,7 +916,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 	private String getLocation() {
 		List path = new ArrayList();
-		VEXElement element = this.vexWidget.getCurrentElement();
+		IVEXElement element = this.vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
 			element = element.getParent();
@@ -944,9 +944,9 @@ public class VexEditorMultiPage extends VexEditor {
 						IStructuredSelection sel = (IStructuredSelection) vexWidget
 								.getSelection();
 						boolean multi = (sel != null && sel.size() > 1);
-						Validator validator = vexWidget.getDocument()
+						IValidator validator = vexWidget.getDocument()
 								.getValidator();
-						return new ElementPropertySource((VEXElement) object,
+						return new ElementPropertySource((IVEXElement) object,
 								validator, multi);
 					} else {
 						return null;
