@@ -81,6 +81,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
+import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
@@ -390,7 +391,8 @@ public class VexEditor extends EditorPart {
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			IValidator validator = this.doctype.getValidator();
+			//IValidator validator = this.doctype.getValidator(); 
+			IValidator validator = WTPVEXValidator.create(doctype.getResourceUrl());
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {

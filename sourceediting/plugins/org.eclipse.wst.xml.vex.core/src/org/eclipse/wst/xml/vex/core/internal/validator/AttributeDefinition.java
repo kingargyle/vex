@@ -13,6 +13,8 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
+import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
+
 /**
  * <code>AttributeDefinition</code> represents an attribute definition in a DTD.
  * @model
@@ -68,7 +70,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 				return ENTITIES;
 			} else if (s.equals(NOTATION.toString())) {
 				return NOTATION;
-			} else if (s.equals(ENUMERATION.toString())) {
+			} else if (s.equals(ENUMERATION.toString()) || s.equals(CMDataType.ENUM)) {
 				return ENUMERATION;
 			} else {
 				throw new IllegalArgumentException("Attribute type '" + s

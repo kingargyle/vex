@@ -162,6 +162,10 @@ public class ElementPropertySource implements IPropertySource2 {
 		if (def.isRequired()) {
 			return values;
 		} else {
+			if (values == null) {
+				values = new String[1];
+				values[0] = "";
+			}
 			String[] values2 = new String[values.length + 1];
 			values2[0] = ""; //$NON-NLS-1$
 			System.arraycopy(values, 0, values2, 1, values.length);
