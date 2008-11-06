@@ -12,7 +12,6 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
@@ -21,7 +20,7 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
  * Validators must be serializable.
  * @model
  */
-public interface Validator extends Serializable {
+public interface IValidator extends Serializable {
 
 	/**
 	 * String indicating that character data is allowed at the given point in
@@ -54,7 +53,7 @@ public interface Validator extends Serializable {
 	/**
 	 * Returns a set of Strings representing valid root elements for the given
 	 * document type.
-	 * @model type="VEXElement" containment="true"
+	 * @model type="IVEXElement" containment="true"
 	 */
 	public Set getValidRootElements();
 
@@ -73,7 +72,7 @@ public interface Validator extends Serializable {
 	 *            point
 	 * @model type="String" containment="true"
 	 */
-	public Set<String> getValidItems(String element, List<String> prefix, List<String> suffix);
+	public Set getValidItems(String element, String[] prefix, String[] suffix);
 
 	/**
 	 * Returns true if the given sequence is valid for the given element.
@@ -88,7 +87,7 @@ public interface Validator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, List<String> nodes,
+	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial);
 
 	/**
@@ -110,7 +109,7 @@ public interface Validator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, List<String> seq1,
-			List<String> seq2, List<String> seq3, boolean partial);
+	public boolean isValidSequence(String element, String[] seq1,
+			String[] seq2, String[] seq3, boolean partial);
 
 }

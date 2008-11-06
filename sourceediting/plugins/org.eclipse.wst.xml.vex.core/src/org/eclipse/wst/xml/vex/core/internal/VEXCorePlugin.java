@@ -11,10 +11,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class VEXCorePlugin extends Plugin {
+public class VEXCorePlugin extends AbstractUIPlugin {
 
 	private static VEXCorePlugin instance;
 

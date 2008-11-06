@@ -17,7 +17,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
  * 
  * @model
  */
-public interface Content {
+public interface IContent {
 
 	/**
 	 * Creates a new Position object at the given initial offset.
@@ -26,7 +26,7 @@ public interface Content {
 	 *            initial offset of the position
 	 * @model
 	 */
-	public Position createPosition(int offset);
+	public IPosition createPosition(int offset);
 
 	/**
 	 * Insert a string into the content.

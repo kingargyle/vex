@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 /**
  * The root element of a document. Keeps track of the document to which it is
@@ -20,9 +20,9 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
  * notify document listeners that the document has changed when the element
  * changes.
  */
-public class RootElement extends Element implements VEXElement {
+public class RootElement extends Element implements IVEXElement {
 
-	private VEXDocument document;
+	private IVEXDocument document;
 
 	/**
 	 * Class constructor
@@ -37,14 +37,14 @@ public class RootElement extends Element implements VEXElement {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXRootElement#getDocument()
 	 */
-	public VEXDocument getDocument() {
+	public IVEXDocument getDocument() {
 		return document;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXRootElement#setDocument(org.eclipse.wst.xml.vex.core.internal.dom.Document)
 	 */
-	public void setDocument(VEXDocument document) {
+	public void setDocument(IVEXDocument document) {
 		this.document = document;
 	}
 

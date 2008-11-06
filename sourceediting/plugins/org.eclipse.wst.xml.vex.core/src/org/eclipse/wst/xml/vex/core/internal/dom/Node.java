@@ -10,21 +10,19 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
 
 /**
  * <code>Node</code> represents a component of an XML document. .
  *
  */
-public class Node implements VEXNode {
+public class Node implements IVEXNode {
 
-	private Content content = null;
-	private Position start = null;
-	private Position end = null;
-	private String namespace = null;
-	private String namespacePrefix = null;
+	private IContent content = null;
+	private IPosition start = null;
+	private IPosition end = null;
 
 	/**
 	 * Class constructor.
@@ -35,7 +33,7 @@ public class Node implements VEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getContent()
 	 */
-	public Content getContent() {
+	public IContent getContent() {
 		return this.content;
 	}
 
@@ -49,7 +47,7 @@ public class Node implements VEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndPosition()
 	 */
-	public Position getEndPosition() {
+	public IPosition getEndPosition() {
 		return this.end;
 	}
 
@@ -63,7 +61,7 @@ public class Node implements VEXNode {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartPosition()
 	 */
-	public Position getStartPosition() {
+	public IPosition getStartPosition() {
 		return this.start;
 	}
 
@@ -86,27 +84,11 @@ public class Node implements VEXNode {
 	 * @param endOffset
 	 *            offset at which the node's content ends
 	 */
-	public void setContent(Content content, int startOffset, int endOffset) {
+	public void setContent(IContent content, int startOffset, int endOffset) {
 
 		this.content = content;
 		this.start = content.createPosition(startOffset);
 		this.end = content.createPosition(endOffset);
-	}
-
-	public String getNamespace() {
-		return namespace;
-	}
-
-	public void setNamespace(String namespace) {
-		this.namespace = namespace;
-	}
-
-	public String getNamespacePrefix() {
-		return namespacePrefix;
-	}
-
-	public void setNamespacePrefix(String namespacePrefix) {
-		this.namespacePrefix = namespacePrefix;
 	}
 
 }

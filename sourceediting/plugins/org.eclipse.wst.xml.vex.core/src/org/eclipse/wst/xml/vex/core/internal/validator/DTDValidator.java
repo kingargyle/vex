@@ -13,13 +13,11 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +32,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
 import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
 import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder.Node;
 
@@ -58,8 +56,6 @@ public class DTDValidator extends AbstractValidator {
 
 	// map element names to maps of attribute name to attribute def
 	private Map attributeMaps = new HashMap();
-	
-	private static CMDocument contentModel;
 
 	/**
 	 * Creates a instance of DtdValidator given a URL.
@@ -75,7 +71,7 @@ public class DTDValidator extends AbstractValidator {
 		ContentModelManager contentModelManager = ContentModelManager
 				.getInstance();
 		String resolved = url.toString();
-		contentModel = contentModelManager.createCMDocument(
+		CMDocument contentModel = contentModelManager.createCMDocument(
 				resolved, null);
 
 		DTDValidator validator = new DTDValidator();
@@ -135,7 +131,7 @@ public class DTDValidator extends AbstractValidator {
 
 		validator.anySet = new HashSet();
 		validator.anySet.addAll(validator.elementDFAs.keySet());
-		validator.anySet.add(Validator.PCDATA);
+		validator.anySet.add(IValidator.PCDATA);
 
 		return validator;
 	}
@@ -155,25 +151,12 @@ public class DTDValidator extends AbstractValidator {
 		}
 	}
 
-//	public Set getValidRootElements() {
-//		return this.elementDFAs.keySet();
-//	}
-	
-	@SuppressWarnings({ "unchecked", "restriction" })
 	public Set getValidRootElements() {
-		Set results = new HashSet();
-		
-		Iterator iterator = contentModel.getElements().iterator();
-		while (iterator.hasNext()) {
-			CMElementDeclaration element = (CMElementDeclaration) iterator.next();
-			results.add(element.getElementName());
-		}
-		return results;
+		return this.elementDFAs.keySet();
 	}
-	
 
-	/** @see Validator#getValidItems */
-	public Set<String> getValidItems(String element, List<String> prefix, List<String> suffix) {
+	/** @see IValidator#getValidItems */
+	public Set getValidItems(String element, String[] prefix, String[] suffix) {
 
 		// First, get a set of candidates. We'll later test to see if each is
 		// valid to insert here.
@@ -191,11 +174,11 @@ public class DTDValidator extends AbstractValidator {
 		} else {
 			// If the last transition was due to PCDATA, adding more PCDATA
 			// is also valid
-			if (prefix.size() > 0
-					&& prefix.get(prefix.size() - 1).equals(Validator.PCDATA)) {
+			if (prefix.length > 0
+					&& prefix[prefix.length - 1].equals(IValidator.PCDATA)) {
 				candidates = new HashSet();
 				candidates.addAll(target.getValidSymbols());
-				candidates.add(Validator.PCDATA);
+				candidates.add(IValidator.PCDATA);
 			} else {
 				candidates = target.getValidSymbols();
 			}
@@ -210,20 +193,13 @@ public class DTDValidator extends AbstractValidator {
 		if (candidates.isEmpty()) {
 			return Collections.EMPTY_SET;
 		}
-		
-		List<String> listSeq1 = new ArrayList<String>(prefix.size());
-		listSeq1.addAll(prefix);
-
-		List<String> listSeq2 = new ArrayList<String>(suffix.size());
-		listSeq2.addAll(suffix);
-		
 
 		Set results = new HashSet();
-		List<String> middle = new ArrayList<String>(1);
+		String[] middle = new String[1];
 		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-			middle.add(0, (String) iter.next());
-			if (this.isValidSequence(element, listSeq1, middle, listSeq2, true)) {
-				results.add(middle.get(0));
+			middle[0] = (String) iter.next();
+			if (this.isValidSequence(element, prefix, middle, suffix, true)) {
+				results.add(middle[0]);
 			}
 		}
 		
@@ -232,9 +208,9 @@ public class DTDValidator extends AbstractValidator {
 	}
 
 	/**
-	 * @see Validator#isValidSequence
+	 * @see IValidator#isValidSequence
 	 */
-	public boolean isValidSequence(String element, List<String> nodes,
+	public boolean isValidSequence(String element, String[] nodes,
 			boolean partial) {
 
 		DFAState dfa = (DFAState) this.elementDFAs.get(element);
@@ -243,7 +219,7 @@ public class DTDValidator extends AbstractValidator {
 			return true;
 		}
 
-		DFAState target = dfa.getState(nodes);
+		DFAState target = dfa.getState(Arrays.asList(nodes));
 		
 		boolean returnValue;
 		if (target != null) {
@@ -272,14 +248,14 @@ public class DTDValidator extends AbstractValidator {
 		DFABuilder.Node node = null;
 
 		if (content == null) {
-			return DFABuilder.createSymbolNode(Validator.PCDATA);
+			return DFABuilder.createSymbolNode(IValidator.PCDATA);
 		}
 		
 		if (content instanceof CMElementDeclaration) {
 			CMElementDeclaration element = (CMElementDeclaration) content;
 			String elementName = element.getNodeName();
 			if (element.getContentType() == CMElementDeclaration.PCDATA) {
-				node = DFABuilder.createSymbolNode(Validator.PCDATA);
+				node = DFABuilder.createSymbolNode(IValidator.PCDATA);
 			} else if (element.getContentType() == CMElementDeclaration.MIXED) {
 				CMContent child = element.getContent();
 				DFABuilder.Node newNode = createDFANode(child);
@@ -289,7 +265,7 @@ public class DTDValidator extends AbstractValidator {
 					node = DFABuilder.createChoiceNode(node, newNode);
 				}
 				DFABuilder.Node pcdata = DFABuilder
-						.createSymbolNode(Validator.PCDATA);
+						.createSymbolNode(IValidator.PCDATA);
 				node = DFABuilder.createChoiceNode(node, pcdata);
 
 			} else if (element.getContent() != null) {

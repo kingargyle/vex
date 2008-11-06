@@ -11,10 +11,10 @@
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 
 public interface ElementOrRangeCallback {
 	public void onElement(Element child, String displayStyle);
 
-	public void onRange(VEXElement parent, int startOffset, int endOffset);
+	public void onRange(IVEXElement parent, int startOffset, int endOffset);
 }
