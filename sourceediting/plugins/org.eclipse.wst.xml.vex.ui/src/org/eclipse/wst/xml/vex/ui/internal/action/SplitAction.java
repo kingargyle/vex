@@ -17,9 +17,9 @@ import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
 /**
@@ -28,7 +28,7 @@ import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 public class SplitAction extends AbstractVexAction {
 
 	public void run(final IVexWidget vexWidget) {
-		VEXElement element = vexWidget.getCurrentElement();
+		IVEXElement element = vexWidget.getCurrentElement();
 		Styles styles = vexWidget.getStyleSheet().getStyles(element);
 		while (!styles.isBlock()) {
 			element = element.getParent();
@@ -46,7 +46,7 @@ public class SplitAction extends AbstractVexAction {
 	 *            Element to be split.
 	 */
 	public static void splitElement(final IVexWidget vexWidget,
-			final VEXElement element) {
+			final IVEXElement element) {
 
 		vexWidget.doWork(new Runnable() {
 			public void run() {
@@ -61,7 +61,7 @@ public class SplitAction extends AbstractVexAction {
 				if (styles.getWhiteSpace().equals(CSS.PRE)) {
 					// can't call vexWidget.insertText() or we'll get an
 					// infinite loop
-					VEXDocument doc = vexWidget.getDocument();
+					IVEXDocument doc = vexWidget.getDocument();
 					int offset = vexWidget.getCaretOffset();
 					doc.insertText(offset, "\n");
 					vexWidget.moveTo(offset + 1);
@@ -74,7 +74,7 @@ public class SplitAction extends AbstractVexAction {
 					// we clone the element.
 					List children = new ArrayList();
 					List frags = new ArrayList();
-					VEXElement child = vexWidget.getCurrentElement();
+					IVEXElement child = vexWidget.getCurrentElement();
 					while (true) {
 						children.add(child);
 						vexWidget.moveTo(child.getEndOffset(), true);
@@ -89,7 +89,7 @@ public class SplitAction extends AbstractVexAction {
 
 					for (int i = children.size() - 1; i >= 0; i--) {
 						child = (Element) children.get(i);
-						VEXDocumentFragment frag = (VEXDocumentFragment) frags.get(i);
+						IVEXDocumentFragment frag = (IVEXDocumentFragment) frags.get(i);
 						vexWidget.insertElement((Element) child.clone());
 						int offset = vexWidget.getCaretOffset();
 						if (frag != null) {
