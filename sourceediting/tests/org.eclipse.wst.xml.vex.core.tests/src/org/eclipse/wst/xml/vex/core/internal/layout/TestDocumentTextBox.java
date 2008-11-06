@@ -21,7 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.DocumentTextBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.InlineBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 
 import junit.framework.TestCase;
 
@@ -51,7 +51,7 @@ public class TestDocumentTextBox extends TestCase {
 
 	public void testSplit() throws Exception {
 		RootElement root = new RootElement("root");
-		IVEXDocument doc = new Document(root);
+		VEXDocument doc = new Document(root);
 
 		Styles styles = this.context.getStyleSheet().getStyles(root);
 

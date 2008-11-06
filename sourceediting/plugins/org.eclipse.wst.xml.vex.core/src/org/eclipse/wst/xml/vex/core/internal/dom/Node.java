@@ -12,13 +12,13 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
 
 /**
  * <code>Node</code> represents a component of an XML document. .
  *
  */
-public class Node implements IVEXNode {
+public class Node implements VEXNode {
 
 	private IContent content = null;
 	private IPosition start = null;

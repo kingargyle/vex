@@ -14,7 +14,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 
@@ -35,7 +35,7 @@ public class SplitItemAction extends AbstractVexAction {
 				if (box instanceof TableRowBox) {
 					return true;
 				} else {
-					IVEXElement element = box.getElement();
+					VEXElement element = box.getElement();
 					return element != null
 							&& ss.getStyles(element).getDisplay().equals(
 									CSS.LIST_ITEM);

@@ -12,8 +12,8 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.EventObject;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IVEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
@@ -22,8 +22,8 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  */
 public class DocumentEvent extends EventObject {
 
-	private IVEXDocument document;
-	private IVEXElement parentElement;
+	private VEXDocument document;
+	private VEXElement parentElement;
 	private int offset;
 	private int length;
 	private String attributeName;
@@ -45,7 +45,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(IVEXDocument document, IVEXElement e1, int offset,
+	public DocumentEvent(VEXDocument document, VEXElement e1, int offset,
 			int length, IUndoableEdit undoableEdit) {
 
 		super(document);
@@ -72,7 +72,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(IVEXDocument document, Element parentElement,
+	public DocumentEvent(VEXDocument document, Element parentElement,
 			String attributeName, String oldAttributeValue,
 			String newAttributeValue, IUndoableEdit undoableEdit) {
 
@@ -105,7 +105,7 @@ public class DocumentEvent extends EventObject {
 	 * Returns the element containing the change.
 	 * @model
 	 */
-	public IVEXElement getParentElement() {
+	public VEXElement getParentElement() {
 		return this.parentElement;
 	}
 
@@ -139,7 +139,7 @@ public class DocumentEvent extends EventObject {
 	 * @return the document for which this event was generated
 	 * @model
 	 */
-	public IVEXDocument getDocument() {
+	public VEXDocument getDocument() {
 		return document;
 	}
 
