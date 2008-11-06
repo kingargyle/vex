@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
+import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
 
 /**
@@ -82,7 +83,7 @@ public class DoctypeFactory implements IConfigItemFactory {
 	public Object parseResource(URL baseUrl, String resourcePath,
 			IBuildProblemHandler problemHandler) throws IOException {
 		try {
-			return DTDValidator.create(new URL(baseUrl, resourcePath));
+			return WTPVEXValidator.create(new URL(baseUrl, resourcePath));
 		} catch (IOException ex) {
 			if (problemHandler != null) {
 				BuildProblem problem = new BuildProblem();
