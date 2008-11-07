@@ -1,39 +1,31 @@
+/*******************************************************************************
+ *Copyright (c) 2008 Standard for Technology in Automotive Retail  and others.
+ *All rights reserved. This program and the accompanying materials
+ *are made available under the terms of the Eclipse Public License v1.0
+ *which accompanies this distribution, and is available at
+ *http://www.eclipse.org/legal/epl-v10.html
+ *
+ *Contributors:
+ *    David Carver (STAR) - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
-
-import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMAnyElement;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMNamedNodeMap;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
-import org.eclipse.wst.xml.core.internal.contentmodel.internal.modelqueryimpl.ModelQueryExtensionManagerImpl;
-import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
-import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtension;
-import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.extension.ModelQueryExtensionManager;
-import org.eclipse.wst.xml.core.internal.contentmodel.modelqueryimpl.ModelQueryImpl.AvailableContentCMVisitor;
-import org.eclipse.wst.xml.core.internal.contentmodel.util.CMDocumentCache;
-import org.eclipse.wst.xml.core.internal.contentmodel.util.CMVisitor;
-import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceTable;
-import org.eclipse.wst.xml.core.internal.modelquery.XMLModelQueryImpl;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
-import org.w3c.dom.Element;
 
 @SuppressWarnings("restriction")
 public class WTPVEXValidator implements Validator {
@@ -58,9 +50,6 @@ public class WTPVEXValidator implements Validator {
 	}
 
 	public static WTPVEXValidator create(URL url) throws IOException {
-
-		// Compute the DFAs for each element in the DTD
-
 		ContentModelManager contentModelManager = ContentModelManager
 				.getInstance();
 		String resolved = url.toString();
@@ -145,12 +134,8 @@ public class WTPVEXValidator implements Validator {
 	 * Returns a list of all CMNode 'meta data' that may be potentially added to
 	 * the element.
 	 */
-	protected List getAvailableContent(String element, CMElementDeclaration ed) {
-//		VEXAvailableContentCMVisitor visitor = new VEXAvailableContentCMVisitor(
-//				element, ed);
+	protected List<CMNode> getAvailableContent(String element, CMElementDeclaration ed) {
 		List<CMNode> list = new ArrayList<CMNode>();
-		// List list = visitor
-		// .computeAvailableContent(ModelQuery.INCLUDE_CHILD_NODES);
 		if (ed.getContentType() == CMElementDeclaration.ELEMENT
 				|| ed.getContentType() == CMElementDeclaration.MIXED) {
 			CMGroup groupContent = (CMGroup) ed.getContent();
@@ -162,6 +147,7 @@ public class WTPVEXValidator implements Validator {
 	private List<CMNode> getAllChildren(CMGroup group) {
 		List<CMNode> list = new ArrayList<CMNode>();
 		CMNodeList nodeList = group.getChildNodes();
+		
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			CMNode node = nodeList.item(i);
 			if (node instanceof CMElementDeclaration) {

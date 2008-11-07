@@ -22,6 +22,7 @@ import java.util.Stack;
 /**
  * Tools for building a deterministic finite automaton (DFA) recognizer for
  * regular expression-like languages.
+ * @deprecated replaced with WTP Content Model
  */
 public class DFABuilder {
 

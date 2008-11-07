@@ -12,7 +12,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  IContent getContent();
+	public  Content getContent();
 
 	/**
 	 * Returns the character offset corresponding to the end of the node.
@@ -26,7 +26,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  IPosition getEndPosition();
+	public  Position getEndPosition();
 
 	/**
 	 * Returns the character offset corresponding to the start of the node.
@@ -40,7 +40,7 @@ public interface VEXNode {
 	 * 
 	 * @model
 	 */
-	public  IPosition getStartPosition();
+	public  Position getStartPosition();
 
 	/**
 	 * Returns the text contained by this node. If this node is an element, the

@@ -12,7 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.LinkedList;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
@@ -200,7 +200,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	private boolean trimLeading = false;
 
 	// Content object to hold document content
-	private IContent content = new GapContent(100);
+	private Content content = new GapContent(100);
 
 	// Stack of StackElement objects
 	private LinkedList stack = new LinkedList();

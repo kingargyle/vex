@@ -49,14 +49,14 @@ public interface VEXElement extends VEXNode {
 	 * Returns an iterator over the children. Used by
 	 * <code>Document.delete</code> to safely delete children.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * 
 	 */
 	public Iterator getChildIterator();
 
 	/**
 	 * Returns an array of the elements children.
 	 * 
-	 * @model type="IVEXElement" containment="true"
+	 * @model  
 	 */
 	public VEXElement[] getChildElements();
 
@@ -65,7 +65,7 @@ public interface VEXElement extends VEXNode {
 	 * array includes child elements and runs of text returned as
 	 * <code>Text</code> objects.
 	 * 
-	 * @model type="IVEXNode" containment="true"
+	 * @model 
 	 */
 	public VEXNode[] getChildNodes();
 
@@ -131,7 +131,7 @@ public interface VEXElement extends VEXNode {
 	/**
 	 * 
 	 * @return
-	 * @model
+	 * 
 	 */
 	public String toString();
 
@@ -142,7 +142,7 @@ public interface VEXElement extends VEXNode {
 	 * @param i
 	 * @model
 	 */
-	public void setContent(IContent content, int offset, int i);
+	public void setContent(Content content, int offset, int i);
 
 	/**
 	 * 

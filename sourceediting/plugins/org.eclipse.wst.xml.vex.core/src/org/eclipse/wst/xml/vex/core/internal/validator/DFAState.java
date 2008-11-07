@@ -30,6 +30,7 @@ import java.util.Set;
  * Within VEX, we use a DFA to validate the sequence of children of a given
  * element. A DFA is constructed for each element declaration in the DTD.
  * </p>
+ * @deprecated Use the WTP Content Model see WTPVEXValidator.
  */
 public class DFAState implements Serializable {
 

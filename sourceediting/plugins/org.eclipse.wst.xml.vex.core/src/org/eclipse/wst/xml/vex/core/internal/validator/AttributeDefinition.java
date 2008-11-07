@@ -16,11 +16,16 @@ import java.io.Serializable;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 
 /**
- * <code>AttributeDefinition</code> represents an attribute definition in a DTD.
- * @model
+ * <code>AttributeDefinition</code> represents an attribute definition in a Grammar.
+ * 
  */
+@SuppressWarnings("restriction")
 public class AttributeDefinition implements Comparable, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2598982623825032645L;
 	private String name;
 	private Type type;
 	private String defaultValue;
@@ -33,6 +38,11 @@ public class AttributeDefinition implements Comparable, Serializable {
 	 * 
 	 */
 	public static final class Type implements Serializable {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8619544824795066006L;
 
 		private String s;
 
@@ -78,6 +88,7 @@ public class AttributeDefinition implements Comparable, Serializable {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return this.s;
 		}
