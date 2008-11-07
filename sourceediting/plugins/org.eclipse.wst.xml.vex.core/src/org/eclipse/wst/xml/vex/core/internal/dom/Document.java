@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -93,9 +94,14 @@ public class Document implements VEXDocument {
 		}
 
 		VEXElement element = this.getElementAt(offset);
-		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		List<String> listseq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		String[] seq1 = new String[listseq1.size()];
+		listseq1.toArray(seq1);
 		String[] seq2 = fragment.getNodeNames();
-		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
+		List<String> listseq3 = this.getNodeNames(offset, element.getEndOffset());
+		String[] seq3 = new String[listseq3.size()];
+		listseq1.toArray(seq3);
+
 		return this.validator.isValidSequence(element.getName(), seq1, seq2,
 				seq3, true);
 	}
@@ -111,9 +117,14 @@ public class Document implements VEXDocument {
 		}
 
 		VEXElement element = this.getElementAt(offset);
-		String[] seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		List<String> listseq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		String[] seq1 = new String[listseq1.size()];
+		listseq1.toArray(seq1);
+
 		String[] seq2 = new String[] { Validator.PCDATA };
-		String[] seq3 = this.getNodeNames(offset, element.getEndOffset());
+		List<String> listseq3 = this.getNodeNames(offset, element.getEndOffset());
+		String[] seq3 = new String[listseq3.size()];
+		listseq1.toArray(seq3);
 
 		return this.validator.isValidSequence(element.getName(), seq1, seq2,
 				seq3, true);
@@ -143,9 +154,15 @@ public class Document implements VEXDocument {
 
 		Validator validator = this.getValidator();
 		if (validator != null) {
-			String[] seq1 = this.getNodeNames(e1.getStartOffset() + 1,
+			List<String> listseq1 = this.getNodeNames(e1.getStartOffset() + 1,
 					startOffset);
-			String[] seq2 = this.getNodeNames(endOffset, e1.getEndOffset());
+			String[] seq1 = new String[listseq1.size()];
+			listseq1.toArray(seq1);
+
+			List<String> listseq2 = this.getNodeNames(endOffset, e1.getEndOffset());
+			String[] seq2 = new String[listseq2.size()];
+			listseq1.toArray(seq2);
+
 			if (!validator
 					.isValidSequence(e1.getName(), seq1, seq2, null, true)) {
 				throw new DocumentValidationException("Unable to delete from "
@@ -306,17 +323,17 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodeNames(int, int)
 	 * 
 	 */
-	public String[] getNodeNames(int startOffset, int endOffset) {
+	public List<String> getNodeNames(int startOffset, int endOffset) {
 
 		VEXNode[] nodes = this.getNodes(startOffset, endOffset);
-		String[] names = new String[nodes.length];
+		List<String> names = new ArrayList(nodes.length);
 
 		for (int i = 0; i < nodes.length; i++) {
 			VEXNode node = nodes[i];
 			if (node instanceof Element) {
-				names[i] = ((VEXElement) node).getName();
+				names.add(((VEXElement) node).getName());
 			} else {
-				names[i] = Validator.PCDATA;
+				names.add(Validator.PCDATA);
 			}
 		}
 
@@ -474,10 +491,15 @@ public class Document implements VEXDocument {
 		Validator validator = this.getValidator();
 		if (validator != null) {
 			VEXElement parent = this.getElementAt(offset);
-			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+			List<String> listseq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
+			String[] seq1 = new String[listseq1.size()];
+			listseq1.toArray(seq1);
 			String[] seq2 = new String[] { element.getName() };
-			String[] seq3 = this.getNodeNames(offset, parent.getEndOffset());
+			List<String> listseq3 = this.getNodeNames(offset, parent.getEndOffset());
+			String[] seq3 = new String[listseq3.size()];
+			listseq1.toArray(seq1);
+
 			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 					true)) {
 				throw new DocumentValidationException("Cannot insert element "
@@ -540,10 +562,16 @@ public class Document implements VEXDocument {
 		VEXElement parent = this.getElementAt(offset);
 
 		if (this.validator != null) {
-			String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+			List<String> listseq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
+			String[] seq1 = new String[listseq1.size()];
+			listseq1.toArray(seq1);
+			
 			String[] seq2 = fragment.getNodeNames();
-			String[] seq3 = this.getNodeNames(offset, parent.getEndOffset());
+			List<String> listseq3 = this.getNodeNames(offset, parent.getEndOffset());
+			String[] seq3 = new String[listseq3.size()];
+			listseq1.toArray(seq1);
+			
 			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 					true)) {
 
@@ -603,11 +631,17 @@ public class Document implements VEXDocument {
 		} else {
 			Validator validator = this.getValidator();
 			if (validator != null) {
-				String[] seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+				List<String> listseq1 = this.getNodeNames(parent.getStartOffset() + 1,
 						offset);
+				String[] seq1 = new String[listseq1.size()];
+				listseq1.toArray(seq1);
+				
 				String[] seq2 = new String[] { Validator.PCDATA };
-				String[] seq3 = this
+				List<String> listseq3 = this
 						.getNodeNames(offset, parent.getEndOffset());
+				String[] seq3 = new String[listseq3.size()];
+				listseq1.toArray(seq3);
+				
 				isValid = validator.isValidSequence(parent.getName(), seq1,
 						seq2, seq3, true);
 			} else {

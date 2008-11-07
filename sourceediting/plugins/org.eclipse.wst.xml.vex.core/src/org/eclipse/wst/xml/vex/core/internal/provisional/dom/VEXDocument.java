@@ -3,6 +3,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import java.util.List;
 
 /**
  * 
@@ -129,7 +130,7 @@ public interface VEXDocument {
 	 *            the offset at which the sequence ends
 	 * @model 
 	 */
-	public String[] getNodeNames(int startOffset, int endOffset);
+	public List<String> getNodeNames(int startOffset, int endOffset);
 
 	/**
 	 * Returns an array of Nodes representing the selected range. The given
