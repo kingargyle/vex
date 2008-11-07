@@ -143,7 +143,7 @@ public interface VEXDocument {
 	 * 
 	 * @model 
 	 */
-	public VEXNode[] getNodes(int startOffset, int endOffset);
+	public List<VEXNode> getNodes(int startOffset, int endOffset);
 
 
 	/**
