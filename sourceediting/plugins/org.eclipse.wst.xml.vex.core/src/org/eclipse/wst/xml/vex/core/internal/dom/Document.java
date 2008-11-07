@@ -15,8 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
@@ -32,7 +32,7 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  */
 public class Document implements VEXDocument {
 
-	private IContent content;
+	private Content content;
 	private RootElement rootElement;
 	private ListenerList listeners = new ListenerList(DocumentListener.class,
 			DocumentEvent.class);
@@ -69,7 +69,7 @@ public class Document implements VEXDocument {
 	 *            RootElement of the document.
 	 * 
 	 */
-	public Document(IContent content, RootElement rootElement) {
+	public Document(Content content, RootElement rootElement) {
 		this.content = content;
 		this.rootElement = rootElement;
 	}
@@ -123,7 +123,7 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#createPosition(int)
 	 * 
 	 */
-	public IPosition createPosition(int offset) {
+	public Position createPosition(int offset) {
 		return this.content.createPosition(offset);
 	}
 
@@ -273,7 +273,7 @@ public class Document implements VEXDocument {
 
 		VEXElement[] children = e1.getChildElements();
 
-		IContent newContent = new GapContent(endOffset - startOffset);
+		Content newContent = new GapContent(endOffset - startOffset);
 		String s = this.content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
 		List newChildren = new ArrayList();
@@ -379,7 +379,7 @@ public class Document implements VEXDocument {
 	 * @param elements
 	 *            child elements that are within the run
 	 */
-	static VEXNode[] createNodeArray(IContent content, int startOffset,
+	static VEXNode[] createNodeArray(Content content, int startOffset,
 			int endOffset, VEXElement[] elements) {
 
 		List nodes = new ArrayList();
@@ -555,7 +555,7 @@ public class Document implements VEXDocument {
 		this.fireBeforeContentInserted(new DocumentEvent(this, parent, offset,
 				2, null));
 
-		IContent c = fragment.getContent();
+		Content c = fragment.getContent();
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
@@ -889,7 +889,7 @@ public class Document implements VEXDocument {
 	 * @param parent
 	 *            parent for the cloned Element
 	 */
-	private VEXElement cloneElement(VEXElement original, IContent content, int shift,
+	private VEXElement cloneElement(VEXElement original, Content content, int shift,
 			VEXElement parent) {
 
 		Element clone = new Element(original.getName());

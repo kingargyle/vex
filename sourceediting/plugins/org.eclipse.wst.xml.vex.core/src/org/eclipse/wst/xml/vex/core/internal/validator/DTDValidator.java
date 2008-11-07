@@ -38,6 +38,7 @@ import org.eclipse.wst.xml.vex.core.internal.validator.DFABuilder.Node;
 
 /**
  * A validator driven by a DTD.
+ * @deprecated
  */
 public class DTDValidator extends AbstractValidator {
 
@@ -62,6 +63,7 @@ public class DTDValidator extends AbstractValidator {
 	 * 
 	 * @param url
 	 *            URL of the DTD file to use.
+	 * @deprecated
 	 */
 	@SuppressWarnings( { "restriction", "unchecked" })
 	public static DTDValidator create(URL url) throws IOException {

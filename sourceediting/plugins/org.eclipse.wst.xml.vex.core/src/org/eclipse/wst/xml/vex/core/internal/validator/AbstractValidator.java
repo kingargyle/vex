@@ -17,11 +17,13 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
 
 /**
  * Partial implementation of the Validator interface.
+ * @deprecated
  */
 public abstract class AbstractValidator implements Validator {
 
 	/**
 	 * @see Validator#isValidSequence
+	 * @deprecated
 	 */
 	public boolean isValidSequence(String element, String[] seq1,
 			String[] seq2, String[] seq3, boolean partial) {

@@ -17,7 +17,7 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model
 	 */
-	public  IContent getContent();
+	public  Content getContent();
 
 	/**
 	 * Returns the number of characters, including sentinels, represented by the

@@ -53,11 +53,11 @@
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getNodeNames" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eOperations name="getNodeNames" eType="#//StringArray">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
-    <eOperations name="getNodes" upperBound="-1" eType="#//VEXNode">
+    <eOperations name="getNodes" eType="#//VEXNodeArray">
       <eParameters name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eOperations>
@@ -85,15 +85,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootElement" eType="#//VEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="validator" eType="#//Validator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="undoEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXDocumentFragment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//VEXElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elements" eType="#//VEXElementArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeNames" eType="#//StringArray"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodes" eType="#//VEXNodeArray"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXElement" eSuperTypes="#//VEXNode">
@@ -120,12 +119,9 @@
       <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="child" eType="#//VEXElement"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeNames" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childElements" upperBound="-1"
-        eType="#//VEXElement"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childNodes" upperBound="-1"
-        eType="#//VEXNode"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeNames" eType="#//StringArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childElements" eType="#//VEXElementArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childNodes" eType="#//VEXNodeArray"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="document" eType="#//VEXDocument"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="empty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -138,40 +134,44 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="startPosition" eType="#//Position"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespacePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Validator" eSuperTypes="#//Serializable">
-    <eOperations name="getAttributeDefinition" eType="ecore:EEnum validator.ecore#//AttributeDefinition">
+    <eOperations name="getAttributeDefinition" eType="#//AttributeDefinition">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="attribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="getAttributeDefinitions" eType="#//AttributeDefinitionArray">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="getValidItems" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eOperations name="getValidItems">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eGenericType>
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="prefix" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="suffix" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="isValidSequence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="nodes" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="nodes" eType="#//StringArray"/>
       <eParameters name="partial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
     <eOperations name="isValidSequence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="seq1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="seq2" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="seq3" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="seq1" eType="#//StringArray"/>
+      <eParameters name="seq2" eType="#//StringArray"/>
+      <eParameters name="seq3" eType="#//StringArray"/>
       <eParameters name="partial" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="validRootElements" eType="#//VEXElement"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validRootElements" eType="#//Set"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="DocumentValidationException" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="StringArray" instanceClassName="java.lang.String[]"/>
   <eClassifiers xsi:type="ecore:EDataType" name="VEXNodeArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="VEXElementArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement[]"/>
   <eClassifiers xsi:type="ecore:EClass" name="Serializable" instanceClassName="java.io.Serializable"
       abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinition" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinitionArray" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Set" instanceClassName="java.util.Set">
+    <eTypeParameters name="T"/>
+  </eClassifiers>
 </ecore:EPackage>

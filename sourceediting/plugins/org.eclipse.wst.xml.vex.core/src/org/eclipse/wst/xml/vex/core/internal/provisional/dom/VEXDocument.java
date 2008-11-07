@@ -49,7 +49,7 @@ public interface VEXDocument {
 	 *            initial character offset of the position
 	 * @model
 	 */
-	public IPosition createPosition(int offset);
+	public Position createPosition(int offset);
 
 	/**
 	 * Deletes a portion of the document. No element may straddle the deletion

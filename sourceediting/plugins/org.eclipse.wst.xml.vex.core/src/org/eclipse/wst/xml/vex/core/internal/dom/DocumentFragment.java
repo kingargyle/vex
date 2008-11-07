@@ -15,7 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IContent;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
@@ -26,7 +26,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
  */
 public class DocumentFragment implements Serializable, VEXDocumentFragment {
 
-	private IContent content;
+	private Content content;
 	private VEXElement[] elements;
 
 	/**
@@ -37,7 +37,7 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 	 * @param elementArray
 	 *            Elements that make up this fragment.
 	 */
-	public DocumentFragment(IContent content, VEXElement[] elementArray) {
+	public DocumentFragment(Content content, VEXElement[] elementArray) {
 		this.content = content;
 		this.elements = elementArray;
 	}
@@ -45,7 +45,7 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getContent()
 	 */
-	public IContent getContent() {
+	public Content getContent() {
 		return this.content;
 	}
 

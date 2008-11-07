@@ -11,7 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.GapContent;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
 
 import junit.framework.TestCase;
 
@@ -38,11 +38,11 @@ public class GapContentTest extends TestCase {
 		content.insertString(1, "b");
 		assertEquals(4, content.getLength());
 
-		IPosition pa = content.createPosition(0);
-		IPosition pb = content.createPosition(1);
-		IPosition pc = content.createPosition(2);
-		IPosition pd = content.createPosition(3);
-		IPosition pe = content.createPosition(4);
+		Position pa = content.createPosition(0);
+		Position pb = content.createPosition(1);
+		Position pc = content.createPosition(2);
+		Position pd = content.createPosition(3);
+		Position pe = content.createPosition(4);
 
 		try {
 			content.getString(-1, 1);
@@ -110,8 +110,8 @@ public class GapContentTest extends TestCase {
 		assertEquals(5, pd.getOffset());
 		assertEquals(6, pe.getOffset());
 
-		IPosition px = content.createPosition(2);
-		IPosition py = content.createPosition(3);
+		Position px = content.createPosition(2);
+		Position py = content.createPosition(3);
 
 		content.remove(2, 2);
 

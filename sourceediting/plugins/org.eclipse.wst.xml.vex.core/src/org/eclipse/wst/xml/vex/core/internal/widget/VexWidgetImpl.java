@@ -40,7 +40,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IPosition;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
@@ -400,7 +400,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void doWork(boolean savePosition, Runnable runnable) {
-		IPosition position = null;
+		Position position = null;
 
 		if (savePosition) {
 			position = this.getDocument().createPosition(this.getCaretOffset());
@@ -1046,7 +1046,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void savePosition(Runnable runnable) {
-		IPosition pos = this.getDocument().createPosition(this.getCaretOffset());
+		Position pos = this.getDocument().createPosition(this.getCaretOffset());
 		try {
 			runnable.run();
 		} finally {

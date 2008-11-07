@@ -16,7 +16,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
  * character offset in the document.
  * @model
  */
-public interface IPosition {
+public interface Position {
 
 	/**
 	 * Returns the character offset corresponding to the position.
