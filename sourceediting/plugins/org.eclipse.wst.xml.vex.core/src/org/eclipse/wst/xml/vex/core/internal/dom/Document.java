@@ -325,11 +325,11 @@ public class Document implements VEXDocument {
 	 */
 	public List<String> getNodeNames(int startOffset, int endOffset) {
 
-		VEXNode[] nodes = this.getNodes(startOffset, endOffset);
-		List<String> names = new ArrayList(nodes.length);
+		List<VEXNode> nodes = this.getNodes(startOffset, endOffset);
+		List<String> names = new ArrayList(nodes.size());
 
-		for (int i = 0; i < nodes.length; i++) {
-			VEXNode node = nodes[i];
+		for (int i = 0; i < nodes.size(); i++) {
+			VEXNode node = nodes.get(i);
 			if (node instanceof Element) {
 				names.add(((VEXElement) node).getName());
 			} else {
@@ -344,7 +344,7 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodes(int, int)
 	 * 
 	 */
-	public VEXNode[] getNodes(int startOffset, int endOffset) {
+	public List<VEXNode> getNodes(int startOffset, int endOffset) {
 
 		VEXElement element = this.getElementAt(startOffset);
 		if (element != this.getElementAt(endOffset)) {
@@ -379,7 +379,7 @@ public class Document implements VEXDocument {
 			}
 		}
 
-		return (VEXNode[]) list.toArray(new VEXNode[list.size()]);
+		return list;
 	}
 
 	/**
