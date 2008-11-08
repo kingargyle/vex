@@ -13,6 +13,7 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -69,7 +70,7 @@ public class WTPVEXValidator implements Validator {
 		return vexAttr;
 	}
 
-	public AttributeDefinition[] getAttributeDefinitions(String element) {
+	public List<AttributeDefinition> getAttributeDefinitions(String element) {
 		CMElementDeclaration cmelement = getElementDeclaration(element);
 		AttributeDefinition[] attributeDefs = new AttributeDefinition[cmelement
 				.getAttributes().getLength()];
@@ -83,8 +84,7 @@ public class WTPVEXValidator implements Validator {
 			attributeList.add(vexAttr);
 		}
 
-		attributeList.toArray(attributeDefs);
-		return attributeDefs;
+		return attributeList;
 	}
 
 	private CMElementDeclaration getElementDeclaration(String element) {

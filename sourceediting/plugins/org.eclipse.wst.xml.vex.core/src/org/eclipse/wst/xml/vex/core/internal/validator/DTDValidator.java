@@ -146,11 +146,11 @@ public class DTDValidator extends AbstractValidator {
 				.get(attribute);
 	}
 
-	public AttributeDefinition[] getAttributeDefinitions(String element) {
+	public List<AttributeDefinition> getAttributeDefinitions(String element) {
 		if (this.attributeArrays.containsKey(element)) {
-			return (AttributeDefinition[]) this.attributeArrays.get(element);
+			return Arrays.asList((AttributeDefinition[]) this.attributeArrays.get(element));
 		} else {
-			return new AttributeDefinition[0];
+			return Arrays.asList(new AttributeDefinition[0]);
 		}
 	}
 

@@ -47,7 +47,7 @@ public class DTDValidatorTest extends TestCase {
 
 	public void testAttributeDefinition() throws Exception {
 		AttributeDefinition.Type adType = validator
-				.getAttributeDefinitions("section")[0].getType();
+				.getAttributeDefinitions("section").get(0).getType();
 
 		// Test serialization while we're at it
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -59,7 +59,7 @@ public class DTDValidatorTest extends TestCase {
 		validator = (Validator) ois.readObject();
 
 		AttributeDefinition.Type adType2 = validator
-				.getAttributeDefinitions("section")[0].getType();
+				.getAttributeDefinitions("section").get(0).getType();
 
 		assertSame(adType, adType2);
 
