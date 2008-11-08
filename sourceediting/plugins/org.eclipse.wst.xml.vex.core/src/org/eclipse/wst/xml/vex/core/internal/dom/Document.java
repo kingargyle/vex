@@ -293,9 +293,9 @@ public class Document implements VEXDocument {
 		VEXElement[] children = e1.getChildElements();
 
 		Content newContent = new GapContent(endOffset - startOffset);
-		String s = this.content.getString(startOffset, endOffset - startOffset);
+		String s = content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
-		List newChildren = new ArrayList();
+		List<VEXElement> newChildren = new ArrayList<VEXElement>();
 		for (int i = 0; i < children.length; i++) {
 			VEXElement child = children[i];
 			if (child.getEndOffset() <= startOffset) {
@@ -303,14 +303,12 @@ public class Document implements VEXDocument {
 			} else if (child.getStartOffset() >= endOffset) {
 				break;
 			} else {
-				newChildren.add(this.cloneElement(child, newContent,
+				newChildren.add(cloneElement(child, newContent,
 						-startOffset, null));
 			}
 		}
 
-		VEXElement[] elementArray = (VEXElement[]) newChildren
-				.toArray(new VEXElement[newChildren.size()]);
-		return new DocumentFragment(newContent, elementArray);
+		return new DocumentFragment(newContent, newChildren);
 	}
 
 	/* (non-Javadoc)
@@ -399,17 +397,17 @@ public class Document implements VEXDocument {
 	 *            child elements that are within the run
 	 */
 	static VEXNode[] createNodeArray(Content content, int startOffset,
-			int endOffset, VEXElement[] elements) {
+			int endOffset, List<VEXElement> elements) {
 
 		List nodes = new ArrayList();
 		int offset = startOffset;
-		for (int i = 0; i < elements.length; i++) {
-			int start = elements[i].getStartOffset();
+		for (int i = 0; i < elements.size(); i++) {
+			int start = elements.get(i).getStartOffset();
 			if (offset < start) {
 				nodes.add(new Text(content, offset, start));
 			}
-			nodes.add(elements[i]);
-			offset = elements[i].getEndOffset() + 1;
+			nodes.add(elements.get(i));
+			offset = elements.get(i).getEndOffset() + 1;
 		}
 
 		if (offset < endOffset) {
@@ -598,9 +596,9 @@ public class Document implements VEXDocument {
 			index++;
 		}
 
-		VEXElement[] elements = fragment.getElements();
-		for (int i = 0; i < elements.length; i++) {
-			VEXElement newElement = this.cloneElement(elements[i], this.content,
+		List<VEXElement> elements = fragment.getElements();
+		for (int i = 0; i < elements.size(); i++) {
+			VEXElement newElement = this.cloneElement(elements.get(i), this.content,
 					offset, parent);
 			parent.insertChild(index, newElement);
 			index++;
@@ -934,11 +932,11 @@ public class Document implements VEXDocument {
 		clone.setContent(content, original.getStartOffset() + shift, original
 				.getEndOffset()
 				+ shift);
-		String[] attrNames = original.getAttributeNames();
-		for (int i = 0; i < attrNames.length; i++) {
+		List<String> attrNames = original.getAttributeNames();
+		for (int i = 0; i < attrNames.size(); i++) {
 			try {
-				clone.setAttribute(attrNames[i], original
-						.getAttribute(attrNames[i]));
+				clone.setAttribute(attrNames.get(i), original
+						.getAttribute(attrNames.get(i)));
 			} catch (DocumentValidationException ex) {
 				throw new RuntimeException("Unexpected exception: " + ex);
 			}

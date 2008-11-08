@@ -122,7 +122,6 @@ public class DomTest extends TestCase {
 
 		VEXDocument doc;
 		VEXDocumentFragment frag;
-		VEXElement[] elements;
 		List<VEXNode> nodes;
 		VEXElement root;
 		VEXElement x;
@@ -157,7 +156,7 @@ public class DomTest extends TestCase {
 
 		frag = doc.getFragment(2, 3);
 		assertEquals(1, frag.getContent().getLength());
-		assertEquals(0, frag.getElements().length);
+		assertEquals(0, frag.getElements().size());
 		nodes = frag.getNodes();
 		assertEquals(1, nodes.size());
 		this.assertIsText(nodes.get(0), "b", 0, 1);
@@ -182,15 +181,16 @@ public class DomTest extends TestCase {
 		doc.insertText(3, "b");
 
 		frag = doc.getFragment(1, 6);
-		elements = frag.getElements();
-		assertEquals(1, elements.length);
-		this.assertIsElement(elements[0], "z", null, 1, 3);
+		
+		List<VEXElement> elements = frag.getElements();
+		assertEquals(1, elements.size());
+		this.assertIsElement(elements.get(0), "z", null, 1, 3);
 		nodes = frag.getNodes();
 		assertEquals(3, nodes.size());
 		assertIsText(nodes.get(0), "a", 0, 1);
 		assertIsElement(nodes.get(1), "z", null, 1, 3);
 		assertIsText(nodes.get(2), "c", 4, 5);
-		VEXNode[] childNodes = elements[0].getChildNodes();
+		VEXNode[] childNodes = elements.get(0).getChildNodes();
 		assertEquals(1, childNodes.length);
 		assertIsText(childNodes[0], "b", 2, 3);
 
@@ -224,9 +224,9 @@ public class DomTest extends TestCase {
 		assertEquals(9, frag.getContent().getLength());
 
 		elements = frag.getElements();
-		assertEquals(2, elements.length);
-		assertIsElement(elements[0], "x", null, 1, 3);
-		assertIsElement(elements[1], "y", null, 5, 7);
+		assertEquals(2, elements.size());
+		assertIsElement(elements.get(0), "x", null, 1, 3);
+		assertIsElement(elements.get(1), "y", null, 5, 7);
 
 		nodes = frag.getNodes();
 		assertEquals(5, nodes.size());
@@ -246,14 +246,14 @@ public class DomTest extends TestCase {
 		assertEquals(13, frag.getContent().getLength());
 
 		elements = frag.getElements();
-		assertEquals(1, elements.length);
-		assertIsElement(elements[0], "z", null, 0, 12);
+		assertEquals(1, elements.size());
+		assertIsElement(elements.get(0), "z", null, 0, 12);
 
 		nodes = frag.getNodes();
 		assertEquals(1, nodes.size());
 		assertIsElement(nodes.get(0), "z", null, 0, 12);
 
-		z = elements[0];
+		z = elements.get(0);
 		childNodes = z.getChildNodes();
 		assertEquals(5, childNodes.length);
 		assertIsText(childNodes[0], "bc", 1, 3);

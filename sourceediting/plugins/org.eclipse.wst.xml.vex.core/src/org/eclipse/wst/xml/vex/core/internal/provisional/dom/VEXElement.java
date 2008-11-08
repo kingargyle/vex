@@ -1,6 +1,7 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 
@@ -43,7 +44,7 @@ public interface VEXElement extends VEXNode {
 	 * 
 	 * @model 
 	 */
-	public String[] getAttributeNames();
+	public List<String> getAttributeNames();
 
 	/**
 	 * Returns an iterator over the children. Used by

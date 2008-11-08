@@ -33,7 +33,7 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  VEXElement[] getElements();
+	public  List<VEXElement> getElements();
 
 	/**
 	 * Returns an array of element names and Validator.PCDATA representing the
