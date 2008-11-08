@@ -276,7 +276,7 @@ public class InlineElementBox extends CompositeInlineBox {
 
 			VEXNode node = nodes.get(i);
 			InlineBox child;
-
+ 
 			if (node.getStartOffset() >= endOffset) {
 				break;
 			} else if (node instanceof Text) {

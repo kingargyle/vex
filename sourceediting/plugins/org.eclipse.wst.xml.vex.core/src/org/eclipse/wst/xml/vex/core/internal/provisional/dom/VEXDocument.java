@@ -285,7 +285,7 @@ public interface VEXDocument {
 	 * Returns the system ID of the document type.
 	 */
 	public String getSystemID();
-	
+	 
 	/**
 	 * Sets whether undo events are enabled. Typically, undo events are disabled
 	 * while an edit is being undone or redone.

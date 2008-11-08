@@ -134,7 +134,7 @@ public class Element extends Node implements Cloneable, VEXElement {
 		return Arrays.asList(Document.createNodeArray(getContent(), getStartOffset() + 1,
 				getEndOffset(), children));
 	}
-
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
