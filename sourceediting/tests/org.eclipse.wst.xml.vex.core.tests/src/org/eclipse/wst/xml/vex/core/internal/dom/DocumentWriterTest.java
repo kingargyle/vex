@@ -98,17 +98,17 @@ public class DocumentWriterTest extends TestCase {
 			assertEquals(expectedAttrs.get(i), actualAttrs.get(i));
 		}
 
-		VEXNode[] expectedContent = expected.getChildNodes();
-		VEXNode[] actualContent = actual.getChildNodes();
-		assertEquals(expectedContent.length, actualContent.length);
-		for (int i = 0; i < expectedContent.length; i++) {
-			assertEquals(expectedContent[i].getClass(), actualContent[i]
+		List<VEXNode> expectedContent = expected.getChildNodes();
+		List<VEXNode> actualContent = actual.getChildNodes();
+		assertEquals(expectedContent.size(), actualContent.size());
+		for (int i = 0; i < expectedContent.size(); i++) {
+			assertEquals(expectedContent.get(i).getClass(), actualContent.get(i)
 					.getClass());
-			if (expectedContent[i] instanceof Element) {
-				assertEquals((VEXElement) expectedContent[i],
-						(VEXElement) actualContent[i]);
+			if (expectedContent.get(i) instanceof Element) {
+				assertEquals((VEXElement) expectedContent.get(i),
+						(VEXElement) actualContent.get(i));
 			} else {
-				assertEquals(expectedContent[i].getText(), actualContent[i]
+				assertEquals(expectedContent.get(i).getText(), actualContent.get(i)
 						.getText());
 			}
 		}

@@ -271,10 +271,10 @@ public class InlineElementBox extends CompositeInlineBox {
 
 		InlineBoxes result = new InlineBoxes();
 
-		VEXNode[] nodes = element2.getChildNodes();
-		for (int i = 0; i < nodes.length; i++) {
+		List<VEXNode> nodes = element2.getChildNodes();
+		for (int i = 0; i < nodes.size(); i++) {
 
-			VEXNode node = nodes[i];
+			VEXNode node = nodes.get(i);
 			InlineBox child;
 
 			if (node.getStartOffset() >= endOffset) {

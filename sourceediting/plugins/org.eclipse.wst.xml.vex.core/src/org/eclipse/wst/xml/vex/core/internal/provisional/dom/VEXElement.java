@@ -68,7 +68,7 @@ public interface VEXElement extends VEXNode {
 	 * 
 	 * @model 
 	 */
-	public VEXNode[] getChildNodes();
+	public List<VEXNode> getChildNodes();
 
 	/**
 	 * @return The document to which this element belongs. Returns null if this

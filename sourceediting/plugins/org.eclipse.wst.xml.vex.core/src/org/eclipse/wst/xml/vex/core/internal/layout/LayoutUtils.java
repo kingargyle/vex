@@ -116,14 +116,14 @@ public class LayoutUtils {
 
 		List nonMatching = new ArrayList();
 
-		VEXNode[] nodes = element.getChildNodes();
-		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i].getEndOffset() <= startOffset) {
+		List<VEXNode> nodes = element.getChildNodes();
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).getEndOffset() <= startOffset) {
 				continue;
-			} else if (nodes[i].getStartOffset() >= endOffset) {
+			} else if (nodes.get(i).getStartOffset() >= endOffset) {
 				break;
 			} else {
-				VEXNode node = nodes[i];
+				VEXNode node = nodes.get(i);
 
 				if (node instanceof Element) {
 					Element childElement = (Element) node;

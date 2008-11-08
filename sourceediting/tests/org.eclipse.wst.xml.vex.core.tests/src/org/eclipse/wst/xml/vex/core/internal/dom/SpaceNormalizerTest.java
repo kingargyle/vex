@@ -268,16 +268,16 @@ public class SpaceNormalizerTest extends TestCase {
 	 * the name of an element; otherwise, it represents text content.
 	 */
 	private void assertContent(VEXElement element, String[] strings) {
-		VEXNode[] content = element.getChildNodes();
-		assertEquals(strings.length, content.length);
+		List<VEXNode> content = element.getChildNodes();
+		assertEquals(strings.length, content.size());
 		for (int i = 0; i < strings.length; i++) {
 			if (strings[i].startsWith("<")) {
 				String name = strings[i].substring(1, strings[i].length() - 1);
-				assertTrue(content[i] instanceof Element);
-				assertEquals(name, ((VEXElement) content[i]).getName());
+				assertTrue(content.get(i) instanceof Element);
+				assertEquals(name, ((VEXElement) content.get(i)).getName());
 			} else {
-				assertTrue(content[i] instanceof Text);
-				String contentText = content[i].getText();
+				assertTrue(content.get(i) instanceof Text);
+				String contentText = content.get(i).getText();
 				assertEquals(strings[i], contentText);
 			}
 		}
