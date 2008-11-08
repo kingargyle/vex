@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
@@ -66,15 +69,15 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodeNames()
 	 */
-	public String[] getNodeNames() {
+	public List<String> getNodeNames() {
 
-		VEXNode[] nodes = this.getNodes();
-		String[] names = new String[nodes.length];
-		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i] instanceof Text) {
-				names[i] = Validator.PCDATA;
+		List<VEXNode> nodes = getNodes();
+		List<String> names = new ArrayList(nodes.size());
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i) instanceof Text) {
+				names.add(Validator.PCDATA);
 			} else {
-				names[i] = ((VEXElement) nodes[i]).getName();
+				names.add(((VEXElement) nodes.get(i)).getName());
 			}
 		}
 
@@ -84,9 +87,9 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodes()
 	 */
-	public VEXNode[] getNodes() {
-		return Document.createNodeArray(this.getContent(), 0, this.getContent()
-				.getLength(), this.getElements());
+	public List<VEXNode> getNodes() {
+		return Arrays.asList(Document.createNodeArray(getContent(), 0, getContent()
+				.getLength(), getElements()));
 	}
 
 	// ======================================================= PRIVATE

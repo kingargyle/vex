@@ -97,7 +97,9 @@ public class Document implements VEXDocument {
 		List<String> listseq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
 		String[] seq1 = new String[listseq1.size()];
 		listseq1.toArray(seq1);
-		String[] seq2 = fragment.getNodeNames();
+		List<String> listseq2 = fragment.getNodeNames();
+		String[] seq2 = new String[listseq2.size()];
+		listseq2.toArray(seq2);
 		List<String> listseq3 = this.getNodeNames(offset, element.getEndOffset());
 		String[] seq3 = new String[listseq3.size()];
 		listseq1.toArray(seq3);
@@ -567,7 +569,9 @@ public class Document implements VEXDocument {
 			String[] seq1 = new String[listseq1.size()];
 			listseq1.toArray(seq1);
 			
-			String[] seq2 = fragment.getNodeNames();
+			List<String> listseq2 = fragment.getNodeNames();
+			String[] seq2 = new String[listseq2.size()];
+			listseq2.toArray(seq2);
 			List<String> listseq3 = this.getNodeNames(offset, parent.getEndOffset());
 			String[] seq3 = new String[listseq3.size()];
 			listseq1.toArray(seq1);

@@ -243,7 +243,7 @@ public interface VEXDocument {
 	 * Returns true if undo is enabled, that is, undoable edit events are fired
 	 * to registered listeners.
 	 * 
-	 * @model
+	 * 
 	 */
 	public boolean isUndoEnabled();
 
