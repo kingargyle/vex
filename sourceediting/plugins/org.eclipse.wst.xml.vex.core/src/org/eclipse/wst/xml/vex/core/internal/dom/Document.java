@@ -355,9 +355,9 @@ public class Document implements VEXDocument {
 		}
 
 		List list = new ArrayList();
-		VEXNode[] nodes = element.getChildNodes();
-		for (int i = 0; i < nodes.length; i++) {
-			VEXNode node = nodes[i];
+		List<VEXNode> nodes = element.getChildNodes();
+		for (int i = 0; i < nodes.size(); i++) {
+			VEXNode node = nodes.get(i);
 			if (node.getEndOffset() <= startOffset) {
 				continue;
 			} else if (node.getStartOffset() >= endOffset) {

@@ -223,9 +223,9 @@ public class DocumentWriter {
 				pw.println(">");
 
 				String childIndent = indent + this.indent;
-				VEXNode[] content = element.getChildNodes();
-				for (int i = 0; i < content.length; i++) {
-					this.writeNode(content[i], pw, childIndent);
+				List<VEXNode> content = element.getChildNodes();
+				for (int i = 0; i < content.size(); i++) {
+					this.writeNode(content.get(i), pw, childIndent);
 				}
 				pw.print(indent);
 				pw.print("</");
@@ -258,9 +258,9 @@ public class DocumentWriter {
 			pw.print(this.getAttributeString(element));
 			pw.print(">");
 
-			VEXNode[] content = element.getChildNodes();
-			for (int i = 0; i < content.length; i++) {
-				this.writeNodeNoWrap(content[i], pw);
+			List<VEXNode> content = element.getChildNodes();
+			for (int i = 0; i < content.size(); i++) {
+				this.writeNodeNoWrap(content.get(i), pw);
 			}
 
 			pw.print("</");
@@ -284,12 +284,12 @@ public class DocumentWriter {
 			wrapper.add(escape(node.getText()));
 		} else {
 			VEXElement element = (VEXElement) node;
-			VEXNode[] content = element.getChildNodes();
+			List<VEXNode> content = element.getChildNodes();
 			List<String> attrs = element.getAttributeNames();
 			Collections.sort(attrs);
 
 			if (attrs.size() == 0) {
-				if (content.length == 0) {
+				if (content.size() == 0) {
 					wrapper.add("<" + element.getName() + " />");
 				} else {
 					wrapper.add("<" + element.getName() + ">");
@@ -307,7 +307,7 @@ public class DocumentWriter {
 								.getAttribute(attrs.get(i))));
 					}
 					if (i == attrs.size() - 1) {
-						if (content.length == 0) {
+						if (content.size() == 0) {
 							sb.append("/>");
 						} else {
 							sb.append(">");
@@ -317,11 +317,11 @@ public class DocumentWriter {
 				}
 			}
 
-			for (int i = 0; i < content.length; i++) {
-				addNode(content[i], wrapper);
+			for (int i = 0; i < content.size(); i++) {
+				addNode(content.get(i), wrapper);
 			}
 
-			if (content.length > 0) {
+			if (content.size() > 0) {
 				wrapper.add("</" + element.getName() + ">");
 			}
 		}

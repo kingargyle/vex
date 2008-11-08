@@ -214,9 +214,9 @@ public class ActionUtils {
 
 		int previousSiblingStart = -1;
 		VEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
-		VEXNode[] children = parent.getChildNodes();
-		for (int i = 0; i < children.length; i++) {
-			VEXNode child = children[i];
+		List<VEXNode> children = parent.getChildNodes();
+		for (int i = 0; i < children.size(); i++) {
+			VEXNode child = children.get(i);
 			if (startOffset == child.getStartOffset()) {
 				break;
 			}
