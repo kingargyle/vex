@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
@@ -84,15 +87,15 @@ public class DocumentWriterTest extends TestCase {
 		System.out.println("Checking " + actual.getName());
 		assertEquals(expected.getName(), actual.getName());
 
-		String[] expectedAttrs = expected.getAttributeNames();
-		Arrays.sort(expectedAttrs);
+		List<String> expectedAttrs = expected.getAttributeNames();
+		Collections.sort(expectedAttrs);
 
-		String[] actualAttrs = actual.getAttributeNames();
-		Arrays.sort(actualAttrs);
+		List<String> actualAttrs = actual.getAttributeNames();
+		Collections.sort(actualAttrs);
 
-		assertEquals(expectedAttrs.length, actualAttrs.length);
-		for (int i = 0; i < expectedAttrs.length; i++) {
-			assertEquals(expectedAttrs[i], actualAttrs[i]);
+		assertEquals(expectedAttrs.size(), actualAttrs.size());
+		for (int i = 0; i < expectedAttrs.size(); i++) {
+			assertEquals(expectedAttrs.get(i), actualAttrs.get(i));
 		}
 
 		VEXNode[] expectedContent = expected.getChildNodes();
