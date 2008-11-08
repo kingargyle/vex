@@ -1,5 +1,6 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
+import java.util.List;
 
 /**
  * @model
@@ -40,7 +41,7 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  String[] getNodeNames();
+	public  List<String> getNodeNames();
 
 	/**
 	 * Returns the nodes that make up this fragment, including elements and
@@ -48,6 +49,6 @@ public interface VEXDocumentFragment {
 	 * 
 	 * @model 
 	 */
-	public  VEXNode[] getNodes();
+	public  List<VEXNode> getNodes();
 
 }
