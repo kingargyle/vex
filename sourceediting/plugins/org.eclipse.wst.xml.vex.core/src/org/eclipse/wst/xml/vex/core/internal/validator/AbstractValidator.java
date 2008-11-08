@@ -25,33 +25,33 @@ public abstract class AbstractValidator implements Validator {
 	 * @see Validator#isValidSequence
 	 * @deprecated
 	 */
-	public boolean isValidSequence(String element, String[] seq1,
-			String[] seq2, String[] seq3, boolean partial) {
+	public boolean isValidSequence(String element, List<String> seq1,
+			List<String> seq2, List<String> seq3, boolean partial) {
 
 		List list = new ArrayList();
-		for (int i = 0; i < seq1.length; i++) {
-			list.add(seq1[i]);
+		for (int i = 0; i < seq1.size(); i++) {
+			list.add(seq1.get(i));
 		}
 		if (seq2 != null) {
-			for (int i = 0; i < seq2.length; i++) {
-				if (i == 0 && seq2[i].equals(Validator.PCDATA)
+			for (int i = 0; i < seq2.size(); i++) {
+				if (i == 0 && seq2.get(i).equals(Validator.PCDATA)
 						&& list.size() > 0
 						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}
-				list.add(seq2[i]);
+				list.add(seq2.get(i));
 			}
 		}
 		if (seq3 != null) {
-			for (int i = 0; i < seq3.length; i++) {
-				if (i == 0 && seq3[i].equals(Validator.PCDATA)
+			for (int i = 0; i < seq3.size(); i++) {
+				if (i == 0 && seq3.get(i).equals(Validator.PCDATA)
 						&& list.size() > 0
 						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
 				}
-				list.add(seq3[i]);
+				list.add(seq3.get(i));
 			}
 		}
 
