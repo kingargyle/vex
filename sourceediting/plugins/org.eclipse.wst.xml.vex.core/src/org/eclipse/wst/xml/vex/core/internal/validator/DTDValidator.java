@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -215,7 +216,7 @@ public class DTDValidator extends AbstractValidator {
 	/**
 	 * @see Validator#isValidSequence
 	 */
-	public boolean isValidSequence(String element, String[] nodes,
+	public boolean isValidSequence(String element, List<String> nodes,
 			boolean partial) {
 
 		DFAState dfa = (DFAState) this.elementDFAs.get(element);
