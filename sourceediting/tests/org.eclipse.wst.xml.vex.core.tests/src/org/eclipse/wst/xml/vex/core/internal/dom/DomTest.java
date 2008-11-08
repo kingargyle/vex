@@ -36,7 +36,6 @@ public class DomTest extends TestCase {
 		RootElement root = new RootElement("article");
 		VEXDocument doc = new Document(root);
 		VEXNode[] content;
-		VEXElement[] children;
 
 		// root
 		// | |
@@ -49,8 +48,8 @@ public class DomTest extends TestCase {
 
 		content = root.getChildNodes();
 		assertEquals(0, content.length);
-		children = root.getChildElements();
-		assertEquals(0, children.length);
+		List<VEXElement> children = root.getChildElements();
+		assertEquals(0, children.size());
 
 		// root
 		// | |

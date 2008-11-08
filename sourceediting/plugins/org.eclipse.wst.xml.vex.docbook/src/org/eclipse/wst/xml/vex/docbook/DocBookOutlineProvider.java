@@ -94,10 +94,10 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      */
     private VEXElement[] getOutlineChildren(final VEXElement element) {
         final List children = new ArrayList();
-        final VEXElement[] childElements = element.getChildElements();
-        for (int i = 0; i < childElements.length; i++) {
-            if (titledElements.contains(childElements[i].getName())) {
-                children.add(childElements[i]);
+        final List<VEXElement> childElements = element.getChildElements();
+        for (int i = 0; i < childElements.size(); i++) {
+            if (titledElements.contains(childElements.get(i).getName())) {
+                children.add(childElements.get(i));
             }
         }
         return (VEXElement[]) children.toArray(new VEXElement[children.size()]);
@@ -139,9 +139,9 @@ public class DocBookOutlineProvider implements IOutlineProvider {
     	
     	if( titledElements.contains(e.getName() )
      			|| e.getParent() == null ) {
-    		final VEXElement [] children = e.getChildElements();
-    		if( (children.length > 0 && children[0].getName().equals("title"))
-    		 || (children.length > 1 && children[1].getName().equals("title"))  		
+    		final List<VEXElement> children = e.getChildElements();
+    		if( (children.size() > 0 && children.get(0).getName().equals("title"))
+    		 || (children.size() > 1 && children.get(1).getName().equals("title"))  		
     		  ) {
     		    	return true;
     		    }
@@ -155,9 +155,9 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * facility.
      */
     private VEXElement findChild(VEXElement parent, String childName) {
-        VEXElement[] children = parent.getChildElements();
-        for (int i = 0; i < children.length; i++) {
-            VEXElement child = children[i];
+        List<VEXElement> children = parent.getChildElements();
+        for (int i = 0; i < children.size(); i++) {
+            VEXElement child = children.get(i);
             if (child.getName().equals(childName)) {
                 return child;
             }
