@@ -211,7 +211,7 @@ public class ActionUtils {
 
 			startOffset = box.getElement().getStartOffset();
 		}
-
+ 
 		int previousSiblingStart = -1;
 		VEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
 		List<VEXNode> children = parent.getChildNodes();

@@ -177,8 +177,8 @@ public class WTPVEXValidator implements Validator {
 		return true;
 	}
 
-	public boolean isValidSequence(String element, String[] seq1,
-			String[] seq2, String[] seq3, boolean partial) {
+	public boolean isValidSequence(String element, List<String> seq1,
+			List<String> seq2, List<String> seq3, boolean partial) {
 		return true;
 	}
 }

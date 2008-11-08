@@ -93,18 +93,18 @@ public interface Validator extends Serializable {
 	 * @param element
 	 *            Name of the element being tested.
 	 * @param seq1
-	 *            Array of element names and Validator.PCDATA.
+	 *            List of element names and Validator.PCDATA.
 	 * @param seq2
-	 *            Array of element names and Validator.PCDATA. May be null or
+	 *            List of element names and Validator.PCDATA. May be null or
 	 *            empty.
 	 * @param seq3
-	 *            Array of element names and Validator.PCDATA. May be null or
+	 *            List of element names and Validator.PCDATA. May be null or
 	 *            empty.
 	 * @param partial
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, String[] seq1,
-			String[] seq2, String[] seq3, boolean partial);
+	public boolean isValidSequence(String element, List<String> seq1,
+			List<String> seq2, List<String> seq3, boolean partial);
 
 }

@@ -210,18 +210,12 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		VEXElement parent = this.getDocument().getElementAt(startOffset);
-		List<String> listseq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] seq1 = new String[listseq1.size()];
-		listseq1.toArray(seq1);
 
-		List<String> listseq2 = frag.getNodeNames();
-		String[] seq2 = new String[listseq2.size()];
-		listseq1.toArray(seq2);
+		List<String> seq2 = frag.getNodeNames();
 		
-		List<String> listseq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
-		String[] seq3 = new String[listseq3.size()];
-		listseq1.toArray(seq3);
+		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
@@ -251,16 +245,13 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		VEXElement parent = this.getDocument().getElementAt(startOffset);
-		List<String> listseq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
-		String[] seq1 = new String[listseq1.size()];
-		listseq1.toArray(seq1);
 
-		String[] seq2 = new String[] { Validator.PCDATA };
+		List<String> seq2 = new ArrayList<String>();
+		seq2.add(Validator.PCDATA);
 		
-		List<String> listseq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
-		String[] seq3 = new String[listseq3.size()];
-		listseq1.toArray(seq3);
+		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
@@ -303,20 +294,14 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		List<String> listseq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
+		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
 				.getStartOffset());
-		String[] seq1 = new String[listseq1.size()];
-		listseq1.toArray(seq1);
 		
-		List<String> listseq2 = doc.getNodeNames(element.getStartOffset() + 1, element
+		List<String> seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
 				.getEndOffset());
-		String[] seq2 = new String[listseq2.size()];
-		listseq1.toArray(seq2);
 
-		List<String> listseq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
+		List<String> seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
 				.getEndOffset());
-		String[] seq3 = new String[listseq3.size()];
-		listseq1.toArray(seq3);
 
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
