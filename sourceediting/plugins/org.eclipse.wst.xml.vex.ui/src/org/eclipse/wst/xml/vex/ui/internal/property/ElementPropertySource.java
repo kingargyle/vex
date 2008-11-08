@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.property;
 
+import java.util.List;
+
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
@@ -53,11 +55,11 @@ public class ElementPropertySource implements IPropertySource2 {
 
 		// note that elements from DocumentFragments don't have access
 		// to their original document, so we get it from the VexWidget
-		AttributeDefinition[] attrDefs = this.validator
-				.getAttributeDefinitions(this.element.getName());
-		IPropertyDescriptor[] pds = new IPropertyDescriptor[attrDefs.length];
-		for (int i = 0; i < attrDefs.length; i++) {
-			AttributeDefinition def = attrDefs[i];
+		List<AttributeDefinition> attrDefs = validator
+				.getAttributeDefinitions(element.getName());
+		IPropertyDescriptor[] pds = new IPropertyDescriptor[attrDefs.size()];
+		for (int i = 0; i < attrDefs.size(); i++) {
+			AttributeDefinition def = attrDefs.get(i);
 			if (this.multi && def.getName().equals(ATTR_ID)) {
 				pds[i] = new PropertyDescriptor(def.getName(), def.getName());
 			} else if (def.isFixed()) {

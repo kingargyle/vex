@@ -49,7 +49,7 @@ public interface Validator extends Serializable {
 	 *            Name of the element to check.
 	 * @model
 	 */
-	public AttributeDefinition[] getAttributeDefinitions(String element);
+	public List<AttributeDefinition> getAttributeDefinitions(String element);
 
 	/**
 	 * Returns a set of Strings representing valid root elements for the given
