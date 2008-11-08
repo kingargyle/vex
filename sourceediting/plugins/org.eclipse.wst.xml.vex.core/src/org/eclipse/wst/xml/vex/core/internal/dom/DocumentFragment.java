@@ -105,7 +105,7 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 			this.writeElement(elements.get(i), out);
 		}
 	}
-
+ 
 	private void writeElement(VEXElement element, ObjectOutputStream out)
 			throws IOException {
 
