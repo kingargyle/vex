@@ -589,9 +589,7 @@ public class VexWidgetImpl implements IVexWidget {
 		// If there's a selection, root out those candidates that can't
 		// contain it.
 		if (this.hasSelection()) {
-			List<String> listselectedNodes = doc.getNodeNames(startOffset, endOffset);
-			String[] selectedNodes = new String[listselectedNodes.size()];
-			listselectedNodes.toArray(selectedNodes);
+			List<String> selectedNodes = doc.getNodeNames(startOffset, endOffset);
 
 			for (Iterator iter = candidates.iterator(); iter.hasNext();) {
 				String candidate = (String) iter.next();
@@ -652,10 +650,8 @@ public class VexWidgetImpl implements IVexWidget {
 		candidates.remove(Validator.PCDATA);
 
 		// root out those that can't contain the current content
-		List<String> listcontent = doc.getNodeNames(element.getStartOffset() + 1,
+		List<String> content = doc.getNodeNames(element.getStartOffset() + 1,
 				element.getEndOffset());
-		String[] content = new String[listcontent.size()];
-		listprefix.toArray(content);
 		
 		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
 			String candidate = (String) iter.next();

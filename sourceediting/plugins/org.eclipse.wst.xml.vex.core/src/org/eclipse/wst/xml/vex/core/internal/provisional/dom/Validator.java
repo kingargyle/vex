@@ -12,6 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
@@ -81,7 +82,7 @@ public interface Validator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, String[] nodes,
+	public boolean isValidSequence(String element, List<String> nodes,
 			boolean partial);
 
 	/**
