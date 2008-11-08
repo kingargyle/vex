@@ -120,9 +120,8 @@ public class Element extends Node implements Cloneable, VEXElement {
 	 * @see
 	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildElements()
 	 */
-	public VEXElement[] getChildElements() {
-		int size = this.children.size();
-		return (VEXElement[]) this.children.toArray(new VEXElement[size]);
+	public List<VEXElement> getChildElements() {
+		return children;
 	}
 
 	/*
@@ -132,9 +131,8 @@ public class Element extends Node implements Cloneable, VEXElement {
 	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildNodes()
 	 */
 	public VEXNode[] getChildNodes() {
-		List<VEXElement> childElements = Arrays.asList(getChildElements());
 		return Document.createNodeArray(getContent(), getStartOffset() + 1,
-				getEndOffset(), childElements);
+				getEndOffset(), children);
 	}
 
 	/*

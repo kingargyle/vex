@@ -204,14 +204,14 @@ public class Document implements VEXDocument {
 		VEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			VEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				if (offset1 > children[i].getStartOffset()
-						&& offset2 > children[i].getStartOffset()
-						&& offset1 <= children[i].getEndOffset()
-						&& offset2 <= children[i].getEndOffset()) {
+			List<VEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				if (offset1 > children.get(i).getStartOffset()
+						&& offset2 > children.get(i).getStartOffset()
+						&& offset1 <= children.get(i).getEndOffset()
+						&& offset2 <= children.get(i).getEndOffset()) {
 
-					element = children[i];
+					element = children.get(i);
 					tryAgain = true;
 					break;
 				}
@@ -243,9 +243,9 @@ public class Document implements VEXDocument {
 		VEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			VEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				VEXElement child = children[i];
+			List<VEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				VEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
 					return element;
 				} else if (offset <= child.getEndOffset()) {
@@ -290,14 +290,14 @@ public class Document implements VEXDocument {
 					+ " to " + endOffset + " is unbalanced");
 		}
 
-		VEXElement[] children = e1.getChildElements();
+		List<VEXElement> children = e1.getChildElements();
 
 		Content newContent = new GapContent(endOffset - startOffset);
 		String s = content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
 		List<VEXElement> newChildren = new ArrayList<VEXElement>();
-		for (int i = 0; i < children.length; i++) {
-			VEXElement child = children[i];
+		for (int i = 0; i < children.size(); i++) {
+			VEXElement child = children.get(i);
 			if (child.getEndOffset() <= startOffset) {
 				continue;
 			} else if (child.getStartOffset() >= endOffset) {
@@ -513,9 +513,9 @@ public class Document implements VEXDocument {
 		int childIndex = -1;
 		while (childIndex == -1) {
 			boolean tryAgain = false;
-			VEXElement[] children = parent.getChildElements();
-			for (int i = 0; i < children.length; i++) {
-				VEXElement child = children[i];
+			List<VEXElement> children = parent.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
+				VEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
 					childIndex = i;
 					break;
@@ -526,7 +526,7 @@ public class Document implements VEXDocument {
 				}
 			}
 			if (!tryAgain && childIndex == -1) {
-				childIndex = children.length;
+				childIndex = children.size();
 				break;
 			}
 		}
@@ -589,10 +589,10 @@ public class Document implements VEXDocument {
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
-		VEXElement[] children = parent.getChildElements();
+		List<VEXElement> children = parent.getChildElements();
 		int index = 0;
-		while (index < children.length
-				&& children[index].getEndOffset() < offset) {
+		while (index < children.size()
+				&& children.get(index).getEndOffset() < offset) {
 			index++;
 		}
 
@@ -943,9 +943,9 @@ public class Document implements VEXDocument {
 		}
 		clone.setParent(parent);
 
-		VEXElement[] children = original.getChildElements();
-		for (int i = 0; i < children.length; i++) {
-			VEXElement cloneChild = this.cloneElement(children[i], content, shift,
+		List<VEXElement> children = original.getChildElements();
+		for (int i = 0; i < children.size(); i++) {
+			VEXElement cloneChild = this.cloneElement(children.get(i), content, shift,
 					clone);
 			clone.insertChild(i, cloneChild);
 		}

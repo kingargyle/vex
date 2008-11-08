@@ -118,10 +118,10 @@ public class DocumentFragment implements Serializable, VEXDocumentFragment {
 			out.writeObject(attrNames.get(i));
 			out.writeObject(element.getAttribute(attrNames.get(i)));
 		}
-		VEXElement[] children = element.getChildElements();
-		out.writeInt(children.length);
-		for (int i = 0; i < children.length; i++) {
-			this.writeElement(children[i], out);
+		List<VEXElement> children = element.getChildElements();
+		out.writeInt(children.size());
+		for (int i = 0; i < children.size(); i++) {
+			this.writeElement(children.get(i), out);
 		}
 	}
 

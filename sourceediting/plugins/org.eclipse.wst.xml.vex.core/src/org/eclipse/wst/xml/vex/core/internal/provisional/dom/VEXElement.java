@@ -59,7 +59,7 @@ public interface VEXElement extends VEXNode {
 	 * 
 	 * @model  
 	 */
-	public VEXElement[] getChildElements();
+	public List<VEXElement> getChildElements();
 
 	/**
 	 * Returns an array of nodes representing the content of this element. The

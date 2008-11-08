@@ -191,10 +191,10 @@ public class DocumentWriter {
 			}
 
 			boolean hasBlockChild = false;
-			VEXElement[] children = element.getChildElements();
-			for (int i = 0; i < children.length; i++) {
+			List<VEXElement> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++) {
 				if (this.whitespacePolicy != null
-						&& this.whitespacePolicy.isBlock(children[i])) {
+						&& this.whitespacePolicy.isBlock(children.get(i))) {
 					hasBlockChild = true;
 					break;
 				}
