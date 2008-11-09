@@ -152,5 +152,34 @@ public interface VEXElement extends VEXNode {
 	 * @model
 	 */
 	public void insertChild(int index, VEXElement child);
+	
+	/**
+	 * This returns the namespace prefix.
+	 * @model
+	 */
+	public String getNamespacePrefix();
+	
+	/**
+	 * 
+	 */
+	
+	public void setNamespacePrefix(String prefix);
+	
+	/**
+	 * This returns the namespace URI.
+	 * @model
+	 */
+	public String getNamespaceURI();
+	
+	/**
+	 * 
+	 */
+	public void setNamespaceURI(String namespaceURI);
+	
+	/**
+	 * @model
+	 */
+	public void setNamespace(String prefix, String namespaceURI);
+	
 
 }

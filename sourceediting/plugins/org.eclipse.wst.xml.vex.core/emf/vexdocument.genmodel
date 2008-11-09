@@ -33,6 +33,21 @@
     <genClasses ecoreClass="dom1.ecore#//Position">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//Position/offset"/>
     </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//VEXAttribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXAttribute/document"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXAttribute/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXAttribute/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXAttribute/localName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXAttribute/namespacePrefix"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXAttribute/namespaceURI"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXAttribute/setNamespace">
+        <genParameters ecoreParameter="dom1.ecore#//VEXAttribute/setNamespace/prefix"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXAttribute/setNamespace/namespaceURI"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//VEXComment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXComment/value"/>
+    </genClasses>
     <genClasses ecoreClass="dom1.ecore#//VEXDocument">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocument/encoding"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXDocument/length"/>
@@ -111,6 +126,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/empty"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference dom1.ecore#//VEXElement/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/namespacePrefix"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXElement/namespaceURI"/>
       <genOperations ecoreOperation="dom1.ecore#//VEXElement/addChild">
         <genParameters ecoreParameter="dom1.ecore#//VEXElement/addChild/child"/>
       </genOperations>
@@ -134,6 +151,10 @@
         <genParameters ecoreParameter="dom1.ecore#//VEXElement/insertChild/index"/>
         <genParameters ecoreParameter="dom1.ecore#//VEXElement/insertChild/child"/>
       </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXElement/setNamespace">
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setNamespace/prefix"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXElement/setNamespace/namespaceURI"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="dom1.ecore#//VEXNode">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/content"/>
@@ -142,6 +163,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/startOffset"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/startPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/text"/>
+    </genClasses>
+    <genClasses ecoreClass="dom1.ecore#//VEXProcessingInstruction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXProcessingInstruction/attributes"/>
+      <genOperations ecoreOperation="dom1.ecore#//VEXProcessingInstruction/removeAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//VEXProcessingInstruction/removeAttribute/attributeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="dom1.ecore#//VEXProcessingInstruction/setAttribute">
+        <genParameters ecoreParameter="dom1.ecore#//VEXProcessingInstruction/setAttribute/attributeName"/>
+        <genParameters ecoreParameter="dom1.ecore#//VEXProcessingInstruction/setAttribute/value"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="dom1.ecore#//Validator">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute dom1.ecore#//Validator/validRootElements"/>
