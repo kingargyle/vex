@@ -36,6 +36,8 @@ public class Element extends Node implements Cloneable, VEXElement {
 	private VEXElement parent = null;
 	private List children = new ArrayList();
 	private Map attributes = new HashMap();
+	private String namespaceURI = null;
+	private String namespacePrefix = null;
 
 	/**
 	 * Class constructor.
@@ -356,6 +358,31 @@ public class Element extends Node implements Cloneable, VEXElement {
 
 	public void setParent(VEXElement parent) {
 		this.parent = parent;
+	}
+
+	public String getNamespacePrefix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getNamespaceURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setNamespace(String prefix, String namespaceURI) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setNamespacePrefix(String prefix) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setNamespaceURI(String namespaceURI) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
