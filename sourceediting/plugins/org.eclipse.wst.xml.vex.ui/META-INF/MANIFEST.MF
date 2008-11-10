@@ -27,7 +27,6 @@ Export-Package: org.eclipse.wst.xml.vex.ui.internal;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.outline;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.perspective;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.property;x-internal:=true,
- org.eclipse.wst.xml.vex.ui.internal.swing;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.swt;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.views;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.wizards;x-internal:=true
