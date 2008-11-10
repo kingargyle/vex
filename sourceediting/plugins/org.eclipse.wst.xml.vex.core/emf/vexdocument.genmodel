@@ -3,10 +3,11 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.xml.vex.core/src-emf"
     modelPluginID="org.eclipse.wst.xml.vex.core" modelName="Vexdocument" modelPluginClass=""
-    importerID="org.eclipse.emf.importer.java" complianceLevel="5.0" copyrightFields="false">
+    testsDirectory="/org.eclipse.wst.xml.vex.core.tests/src_emf" importerID="org.eclipse.emf.importer.java"
+    complianceLevel="5.0" copyrightFields="false">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="DomEMF" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
-      disposableProviderFactory="true" ecorePackage="dom1.ecore#/">
+      disposableProviderFactory="true" interfacePackageSuffix="I" ecorePackage="dom1.ecore#/">
     <genDataTypes ecoreDataType="dom1.ecore#//DocumentValidationException"/>
     <genDataTypes ecoreDataType="dom1.ecore#//AttributeDefinition"/>
     <genDataTypes ecoreDataType="dom1.ecore#//Set">
