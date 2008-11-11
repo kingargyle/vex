@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
+import org.w3c.dom.Document;
 
 /**
  * <!-- begin-user-doc -->
@@ -326,6 +327,21 @@ public class DomEMFSwitch<T> {
 	 * @generated
 	 */
 	public T caseSerializable(Serializable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Document</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Document</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDocument(Document object) {
 		return null;
 	}
 

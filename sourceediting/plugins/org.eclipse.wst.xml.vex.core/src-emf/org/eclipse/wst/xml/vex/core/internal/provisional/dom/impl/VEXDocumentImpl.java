@@ -32,6 +32,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragme
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.w3c.dom.Document;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,6 +46,8 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getRootElement <em>Root Element</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getValidator <em>Validator</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getPublicID <em>Public ID</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getSystemID <em>System ID</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getDocument <em>Document</em>}</li>
  * </ul>
  * </p>
  *
@@ -131,6 +134,46 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 */
 	protected String publicID = PUBLIC_ID_EDEFAULT;
 	
+	/**
+	 * The default value of the '{@link #getSystemID() <em>System ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSystemID()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String SYSTEM_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getSystemID() <em>System ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSystemID()
+	 * @generated
+	 * @ordered
+	 */
+	protected String systemID = SYSTEM_ID_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocument()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Document DOCUMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDocument() <em>Document</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocument()
+	 * @generated
+	 * @ordered
+	 */
+	protected Document document = DOCUMENT_EDEFAULT;
+
 	protected Content content;
 
 
@@ -295,6 +338,48 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 		publicID = newPublicID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_DOCUMENT__PUBLIC_ID, oldPublicID, publicID));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getSystemID() {
+		return systemID;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSystemID(String newSystemID) {
+		String oldSystemID = systemID;
+		systemID = newSystemID;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_DOCUMENT__SYSTEM_ID, oldSystemID, systemID));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Document getDocument() {
+		return document;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDocument(Document newDocument) {
+		Document oldDocument = document;
+		document = newDocument;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_DOCUMENT__DOCUMENT, oldDocument, document));
 	}
 
 	/**
@@ -482,6 +567,10 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return basicGetValidator();
 			case DomEMFPackage.VEX_DOCUMENT__PUBLIC_ID:
 				return getPublicID();
+			case DomEMFPackage.VEX_DOCUMENT__SYSTEM_ID:
+				return getSystemID();
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
+				return getDocument();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -508,6 +597,12 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return;
 			case DomEMFPackage.VEX_DOCUMENT__PUBLIC_ID:
 				setPublicID((String)newValue);
+				return;
+			case DomEMFPackage.VEX_DOCUMENT__SYSTEM_ID:
+				setSystemID((String)newValue);
+				return;
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
+				setDocument((Document)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -536,6 +631,12 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 			case DomEMFPackage.VEX_DOCUMENT__PUBLIC_ID:
 				setPublicID(PUBLIC_ID_EDEFAULT);
 				return;
+			case DomEMFPackage.VEX_DOCUMENT__SYSTEM_ID:
+				setSystemID(SYSTEM_ID_EDEFAULT);
+				return;
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
+				setDocument(DOCUMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -558,6 +659,10 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return validator != null;
 			case DomEMFPackage.VEX_DOCUMENT__PUBLIC_ID:
 				return PUBLIC_ID_EDEFAULT == null ? publicID != null : !PUBLIC_ID_EDEFAULT.equals(publicID);
+			case DomEMFPackage.VEX_DOCUMENT__SYSTEM_ID:
+				return SYSTEM_ID_EDEFAULT == null ? systemID != null : !SYSTEM_ID_EDEFAULT.equals(systemID);
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
+				return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -578,6 +683,10 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 		result.append(length);
 		result.append(", publicID: ");
 		result.append(publicID);
+		result.append(", systemID: ");
+		result.append(systemID);
+		result.append(", document: ");
+		result.append(document);
 		result.append(')');
 		return result.toString();
 	}

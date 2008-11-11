@@ -29,6 +29,11 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -103,6 +108,16 @@ public class DomEMFFactoryImpl extends EFactoryImpl implements DomEMFFactory {
 				return createAttributeDefinitionFromString(eDataType, initialValue);
 			case DomEMFPackage.SET:
 				return createSetFromString(eDataType, initialValue);
+			case DomEMFPackage.DOM_DOCUMENT:
+				return createDOMDocumentFromString(eDataType, initialValue);
+			case DomEMFPackage.DOM_ELEMENT:
+				return createDOMElementFromString(eDataType, initialValue);
+			case DomEMFPackage.DOM_ATTR:
+				return createDOMAttrFromString(eDataType, initialValue);
+			case DomEMFPackage.DOM_COMMENT:
+				return createDOMCommentFromString(eDataType, initialValue);
+			case DomEMFPackage.DOM_PROCESSING_INSTRUCTION:
+				return createDOMProcessingInstructionFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -122,6 +137,16 @@ public class DomEMFFactoryImpl extends EFactoryImpl implements DomEMFFactory {
 				return convertAttributeDefinitionToString(eDataType, instanceValue);
 			case DomEMFPackage.SET:
 				return convertSetToString(eDataType, instanceValue);
+			case DomEMFPackage.DOM_DOCUMENT:
+				return convertDOMDocumentToString(eDataType, instanceValue);
+			case DomEMFPackage.DOM_ELEMENT:
+				return convertDOMElementToString(eDataType, instanceValue);
+			case DomEMFPackage.DOM_ATTR:
+				return convertDOMAttrToString(eDataType, instanceValue);
+			case DomEMFPackage.DOM_COMMENT:
+				return convertDOMCommentToString(eDataType, instanceValue);
+			case DomEMFPackage.DOM_PROCESSING_INSTRUCTION:
+				return convertDOMProcessingInstructionToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -285,6 +310,96 @@ public class DomEMFFactoryImpl extends EFactoryImpl implements DomEMFFactory {
 	 */
 	public String convertSetToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Document createDOMDocumentFromString(EDataType eDataType, String initialValue) {
+		return (Document)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDOMDocumentToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Element createDOMElementFromString(EDataType eDataType, String initialValue) {
+		return (Element)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDOMElementToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Attr createDOMAttrFromString(EDataType eDataType, String initialValue) {
+		return (Attr)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDOMAttrToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Comment createDOMCommentFromString(EDataType eDataType, String initialValue) {
+		return (Comment)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDOMCommentToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProcessingInstruction createDOMProcessingInstructionFromString(EDataType eDataType, String initialValue) {
+		return (ProcessingInstruction)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDOMProcessingInstructionToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

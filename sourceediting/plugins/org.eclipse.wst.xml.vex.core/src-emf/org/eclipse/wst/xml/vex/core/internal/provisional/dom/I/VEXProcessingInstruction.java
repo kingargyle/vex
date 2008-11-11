@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.I;
 
 import org.eclipse.emf.common.util.EList;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,6 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction#getProcessingInstruction <em>Processing Instruction</em>}</li>
  * </ul>
  * </p>
  *
@@ -44,6 +46,32 @@ public interface VEXProcessingInstruction extends VEXNode {
 	 * @generated
 	 */
 	EList<VEXAttribute> getAttributes();
+
+	/**
+	 * Returns the value of the '<em><b>Processing Instruction</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Processing Instruction</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Processing Instruction</em>' attribute.
+	 * @see #setProcessingInstruction(ProcessingInstruction)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXProcessingInstruction_ProcessingInstruction()
+	 * @model dataType="org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.DOMProcessingInstruction"
+	 * @generated
+	 */
+	ProcessingInstruction getProcessingInstruction();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction#getProcessingInstruction <em>Processing Instruction</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Processing Instruction</em>' attribute.
+	 * @see #getProcessingInstruction()
+	 * @generated
+	 */
+	void setProcessingInstruction(ProcessingInstruction value);
 
 	/**
 	 * <!-- begin-user-doc -->

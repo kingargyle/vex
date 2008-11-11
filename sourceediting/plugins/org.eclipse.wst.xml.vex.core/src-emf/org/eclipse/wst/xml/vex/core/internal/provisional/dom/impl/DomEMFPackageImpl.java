@@ -42,6 +42,11 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInst
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -132,6 +137,13 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass documentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType documentValidationExceptionEDataType = null;
 
 	/**
@@ -147,6 +159,41 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * @generated
 	 */
 	private EDataType setEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType domDocumentEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType domElementEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType domAttrEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType domCommentEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType domProcessingInstructionEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -203,9 +250,6 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		DomEMFPackageImpl theDomEMFPackage = (DomEMFPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof DomEMFPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new DomEMFPackageImpl());
 
 		isInited = true;
-
-		// Initialize simple dependencies
-		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theDomEMFPackage.createPackageContents();
@@ -323,6 +367,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVEXAttribute_Attribute() {
+		return (EAttribute)vexAttributeEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVEXComment() {
 		return vexCommentEClass;
 	}
@@ -334,6 +387,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 */
 	public EAttribute getVEXComment_Value() {
 		return (EAttribute)vexCommentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getVEXComment_Comment() {
+		return (EAttribute)vexCommentEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -388,6 +450,24 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 */
 	public EAttribute getVEXDocument_PublicID() {
 		return (EAttribute)vexDocumentEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getVEXDocument_SystemID() {
+		return (EAttribute)vexDocumentEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getVEXDocument_Document() {
+		return (EAttribute)vexDocumentEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -539,6 +619,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVEXElement_Element() {
+		return (EAttribute)vexElementEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVEXNode() {
 		return vexNodeEClass;
 	}
@@ -629,6 +718,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVEXProcessingInstruction_ProcessingInstruction() {
+		return (EAttribute)vexProcessingInstructionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getValidator() {
 		return validatorEClass;
 	}
@@ -656,6 +754,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getDocument() {
+		return documentEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getDocumentValidationException() {
 		return documentValidationExceptionEDataType;
 	}
@@ -676,6 +783,51 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 */
 	public EDataType getSet() {
 		return setEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getDOMDocument() {
+		return domDocumentEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getDOMElement() {
+		return domElementEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getDOMAttr() {
+		return domAttrEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getDOMComment() {
+		return domCommentEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getDOMProcessingInstruction() {
+		return domProcessingInstructionEDataType;
 	}
 
 	/**
@@ -719,9 +871,11 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		createEAttribute(vexAttributeEClass, VEX_ATTRIBUTE__LOCAL_NAME);
 		createEAttribute(vexAttributeEClass, VEX_ATTRIBUTE__NAMESPACE_PREFIX);
 		createEAttribute(vexAttributeEClass, VEX_ATTRIBUTE__NAMESPACE_URI);
+		createEAttribute(vexAttributeEClass, VEX_ATTRIBUTE__ATTRIBUTE);
 
 		vexCommentEClass = createEClass(VEX_COMMENT);
 		createEAttribute(vexCommentEClass, VEX_COMMENT__VALUE);
+		createEAttribute(vexCommentEClass, VEX_COMMENT__COMMENT);
 
 		vexDocumentEClass = createEClass(VEX_DOCUMENT);
 		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__ENCODING);
@@ -729,6 +883,8 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		createEReference(vexDocumentEClass, VEX_DOCUMENT__ROOT_ELEMENT);
 		createEReference(vexDocumentEClass, VEX_DOCUMENT__VALIDATOR);
 		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__PUBLIC_ID);
+		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__SYSTEM_ID);
+		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__DOCUMENT);
 
 		vexDocumentFragmentEClass = createEClass(VEX_DOCUMENT_FRAGMENT);
 		createEReference(vexDocumentFragmentEClass, VEX_DOCUMENT_FRAGMENT__CONTENT);
@@ -747,6 +903,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		createEReference(vexElementEClass, VEX_ELEMENT__PARENT);
 		createEAttribute(vexElementEClass, VEX_ELEMENT__NAMESPACE_PREFIX);
 		createEAttribute(vexElementEClass, VEX_ELEMENT__NAMESPACE_URI);
+		createEAttribute(vexElementEClass, VEX_ELEMENT__ELEMENT);
 
 		vexNodeEClass = createEClass(VEX_NODE);
 		createEReference(vexNodeEClass, VEX_NODE__CONTENT);
@@ -759,16 +916,24 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 
 		vexProcessingInstructionEClass = createEClass(VEX_PROCESSING_INSTRUCTION);
 		createEReference(vexProcessingInstructionEClass, VEX_PROCESSING_INSTRUCTION__ATTRIBUTES);
+		createEAttribute(vexProcessingInstructionEClass, VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION);
 
 		validatorEClass = createEClass(VALIDATOR);
 		createEAttribute(validatorEClass, VALIDATOR__VALID_ROOT_ELEMENTS);
 
 		serializableEClass = createEClass(SERIALIZABLE);
 
+		documentEClass = createEClass(DOCUMENT);
+
 		// Create data types
 		documentValidationExceptionEDataType = createEDataType(DOCUMENT_VALIDATION_EXCEPTION);
 		attributeDefinitionEDataType = createEDataType(ATTRIBUTE_DEFINITION);
 		setEDataType = createEDataType(SET);
+		domDocumentEDataType = createEDataType(DOM_DOCUMENT);
+		domElementEDataType = createEDataType(DOM_ELEMENT);
+		domAttrEDataType = createEDataType(DOM_ATTR);
+		domCommentEDataType = createEDataType(DOM_COMMENT);
+		domProcessingInstructionEDataType = createEDataType(DOM_PROCESSING_INSTRUCTION);
 	}
 
 	/**
@@ -835,6 +1000,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEAttribute(getVEXAttribute_LocalName(), ecorePackage.getEString(), "localName", null, 0, 1, VEXAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXAttribute_NamespacePrefix(), ecorePackage.getEString(), "namespacePrefix", null, 0, 1, VEXAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXAttribute_NamespaceURI(), ecorePackage.getEString(), "namespaceURI", null, 0, 1, VEXAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXAttribute_Attribute(), this.getDOMAttr(), "attribute", null, 0, 1, VEXAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(vexAttributeEClass, null, "setNamespace", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "prefix", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -842,6 +1008,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 
 		initEClass(vexCommentEClass, VEXComment.class, "VEXComment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVEXComment_Value(), ecorePackage.getEString(), "value", null, 0, 1, VEXComment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXComment_Comment(), this.getDOMComment(), "comment", null, 0, 1, VEXComment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(vexDocumentEClass, VEXDocument.class, "VEXDocument", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVEXDocument_Encoding(), ecorePackage.getEString(), "encoding", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -849,6 +1016,8 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEReference(getVEXDocument_RootElement(), this.getVEXElement(), null, "rootElement", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVEXDocument_Validator(), this.getValidator(), null, "validator", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXDocument_PublicID(), ecorePackage.getEString(), "publicID", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXDocument_SystemID(), ecorePackage.getEString(), "systemID", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXDocument_Document(), this.getDOMDocument(), "document", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(vexDocumentEClass, ecorePackage.getEBoolean(), "canInsertFragment", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEInt(), "offset", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -927,6 +1096,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEReference(getVEXElement_Parent(), this.getVEXElement(), null, "parent", null, 0, 1, VEXElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXElement_NamespacePrefix(), ecorePackage.getEString(), "namespacePrefix", null, 0, 1, VEXElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXElement_NamespaceURI(), ecorePackage.getEString(), "namespaceURI", null, 0, 1, VEXElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXElement_Element(), this.getDOMElement(), "element", null, 0, 1, VEXElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(vexElementEClass, null, "addChild", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getVEXElement(), "child", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -969,6 +1139,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 
 		initEClass(vexProcessingInstructionEClass, VEXProcessingInstruction.class, "VEXProcessingInstruction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getVEXProcessingInstruction_Attributes(), this.getVEXAttribute(), null, "attributes", null, 0, -1, VEXProcessingInstruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXProcessingInstruction_ProcessingInstruction(), this.getDOMProcessingInstruction(), "processingInstruction", null, 0, 1, VEXProcessingInstruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(vexProcessingInstructionEClass, ecorePackage.getEBoolean(), "removeAttribute", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "attributeName", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1008,10 +1179,17 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 
 		initEClass(serializableEClass, Serializable.class, "Serializable", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(documentEClass, Document.class, "Document", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
 		// Initialize data types
 		initEDataType(documentValidationExceptionEDataType, DocumentValidationException.class, "DocumentValidationException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(attributeDefinitionEDataType, AttributeDefinition.class, "AttributeDefinition", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(setEDataType, Set.class, "Set", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(domDocumentEDataType, Document.class, "DOMDocument", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(domElementEDataType, Element.class, "DOMElement", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(domAttrEDataType, Attr.class, "DOMAttr", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(domCommentEDataType, Comment.class, "DOMComment", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(domProcessingInstructionEDataType, ProcessingInstruction.class, "DOMProcessingInstruction", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

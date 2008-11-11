@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import org.w3c.dom.Document;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,6 +30,8 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getRootElement <em>Root Element</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getValidator <em>Validator</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getPublicID <em>Public ID</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getSystemID <em>System ID</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocument <em>Document</em>}</li>
  * </ul>
  * </p>
  *
@@ -166,6 +169,58 @@ public interface VEXDocument extends EObject {
 	 * @generated
 	 */
 	void setPublicID(String value);
+
+	/**
+	 * Returns the value of the '<em><b>System ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>System ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>System ID</em>' attribute.
+	 * @see #setSystemID(String)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXDocument_SystemID()
+	 * @model
+	 * @generated
+	 */
+	String getSystemID();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getSystemID <em>System ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>System ID</em>' attribute.
+	 * @see #getSystemID()
+	 * @generated
+	 */
+	void setSystemID(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Document</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Document</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Document</em>' attribute.
+	 * @see #setDocument(Document)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXDocument_Document()
+	 * @model dataType="org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.DOMDocument"
+	 * @generated
+	 */
+	Document getDocument();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocument <em>Document</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Document</em>' attribute.
+	 * @see #getDocument()
+	 * @generated
+	 */
+	void setDocument(Document value);
 
 	/**
 	 * <!-- begin-user-doc -->
