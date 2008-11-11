@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
@@ -54,7 +55,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
  *
  * @generated
  */
-public class VEXElementImpl extends VEXNodeImpl implements VEXElement {
+public class VEXElementImpl extends Node implements VEXElement {
 	/**
 	 * The cached value of the '{@link #getAttributeNames() <em>Attribute Names</em>}' attribute list.
 	 * <!-- begin-user-doc -->
@@ -70,8 +71,9 @@ public class VEXElementImpl extends VEXNodeImpl implements VEXElement {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getChildElements()
-	 * @generated
+	 * @generated not
 	 * @ordered
+	 * @deprecated use childNodes
 	 */
 	protected EList<VEXElement> childElements;
 
@@ -460,17 +462,6 @@ public class VEXElementImpl extends VEXNodeImpl implements VEXElement {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContent(Content content, int offset, int i) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void insertChild(int index, VEXElement child) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -480,12 +471,11 @@ public class VEXElementImpl extends VEXNodeImpl implements VEXElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setNamespace(String prefix, String namespaceURI) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		setNamespacePrefix(prefix);
+		setNamespaceURI(namespaceURI);
 	}
 
 	/**
@@ -654,6 +644,11 @@ public class VEXElementImpl extends VEXNodeImpl implements VEXElement {
 		result.append(namespaceURI);
 		result.append(')');
 		return result.toString();
+	}
+	
+	@Override
+	public String getNodeType() {
+		return "Element";
 	}
 
 } //VEXElementImpl

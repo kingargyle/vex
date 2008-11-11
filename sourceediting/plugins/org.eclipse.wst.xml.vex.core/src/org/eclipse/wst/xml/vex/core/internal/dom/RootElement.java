@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * The root element of a document. Keeps track of the document to which it is
@@ -22,7 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
  */
 public class RootElement extends Element implements VEXElement {
 
-	private VEXDocument document;
+	//private VEXDocument document;
 
 	/**
 	 * Class constructor

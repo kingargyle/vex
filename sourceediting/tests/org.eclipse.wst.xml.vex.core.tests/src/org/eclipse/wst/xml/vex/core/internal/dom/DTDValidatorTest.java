@@ -23,9 +23,9 @@ import java.util.Set;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
@@ -103,12 +103,6 @@ public class DTDValidatorTest extends TestCase {
 		doc.insertElement(1, new Element("title"));
 		doc.insertText(2, "ab");
 		doc.insertElement(5, new Element("para"));
-		
-		//Bug 250828 - These tests will eventually be gone.  They are acting a little odd
-		// with the new content model, but appear to be working within the editor.  Not
-		// sure if these tests are truely still valid or were ever working correctly.
-		// New tests will need to be written when further refactoring of the content model
-		// is done.
 		
 		expected = new HashSet();
 		expected.add("title");

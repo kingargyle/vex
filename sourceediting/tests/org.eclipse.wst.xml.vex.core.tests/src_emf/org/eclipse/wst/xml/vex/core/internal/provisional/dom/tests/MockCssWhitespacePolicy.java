@@ -8,7 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.widget;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 /**
  * Implementation of WhitespacePolicy using a CSS stylesheet.
  */
-public class CssWhitespacePolicy implements IWhitespacePolicy {
+public class MockCssWhitespacePolicy implements IWhitespacePolicy {
 
 	/**
 	 * Class constructor.
@@ -26,20 +26,20 @@ public class CssWhitespacePolicy implements IWhitespacePolicy {
 	 * @param styleSheet
 	 *            The stylesheet used for the policy.
 	 */
-	public CssWhitespacePolicy(StyleSheet styleSheet) {
+	public MockCssWhitespacePolicy(StyleSheet styleSheet) {
 		this.styleSheet = styleSheet;
 	}
 
 	public boolean isBlock(VEXElement element) {
-		return this.styleSheet.getStyles(element).isBlock();
+		return false;
 	}
 
 	public boolean isPre(VEXElement element) {
-		return CSS.PRE.equals(this.styleSheet.getStyles(element)
-				.getWhiteSpace());
+		return false;
 	}
 
 	// ===================================================== PRIVATE
 
 	private StyleSheet styleSheet;
+
 }

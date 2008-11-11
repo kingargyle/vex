@@ -37,6 +37,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl#getStartOffset <em>Start Offset</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl#getText <em>Text</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl#getNodeType <em>Node Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -132,6 +133,26 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 	 * @ordered
 	 */
 	protected String text = TEXT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getNodeType() <em>Node Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNodeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NODE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getNodeType() <em>Node Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNodeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String nodeType = NODE_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -334,6 +355,27 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getNodeType() {
+		return nodeType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNodeType(String newNodeType) {
+		String oldNodeType = nodeType;
+		nodeType = newNodeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_NODE__NODE_TYPE, oldNodeType, nodeType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -352,6 +394,8 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 				return basicGetStartPosition();
 			case DomEMFPackage.VEX_NODE__TEXT:
 				return getText();
+			case DomEMFPackage.VEX_NODE__NODE_TYPE:
+				return getNodeType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -381,6 +425,9 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 				return;
 			case DomEMFPackage.VEX_NODE__TEXT:
 				setText((String)newValue);
+				return;
+			case DomEMFPackage.VEX_NODE__NODE_TYPE:
+				setNodeType((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -412,6 +459,9 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 			case DomEMFPackage.VEX_NODE__TEXT:
 				setText(TEXT_EDEFAULT);
 				return;
+			case DomEMFPackage.VEX_NODE__NODE_TYPE:
+				setNodeType(NODE_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -436,6 +486,8 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 				return startPosition != null;
 			case DomEMFPackage.VEX_NODE__TEXT:
 				return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
+			case DomEMFPackage.VEX_NODE__NODE_TYPE:
+				return NODE_TYPE_EDEFAULT == null ? nodeType != null : !NODE_TYPE_EDEFAULT.equals(nodeType);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -456,6 +508,8 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 		result.append(startOffset);
 		result.append(", text: ");
 		result.append(text);
+		result.append(", nodeType: ");
+		result.append(nodeType);
 		result.append(')');
 		return result.toString();
 	}

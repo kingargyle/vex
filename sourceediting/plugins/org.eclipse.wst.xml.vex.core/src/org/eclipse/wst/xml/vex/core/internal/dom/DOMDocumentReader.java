@@ -18,7 +18,7 @@ import java.io.StringReader;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

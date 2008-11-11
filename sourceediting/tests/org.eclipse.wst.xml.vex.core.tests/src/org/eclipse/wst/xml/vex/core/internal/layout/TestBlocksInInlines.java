@@ -21,7 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 
 import junit.framework.TestCase;
 

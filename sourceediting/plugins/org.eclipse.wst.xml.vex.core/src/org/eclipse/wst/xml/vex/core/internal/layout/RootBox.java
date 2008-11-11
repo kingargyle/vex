@@ -16,7 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * A wrapper for the top level <code>BlockElementBox</code> that applies its

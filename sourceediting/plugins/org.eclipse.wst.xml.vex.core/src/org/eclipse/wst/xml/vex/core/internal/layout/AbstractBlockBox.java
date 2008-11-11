@@ -26,9 +26,9 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * Base class of block boxes that can contain other block boxes. This class
@@ -178,7 +178,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	}
 
 	public VEXElement getElement() {
-		return this.element;
+		return element;
 	}
 
 	public int getEndOffset() {
@@ -722,7 +722,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		if (afterInlines != null) {
 			pendingInlines.addAll(afterInlines);
 		}
-
+ 
 		if (pendingInlines.size() > 0) {
 			blockBoxes.add(ParagraphBox.create(context, element,
 					pendingInlines, width));

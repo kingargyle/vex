@@ -4,7 +4,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.xml.vex.core/src-emf"
     modelPluginID="org.eclipse.wst.xml.vex.core" modelName="Vexdocument" modelPluginClass=""
     testsDirectory="/org.eclipse.wst.xml.vex.core.tests/src_emf" importerID="org.eclipse.emf.importer.java"
-    complianceLevel="5.0" copyrightFields="false">
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="DomEMF" basePackage="org.eclipse.wst.xml.vex.core.internal.provisional"
       disposableProviderFactory="true" interfacePackageSuffix="I" ecorePackage="dom1.ecore#/">
@@ -164,6 +164,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/startOffset"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXNode/startPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dom1.ecore#//VEXNode/nodeType"/>
     </genClasses>
     <genClasses ecoreClass="dom1.ecore#//VEXProcessingInstruction">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dom1.ecore#//VEXProcessingInstruction/attributes"/>

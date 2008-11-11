@@ -160,6 +160,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="startPosition" eType="#//Position"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodeType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXProcessingInstruction" eSuperTypes="#//VEXNode">
     <eOperations name="removeAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -200,9 +201,9 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="validRootElements" eType="#//Set"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="DocumentValidationException" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException"/>
   <eClassifiers xsi:type="ecore:EClass" name="Serializable" instanceClassName="java.io.Serializable"
       abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DocumentValidationException" instanceClassName="org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AttributeDefinition" instanceClassName="org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Set" instanceClassName="java.util.Set">
     <eTypeParameters name="T"/>

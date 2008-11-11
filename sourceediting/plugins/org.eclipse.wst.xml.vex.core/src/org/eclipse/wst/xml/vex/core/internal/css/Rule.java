@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;
@@ -206,7 +206,7 @@ public class Rule implements Serializable {
 
 				// find next sibling
 
-				final Iterator i = element.getParent().getChildIterator();
+				final Iterator i = element.getParent().getChildElements().iterator();
 				VEXElement e = null;
 				VEXElement f = null;
 

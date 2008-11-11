@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: VEXElementTest.java,v 1.1 2008/11/10 20:09:46 dacarver Exp $
+ * $Id: VEXElementTest.java,v 1.2 2008/11/11 06:08:01 dacarver Exp $
  */
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
@@ -184,9 +184,21 @@ public class VEXElementTest extends VEXNodeTest {
 	 * @generated
 	 */
 	public void testSetNamespace__String_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		VEXElement element = getFixture();
+		element.setNamespace("docbook", "http://www.docbook.org/");
+		assertEquals("Prefix wrong:", "docbook", element.getNamespacePrefix());
+		assertEquals("Namespace wrong:", "http://www.docbook.org/", element.getNamespaceURI());
+	}
+	
+	public void testCreateElement() throws Exception {
+		VEXElement element = getFixture();
+		assertNotNull("Element creation failed", element);
+	}
+	
+	public void testSetElementName() throws Exception{
+		VEXElement element = getFixture();
+		element.setName("book");
+		assertEquals("Element name not set", "book", element.getName());
 	}
 
 } //VEXElementTest

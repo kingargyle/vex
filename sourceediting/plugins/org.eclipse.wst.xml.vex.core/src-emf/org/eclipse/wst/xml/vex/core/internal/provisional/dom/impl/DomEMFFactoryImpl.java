@@ -176,6 +176,12 @@ public class DomEMFFactoryImpl extends EFactoryImpl implements DomEMFFactory {
 		VEXDocumentImpl vexDocument = new VEXDocumentImpl();
 		return vexDocument;
 	}
+	
+	public VEXDocument createVEXDocument(Content content, VEXElement rootElement) {
+		VEXDocumentImpl vexDocument = new VEXDocumentImpl();
+		return vexDocument;
+	}
+
 
 	/**
 	 * <!-- begin-user-doc -->

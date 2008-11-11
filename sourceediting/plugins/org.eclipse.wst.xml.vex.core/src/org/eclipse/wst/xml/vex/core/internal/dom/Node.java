@@ -10,19 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl;
 
 /**
  * <code>Node</code> represents a component of an XML document. .
  *
  */
-public class Node implements VEXNode {
-
-	private Content content = null;
-	private Position start = null;
-	private Position end = null;
+public class Node extends VEXNodeImpl implements VEXNode {
 
 	/**
 	 * Class constructor.
@@ -41,37 +38,35 @@ public class Node implements VEXNode {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndOffset()
 	 */
 	public int getEndOffset() {
-		return this.end.getOffset();
+		return endPosition.getOffset();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getEndPosition()
 	 */
 	public Position getEndPosition() {
-		return this.end;
+		return endPosition;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartOffset()
 	 */
 	public int getStartOffset() {
-		return this.start.getOffset();
+		return startPosition.getOffset();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getStartPosition()
 	 */
 	public Position getStartPosition() {
-		return this.start;
+		return startPosition;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXNode#getText()
 	 */
 	public String getText() {
-		return this.content.getString(this.getStartOffset(), this
-				.getEndOffset()
-				- this.getStartOffset());
+		return content.getString(getStartOffset(), getEndOffset() - getStartOffset());
 	}
 
 	/**
@@ -87,8 +82,12 @@ public class Node implements VEXNode {
 	public void setContent(Content content, int startOffset, int endOffset) {
 
 		this.content = content;
-		this.start = content.createPosition(startOffset);
-		this.end = content.createPosition(endOffset);
+		startPosition = content.createPosition(startOffset);
+		endPosition = content.createPosition(endOffset);
+	}
+
+	public String getNodeType() {
+		return null;
 	}
 
 }

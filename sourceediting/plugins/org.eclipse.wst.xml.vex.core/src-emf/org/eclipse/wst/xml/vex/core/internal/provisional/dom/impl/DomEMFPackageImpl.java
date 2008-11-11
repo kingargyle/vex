@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
@@ -202,6 +203,9 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		DomEMFPackageImpl theDomEMFPackage = (DomEMFPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof DomEMFPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new DomEMFPackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theDomEMFPackage.createPackageContents();
@@ -598,6 +602,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVEXNode_NodeType() {
+		return (EAttribute)vexNodeEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVEXProcessingInstruction() {
 		return vexProcessingInstructionEClass;
 	}
@@ -742,6 +755,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		createEAttribute(vexNodeEClass, VEX_NODE__START_OFFSET);
 		createEReference(vexNodeEClass, VEX_NODE__START_POSITION);
 		createEAttribute(vexNodeEClass, VEX_NODE__TEXT);
+		createEAttribute(vexNodeEClass, VEX_NODE__NODE_TYPE);
 
 		vexProcessingInstructionEClass = createEClass(VEX_PROCESSING_INSTRUCTION);
 		createEReference(vexProcessingInstructionEClass, VEX_PROCESSING_INSTRUCTION__ATTRIBUTES);
@@ -951,6 +965,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEAttribute(getVEXNode_StartOffset(), ecorePackage.getEInt(), "startOffset", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVEXNode_StartPosition(), this.getPosition(), null, "startPosition", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXNode_Text(), ecorePackage.getEString(), "text", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXNode_NodeType(), ecorePackage.getEString(), "nodeType", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(vexProcessingInstructionEClass, VEXProcessingInstruction.class, "VEXProcessingInstruction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getVEXProcessingInstruction_Attributes(), this.getVEXAttribute(), null, "attributes", null, 0, -1, VEXProcessingInstruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
