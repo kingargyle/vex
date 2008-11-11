@@ -330,13 +330,22 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_ATTRIBUTE__NAMESPACE_URI = VEX_NODE_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Attribute</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_ATTRIBUTE__ATTRIBUTE = VEX_NODE_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>VEX Attribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_ATTRIBUTE_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 6;
+	int VEX_ATTRIBUTE_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXCommentImpl <em>VEX Comment</em>}' class.
@@ -421,13 +430,22 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_COMMENT__VALUE = VEX_NODE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Comment</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_COMMENT__COMMENT = VEX_NODE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>VEX Comment</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_COMMENT_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 1;
+	int VEX_COMMENT_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl <em>VEX Document</em>}' class.
@@ -485,13 +503,31 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_DOCUMENT__PUBLIC_ID = 4;
 
 	/**
+	 * The feature id for the '<em><b>System ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__SYSTEM_ID = 5;
+
+	/**
+	 * The feature id for the '<em><b>Document</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__DOCUMENT = 6;
+
+	/**
 	 * The number of structural features of the '<em>VEX Document</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT_FEATURE_COUNT = 5;
+	int VEX_DOCUMENT_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl <em>VEX Document Fragment</em>}' class.
@@ -712,13 +748,22 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_ELEMENT__NAMESPACE_URI = VEX_NODE_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_ELEMENT__ELEMENT = VEX_NODE_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>VEX Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_ELEMENT_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 9;
+	int VEX_ELEMENT_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 10;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXProcessingInstructionImpl <em>VEX Processing Instruction</em>}' class.
@@ -803,13 +848,22 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_PROCESSING_INSTRUCTION__ATTRIBUTES = VEX_NODE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Processing Instruction</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION = VEX_NODE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>VEX Processing Instruction</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_PROCESSING_INSTRUCTION_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 1;
+	int VEX_PROCESSING_INSTRUCTION_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link java.io.Serializable <em>Serializable</em>}' class.
@@ -859,6 +913,25 @@ public interface DomEMFPackage extends EPackage {
 	int VALIDATOR_FEATURE_COUNT = SERIALIZABLE_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.w3c.dom.Document <em>Document</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.Document
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDocument()
+	 * @generated
+	 */
+	int DOCUMENT = 11;
+
+	/**
+	 * The number of structural features of the '<em>Document</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_FEATURE_COUNT = 0;
+
+	/**
 	 * The meta object id for the '<em>Document Validation Exception</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -866,7 +939,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDocumentValidationException()
 	 * @generated
 	 */
-	int DOCUMENT_VALIDATION_EXCEPTION = 11;
+	int DOCUMENT_VALIDATION_EXCEPTION = 12;
 
 	/**
 	 * The meta object id for the '<em>Attribute Definition</em>' data type.
@@ -876,7 +949,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getAttributeDefinition()
 	 * @generated
 	 */
-	int ATTRIBUTE_DEFINITION = 12;
+	int ATTRIBUTE_DEFINITION = 13;
 
 	/**
 	 * The meta object id for the '<em>Set</em>' data type.
@@ -886,7 +959,58 @@ public interface DomEMFPackage extends EPackage {
 	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getSet()
 	 * @generated
 	 */
-	int SET = 13;
+	int SET = 14;
+
+
+	/**
+	 * The meta object id for the '<em>DOM Document</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.Document
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMDocument()
+	 * @generated
+	 */
+	int DOM_DOCUMENT = 15;
+
+	/**
+	 * The meta object id for the '<em>DOM Element</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.Element
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMElement()
+	 * @generated
+	 */
+	int DOM_ELEMENT = 16;
+
+	/**
+	 * The meta object id for the '<em>DOM Attr</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.Attr
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMAttr()
+	 * @generated
+	 */
+	int DOM_ATTR = 17;
+
+	/**
+	 * The meta object id for the '<em>DOM Comment</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.Comment
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMComment()
+	 * @generated
+	 */
+	int DOM_COMMENT = 18;
+
+	/**
+	 * The meta object id for the '<em>DOM Processing Instruction</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.w3c.dom.ProcessingInstruction
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMProcessingInstruction()
+	 * @generated
+	 */
+	int DOM_PROCESSING_INSTRUCTION = 19;
 
 
 	/**
@@ -1008,6 +1132,17 @@ public interface DomEMFPackage extends EPackage {
 	EAttribute getVEXAttribute_NamespaceURI();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute#getAttribute <em>Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Attribute</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute#getAttribute()
+	 * @see #getVEXAttribute()
+	 * @generated
+	 */
+	EAttribute getVEXAttribute_Attribute();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXComment <em>VEX Comment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1027,6 +1162,17 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getVEXComment_Value();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXComment#getComment <em>Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Comment</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXComment#getComment()
+	 * @see #getVEXComment()
+	 * @generated
+	 */
+	EAttribute getVEXComment_Comment();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument <em>VEX Document</em>}'.
@@ -1092,6 +1238,28 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getVEXDocument_PublicID();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getSystemID <em>System ID</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>System ID</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getSystemID()
+	 * @see #getVEXDocument()
+	 * @generated
+	 */
+	EAttribute getVEXDocument_SystemID();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocument <em>Document</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Document</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocument()
+	 * @see #getVEXDocument()
+	 * @generated
+	 */
+	EAttribute getVEXDocument_Document();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment <em>VEX Document Fragment</em>}'.
@@ -1268,6 +1436,17 @@ public interface DomEMFPackage extends EPackage {
 	EAttribute getVEXElement_NamespaceURI();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getElement <em>Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Element</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getElement()
+	 * @see #getVEXElement()
+	 * @generated
+	 */
+	EAttribute getVEXElement_Element();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode <em>VEX Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1376,6 +1555,17 @@ public interface DomEMFPackage extends EPackage {
 	EReference getVEXProcessingInstruction_Attributes();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction#getProcessingInstruction <em>Processing Instruction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Processing Instruction</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction#getProcessingInstruction()
+	 * @see #getVEXProcessingInstruction()
+	 * @generated
+	 */
+	EAttribute getVEXProcessingInstruction_ProcessingInstruction();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator <em>Validator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1406,6 +1596,17 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSerializable();
+
+	/**
+	 * Returns the meta object for class '{@link org.w3c.dom.Document <em>Document</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Document</em>'.
+	 * @see org.w3c.dom.Document
+	 * @model instanceClass="org.w3c.dom.Document"
+	 * @generated
+	 */
+	EClass getDocument();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException <em>Document Validation Exception</em>}'.
@@ -1439,6 +1640,61 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getSet();
+
+	/**
+	 * Returns the meta object for data type '{@link org.w3c.dom.Document <em>DOM Document</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>DOM Document</em>'.
+	 * @see org.w3c.dom.Document
+	 * @model instanceClass="org.w3c.dom.Document"
+	 * @generated
+	 */
+	EDataType getDOMDocument();
+
+	/**
+	 * Returns the meta object for data type '{@link org.w3c.dom.Element <em>DOM Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>DOM Element</em>'.
+	 * @see org.w3c.dom.Element
+	 * @model instanceClass="org.w3c.dom.Element"
+	 * @generated
+	 */
+	EDataType getDOMElement();
+
+	/**
+	 * Returns the meta object for data type '{@link org.w3c.dom.Attr <em>DOM Attr</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>DOM Attr</em>'.
+	 * @see org.w3c.dom.Attr
+	 * @model instanceClass="org.w3c.dom.Attr"
+	 * @generated
+	 */
+	EDataType getDOMAttr();
+
+	/**
+	 * Returns the meta object for data type '{@link org.w3c.dom.Comment <em>DOM Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>DOM Comment</em>'.
+	 * @see org.w3c.dom.Comment
+	 * @model instanceClass="org.w3c.dom.Comment"
+	 * @generated
+	 */
+	EDataType getDOMComment();
+
+	/**
+	 * Returns the meta object for data type '{@link org.w3c.dom.ProcessingInstruction <em>DOM Processing Instruction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>DOM Processing Instruction</em>'.
+	 * @see org.w3c.dom.ProcessingInstruction
+	 * @model instanceClass="org.w3c.dom.ProcessingInstruction"
+	 * @generated
+	 */
+	EDataType getDOMProcessingInstruction();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1557,6 +1813,14 @@ public interface DomEMFPackage extends EPackage {
 		EAttribute VEX_ATTRIBUTE__NAMESPACE_URI = eINSTANCE.getVEXAttribute_NamespaceURI();
 
 		/**
+		 * The meta object literal for the '<em><b>Attribute</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_ATTRIBUTE__ATTRIBUTE = eINSTANCE.getVEXAttribute_Attribute();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXCommentImpl <em>VEX Comment</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1573,6 +1837,14 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VEX_COMMENT__VALUE = eINSTANCE.getVEXComment_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>Comment</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_COMMENT__COMMENT = eINSTANCE.getVEXComment_Comment();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl <em>VEX Document</em>}' class.
@@ -1623,6 +1895,22 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VEX_DOCUMENT__PUBLIC_ID = eINSTANCE.getVEXDocument_PublicID();
+
+		/**
+		 * The meta object literal for the '<em><b>System ID</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_DOCUMENT__SYSTEM_ID = eINSTANCE.getVEXDocument_SystemID();
+
+		/**
+		 * The meta object literal for the '<em><b>Document</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_DOCUMENT__DOCUMENT = eINSTANCE.getVEXDocument_Document();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl <em>VEX Document Fragment</em>}' class.
@@ -1757,6 +2045,14 @@ public interface DomEMFPackage extends EPackage {
 		EAttribute VEX_ELEMENT__NAMESPACE_URI = eINSTANCE.getVEXElement_NamespaceURI();
 
 		/**
+		 * The meta object literal for the '<em><b>Element</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_ELEMENT__ELEMENT = eINSTANCE.getVEXElement_Element();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXNodeImpl <em>VEX Node</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1841,6 +2137,14 @@ public interface DomEMFPackage extends EPackage {
 		EReference VEX_PROCESSING_INSTRUCTION__ATTRIBUTES = eINSTANCE.getVEXProcessingInstruction_Attributes();
 
 		/**
+		 * The meta object literal for the '<em><b>Processing Instruction</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION = eINSTANCE.getVEXProcessingInstruction_ProcessingInstruction();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ValidatorImpl <em>Validator</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1867,6 +2171,16 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SERIALIZABLE = eINSTANCE.getSerializable();
+
+		/**
+		 * The meta object literal for the '{@link org.w3c.dom.Document <em>Document</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.Document
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDocument()
+		 * @generated
+		 */
+		EClass DOCUMENT = eINSTANCE.getDocument();
 
 		/**
 		 * The meta object literal for the '<em>Document Validation Exception</em>' data type.
@@ -1897,6 +2211,56 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType SET = eINSTANCE.getSet();
+
+		/**
+		 * The meta object literal for the '<em>DOM Document</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.Document
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMDocument()
+		 * @generated
+		 */
+		EDataType DOM_DOCUMENT = eINSTANCE.getDOMDocument();
+
+		/**
+		 * The meta object literal for the '<em>DOM Element</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.Element
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMElement()
+		 * @generated
+		 */
+		EDataType DOM_ELEMENT = eINSTANCE.getDOMElement();
+
+		/**
+		 * The meta object literal for the '<em>DOM Attr</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.Attr
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMAttr()
+		 * @generated
+		 */
+		EDataType DOM_ATTR = eINSTANCE.getDOMAttr();
+
+		/**
+		 * The meta object literal for the '<em>DOM Comment</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.Comment
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMComment()
+		 * @generated
+		 */
+		EDataType DOM_COMMENT = eINSTANCE.getDOMComment();
+
+		/**
+		 * The meta object literal for the '<em>DOM Processing Instruction</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.w3c.dom.ProcessingInstruction
+		 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFPackageImpl#getDOMProcessingInstruction()
+		 * @generated
+		 */
+		EDataType DOM_PROCESSING_INSTRUCTION = eINSTANCE.getDOMProcessingInstruction();
 
 	}
 

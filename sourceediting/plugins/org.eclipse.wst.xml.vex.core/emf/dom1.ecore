@@ -35,9 +35,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="localName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespacePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" eType="#//DOMAttr"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXComment" eSuperTypes="#//VEXNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="#//DOMComment"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXDocument">
     <eOperations name="canInsertFragment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -101,6 +103,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootElement" eType="#//VEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="validator" eType="#//Validator"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="systemID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//DOMDocument"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXDocumentFragment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
@@ -152,6 +156,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//VEXElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespacePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
@@ -172,6 +177,8 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
         eType="#//VEXAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processingInstruction"
+        eType="#//DOMProcessingInstruction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Validator" eSuperTypes="#//Serializable">
     <eOperations name="getAttributeDefinition" eType="#//AttributeDefinition">
@@ -208,4 +215,11 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Set" instanceClassName="java.util.Set">
     <eTypeParameters name="T"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Document" instanceClassName="org.w3c.dom.Document"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DOMDocument" instanceClassName="org.w3c.dom.Document"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DOMElement" instanceClassName="org.w3c.dom.Element"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DOMAttr" instanceClassName="org.w3c.dom.Attr"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DOMComment" instanceClassName="org.w3c.dom.Comment"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DOMProcessingInstruction" instanceClassName="org.w3c.dom.ProcessingInstruction"/>
 </ecore:EPackage>

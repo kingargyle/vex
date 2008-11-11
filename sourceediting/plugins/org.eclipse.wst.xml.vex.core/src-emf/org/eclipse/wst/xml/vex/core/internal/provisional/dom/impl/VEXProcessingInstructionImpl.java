@@ -12,16 +12,19 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,6 +34,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInst
  * The following features are implemented:
  * <ul>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXProcessingInstructionImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXProcessingInstructionImpl#getProcessingInstruction <em>Processing Instruction</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,6 +50,25 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 	 * @ordered
 	 */
 	protected EList<VEXAttribute> attributes;
+
+	/**
+	 * The default value of the '{@link #getProcessingInstruction() <em>Processing Instruction</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProcessingInstruction()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final ProcessingInstruction PROCESSING_INSTRUCTION_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getProcessingInstruction() <em>Processing Instruction</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProcessingInstruction()
+	 * @generated
+	 * @ordered
+	 */
+	protected ProcessingInstruction processingInstruction = PROCESSING_INSTRUCTION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -83,6 +106,27 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ProcessingInstruction getProcessingInstruction() {
+		return processingInstruction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProcessingInstruction(ProcessingInstruction newProcessingInstruction) {
+		ProcessingInstruction oldProcessingInstruction = processingInstruction;
+		processingInstruction = newProcessingInstruction;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION, oldProcessingInstruction, processingInstruction));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean removeAttribute(String attributeName) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -110,6 +154,8 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 		switch (featureID) {
 			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__ATTRIBUTES:
 				return getAttributes();
+			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION:
+				return getProcessingInstruction();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -127,6 +173,9 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 				getAttributes().clear();
 				getAttributes().addAll((Collection<? extends VEXAttribute>)newValue);
 				return;
+			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION:
+				setProcessingInstruction((ProcessingInstruction)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -142,6 +191,9 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__ATTRIBUTES:
 				getAttributes().clear();
 				return;
+			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION:
+				setProcessingInstruction(PROCESSING_INSTRUCTION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -156,10 +208,28 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 		switch (featureID) {
 			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__ATTRIBUTES:
 				return attributes != null && !attributes.isEmpty();
+			case DomEMFPackage.VEX_PROCESSING_INSTRUCTION__PROCESSING_INSTRUCTION:
+				return PROCESSING_INSTRUCTION_EDEFAULT == null ? processingInstruction != null : !PROCESSING_INSTRUCTION_EDEFAULT.equals(processingInstruction);
 		}
 		return super.eIsSet(featureID);
 	}
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (processingInstruction: ");
+		result.append(processingInstruction);
+		result.append(')');
+		return result.toString();
+	}
+
 	@Override
 	public String getNodeType() {
 		return "ProcessingInstruction";

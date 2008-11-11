@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
+import org.w3c.dom.Document;
 
 /**
  * <!-- begin-user-doc -->
@@ -122,6 +123,10 @@ public class DomEMFAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseSerializable(Serializable object) {
 				return createSerializableAdapter();
+			}
+			@Override
+			public Adapter caseDocument(Document object) {
+				return createDocumentAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -294,6 +299,20 @@ public class DomEMFAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSerializableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.w3c.dom.Document <em>Document</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.w3c.dom.Document
+	 * @generated
+	 */
+	public Adapter createDocumentAdapter() {
 		return null;
 	}
 

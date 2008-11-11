@@ -13,6 +13,7 @@ package org.eclipse.wst.xml.vex.core.internal.provisional.dom.I;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import org.w3c.dom.Element;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,6 +32,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getParent <em>Parent</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getNamespacePrefix <em>Namespace Prefix</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getElement <em>Element</em>}</li>
  * </ul>
  * </p>
  *
@@ -242,6 +244,32 @@ public interface VEXElement extends VEXNode {
 	 * @generated
 	 */
 	void setNamespaceURI(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Element</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Element</em>' attribute.
+	 * @see #setElement(Element)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXElement_Element()
+	 * @model dataType="org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.DOMElement"
+	 * @generated
+	 */
+	Element getElement();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement#getElement <em>Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Element</em>' attribute.
+	 * @see #getElement()
+	 * @generated
+	 */
+	void setElement(Element value);
 
 	/**
 	 * <!-- begin-user-doc -->

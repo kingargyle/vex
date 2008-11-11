@@ -22,6 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.w3c.dom.Attr;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,6 +37,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXAttributeImpl#getLocalName <em>Local Name</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXAttributeImpl#getNamespacePrefix <em>Namespace Prefix</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXAttributeImpl#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXAttributeImpl#getAttribute <em>Attribute</em>}</li>
  * </ul>
  * </p>
  *
@@ -141,6 +143,26 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 	 * @ordered
 	 */
 	protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAttribute() <em>Attribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Attr ATTRIBUTE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttribute() <em>Attribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected Attr attribute = ATTRIBUTE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -326,6 +348,27 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Attr getAttribute() {
+		return attribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAttribute(Attr newAttribute) {
+		Attr oldAttribute = attribute;
+		attribute = newAttribute;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_ATTRIBUTE__ATTRIBUTE, oldAttribute, attribute));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void setNamespace(String prefix, String namespaceURI) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -354,6 +397,8 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 				return getNamespacePrefix();
 			case DomEMFPackage.VEX_ATTRIBUTE__NAMESPACE_URI:
 				return getNamespaceURI();
+			case DomEMFPackage.VEX_ATTRIBUTE__ATTRIBUTE:
+				return getAttribute();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -383,6 +428,9 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 				return;
 			case DomEMFPackage.VEX_ATTRIBUTE__NAMESPACE_URI:
 				setNamespaceURI((String)newValue);
+				return;
+			case DomEMFPackage.VEX_ATTRIBUTE__ATTRIBUTE:
+				setAttribute((Attr)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -414,6 +462,9 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 			case DomEMFPackage.VEX_ATTRIBUTE__NAMESPACE_URI:
 				setNamespaceURI(NAMESPACE_URI_EDEFAULT);
 				return;
+			case DomEMFPackage.VEX_ATTRIBUTE__ATTRIBUTE:
+				setAttribute(ATTRIBUTE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -438,6 +489,8 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 				return NAMESPACE_PREFIX_EDEFAULT == null ? namespacePrefix != null : !NAMESPACE_PREFIX_EDEFAULT.equals(namespacePrefix);
 			case DomEMFPackage.VEX_ATTRIBUTE__NAMESPACE_URI:
 				return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+			case DomEMFPackage.VEX_ATTRIBUTE__ATTRIBUTE:
+				return ATTRIBUTE_EDEFAULT == null ? attribute != null : !ATTRIBUTE_EDEFAULT.equals(attribute);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -460,6 +513,8 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 		result.append(namespacePrefix);
 		result.append(", namespaceURI: ");
 		result.append(namespaceURI);
+		result.append(", attribute: ");
+		result.append(attribute);
 		result.append(')');
 		return result.toString();
 	}

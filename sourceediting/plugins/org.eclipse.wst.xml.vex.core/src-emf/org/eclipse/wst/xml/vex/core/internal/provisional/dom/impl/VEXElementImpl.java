@@ -33,6 +33,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.w3c.dom.Element;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,10 +51,11 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXElementImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXElementImpl#getNamespacePrefix <em>Namespace Prefix</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXElementImpl#getNamespaceURI <em>Namespace URI</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXElementImpl#getElement <em>Element</em>}</li>
  * </ul>
  * </p>
  *
- * @generated
+ * @generated not
  */
 public class VEXElementImpl extends Node implements VEXElement {
 	/**
@@ -186,6 +188,26 @@ public class VEXElementImpl extends Node implements VEXElement {
 	 * @ordered
 	 */
 	protected String namespaceURI = NAMESPACE_URI_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getElement() <em>Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Element ELEMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getElement() <em>Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected Element element = ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -407,6 +429,27 @@ public class VEXElementImpl extends Node implements VEXElement {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Element getElement() {
+		return element;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setElement(Element newElement) {
+		Element oldElement = element;
+		element = newElement;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_ELEMENT__ELEMENT, oldElement, element));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void addChild(VEXElement child) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -457,6 +500,7 @@ public class VEXElementImpl extends Node implements VEXElement {
 		throw new UnsupportedOperationException();
 	}
 
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -506,6 +550,8 @@ public class VEXElementImpl extends Node implements VEXElement {
 				return getNamespacePrefix();
 			case DomEMFPackage.VEX_ELEMENT__NAMESPACE_URI:
 				return getNamespaceURI();
+			case DomEMFPackage.VEX_ELEMENT__ELEMENT:
+				return getElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -549,6 +595,9 @@ public class VEXElementImpl extends Node implements VEXElement {
 			case DomEMFPackage.VEX_ELEMENT__NAMESPACE_URI:
 				setNamespaceURI((String)newValue);
 				return;
+			case DomEMFPackage.VEX_ELEMENT__ELEMENT:
+				setElement((Element)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -588,6 +637,9 @@ public class VEXElementImpl extends Node implements VEXElement {
 			case DomEMFPackage.VEX_ELEMENT__NAMESPACE_URI:
 				setNamespaceURI(NAMESPACE_URI_EDEFAULT);
 				return;
+			case DomEMFPackage.VEX_ELEMENT__ELEMENT:
+				setElement(ELEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -618,6 +670,8 @@ public class VEXElementImpl extends Node implements VEXElement {
 				return NAMESPACE_PREFIX_EDEFAULT == null ? namespacePrefix != null : !NAMESPACE_PREFIX_EDEFAULT.equals(namespacePrefix);
 			case DomEMFPackage.VEX_ELEMENT__NAMESPACE_URI:
 				return NAMESPACE_URI_EDEFAULT == null ? namespaceURI != null : !NAMESPACE_URI_EDEFAULT.equals(namespaceURI);
+			case DomEMFPackage.VEX_ELEMENT__ELEMENT:
+				return ELEMENT_EDEFAULT == null ? element != null : !ELEMENT_EDEFAULT.equals(element);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -642,6 +696,8 @@ public class VEXElementImpl extends Node implements VEXElement {
 		result.append(namespacePrefix);
 		result.append(", namespaceURI: ");
 		result.append(namespaceURI);
+		result.append(", element: ");
+		result.append(element);
 		result.append(')');
 		return result.toString();
 	}
