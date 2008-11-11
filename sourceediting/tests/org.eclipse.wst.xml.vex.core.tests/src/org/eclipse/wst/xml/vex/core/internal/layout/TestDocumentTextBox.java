@@ -21,7 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.DocumentTextBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.InlineBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 
 import junit.framework.TestCase;
 

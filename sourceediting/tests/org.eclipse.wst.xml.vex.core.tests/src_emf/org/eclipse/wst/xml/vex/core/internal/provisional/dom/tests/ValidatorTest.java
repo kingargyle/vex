@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ValidatorTest.java,v 1.1 2008/11/10 20:09:46 dacarver Exp $
+ * $Id: ValidatorTest.java,v 1.2 2008/11/11 06:08:00 dacarver Exp $
  */
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
@@ -115,9 +115,10 @@ public class ValidatorTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 * Tests the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator#getAttributeDefinitions(java.lang.String) <em>Get Attribute Definitions</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator#getAttributeDefinitions(java.lang.String)
 	 * @generated
 	 */
 	public void testGetAttributeDefinitions__String() {

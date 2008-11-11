@@ -8,15 +8,18 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
 import java.util.LinkedList;
 
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.DomEMFFactoryImpl;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -36,31 +39,7 @@ import org.xml.sax.ext.LexicalHandler;
  * removed.</li>
  * </ul>
  */
-public class DocumentBuilder implements ContentHandler, LexicalHandler {
-	private IWhitespacePolicyFactory policyFactory;
-	private IWhitespacePolicy policy;
-
-	// Holds pending characters until we see another element boundary.
-	// This is (a) so we can collapse spaces in multiple adjacent character
-	// blocks, and (b) so we can trim trailing whitespace, if necessary.
-	private StringBuffer pendingChars = new StringBuffer();
-
-	// If true, trim the leading whitespace from the next received block of
-	// text.
-	private boolean trimLeading = false;
-
-	// Content object to hold document content
-	private Content content = new GapContent(100);
-
-	// Stack of StackElement objects
-	private LinkedList stack = new LinkedList();
-
-	private VEXElement rootElement;
-
-	private String dtdPublicID;
-	private String dtdSystemID;
-	private Document doc;
-	private Locator locator;
+public class MockDocumentBuilder implements ContentHandler, LexicalHandler {
 
 	/**
 	 * Class constructor.
@@ -69,7 +48,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	 *            Used to determine the WhitespacePolicy to use for a given
 	 *            document type.
 	 */
-	public DocumentBuilder(IWhitespacePolicyFactory policyFactory) {
+	public MockDocumentBuilder(IWhitespacePolicyFactory policyFactory) {
 		this.policyFactory = policyFactory;
 	}
 
@@ -99,10 +78,10 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void endDocument() {
-		doc = new Document(content, rootElement);
-		doc.setPublicID(dtdPublicID);
-		doc.setSystemID(dtdSystemID);
-		rootElement.setDocument(doc);
+		this.doc = new VEXDocumentImpl(this.content, this.rootElement);
+		this.doc.setPublicID(this.dtdPublicID);
+		//this.doc.setSystemID(this.dtdSystemID);
+		this.rootElement.setDocument(this.doc);
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName) {
@@ -149,14 +128,16 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		try {
 			VEXElement element;
 			if (stack.size() == 0) {
-				rootElement = new RootElement(qName);
+				rootElement = DomEMFFactoryImpl.eINSTANCE.createVEXElement();
+				rootElement.setName(qName);
 				element = this.rootElement;
-				if (this.policyFactory != null) {
-					this.policy = this.policyFactory
-							.getPolicy(this.dtdPublicID);
+				if (policyFactory != null) {
+					policy = policyFactory
+							.getPolicy(dtdPublicID);
 				}
 			} else {
-				element = new Element(qName);
+				element = DomEMFFactoryImpl.eINSTANCE.createVEXElement();
+				element.setName(qName);
 				VEXElement parent = ((StackEntry) stack.getLast()).element;
 				parent.addChild(element);
 			}
@@ -202,8 +183,8 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void startDTD(String name, String publicId, String systemId) {
-		this.dtdPublicID = publicId;
-		this.dtdSystemID = systemId;
+		dtdPublicID = publicId;
+		dtdSystemID = systemId;
 	}
 
 	public void startEntity(java.lang.String name) {
@@ -211,6 +192,30 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 	// ======================================================== PRIVATE
 
+	private IWhitespacePolicyFactory policyFactory;
+	private IWhitespacePolicy policy;
+
+	// Holds pending characters until we see another element boundary.
+	// This is (a) so we can collapse spaces in multiple adjacent character
+	// blocks, and (b) so we can trim trailing whitespace, if necessary.
+	private StringBuffer pendingChars = new StringBuffer();
+
+	// If true, trim the leading whitespace from the next received block of
+	// text.
+	private boolean trimLeading = false;
+
+	// Content object to hold document content
+	private Content content = new MockGapContent(100);
+
+	// Stack of StackElement objects
+	private LinkedList stack = new LinkedList();
+
+	private VEXElement rootElement;
+
+	private String dtdPublicID;
+	private String dtdSystemID;
+	private VEXDocument doc;
+	private Locator locator;
 
 	// Append any pending characters to the content
 	private void appendChars(boolean trimTrailing) {
@@ -263,11 +268,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	private boolean isBlock(VEXElement element) {
-		return this.policy != null && this.policy.isBlock(element);
+		return false;
 	}
 
 	private boolean isPre(VEXElement element) {
-		return this.policy != null && this.policy.isPre(element);
+		return false;
 	}
 
 	/**

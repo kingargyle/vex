@@ -21,7 +21,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
+import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
@@ -128,6 +130,9 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 * @ordered
 	 */
 	protected String publicID = PUBLIC_ID_EDEFAULT;
+	
+	protected Content content;
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -136,6 +141,11 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 */
 	protected VEXDocumentImpl() {
 		super();
+	}
+
+	public VEXDocumentImpl(Content content, VEXElement rootElement) {
+		this.content = content;
+		this.rootElement = rootElement;
 	}
 
 	/**

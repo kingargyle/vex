@@ -463,5 +463,10 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 		result.append(')');
 		return result.toString();
 	}
+	
+	@Override
+	public String getNodeType() {
+		return "Attribute";
+	}
 
 } //VEXAttributeImpl

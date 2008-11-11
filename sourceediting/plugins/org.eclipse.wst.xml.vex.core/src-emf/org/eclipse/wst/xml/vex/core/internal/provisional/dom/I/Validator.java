@@ -37,6 +37,8 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
  * @generated
  */
 public interface Validator extends EObject, Serializable {
+	public static String PCDATA = "#PCDATA";
+	
 	/**
 	 * Returns the value of the '<em><b>Valid Root Elements</b></em>' attribute.
 	 * <!-- begin-user-doc -->

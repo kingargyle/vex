@@ -18,6 +18,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
@@ -26,10 +29,11 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ValidatorImpl;
 
 @SuppressWarnings("restriction")
-public class WTPVEXValidator implements Validator {
+public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
 	/**
 	 * 
@@ -70,11 +74,11 @@ public class WTPVEXValidator implements Validator {
 		return vexAttr;
 	}
 
-	public List<AttributeDefinition> getAttributeDefinitions(String element) {
+	public EList<AttributeDefinition> getAttributeDefinitions(String element) {
 		CMElementDeclaration cmelement = getElementDeclaration(element);
 		AttributeDefinition[] attributeDefs = new AttributeDefinition[cmelement
 				.getAttributes().getLength()];
-		List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(
+		EList<AttributeDefinition> attributeList = new BasicEList<AttributeDefinition>(
 				cmelement.getAttributes().getLength());
 		Iterator iter = cmelement.getAttributes().iterator();
 		while (iter.hasNext()) {
@@ -172,13 +176,13 @@ public class WTPVEXValidator implements Validator {
 		return results;
 	}
 
-	public boolean isValidSequence(String element, List<String> nodes,
+	public boolean isValidSequence(String element, EList<String> nodes,
 			boolean partial) {
 		return true;
 	}
 
-	public boolean isValidSequence(String element, List<String> seq1,
-			List<String> seq2, List<String> seq3, boolean partial) {
+	public boolean isValidSequence(String element, EList<String> seq1,
+			EList<String> seq2, EList<String> seq3, boolean partial) {
 		return true;
 	}
 }

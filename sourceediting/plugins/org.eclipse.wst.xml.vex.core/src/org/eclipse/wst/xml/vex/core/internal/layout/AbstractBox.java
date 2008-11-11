@@ -19,7 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * Base implementation of the <code>Box</code> interface, implementing some

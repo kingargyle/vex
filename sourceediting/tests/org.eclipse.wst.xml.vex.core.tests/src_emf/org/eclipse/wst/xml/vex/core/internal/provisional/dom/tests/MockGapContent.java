@@ -8,14 +8,13 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.dom;
+package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ContentImpl;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.PositionImpl;
 
@@ -27,7 +26,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.PositionImpl;
  * Deletions that end of the gap are also very efficent. Furthermore, changes
  * near the gap require relatively few characters to be moved.
  */
-public class GapContent extends ContentImpl implements Content {
+public class MockGapContent extends ContentImpl implements Content {
 
 	private char[] content;
 	private int gapStart;
@@ -40,7 +39,7 @@ public class GapContent extends ContentImpl implements Content {
 	 * @param initialCapacity
 	 *            initial capacity of the content.
 	 */
-	public GapContent(int initialCapacity) {
+	public MockGapContent(int initialCapacity) {
 
 		assertPositive(initialCapacity);
 
@@ -178,13 +177,14 @@ public class GapContent extends ContentImpl implements Content {
 	 */
 	private static class GapContentPosition extends PositionImpl implements Position {
 
+		private int offset;
 
 		public GapContentPosition(int offset) {
 			this.offset = offset;
 		}
 
 		public int getOffset() {
-			return offset;
+			return this.offset;
 		}
 
 		public void setOffset(int offset) {
@@ -192,7 +192,7 @@ public class GapContent extends ContentImpl implements Content {
 		}
 
 		public String toString() {
-			return Integer.toString(offset);
+			return Integer.toString(this.offset);
 		}
 	}
 

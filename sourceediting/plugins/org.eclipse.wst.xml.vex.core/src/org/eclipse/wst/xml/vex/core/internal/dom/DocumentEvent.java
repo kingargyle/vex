@@ -12,8 +12,8 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.EventObject;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
@@ -72,7 +72,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(VEXDocument document, Element parentElement,
+	public DocumentEvent(VEXDocument document, VEXElement parentElement,
 			String attributeName, String oldAttributeValue,
 			String newAttributeValue, IUndoableEdit undoableEdit) {
 

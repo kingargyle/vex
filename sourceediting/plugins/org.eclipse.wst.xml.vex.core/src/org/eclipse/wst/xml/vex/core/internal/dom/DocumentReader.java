@@ -21,7 +21,7 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;

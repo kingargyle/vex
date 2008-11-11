@@ -18,8 +18,8 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 

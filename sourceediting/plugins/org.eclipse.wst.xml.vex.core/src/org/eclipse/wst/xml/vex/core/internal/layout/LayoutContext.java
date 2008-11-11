@@ -13,8 +13,8 @@ package org.eclipse.wst.xml.vex.core.internal.layout;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * Encapsulation of all the resources needed to create a box tree. Most

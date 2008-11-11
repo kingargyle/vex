@@ -18,10 +18,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
@@ -142,7 +142,8 @@ public class DocumentWriter {
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		PrintWriter pw = new PrintWriter(osw);
 		pw.println("<?xml version='1.0'?>");
-		if (doc.getSystemID() != null) {
+		
+		if (((Document)doc).getSystemID() != null) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<!DOCTYPE ");
 			sb.append(doc.getRootElement().getName());
@@ -155,7 +156,7 @@ public class DocumentWriter {
 				sb.append(" SYSTEM");
 			}
 			sb.append(" \"");
-			sb.append(doc.getSystemID());
+			sb.append(((Document)doc).getSystemID());
 			sb.append("\">");
 			pw.println(sb.toString());
 		}
@@ -180,7 +181,7 @@ public class DocumentWriter {
 
 		} else {
 
-			Element element = (Element) node;
+			VEXElement element = (VEXElement) node;
 
 			if (this.whitespacePolicy != null
 					&& this.whitespacePolicy.isPre(element)) {

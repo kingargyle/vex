@@ -22,9 +22,9 @@ import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.ElementOrRangeCallback;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutUtils;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 

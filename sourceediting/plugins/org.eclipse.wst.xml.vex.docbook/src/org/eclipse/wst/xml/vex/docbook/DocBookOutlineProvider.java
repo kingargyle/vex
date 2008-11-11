@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.*;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -94,7 +95,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      */
     private VEXElement[] getOutlineChildren(final VEXElement element) {
         final List children = new ArrayList();
-        final List<VEXElement> childElements = element.getChildElements();
+        final EList<VEXElement> childElements = element.getChildElements();
         for (int i = 0; i < childElements.size(); i++) {
             if (titledElements.contains(childElements.get(i).getName())) {
                 children.add(childElements.get(i));

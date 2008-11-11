@@ -14,7 +14,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 

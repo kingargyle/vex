@@ -15,14 +15,17 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
@@ -31,18 +34,18 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  * Represents an XML document.
  * 
  */
-public class Document implements VEXDocument {
+public class Document extends VEXDocumentImpl implements VEXDocument {
 
-	private Content content;
-	private RootElement rootElement;
+	//private Content content;
+	//private RootElement rootElement;
 	private ListenerList listeners = new ListenerList(DocumentListener.class,
 			DocumentEvent.class);
 	private boolean undoEnabled = true;
 
-	private String publicID;
-	private String systemID;
-	private String encoding;
-	private Validator validator;
+	//private String publicID;
+	protected String systemID;
+	//private String encoding;
+	//private Validator validator;
 
 	/**
 	 * Class constructor.
@@ -52,12 +55,12 @@ public class Document implements VEXDocument {
 	 *            RootElement is set by this constructor.
 	 * 
 	 */
-	public Document(RootElement rootElement) {
+	public Document(VEXElement rootElement) {
 		content = new GapContent(100);
 		this.rootElement = rootElement;
 		rootElement.setDocument(this);
 		content.insertString(0, "\0\0");
-		rootElement.setContent(this.content, 0, 1);
+		rootElement.setContent(content, 0, 1);
 	}
 
 	/**
@@ -70,7 +73,7 @@ public class Document implements VEXDocument {
 	 *            RootElement of the document.
 	 * 
 	 */
-	public Document(Content content, RootElement rootElement) {
+	public Document(Content content, VEXElement rootElement) {
 		this.content = content;
 		this.rootElement = rootElement;
 	}
@@ -93,13 +96,13 @@ public class Document implements VEXDocument {
 			return true;
 		}
 
-		VEXElement element = this.getElementAt(offset);
-		List<String> seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		VEXElement element = getElementAt(offset);
+		EList<String> seq1 = getNodeNames(element.getStartOffset() + 1, offset);
 		
-		List<String> seq2 = fragment.getNodeNames();
+		EList<String> seq2 = fragment.getNodeNames();
 		
-		List<String> seq3 = this.getNodeNames(offset, element.getEndOffset());
-
+		EList<String> seq3 = getNodeNames(offset, element.getEndOffset());
+		
 		return this.validator.isValidSequence(element.getName(), seq1, seq2,
 				seq3, true);
 	}
@@ -114,13 +117,13 @@ public class Document implements VEXDocument {
 			return true;
 		}
 
-		VEXElement element = this.getElementAt(offset);
-		List<String> seq1 = this.getNodeNames(element.getStartOffset() + 1, offset);
+		VEXElement element = getElementAt(offset);
+		EList<String> seq1 = getNodeNames(element.getStartOffset() + 1, offset);
 
-		List<String> seq2 = new ArrayList();
-		seq2.add(Validator.PCDATA);
+		EList<String> seq2 = new BasicEList<String>();
+		seq2.add("#PCDATA");
 		
-		List<String> seq3 = this.getNodeNames(offset, element.getEndOffset());
+		EList<String> seq3 = getNodeNames(offset, element.getEndOffset());
 
 		return this.validator.isValidSequence(element.getName(), seq1, seq2,
 				seq3, true);
@@ -150,10 +153,10 @@ public class Document implements VEXDocument {
 
 		Validator validator = this.getValidator();
 		if (validator != null) {
-			List<String> seq1 = this.getNodeNames(e1.getStartOffset() + 1,
+			EList<String> seq1 = this.getNodeNames(e1.getStartOffset() + 1,
 					startOffset);
 
-			List<String> seq2 = this.getNodeNames(endOffset, e1.getEndOffset());
+			EList<String> seq2 = this.getNodeNames(endOffset, e1.getEndOffset());
 
 			if (!validator
 					.isValidSequence(e1.getName(), seq1, seq2, null, true)) {
@@ -168,9 +171,9 @@ public class Document implements VEXDocument {
 		this.fireBeforeContentDeleted(new DocumentEvent(this, e1, startOffset,
 				endOffset - startOffset, null));
 
-		Iterator iter = e1.getChildIterator();
+		Iterator iter = e1.getChildNodes().iterator();
 		while (iter.hasNext()) {
-			Element child = (Element) iter.next();
+			VEXNode child = (VEXNode) iter.next();
 			if (startOffset <= child.getStartOffset()
 					&& child.getEndOffset() < endOffset) {
 				iter.remove();
@@ -194,7 +197,7 @@ public class Document implements VEXDocument {
 		VEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			List<VEXElement> children = element.getChildElements();
+			EList<VEXElement> children = element.getChildElements();
 			for (int i = 0; i < children.size(); i++) {
 				if (offset1 > children.get(i).getStartOffset()
 						&& offset2 > children.get(i).getStartOffset()
@@ -233,7 +236,7 @@ public class Document implements VEXDocument {
 		VEXElement element = this.rootElement;
 		for (;;) {
 			boolean tryAgain = false;
-			List<VEXElement> children = element.getChildElements();
+			EList<VEXElement> children = element.getChildElements();
 			for (int i = 0; i < children.size(); i++) {
 				VEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
@@ -280,12 +283,12 @@ public class Document implements VEXDocument {
 					+ " to " + endOffset + " is unbalanced");
 		}
 
-		List<VEXElement> children = e1.getChildElements();
+		EList<VEXElement> children = e1.getChildElements();
 
 		Content newContent = new GapContent(endOffset - startOffset);
 		String s = content.getString(startOffset, endOffset - startOffset);
 		newContent.insertString(0, s);
-		List<VEXElement> newChildren = new ArrayList<VEXElement>();
+		EList<VEXElement> newChildren = new BasicEList<VEXElement>();
 		for (int i = 0; i < children.size(); i++) {
 			VEXElement child = children.get(i);
 			if (child.getEndOffset() <= startOffset) {
@@ -313,17 +316,17 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodeNames(int, int)
 	 * 
 	 */
-	public List<String> getNodeNames(int startOffset, int endOffset) {
+	public EList<String> getNodeNames(int startOffset, int endOffset) {
 
-		List<VEXNode> nodes = this.getNodes(startOffset, endOffset);
-		List<String> names = new ArrayList(nodes.size());
+		EList<VEXNode> nodes = this.getNodes(startOffset, endOffset);
+		EList<String> names = new BasicEList(nodes.size());
 
 		for (int i = 0; i < nodes.size(); i++) {
 			VEXNode node = nodes.get(i);
 			if (node instanceof Element) {
 				names.add(((VEXElement) node).getName());
 			} else {
-				names.add(Validator.PCDATA);
+				names.add("#PCDATA");
 			}
 		}
 
@@ -334,7 +337,7 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getNodes(int, int)
 	 * 
 	 */
-	public List<VEXNode> getNodes(int startOffset, int endOffset) {
+	public EList<VEXNode> getNodes(int startOffset, int endOffset) {
 
 		VEXElement element = this.getElementAt(startOffset);
 		if (element != this.getElementAt(endOffset)) {
@@ -344,7 +347,7 @@ public class Document implements VEXDocument {
 					+ this.getElementAt(endOffset).getName());
 		}
 
-		List list = new ArrayList();
+		EList list = new BasicEList();
 		List<VEXNode> nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.size(); i++) {
 			VEXNode node = nodes.get(i);
@@ -386,10 +389,10 @@ public class Document implements VEXDocument {
 	 * @param elements
 	 *            child elements that are within the run
 	 */
-	static VEXNode[] createNodeArray(Content content, int startOffset,
-			int endOffset, List<VEXElement> elements) {
+	static EList<VEXNode> createNodeList(Content content, int startOffset,
+			int endOffset, EList<VEXNode> elements) {
 
-		List nodes = new ArrayList();
+		EList nodes = new BasicEList();
 		int offset = startOffset;
 		for (int i = 0; i < elements.size(); i++) {
 			int start = elements.get(i).getStartOffset();
@@ -404,7 +407,7 @@ public class Document implements VEXDocument {
 			nodes.add(new Text(content, offset, endOffset));
 		}
 
-		return (VEXNode[]) nodes.toArray(new VEXNode[nodes.size()]);
+		return nodes;
 	}
 
 	/* (non-Javadoc)
@@ -427,8 +430,8 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#getRootElement()
 	 * 
 	 */
-	public Element getRootElement() {
-		return this.rootElement;
+	public VEXElement getRootElement() {
+		return rootElement;
 	}
 
 	/* (non-Javadoc)
@@ -436,7 +439,7 @@ public class Document implements VEXDocument {
 	 * 
 	 */
 	public String getSystemID() {
-		return this.systemID;
+		return systemID;
 	}
 
 	/* (non-Javadoc)
@@ -481,11 +484,11 @@ public class Document implements VEXDocument {
 		Validator validator = this.getValidator();
 		if (validator != null) {
 			VEXElement parent = this.getElementAt(offset);
-			List<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+			EList<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
-			List<String> seq2 = new ArrayList();
+			EList<String> seq2 = new BasicEList();
 			seq2.add(element.getName());
-			List<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
+			EList<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
 
 			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 					true)) {
@@ -500,7 +503,7 @@ public class Document implements VEXDocument {
 		int childIndex = -1;
 		while (childIndex == -1) {
 			boolean tryAgain = false;
-			List<VEXElement> children = parent.getChildElements();
+			EList<VEXElement> children = parent.getChildElements();
 			for (int i = 0; i < children.size(); i++) {
 				VEXElement child = children.get(i);
 				if (offset <= child.getStartOffset()) {
@@ -549,11 +552,11 @@ public class Document implements VEXDocument {
 		VEXElement parent = this.getElementAt(offset);
 
 		if (this.validator != null) {
-			List<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+			EList<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
 			
-			List<String> seq2 = fragment.getNodeNames();
-			List<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
+			EList<String> seq2 = fragment.getNodeNames();
+			EList<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
 			
 			if (!validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
 					true)) {
@@ -570,14 +573,14 @@ public class Document implements VEXDocument {
 		String s = c.getString(0, c.getLength());
 		this.content.insertString(offset, s);
 
-		List<VEXElement> children = parent.getChildElements();
+		EList<VEXElement> children = parent.getChildElements();
 		int index = 0;
 		while (index < children.size()
 				&& children.get(index).getEndOffset() < offset) {
 			index++;
 		}
 
-		List<VEXElement> elements = fragment.getElements();
+		EList<VEXElement> elements = fragment.getElements();
 		for (int i = 0; i < elements.size(); i++) {
 			VEXElement newElement = this.cloneElement(elements.get(i), this.content,
 					offset, parent);
@@ -614,13 +617,13 @@ public class Document implements VEXDocument {
 		} else {
 			Validator validator = this.getValidator();
 			if (validator != null) {
-				List<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
+				EList<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 						offset);
 				
-				List<String> seq2 = new ArrayList();
-				seq2.add(Validator.PCDATA);
+				EList<String> seq2 = new BasicEList<String>();
+				seq2.add("#PCDATA");
 				
-				List<String> seq3 = this
+				EList<String> seq3 = this
 						.getNodeNames(offset, parent.getEndOffset());
 				
 				isValid = validator.isValidSequence(parent.getName(), seq1,
@@ -677,9 +680,9 @@ public class Document implements VEXDocument {
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setPublicID(java.lang.String)
 	 * 
 	 */
-	public void setPublicID(String publicID) {
-		this.publicID = publicID;
-	}
+//	public void setPublicID(String publicID) {
+//		this.publicID = publicID;
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocument#setSystemID(java.lang.String)
@@ -911,7 +914,7 @@ public class Document implements VEXDocument {
 		clone.setContent(content, original.getStartOffset() + shift, original
 				.getEndOffset()
 				+ shift);
-		List<String> attrNames = original.getAttributeNames();
+		EList<String> attrNames = original.getAttributeNames();
 		for (int i = 0; i < attrNames.size(); i++) {
 			try {
 				clone.setAttribute(attrNames.get(i), original
@@ -922,7 +925,7 @@ public class Document implements VEXDocument {
 		}
 		clone.setParent(parent);
 
-		List<VEXElement> children = original.getChildElements();
+		EList<VEXElement> children = original.getChildElements();
 		for (int i = 0; i < children.size(); i++) {
 			VEXElement cloneChild = this.cloneElement(children.get(i), content, shift,
 					clone);

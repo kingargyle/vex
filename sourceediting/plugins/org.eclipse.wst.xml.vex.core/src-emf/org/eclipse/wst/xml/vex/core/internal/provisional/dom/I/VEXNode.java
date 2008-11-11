@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getStartOffset <em>Start Offset</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getText <em>Text</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getNodeType <em>Node Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -189,5 +190,31 @@ public interface VEXNode extends EObject {
 	 * @generated
 	 */
 	void setText(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Node Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Node Type</em>' attribute.
+	 * @see #setNodeType(String)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXNode_NodeType()
+	 * @model
+	 * @generated
+	 */
+	String getNodeType();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getNodeType <em>Node Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Node Type</em>' attribute.
+	 * @see #getNodeType()
+	 * @generated
+	 */
+	void setNodeType(String value);
 
 } // VEXNode

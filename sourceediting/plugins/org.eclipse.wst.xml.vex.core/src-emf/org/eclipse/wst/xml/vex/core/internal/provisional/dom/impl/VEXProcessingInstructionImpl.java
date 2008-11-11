@@ -159,5 +159,10 @@ public class VEXProcessingInstructionImpl extends VEXNodeImpl implements VEXProc
 		}
 		return super.eIsSet(featureID);
 	}
+	
+	@Override
+	public String getNodeType() {
+		return "ProcessingInstruction";
+	}
 
 } //VEXProcessingInstructionImpl

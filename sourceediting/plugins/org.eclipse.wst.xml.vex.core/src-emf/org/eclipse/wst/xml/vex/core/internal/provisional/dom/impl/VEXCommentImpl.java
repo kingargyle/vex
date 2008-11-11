@@ -167,5 +167,10 @@ public class VEXCommentImpl extends VEXNodeImpl implements VEXComment {
 		result.append(')');
 		return result.toString();
 	}
+	
+	@Override
+	public String getNodeType() { 
+		return "Comment";
+	}
 
 } //VEXCommentImpl

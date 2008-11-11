@@ -24,13 +24,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 
+import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
@@ -45,7 +47,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class DocumentWriterTest extends TestCase {
 
 	public void testWriteDocument() throws Exception {
-
+		DisplayDevice.setCurrent(new MockDisplayDevice(90, 90));
 		StyleSheetReader reader = new StyleSheetReader();
 		StyleSheet ss = reader.read(this.getClass().getResource("test.css"));
 

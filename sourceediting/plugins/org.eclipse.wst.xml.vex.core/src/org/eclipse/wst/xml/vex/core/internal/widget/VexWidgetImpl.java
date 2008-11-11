@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
@@ -29,6 +31,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentEvent;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentListener;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
@@ -40,11 +43,11 @@ import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
@@ -210,12 +213,12 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		VEXElement parent = this.getDocument().getElementAt(startOffset);
-		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		EList<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
 
-		List<String> seq2 = frag.getNodeNames();
+		EList<String> seq2 = frag.getNodeNames();
 		
-		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
+		EList<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
@@ -245,13 +248,13 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		VEXElement parent = this.getDocument().getElementAt(startOffset);
-		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
+		EList<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1,
 				startOffset);
 
-		List<String> seq2 = new ArrayList<String>();
+		EList<String> seq2 = new BasicEList<String>();
 		seq2.add(Validator.PCDATA);
 		
-		List<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
+		EList<String> seq3 = doc.getNodeNames(endOffset, parent.getEndOffset());
 
 
 		return validator.isValidSequence(parent.getName(), seq1, seq2, seq3,
@@ -294,13 +297,13 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		}
 
-		List<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
+		EList<String> seq1 = doc.getNodeNames(parent.getStartOffset() + 1, element
 				.getStartOffset());
 		
-		List<String> seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
+		EList<String> seq2 = doc.getNodeNames(element.getStartOffset() + 1, element
 				.getEndOffset());
 
-		List<String> seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
+		EList<String> seq3 = doc.getNodeNames(element.getEndOffset() + 1, parent
 				.getEndOffset());
 
 
@@ -574,7 +577,7 @@ public class VexWidgetImpl implements IVexWidget {
 		// If there's a selection, root out those candidates that can't
 		// contain it.
 		if (this.hasSelection()) {
-			List<String> selectedNodes = doc.getNodeNames(startOffset, endOffset);
+			EList<String> selectedNodes = doc.getNodeNames(startOffset, endOffset);
 
 			for (Iterator iter = candidates.iterator(); iter.hasNext();) {
 				String candidate = (String) iter.next();
@@ -635,7 +638,7 @@ public class VexWidgetImpl implements IVexWidget {
 		candidates.remove(Validator.PCDATA);
 
 		// root out those that can't contain the current content
-		List<String> content = doc.getNodeNames(element.getStartOffset() + 1,
+		EList<String> content = doc.getNodeNames(element.getStartOffset() + 1,
 				element.getEndOffset());
 		
 		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
@@ -1135,9 +1138,9 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void setDocument(VEXDocument document, StyleSheet styleSheet) {
-
 		if (this.document != null) {
-			this.document.removeDocumentListener(this.documentListener);
+			Document doc = (Document)document;
+			doc.removeDocumentListener(this.documentListener);
 		}
 
 		this.document = document;
@@ -1152,7 +1155,7 @@ public class VexWidgetImpl implements IVexWidget {
 		this.createRootBox();
 
 		this.moveTo(1);
-		this.document.addDocumentListener(this.documentListener);
+		((Document)this.document).addDocumentListener(this.documentListener);
 	}
 
 	public void setDocument(URL docUrl, URL ssURL) throws IOException,

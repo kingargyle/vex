@@ -185,13 +185,22 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_NODE__TEXT = 5;
 
 	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_NODE__NODE_TYPE = 6;
+
+	/**
 	 * The number of structural features of the '<em>VEX Node</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_NODE_FEATURE_COUNT = 6;
+	int VEX_NODE_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXAttributeImpl <em>VEX Attribute</em>}' class.
@@ -256,6 +265,15 @@ public interface DomEMFPackage extends EPackage {
 	 * @ordered
 	 */
 	int VEX_ATTRIBUTE__TEXT = VEX_NODE__TEXT;
+
+	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_ATTRIBUTE__NODE_TYPE = VEX_NODE__NODE_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Document</b></em>' reference.
@@ -383,6 +401,15 @@ public interface DomEMFPackage extends EPackage {
 	 * @ordered
 	 */
 	int VEX_COMMENT__TEXT = VEX_NODE__TEXT;
+
+	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_COMMENT__NODE_TYPE = VEX_NODE__NODE_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -595,6 +622,15 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_ELEMENT__TEXT = VEX_NODE__TEXT;
 
 	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_ELEMENT__NODE_TYPE = VEX_NODE__NODE_TYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attribute Names</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -747,6 +783,15 @@ public interface DomEMFPackage extends EPackage {
 	 * @ordered
 	 */
 	int VEX_PROCESSING_INSTRUCTION__TEXT = VEX_NODE__TEXT;
+
+	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_PROCESSING_INSTRUCTION__NODE_TYPE = VEX_NODE__NODE_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
@@ -1299,6 +1344,17 @@ public interface DomEMFPackage extends EPackage {
 	EAttribute getVEXNode_Text();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getNodeType <em>Node Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Node Type</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode#getNodeType()
+	 * @see #getVEXNode()
+	 * @generated
+	 */
+	EAttribute getVEXNode_NodeType();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction <em>VEX Processing Instruction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1757,6 +1813,14 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VEX_NODE__TEXT = eINSTANCE.getVEXNode_Text();
+
+		/**
+		 * The meta object literal for the '<em><b>Node Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_NODE__NODE_TYPE = eINSTANCE.getVEXNode_NodeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXProcessingInstructionImpl <em>VEX Processing Instruction</em>}' class.

@@ -64,14 +64,16 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
+import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
@@ -373,7 +375,7 @@ public class VexEditorMultiPage extends VexEditor {
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			Validator validator = this.doctype.getValidator();
+			Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {
@@ -390,7 +392,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 			if (this.updateDoctypeDecl) {
 				this.doc.setPublicID(this.doctype.getPublicId());
-				this.doc.setSystemID(this.doctype.getSystemId());
+				((Document)this.doc).setSystemID(this.doctype.getSystemId());
 				this.doSave(null);
 			}
 
