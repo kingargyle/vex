@@ -2,79 +2,35 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="XML Security Tools User Guide" topic="book.html">
-    <topic label="Overview" href="overview.html"/>
-    <topic label="XML-Security Basics" href="basics/xml-security.html">
-        <topic label="Beispiel" href="basics/sample.html"/>
-        <topic label="Basic Security Profile" href="basics/bsp.html"/>
-        <topic label="Digitale Signaturen" href="basics/signatures_basics.html">
-            <topic label="Präsentationsproblem" href="basics/signatures_presentation.html"/>
-            <topic label="Kanonisierung und Transformation" href="basics/signatures_canon_transform.html">
-                <topic label="Kanonisierung" href="basics/signatures_canon.html"/>
-                <topic label="Transformation" href="basics/signatures_transform.html"/>
-            </topic>
-            <topic label="Signatur-Varianten" href="basics/signatures_types.html">
-                <topic label="Enveloped" href="basics/signatures_enveloped.html"/>
-                <topic label="Enveloping" href="basics/signatures_enveloping.html"/>
-                <topic label="Detached" href="basics/signatures_detached.html"/>
-            </topic>
-            <topic label="Syntax" href="basics/signatures_syntax.html">
-                <topic label="Das Signature Element" href="basics/signatures_syntax_signature.html"/>
-                <topic label="Das SignedInfo Element" href="basics/signatures_syntax_signedinfo.html"/>
-                <topic label="Das SignatureValue Element" href="basics/signatures_syntax_signaturevalue.html"/>
-                <topic label="Das KeyInfo Element" href="basics/signatures_syntax_keyinfo.html"/>
-                <topic label="Das Object Element" href="basics/signatures_syntax_object.html"/>
-            </topic>
-            <topic label="Beispiel - signiert" href="basics/sample_signed.html"/>
-            <topic label="Signierung" href="basics/signatures_sign.html"/>
-            <topic label="Verifizierung" href="basics/signatures_verify.html"/>
-        </topic>
-        <topic label="Verschlüsselung" href="basics/encryption_basics.html">
-            <topic label="Syntax" href="basics/encryption_syntax.html">
-                <topic label="EncryptedType" href="basics/encryption_syntax_encryptedtype.html"/>
-                <topic label="Das EncryptedData Element" href="basics/encryption_syntax_encrypteddata.html"/>
-                <topic label="Das EncryptionMethod Element" href="basics/encryption_syntax_encryptionmethod.html"/>
-                <topic label="Das KeyInfo Element" href="basics/encryption_syntax_keyinfo.html"/>
-                <topic label="Das CipherData Element" href="basics/encryption_syntax_cipherdata.html"/>
-                <topic label="Das EncryptionProperties Element" href="basics/encryption_syntax_encryptionproperties.html"/>
-            </topic>
-            <topic label="Beispiel - verschlüsselt" href="basics/sample_encrypted.html"/>
-            <topic label="Verschlüsselung" href="basics/encryption_encrypt.html"/>
-            <topic label="Entschlüsselung" href="basics/encryption_decrypt.html"/>
-        </topic>
+    <topic label="Overview" href="plugin/overview.html"/>
+    <topic label="Cheat Sheets" href="plugin/cheatsheets.html"/>
+    <topic label="Preferences" href="plugin/prefs.html">
+        <topic label="Digital Signatures" href="plugin/prefs_sign.html"/>
+        <topic label="Encryption" href="plugin/prefs_encrypt.html"/>
     </topic>
-    <topic label="XML-Security Plug-In" href="plugin/overview.html">
-        <topic label="Cheat Sheets" href="plugin/cheatsheets.html"/>
-        <topic label="Preferences" href="plugin/prefs.html">
-            <topic label="Digitale Signaturen" href="plugin/prefs_sign.html"/>
-            <topic label="Verschlüsselung" href="plugin/prefs_encrypt.html"/>
+    <topic label="Quick Functions" href="plugin/quick.html"/>
+    <topic label="Signature Wizard" href="plugin/sign.html">
+        <topic label="Resource and Signature Type" href="plugin/sign_page_resource.html"/>
+        <topic label="Keys" href="plugin/sign_page_keys.html">
+            <topic label="Open a Key" href="plugin/sign_page_open_key.html"/>
+            <topic label="Create a Key" href="plugin/sign_page_create_key.html"/>
+            <topic label="Create a Keystore" href="plugin/sign_page_create_keystore.html"/>
         </topic>
-        <topic label="Quick Functions" href="plugin/quick.html"/>
-        <topic label="Digital Signature Wizard" href="plugin/sign.html">
-            <topic label="Resource and Signature Type" href="plugin/sign_page_resource.html"/>
-            <topic label="Keys" href="plugin/sign_page_keys.html">
-                <topic label="Open a Key" href="plugin/sign_page_open_key.html"/>
-                <topic label="Create a Key" href="plugin/sign_page_create_key.html"/>
-                <topic label="Create a Keystore" href="plugin/sign_page_create_keystore.html"/>
-            </topic>
-            <topic label="Algorithms" href="plugin/sign_page_algorithms.html"/>
-        </topic>
-        <topic label="Digital Signatures View" href="plugin/verify.html"/>
-        <topic label="Encryption Wizard" href="plugin/encrypt.html">
-            <topic label="Resource and Encryption Type" href="plugin/encrypt_page_resource.html"/>
-            <topic label="Keys" href="plugin/encrypt_page_keys.html">
-                <topic label="Open a Key" href="plugin/encrypt_page_open_key.html"/>
-                <topic label="Create a Key" href="plugin/encrypt_page_create_key.html"/>
-                <topic label="Create a Keystore" href="plugin/encrypt_page_create_keystore.html"/>
-            </topic>
-            <topic label="Algorithms" href="plugin/encrypt_page_algorithms.html"/>
-        </topic>
-        <topic label="Decryption Wizard" href="plugin/decrypt.html">
-            <topic label="Decryption" href="plugin/decrypt_page_decryption.html"/>
-        </topic>
-        <topic label="Canonicalization" href="plugin/canonicalize.html"/>
+        <topic label="Algorithms" href="plugin/sign_page_algorithms.html"/>
     </topic>
-    <topic label="Glossary" href="glossary.html"/>
-    <topic label="Literature" href="literature.html"/>
-    <topic label="Resources" href="resources.html"/>
+    <topic label="XML Signatures View" href="plugin/verify.html"/>
+    <topic label="Encryption Wizard" href="plugin/encrypt.html">
+        <topic label="Resource and Encryption Type" href="plugin/encrypt_page_resource.html"/>
+        <topic label="Keys" href="plugin/encrypt_page_keys.html">
+            <topic label="Open a Key" href="plugin/encrypt_page_open_key.html"/>
+            <topic label="Create a Key" href="plugin/encrypt_page_create_key.html"/>
+            <topic label="Create a Keystore" href="plugin/encrypt_page_create_keystore.html"/>
+        </topic>
+        <topic label="Algorithms" href="plugin/encrypt_page_algorithms.html"/>
+    </topic>
+    <topic label="Decryption Wizard" href="plugin/decrypt.html">
+        <topic label="Decryption" href="plugin/decrypt_page_decryption.html"/>
+    </topic>
+    <topic label="Canonicalization" href="plugin/canonicalize.html"/>
     <topic label="Legal" href="notices.html"/>
 </toc>
