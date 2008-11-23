@@ -1,48 +1,49 @@
-<html xmlns:sec="http://www.xml-sicherheit.de">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <link rel="stylesheet" type="text/css" href="../format.css">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css" href="../format.css"/>
    </head>
    <body>
-      	
+
       <h1>Quick Functions</h1>
-      	
-      		
+
+
       <p>Mit den <strong>Quick Functions</strong> können Sie schnell ein XML-Dokument(-fragment) signieren, verifizieren sowie ver- und wieder entschlüsseln. Um diese Funktionen
          nutzen zu können sind daher einige Einstellungen in den <a href="prefs.html">Preferences</a> erforderlich. Anschließend ersparen Ihnen diese Befehle das umfangreiche Ausfüllen des jeweiligen Wizards. Abgefragt werden
          nur noch die sicherheitskritischen Angaben wie Passwörter (ein Popup-Dialog fordert Sie zur Eingabe auf). Alle weiteren Informationen
          werden in den Workspace Einstellungen gespeichert. Fehlen eine oder mehrere Einstellungen in den <a href="prefs.html">Preferences</a> werden Sie beim Aufruf einer Quick Function entsprechend darüber informiert und können direkt in die <a href="prefs.html">Preferences</a> wechseln oder die Operation abbrechen. Zur besseren Unterscheidung besitzen die Icons der Quick Functions eine leichte Rotfärbung
          im Menü.
       </p>
-      		
+
       <p>Passwörter werden grundsätzlich verschlüsselt in den Eingabefeldern angezeigt. Sollten Sie sich bei der Eingabe vertippen
          erhalten Sie eine entsprechende Fehlermeldung.
       </p>
-      		
+
       <p>Bitte beachten Sie, dass Sie eine Textauswahl nur Signieren oder Verschlüsseln können, sofern Sie die Quick Function in einem
          Editor mit einem XML-Dokument aufrufen. Über eine View wie den Navigator oder Package Explorer ist das Sichern einer Textauswahl
          nicht möglich.
       </p>
-      		
+
       <p>
          			<strong>Quick Signature</strong> ermöglicht das schnelle Signieren eines XML-Dokuments oder eines Dokumentfragments. Sie werden dabei nur nach dem <em>Keystore Password</em> und dem <em>Certificate Password</em> gefragt.
       </p>
-      		
+
       <p>
          			<strong>Quick Verification</strong> zeigt Ihnen in einem kleinen Dialogfeld an, ob die Signatur mit der angegebenen ID gültig <em>(valid)</em> oder ungültig <em>(invalid)</em> ist. Sollte keine Signatur mit der gespeicherten ID im XML-Dokument vorhanden sein erhalten Sie eine entsprechende Fehlermeldung.
       </p>
-      		
+
       <p>
          			<strong>Quick Encryption</strong> verschlüsselt ein XML-Dokument oder Teile davon mit einem Klick. Es müssen keine weiteren Informationen angegeben werden,
          der verwendete Schlüssel wird unter dem von Ihnen angegebenen Pfad und Dateinamen gespeichert.
       </p>
-      		
+
       <p>
          			<strong>Quick Decryption</strong> entschlüsselt ein XML-Dokument ohne weitere Eingaben. Dazu wird der zur Verschlüsselung verwendete Schlüssel geladen und
          das XML-Dokument entschlüsselt. Sollte der Key nicht gefunden werden erhalten Sie eine entsprechende Fehlermeldung und das
          XML-Dokument kann nicht entschlüsselt werden.
       </p>
-      	
-      
+
+
    </body>
 </html>

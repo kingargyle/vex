@@ -1,48 +1,49 @@
-<html xmlns:sec="http://www.xml-sicherheit.de">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <link rel="stylesheet" type="text/css" href="../format.css">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css" href="../format.css"/>
    </head>
    <body>
-      	
-      <h1>Resource</h1>
-      	
-      		
+
+      <h1>Resource and Encryption Type</h1>
+
+
       <p>Auf der ersten Seite des Assistenten müssen Sie die zu verschlüsselnden <em>Ressource</em> auswählen. Mit der Auswahl von <em>Generate a Basic Security Profile compliant encryption</em> werden die Auswahlmöglichkeiten im gesamten Assistenten im Hinblick auf diese Empfehlung eingeschränkt.
       </p>
-      		
-      <div align="center"><img src="../images/enc-1.jpg" alt="Resource" width="275" height="261"><p><em>Resource</em></p>
+
+      <div align="center"><img src="../images/enc-1.jpg" alt="Resource" width="275" height="261"/><p><em>Resource</em></p>
       </div>
-      		
+
       <p>Die erste Auswahlmöglichkeit betrifft die Wahl der zu verschlüsselnden Ressource. <em>Document</em> ist immer verfügbar und verschlüsselt das vollständige Dokument. <em>Selection</em> ist nur möglich wenn Sie im Editor mindestens ein Element oder Elementinhalt vor dem Aufruf des Assistenten markiert haben
          und der Assistent über das Kontextmenü eines Editors aufgerufen wurde. Die Auswahl muss wohlgeformt sein, d.h. sowohl das
          öffnende als auch das schließende Tag müssen in der Auswahl vorhanden sein. Werden die Regeln der Wohlgeformtheit verletzt
          kann <em>Selection</em> nicht aktiviert werden.
       </p>
-      		
+
       <p>Bei der Auswahl von <em>XPath</em> können Sie im Textfeld einen XPath-Ausdruck eingeben. Alternativ können Sie über den Button <strong>Browse...</strong> einen weiteren Dialog zur Auswahl eines XPath Ausdrucks für das aktuelle XML-Dokument öffnen.
       </p>
-      		
-      <div align="center"><img src="../images/enc-xpath.jpg" alt="XPath Selection" width="225" height="263"><p><em>XPath Selection</em></p>
+
+      <div align="center"><img src="../images/enc-xpath.jpg" alt="XPath Selection" width="225" height="263"/><p><em>XPath Selection</em></p>
       </div>
-      		
+
       <p>Damit die XPath-Ausdrücke zu jedem Element angezeigt werden können muss es sich um ein wohlgeformtes XML-Dokument handeln.
          Insbesondere bei der Verwendung von Namensräumen muss der Namensraum auch definiert werden, d.h. ein <em>xmlns:MeinNamensraum="http://www.namensraum.de"</em> muss bei der Verwendung von <em>MeinNamensraum</em> unbedingt vorhanden sein.
       </p>
-      		
+
       <p>
          			<em>Keep root element as plain text</em> bewirkt, dass nur der Inhalt des gewählten Elements verschlüsselt wird, das Element selbst aber im Klartext erhalten bleibt.
          Beim Verschlüsseln des vollständigen Dokuments bedeutet das, dass das Wurzelelement im Klartext erhalten bleibt. Bei einer
          Textauswahl bleibt das entsprechende temporäre Wurzelelement der Textauswahl im Klartext erhalten. Standardmäßig werden sowohl
          das Element als auch der Elementinhalt verschlüsselt.
       </p>
-      		
+
       <p>Durch das Aktivieren von <em>Generate a Basic Security Profile compliant encryption</em> wird der Wizard auf zu dieser Empfehlung kompatible Einstellungen eingeschränkt. Auf der Seite <a href="encrypt_page_algorithms.html">Algorithms</a> werden so alle Algorithmen gemäß der Empfehlung eingeschränkt.
       </p>
-      		
+
       <p>Hierbei werden hinsichtlich der zugelassenen Algorithmen folgende Einschränkungen vorgenommen. Für die <a href="../basics/encryption_syntax_encryptionmethod.html">EncryptionMethod</a> innerhalb von <a href="../basics/encryption_syntax_encrypteddata.html">EncryptedData</a> sind ausschließlich die Algorithmen <em>Triple DES</em>, <em>AES 128</em> und <em>AES 256</em> erlaubt. Für <a href="../basics/encryption_syntax_encryptionmethod.html">EncryptionMethod</a> als Kindelement von <a href="../basics/encryption_syntax_keyinfo.html#EncryptedKey">EncryptedKey</a> sind die Algorithmen <em>Triple DES Key Wrap</em>, <em>AES-128 Key Wrap</em> und <em>AES-256 Key Wrap</em> zugelassen.
       </p>
-      	
-      
+
+
    </body>
 </html>

@@ -2,35 +2,40 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="XML Security Tools User Guide" topic="book.html">
-    <topic label="Overview" href="plugin/overview.html"/>
-    <topic label="Cheat Sheets" href="plugin/cheatsheets.html"/>
-    <topic label="Preferences" href="plugin/prefs.html">
-        <topic label="Digital Signatures" href="plugin/prefs_sign.html"/>
-        <topic label="Encryption" href="plugin/prefs_encrypt.html"/>
+   <topic href="overview.html" label="Overview">
+   </topic>
+   <topic href="tasks/tasks.html" label="Tasks">
+		<topic label="Signature Wizard" href="tasks/sign.html">
+	        <topic label="Resource and Signature Type" href="tasks/sign_page_resource.html"/>
+	        <topic label="Keystore and Keys" href="tasks/sign_page_keys.html">
+	            <topic label="Use an existing Key" href="tasks/sign_page_open_key.html"/>
+	            <topic label="Create a new Key" href="tasks/sign_page_create_key.html"/>
+	            <topic label="Create a new Keystore and Key" href="tasks/sign_page_create_keystore.html"/>
+	        </topic>
+	        <topic label="Algorithms and Signature Properties" href="tasks/sign_page_algorithms.html"/>
+	    </topic>
+	    <topic label="Signatures View" href="tasks/verify.html"/>
+	    <topic label="Encryption Wizard" href="tasks/encrypt.html">
+	        <topic label="Resource and Encryption Type" href="tasks/encrypt_page_resource.html"/>
+	        <topic label="Keystore and Keys" href="tasks/encrypt_page_keys.html">
+	            <topic label="Open an existing Key" href="tasks/encrypt_page_open_key.html"/>
+	            <topic label="Create a new Key" href="tasks/encrypt_page_create_key.html"/>
+	            <topic label="Create a new Keystore and Key" href="tasks/encrypt_page_create_keystore.html"/>
+	        </topic>
+	        <topic label="Algorithms" href="tasks/encrypt_page_algorithms.html"/>
+	    </topic>
+	    <topic label="Decryption Wizard" href="tasks/decrypt.html">
+	        <topic label="Decryption" href="tasks/decrypt_page_decryption.html"/>
+	    </topic>
+	    <topic label="Canonicalization" href="tasks/canonicalize.html"/>
+	    <topic label="Quick Functions" href="tasks/quickfunctions.html"/>
+	</topic>
+    <topic label="Preferences" href="setup/preferences.html">
+        <topic label="Encryption" href="setup/preferences_encrypt.html"/>
+        <topic label="Signatures" href="setup/preferences_sign.html"/>
     </topic>
-    <topic label="Quick Functions" href="plugin/quick.html"/>
-    <topic label="Signature Wizard" href="plugin/sign.html">
-        <topic label="Resource and Signature Type" href="plugin/sign_page_resource.html"/>
-        <topic label="Keys" href="plugin/sign_page_keys.html">
-            <topic label="Open a Key" href="plugin/sign_page_open_key.html"/>
-            <topic label="Create a Key" href="plugin/sign_page_create_key.html"/>
-            <topic label="Create a Keystore" href="plugin/sign_page_create_keystore.html"/>
-        </topic>
-        <topic label="Algorithms" href="plugin/sign_page_algorithms.html"/>
+    <topic href="whatsnew.html" label="What&apos;s New">
     </topic>
-    <topic label="XML Signatures View" href="plugin/verify.html"/>
-    <topic label="Encryption Wizard" href="plugin/encrypt.html">
-        <topic label="Resource and Encryption Type" href="plugin/encrypt_page_resource.html"/>
-        <topic label="Keys" href="plugin/encrypt_page_keys.html">
-            <topic label="Open a Key" href="plugin/encrypt_page_open_key.html"/>
-            <topic label="Create a Key" href="plugin/encrypt_page_create_key.html"/>
-            <topic label="Create a Keystore" href="plugin/encrypt_page_create_keystore.html"/>
-        </topic>
-        <topic label="Algorithms" href="plugin/encrypt_page_algorithms.html"/>
+    <topic href="notices.html" label="Legal">
     </topic>
-    <topic label="Decryption Wizard" href="plugin/decrypt.html">
-        <topic label="Decryption" href="plugin/decrypt_page_decryption.html"/>
-    </topic>
-    <topic label="Canonicalization" href="plugin/canonicalize.html"/>
-    <topic label="Legal" href="notices.html"/>
 </toc>

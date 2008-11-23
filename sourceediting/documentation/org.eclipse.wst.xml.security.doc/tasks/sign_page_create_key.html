@@ -1,41 +1,42 @@
-<html xmlns:sec="http://www.xml-sicherheit.de">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <link rel="stylesheet" type="text/css" href="../format.css">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css" href="../format.css"/>
    </head>
    <body>
-      	
+
       <h1>Create a new Key</h1>
-      	
-      		
+
+
       <p>Auf dieser zweiten Seite des <em>Digital Signature Wizard</em> können Sie einen neuen Schlüssel in einem vorhandenen Java Keystore generieren. Nach Angabe aller erforderlichen Daten wird
          das Zertifikat unter dem von Ihnen angegebenen <em>Alias</em> im ausgewählten Keystore gespeichert und zur Generierung dieser digitalen Signatur verwendet.
       </p>
-      		
-      <div align="center"><img src="../images/dsig-2b.png" alt="Create a new Certificate" width="275" height="392"><p><em>Create a new Certificate</em></p>
+
+      <div align="center"><img src="../images/dsig-2b.png" alt="Create a new Certificate" width="275" height="392"/><p><em>Create a new Certificate</em></p>
       </div>
-      		
+
       <p>Zunächst müssen Sie die Daten für den <em>Distinguished Name</em> angeben. Dazu gehören <em>Common Name</em>, <em>Organizational Unit</em>, <em>Organization</em>, <em>Location</em>, <em>State</em> und <em>Country</em>. Lediglich der <em>Common Name</em> ist ein Pflichtfeld, die anderen fünf sind optional. Während der Eingabe der Daten zeigt das Vorschaufeld eine Übersicht
          Ihrer getätigten Eingaben an.
       </p>
-      		
+
       <p>Anschließend sind einige Angaben zum Schlüssel (<em>Key</em>) erforderlich. Der <em>Alias</em> ist ein Pflichtfeld und muss zwischen 4 und 20 Zeichen lang sein. Das <em>Password</em> für das Zertifikat ist ebenfalls ein Pflichtfeld und muss mindestens 6, maximal jedoch 20 Zeichen lang sein. Mit dem <strong>Punkt</strong> Button rechts neben den Eingabefeld können Sie sich den Klartext anzeigen lassen und Ihre Eingabe kontrollieren. Aus der
          <em>Type</em> Auswahlbox können Sie jetzt noch den Typ des Zertifikats auswählen. Möglich sind <em>Digital Signature Algorithm (DSA)</em>, <em>Elliptic Curve DSA (ECDSA)</em> und <em>Rivest, Shamir, Adleman (RSA)</em>.
       </p>
-      		
+
       <p>Jetzt müssen Sie noch den Java Keystore (mit der Dateiendung <em>.jks</em>) angeben, den Sie um das neue Zertifikat erweitern wollen. Über den Button <strong>Open...</strong> öffnen Sie das Standarddialogfeld zur Auswahl einer solchen Datei. Damit das Zertifikat darin gespeichert werden kann ist
          noch die Eingabe des Keystore Passworts im <em>Password</em> Feld erforderlich. Mit dem <strong>Punkt</strong> Button rechts neben den Eingabefeld können Sie sich den Klartext anzeigen lassen und Ihre Eingabe kontrollieren.
       </p>
-      		
+
       <p>Nach der korrekten Angabe aller erforderlichen Daten können Sie das Zertifikat über den Button <strong>Create Certificate</strong> generieren und im angegebenen Keystore speichern lassen.
       </p>
-      		
+
       <p>Das generierte Zertifikat können Sie in Zukunft über die Seite <a href="sign_page_open_certificate.html">Open an existing Certificate</a> direkt verwenden. Dazu benötigen Sie neben dem Dateinamen die unter <em>Certificate Alias</em>, <em>Certificate Password</em> und <em>Keystore Password</em> angegebenen Daten.
       </p>
-      		
+
       <p>Nach der erfolgreichen Generierung des neuen Zertifikats können Sie mit dem <strong>Next</strong> Button auf die nächste Seite des Digital Signature Wizards wechseln: <a href="sign_page_algorithms.html">Algorithms and Signature Properties</a>.
       </p>
-      	
-      
+
+
    </body>
 </html>
