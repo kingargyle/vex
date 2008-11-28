@@ -504,6 +504,15 @@ public class VEXElementImpl extends Node implements VEXElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void setContent(Content content, int offset, int i) {
+		super.setContent(content, offset, i);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void insertChild(int index, VEXElement child) {

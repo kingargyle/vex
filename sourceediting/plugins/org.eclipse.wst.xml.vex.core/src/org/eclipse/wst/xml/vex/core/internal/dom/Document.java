@@ -61,6 +61,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 		rootElement.setDocument(this);
 		content.insertString(0, "\0\0");
 		rootElement.setContent(content, 0, 1);
+		
 	}
 
 	/**

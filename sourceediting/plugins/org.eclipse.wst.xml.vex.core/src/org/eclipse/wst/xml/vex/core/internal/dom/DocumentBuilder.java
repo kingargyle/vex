@@ -12,6 +12,15 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.LinkedList;
 
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
+import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
@@ -60,6 +69,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	private String dtdPublicID;
 	private String dtdSystemID;
 	private Document doc;
+	private org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument domDocument;
 	private Locator locator;
 
 	/**
@@ -72,6 +82,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	public DocumentBuilder(IWhitespacePolicyFactory policyFactory) {
 		this.policyFactory = policyFactory;
 	}
+	
+//	public DocumentBuilder(IWhitespacePolicyFactory policyFactory, IDOMDocument domDocument) {
+//		this.policyFactory = policyFactory;
+//		this.domDocument = domDocument;
+//	}
 
 	/**
 	 * Returns the newly built <code>Document</code> object.
@@ -103,6 +118,10 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		doc.setPublicID(dtdPublicID);
 		doc.setSystemID(dtdSystemID);
 		rootElement.setDocument(doc);
+		
+		org.w3c.dom.Node node = rootElement.getElement();
+		domDocument.appendChild(node);
+		doc.setDocument(domDocument);
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName) {
@@ -139,6 +158,13 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void startDocument() {
+		initDOM();
+	}
+
+	private void initDOM() {
+		IDOMModel model = null;
+		model = new DOMModelImpl();
+		domDocument =  model.getDocument();
 	}
 
 	public void startElement(String namespaceURI, String localName,
@@ -148,15 +174,24 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 		try {
 			VEXElement element;
+			if (domDocument == null) {
+				initDOM();
+			}
 			if (stack.size() == 0) {
 				rootElement = new RootElement(qName);
+				org.w3c.dom.Element domElement = domDocument.createElement(qName);
 				element = this.rootElement;
+				rootElement.setElement(domElement);
+				domDocument.appendChild(domElement);
 				if (this.policyFactory != null) {
 					this.policy = this.policyFactory
 							.getPolicy(this.dtdPublicID);
 				}
 			} else {
 				element = new Element(qName);
+				org.w3c.dom.Element domElement = domDocument.createElement(qName);
+				element.setElement(domElement);
+
 				VEXElement parent = ((StackEntry) stack.getLast()).element;
 				parent.addChild(element);
 			}

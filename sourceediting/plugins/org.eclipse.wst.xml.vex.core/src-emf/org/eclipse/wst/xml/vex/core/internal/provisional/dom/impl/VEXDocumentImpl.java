@@ -183,6 +183,7 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 * @generated
 	 */
 	protected VEXDocumentImpl() {
+		
 		super();
 	}
 

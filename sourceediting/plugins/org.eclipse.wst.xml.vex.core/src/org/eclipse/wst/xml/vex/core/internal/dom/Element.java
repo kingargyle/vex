@@ -21,6 +21,9 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
@@ -52,6 +55,12 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		this.name = name;
 		childNodes = new BasicEList();
 	}
+	
+	public Element(String name, IDOMDocument document) {
+		this.name = name;
+		childNodes = new BasicEList();
+		setElement(document.createElement(name));
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -63,6 +72,7 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	public void addChild(VEXElement child) {
 		childNodes.add(child);
 		child.setParent(this);
+		getElement().appendChild(child.getElement());
 	}
 
 	/*
@@ -201,6 +211,13 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	 */
 	public void insertChild(int index, VEXElement child) {
 		childNodes.add(index, child);
+		Node node = (Node)childNodes.get(index);
+		if (node instanceof Element) {
+			org.w3c.dom.Element domElement = ((Element) node).getElement();
+			if (domElement != null) {
+				domElement.insertBefore(child.getElement(), domElement);
+			}
+		}
 		child.setParent(this);
 	}
 
@@ -227,6 +244,7 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		if (oldValue != null) {
 			this.attributes.remove(name);
 		}
+		getElement().removeAttribute(name);
 		Document doc = (Document)this.getDocument();
 		if (doc != null) { // doc may be null, e.g. when we're cloning an
 			// element
@@ -251,6 +269,11 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 			throws DocumentValidationException {
 
 		String oldValue = getAttribute(name);
+		org.w3c.dom.Element domElement = getElement();
+		if (domElement != null) {
+			//TODO: Remove the NULL check, or add Unit tests to specifically test for the additional Attributes
+			domElement.setAttribute(name, value);
+		}
 
 		if (value == null && oldValue == null) {
 			return;
