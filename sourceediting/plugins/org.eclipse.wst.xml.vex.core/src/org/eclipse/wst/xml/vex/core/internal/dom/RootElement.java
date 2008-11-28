@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
@@ -32,6 +33,10 @@ public class RootElement extends Element implements VEXElement {
 	 */
 	public RootElement(String name) {
 		super(name);
+	}
+	
+	public RootElement(String name, IDOMDocument document) {
+		super(name, document);
 	}
 
 	/* (non-Javadoc)

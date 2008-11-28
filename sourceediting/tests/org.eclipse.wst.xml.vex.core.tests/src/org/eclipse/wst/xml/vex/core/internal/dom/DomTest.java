@@ -12,6 +12,9 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.List;
 
+import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
@@ -27,6 +30,39 @@ import junit.framework.TestCase;
  * Test the <code>org.eclipse.wst.vex.core.internal.dom</code> package.
  */
 public class DomTest extends TestCase {
+	
+	public void testWTPDOMRetrieval() throws Exception {
+		IDOMModel model = null;
+		model = new DOMModelImpl();
+		IDOMDocument domDocument =  model.getDocument();
+		
+		Element root = new Element("article");
+		root.setElement(domDocument.createElement("article"));
+		domDocument.appendChild(root.getElement());
+		VEXDocument doc = new Document(root);
+		
+		org.w3c.dom.Element domElement = doc.getRootElement().getElement();
+		assertEquals("Incorrect element name.", "article", domElement.getNodeName());
+	}
+	
+	public void testWTPDOMOwnerDocumentElement() throws Exception {
+		IDOMModel model = null;
+		model = new DOMModelImpl();
+		IDOMDocument domDocument =  model.getDocument();
+		
+		Element root = new Element("article");
+		VEXDocument doc = new Document(root);
+		root.setElement(domDocument.createElement(root.getName()));
+		domDocument.appendChild(root.getElement());
+		doc.setDocument(domDocument);
+		
+		VEXElement subelement = new Element("b");
+		root.addChild(subelement);
+		subelement.setElement(domDocument.createElement("b"));
+		root.getElement().appendChild(subelement.getElement());
+		
+		assertEquals("Incorrect WTP Owner Document Element", "article", subelement.getElement().getOwnerDocument().getDocumentElement().getNodeName());
+	}
 
 	public void testDom() throws Exception {
 
