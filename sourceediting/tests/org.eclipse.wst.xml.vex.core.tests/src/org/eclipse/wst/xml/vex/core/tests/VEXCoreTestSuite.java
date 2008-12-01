@@ -34,7 +34,7 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(DomTest.class);
 		addTestSuite(DTDValidatorTest.class);
 		addTestSuite(GapContentTest.class);
-		//addTestSuite(SpaceNormalizerTest.class);
+		addTestSuite(SpaceNormalizerTest.class);
 		addTestSuite(TextWrapperTest.class);
 		addTestSuite(TestBlockElementBox.class);
 		addTestSuite(TestBlocksInInlines.class);

@@ -12,7 +12,13 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.List;
 
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
+import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
@@ -31,9 +37,32 @@ import junit.framework.TestCase;
  */
 public class DomTest extends TestCase {
 	
+	public void testWTPStructuredDocumentRetrieval() throws Exception {
+		IDOMModel model = initDOM();
+		IDOMDocument domDocument = model.getDocument();
+		
+		this.assertNotNull("Structured Document NULL.", domDocument.getStructuredDocument());
+	}
+
+	private IDOMModel initDOM() {
+		IDOMModel model = new DOMModelImpl();
+		IModelManager modelManager = StructuredModelManager.getModelManager();
+		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
+		model.setStructuredDocument(structuredDocument);
+		return model;
+	}
+	
+	public void testWTPStructruedDocument() throws Exception {
+		IStructuredModel model = null;
+		IModelManager modelManager = StructuredModelManager.getModelManager();
+		
+		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
+		assertNotNull("Structured Document NULL.", structuredDocument);
+		
+	}
+	
 	public void testWTPDOMRetrieval() throws Exception {
-		IDOMModel model = null;
-		model = new DOMModelImpl();
+		IDOMModel model = initDOM();
 		IDOMDocument domDocument =  model.getDocument();
 		
 		Element root = new Element("article");
@@ -46,8 +75,7 @@ public class DomTest extends TestCase {
 	}
 	
 	public void testWTPDOMOwnerDocumentElement() throws Exception {
-		IDOMModel model = null;
-		model = new DOMModelImpl();
+		IDOMModel model = initDOM();
 		IDOMDocument domDocument =  model.getDocument();
 		
 		Element root = new Element("article");
