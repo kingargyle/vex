@@ -23,7 +23,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
@@ -72,7 +75,7 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	public void addChild(VEXElement child) {
 		childNodes.add(child);
 		child.setParent(this);
-		getElement().appendChild(child.getElement());
+		//getElement().appendChild(child.getElement());
 	}
 
 	/*
@@ -407,5 +410,19 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	public String getNodeType() {
 		return "Element";
 	}
+	
+	/**
+	 * Sets the content of the node
+	 * 
+	 * @param content
+	 *            Content object holding the node's content
+	 * @param startOffset
+	 *            offset at which the node's content starts
+	 * @param endOffset
+	 *            offset at which the node's content ends
+	 */
+	public void setContent(Content content, int startOffset, int endOffset) {
+		super.setContent(content, startOffset, endOffset);
+	}	
 
 }

@@ -341,5 +341,9 @@ public interface VEXDocument extends EObject {
 	 * @generated
 	 */
 	void insertText(int offset, String text) throws DocumentValidationException;
+	
+	void setDOMDocument(org.w3c.dom.Document domDocument);
+	
+	org.w3c.dom.Document getDOMDocument();
 
 } // VEXDocument

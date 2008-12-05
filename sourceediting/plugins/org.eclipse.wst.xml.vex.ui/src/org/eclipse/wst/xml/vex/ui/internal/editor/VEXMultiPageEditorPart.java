@@ -12,6 +12,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeViewer;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 
@@ -25,9 +26,13 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 		try {
 			createSourcePage();
 			createVisualEditorPage();
-			addSourcePage();
 			addVisualEditorPage();
-			setActivePage(sourcePageIndex);
+			addSourcePage();
+			
+			VexWidget vexWidget = vexEditor.getVexWidget();
+			modelDocument = (IDOMDocument) vexWidget.getDocument().getDOMDocument();
+			textEditor.getTextViewer().setDocument(modelDocument.getStructuredDocument());
+			setActivePage(visualPageIndex);
 
 		} catch (PartInitException e) {
 			Logger.logException(e);
@@ -61,20 +66,20 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 	
 	private void addVisualEditorPage() throws PartInitException {
 		visualPageIndex = addPage(vexEditor, getEditorInput());
-		setPageText(visualPageIndex, "VEX");
+		setPageText(visualPageIndex, "Author");
 		firePropertyChange(PROP_TITLE);
 	}
 
 	public void doSave(IProgressMonitor monitor) {
-	   textEditor.doSave(monitor);
+	  vexEditor.doSave(monitor);
 	}
 
 	public void doSaveAs() {
-		textEditor.doSaveAs();
+		vexEditor.doSaveAs();
 	}
 
 	public boolean isSaveAsAllowed() {
-		return textEditor.isSaveAsAllowed();
+		return vexEditor.isSaveAsAllowed();
 	}
 
 	private IDocument getDocument() {

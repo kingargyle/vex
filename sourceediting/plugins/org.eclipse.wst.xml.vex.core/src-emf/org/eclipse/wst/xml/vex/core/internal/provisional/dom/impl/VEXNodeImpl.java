@@ -341,9 +341,11 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated not
 	 */
 	public void setText(String newText) {
+		
+	
 		String oldText = text;
 		text = newText;
 		if (eNotificationRequired())

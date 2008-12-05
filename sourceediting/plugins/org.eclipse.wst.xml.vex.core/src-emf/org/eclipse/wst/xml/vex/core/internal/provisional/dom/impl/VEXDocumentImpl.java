@@ -692,4 +692,15 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 		return result.toString();
 	}
 
+	public Document getDOMDocument() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setDOMDocument(Document domDocument) {
+		
+	}
+	
+	
+
 } //VEXDocumentImpl
