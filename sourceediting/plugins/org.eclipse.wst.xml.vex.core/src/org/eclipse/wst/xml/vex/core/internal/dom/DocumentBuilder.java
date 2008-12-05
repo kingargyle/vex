@@ -18,6 +18,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
 import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
+import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
@@ -135,6 +136,10 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		this.content.insertString(content.getLength(), "\0");
 		entry.element.setContent(this.content, entry.offset, content
 				.getLength() - 1);
+//		int length = entry.element.getEndOffset() - entry.element.getStartOffset();
+//		String text = content.getString(entry.element.getStartOffset(), length);
+//		org.w3c.dom.Text textNode = entry.element.getElement().getOwnerDocument().createTextNode(text);
+//		entry.element.getElement().appendChild(textNode);
 
 		if (this.isBlock(entry.element)) {
 			this.trimLeading = true;
@@ -164,6 +169,9 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	private void initDOM() {
 		IDOMModel model = null;
 		model = new DOMModelImpl();
+		IModelManager modelManager = StructuredModelManager.getModelManager();
+		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
+		model.setStructuredDocument(structuredDocument);
 		domDocument =  model.getDocument();
 	}
 
@@ -201,6 +209,8 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				element.setAttribute(attrs.getQName(i), attrs.getValue(i));
 			}
 
+//			org.w3c.dom.Text textNode = domDocument.createTextNode(cleanUpText(this.isBlock(element)).toString());
+//			element.getElement().appendChild(textNode);
 			this.appendChars(this.isBlock(element));
 
 			stack.add(new StackEntry(element, content.getLength(), this
@@ -214,6 +224,15 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 					this.locator, ex);
 		}
 
+	}
+	
+	private StringBuffer cleanUpText(boolean trim) {
+		StringBuffer sb;
+
+		sb = cleanUpTextContent(trim);
+		
+		return sb;
+		
 	}
 
 	public void startPrefixMapping(String prefix, String uri) {
@@ -252,6 +271,16 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 		StringBuffer sb;
 
+		sb = cleanUpTextContent(trimTrailing);
+
+		this.content.insertString(this.content.getLength(), sb.toString());
+
+		this.pendingChars.setLength(0);
+		this.trimLeading = false;
+	}
+
+	private StringBuffer cleanUpTextContent(boolean trimTrailing) {
+		StringBuffer sb;
 		StackEntry entry = this.stack.size() > 0 ? (StackEntry) this.stack
 				.getLast() : null;
 
@@ -290,11 +319,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		}
 
 		this.normalizeNewlines(sb);
-
-		this.content.insertString(this.content.getLength(), sb.toString());
-
-		this.pendingChars.setLength(0);
-		this.trimLeading = false;
+		return sb;
 	}
 
 	private boolean isBlock(VEXElement element) {

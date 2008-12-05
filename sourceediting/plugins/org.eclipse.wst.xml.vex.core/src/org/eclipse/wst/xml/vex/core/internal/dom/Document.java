@@ -29,6 +29,9 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImp
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 
 /**
  * Represents an XML document.
@@ -44,6 +47,9 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 
 	//private String publicID;
 	protected String systemID;
+	
+	protected org.w3c.dom.Document domDocument;
+	
 	//private String encoding;
 	//private Validator validator;
 
@@ -57,11 +63,20 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 	 */
 	public Document(VEXElement rootElement) {
 		content = new GapContent(100);
+		content.insertString(0, "\0\0");
+
 		this.rootElement = rootElement;
 		rootElement.setDocument(this);
-		content.insertString(0, "\0\0");
 		rootElement.setContent(content, 0, 1);
 		
+	}
+	
+	public Document(org.w3c.dom.Document domDocument) {
+		content = new GapContent(100);
+		content.insertString(0, "\0\0");
+		
+		setDOMDocument(domDocument);
+		rootElement.setDocument(this);
 	}
 
 	/**
@@ -954,6 +969,68 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 
 	private void fireContentInserted(DocumentEvent e) {
 		this.listeners.fireEvent("contentInserted", e);
+	}
+	
+	@Override
+	public void setDOMDocument(org.w3c.dom.Document domDocument) {
+		this.domDocument = domDocument;
+		synchronizeDocuments();
+	}
+	
+	@Override
+	public org.w3c.dom.Document getDOMDocument() {
+		return domDocument;
+	}
+	
+	private void synchronizeDocuments() {
+		synchronizeRootElement();
+	}
+	
+	private void synchronizeRootElement() {
+		rootElement = null;
+		org.w3c.dom.Element domRootElement = domDocument.getDocumentElement(); 
+		String rootElementName = domRootElement.getNodeName();
+		rootElement = new RootElement(rootElementName);
+		rootElement.setElement(domRootElement);
+		rootElement.setContent(content, 0, 1);
+		synchronizeAttributeNodes(rootElement, domRootElement);
+		synchronizeChildNodes(rootElement, domRootElement);
+	}
+	
+	private void synchronizeAttributeNodes(VEXElement vexElement, org.w3c.dom.Element domElement) {
+		NamedNodeMap domAttrNodes = domElement.getAttributes();
+		if (domAttrNodes == null || domAttrNodes.getLength() == 0) {
+			return;
+		}
+		for (int nodeCount = 0; nodeCount < domAttrNodes.getLength(); nodeCount++ ) {
+			Attr attrNode = (Attr)domAttrNodes.item(nodeCount);
+			String attrName = attrNode.getName();
+			String attrValue = attrNode.getValue();
+			vexElement.setAttribute(attrName, attrValue);
+		}
+	}
+	
+	private void synchronizeChildNodes(VEXElement vexElement, org.w3c.dom.Element domElement) {
+		NodeList domNodes = domElement.getChildNodes();
+		if (domNodes.getLength() > 0) {
+			for (int nodeCount = 0; nodeCount < domNodes.getLength(); nodeCount++) {
+				org.w3c.dom.Node domNode = domNodes.item(nodeCount);
+				if (domNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+					VEXElement element = new Element(domNode.getNodeName());
+					synchronizeChildNodes(element, (org.w3c.dom.Element) domNode);
+					synchronizeAttributeNodes(element, (org.w3c.dom.Element) domNode);
+					element.setElement((org.w3c.dom.Element) domNode);
+					vexElement.addChild(element);
+				}
+				if (domNode.getNodeType() == org.w3c.dom.Node.TEXT_NODE) {
+					int offset = content.getLength();
+					String text = domNode.getNodeValue();
+					content.insertString(this.content.getLength(), domNode.getNodeValue());
+					content.insertString(content.getLength(), "\0");
+					vexElement.setContent(content, offset, content.getLength() - 1);
+				}
+			}
+		}
 	}
 
 }

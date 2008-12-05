@@ -62,6 +62,12 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
@@ -341,6 +347,11 @@ public class VexEditorMultiPage extends VexEditor {
 
 			IPath inputPath = null;
 
+			IModelManager modelManager = StructuredModelManager
+					.getModelManager();
+			IStructuredDocument structuredDocument = null;
+			IStructuredModel model = null;
+
 			if (input instanceof IFileEditorInput) {
 				inputPath = ((IFileEditorInput) input).getFile()
 						.getRawLocation();
@@ -371,11 +382,28 @@ public class VexEditorMultiPage extends VexEditor {
 						.println("Parsed document in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
+			if (input instanceof IFileEditorInput) {
+				IFile file = ((IFileEditorInput) input).getFile();
+
+				model = modelManager.getModelForEdit(file);
+				structuredDocument = model.getStructuredDocument();
+			}
+			
+			IDOMDocument domDocument = ((IDOMModel) model).getDocument();
+			doc = new Document(domDocument);
+			doc.setPublicID(domDocument.getDoctype().getPublicId());
+			doc.setSystemID(domDocument.getDoctype().getSystemId());
+			doc.setEncoding(structuredDocument.getEncodingMemento()
+					.getJavaCharsetName());
+			doctype = DocumentType.getDocumentType(doc.getPublicID());
+			wsFactory.getPolicy(doc.getPublicID());
+
 			// this.doctype is set either by wsPolicyFactory or entityResolver
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
+			Validator validator = WTPVEXValidator.create(doctype
+					.getResourceUrl());
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {
@@ -392,7 +420,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 			if (this.updateDoctypeDecl) {
 				this.doc.setPublicID(this.doctype.getPublicId());
-				((Document)this.doc).setSystemID(this.doctype.getSystemId());
+				((Document) this.doc).setSystemID(this.doctype.getSystemId());
 				this.doSave(null);
 			}
 
@@ -508,7 +536,7 @@ public class VexEditorMultiPage extends VexEditor {
 		super.setInput(input);
 		this.setPartName(input.getName());
 		this.setContentDescription(input.getName());
-		//this.setTitleToolTip(input.getToolTipText());
+		// this.setTitleToolTip(input.getToolTipText());
 	}
 
 	public void setStatus(String text) {
@@ -639,12 +667,12 @@ public class VexEditorMultiPage extends VexEditor {
 		gd.verticalAlignment = GridData.FILL;
 		this.vexWidget.setLayoutData(gd);
 
-//		VexActionBarContributor contributor = (VexActionBarContributor) this
-//				.getEditorSite().getActionBarContributor();
-//
-//		MenuManager menuMgr = contributor.getContextMenuManager();
-//		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
-//		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
+		// VexActionBarContributor contributor = (VexActionBarContributor) this
+		// .getEditorSite().getActionBarContributor();
+		//
+		// MenuManager menuMgr = contributor.getContextMenuManager();
+		// this.getSite().registerContextMenu(menuMgr, this.vexWidget);
+		// this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
 
 		this.savedUndoDepth = this.vexWidget.getUndoDepth();
 
@@ -837,7 +865,8 @@ public class VexEditorMultiPage extends VexEditor {
 				}
 			}
 
-			style = VexEditorMultiPage.findStyleForDoctype(doctype.getPublicId());
+			style = VexEditorMultiPage.findStyleForDoctype(doctype
+					.getPublicId());
 			if (style == null) {
 				throw new NoStyleForDoctypeException(doctype);
 			}

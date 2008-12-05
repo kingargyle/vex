@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Torsten Stolpmann - bug 250837 - fixed id used for builder.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -30,7 +31,7 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 public class BuildProblemDecorator extends LabelProvider implements
 		ILightweightLabelDecorator {
 
-	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.config.buildProblemDecorator"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.wst.xml.vex.ui.config.buildProblemDecorator"; //$NON-NLS-1$
 
 	public void decorate(Object element, IDecoration decoration) {
 

@@ -1,0 +1,253 @@
+<?xml version='1.0'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.docbook.org/xml/4.5/docbookx.dtd">
+<chapter id="SecuringYourApacheServer">
+  <title>Securing Your Apache Server with SSL</title>
+  <para>Test insert of some code.</para>
+  <section>
+    <title>Getting Started with SSL on Apache</title>
+    <para>There are a few key ingredients you will need to use with 
+    Apache to secure your Web server: OpenSSL, mod_ssl, and root access 
+    to the server.</para>
+    <para>OpenSSL is a command line toolkit for using secure sockets 
+    layer encryption on a server and can be acquired from 
+    <ulink url="http://www.openssl.org">http://www.openssl.org</ulink> 
+    . This tool works with Apache module mod_ssl in carrying out 
+    SSL-related tasks. Any modern Linux/Unix installation will come 
+    with OpenSSL, you will be required to install OpenSSL if your 
+    hosting you Apache sever on Windows. You will need root/admin 
+    privileges to install OpenSSL.</para>
+    <para>You must also ensure that mod_ssl is available on your 
+    server. To see which modules are active in Apache, issue the 
+    following command in a Terminal as root user on your server.</para>
+    <screen>
+# httpd –l
+        </screen>
+    <para>If you have a recent Linux distribution installed, it is 
+    likely Apache’s modules are compiled as dynamic loadable modules, 
+    in which case you’ll need to edit your httpd.conf file and check 
+    that the following line is uncommented.</para>
+    <screen>
+LoadModule ssl_module modules/libmodssl.so
+        </screen>
+    <para>Restarting Apache will load the module into action.</para>
+    <screen>
+# service httpd restart
+        </screen>
+    <note>
+      <para>Note that in recent Apache distributions, the httpd.conf 
+      file contains an <emphasis>&quot;IfDefine 
+      HAVE_SSL&quot;</emphasis> section that is intended to contain the 
+      <emphasis>&quot;VirtualHost&quot;</emphasis> definitions for all 
+      your SSL Websites. By placing these definitions within the 
+      <emphasis>&quot;IfDefine&quot;</emphasis> section, you can ensure 
+      that the sites will not be made available unless SSL support is 
+      successfully loaded on the server. This prevents any problems 
+      arising in which lack of SSL could expose your secure site</para>
+    </note>
+  </section>
+  <section>
+    <title>Create a Local Key Pair</title>
+    <para>If you have not already done so, your first step should be to 
+    create a local private/public key from which you can generate 
+    certificate requests. These can then be used for self-signed 
+    certificates, or when purchasing a certificate from a CA.</para>
+    <para>OpenSSL allows us to use the command line to generate keys. 
+    You have the option of using strong encryption and a passphrase to 
+    secure your private key, as shown below.</para>
+    <screen>
+# cd /etc/ssl/apache/
+# openssl genrsa -des3 -out domainname.com.key 2048
+        </screen>
+    <para>Typing the above on the command line will create a private 
+    key using TripleDES encryption, 1024 being the number of bits 
+    generated in the key. There are options for lower encryption 
+    levels, however, these are not recommended for those with servers 
+    that are accessible via the Internet.</para>
+    <para>The key will be created in the directory you’re in.</para>
+    <para>Finally, you should modify the permissions to restrict access 
+    to the new key.</para>
+    <screen>
+# cd /etc/ssl/apache/
+# chmod 400 domainname.com.key
+# chown root.root domainname.com.key
+        </screen>
+    <para>This ensures that only the root user has access to this file, 
+    and still requires the passphrase you may have used to create the 
+    key in order to open.</para>
+  </section>
+  <section>
+    <title>Generating a Certificate Signing Request</title>
+    <para>To purchase an SSL certificate from a CA, you need first to 
+    generate what is called a Certificate Signing Request (CSR). This 
+    is submitted to the CA of your choice, and is used to create the 
+    official and singed SSL certificate that will be returned to you, 
+    and with which you may secure your Web server.</para>
+    <screen>
+# cd /etc/ssl/apache/
+# openssl req -new -key domainname.com.key -out domainname.com.csr
+        
+        </screen>
+    <para>This command creates the .csr file that is sent or uploaded 
+    to a CA during the process of ordering an SSL certificate.</para>
+  </section>
+  <section>
+    <title>Receiving and Installing Your SSL Certificate</title>
+    <para>Generally, CAs provide detailed instructions for the 
+    installation of their SSL certificates; however, I’ll cover some 
+    broad points here.</para>
+    <para>The CA from which you order a certificate will email you 
+    either the certificate, or a link at which you can download it. 
+    Follow the instructions provided precisely—especially with regards 
+    to opening a certificate in a text editor. Do not use a word 
+    processor or rich text editor, as the certificate code can become 
+    corrupted. You should also take care to ensure that no leading or 
+    trailing spaces follow the beginning and end of the certificate 
+    code in <xref linkend="examp_Emailed_Certificate"/> .</para>
+    <example id="examp_Emailed_Certificate">
+      <title>Sample Emailed Certificate</title>
+      <programlisting>
+-----BEGIN CERTIFICATE-----
+MIICzjCCAjegAwIBAgIBAjANBgkqhkiG9w0BAQQFADCBrDELMAkGA1UEBhMCVVMx
+ETAPBgNVBAgTCFZpcmdpbmlhMRQwEgYDVQQHEwtTcHJpbmdmaWVsZDEYMBYGA1UE
+ChMPSlJJIFdvcmxkLCBJbmMuMRAwDgYDVQQLEwdPbnRhcmlvMR0wGwYDVQQDExRv
+bnRhcmlvLmpyaXdvcmxkLmNvbTEpMCcGCSqGSIb3DQEJARYaYmlsbGZAb250YXJp
+by5qcml3b3JsZC5jb20wHhcNMDUwNDA3MjI0MTU3WhcNMDYwNDA3MjI0MTU3WjCB
+rDELMAkGA1UEBhMCVVMxETAPBgNVBAgTCFZpcmdpbmlhMRQwEgYDVQQHEwtTcHJp
+bmdmaWxlZDEYMBYGA1UEChMPSlJJIFdvcmxkLCBJbmMuMRAwDgYDVQQLEwdPbnRh
+cmlvMR0wGwYDVQQDExRPbnRhcmlvLmpyaXdvcmxkLmNvbTEpMCcGCSqGSIb3DQEJ
+ARYaYmlsbGZAb250YXJpby5qcml3b3JsZC5jb20wgZ8wDQYJKoZIhvcNAQEBBQAD
+gY0AMIGJAoGBAM81vIgjw0DWAfReVKthdvwe4YP4Z29UU2QZKx/cTt7pJYnW2vnD
+pieGoIyiWr5qW+rmtEFRe1yqarZxU0oGyz2w/1ZlOrhU6vBvsa4JOY6DndSixiRq
+jVpzspNk9iJUA5AcjKQVC7SCgDHeySLyHm/zzNKOlATRge3HMgge/qzbAgMBAAEw
+DQYJKoZIhvcNAQEEBQADgYEAS6MTN6SWlXu24JhNBPjYpwNs/h0HJ+s4uZnQAq49
+pPoRm8omMFx4ilEwuihIUnH0Q9rG6hViiThq6pxRj3gkY8UJ5UaKuXr9yLcfNGf5
+r6iaPTHeiauHVqXeBfY+ZWTWlIl9FNePo8Sc9eYI8s/KuR+dn97iYmTAHC8kOzlY
+gGg=
+-----END CERTIFICATE-----
+            </programlisting>
+    </example>
+    <para>The signed certificate returned by the CA should be written 
+    to domainname.com.crt in the /etc/ssl/apache directory.</para>
+    <para>Configuring Apache to enable SSL for the domain(s) you’re 
+    securing occurs in the httpd.conf on in modern system it may have 
+    been relocated to the modules.d/40_mod_ssl.conf file. To begin, 
+    make a backup of the file. Then, open it in your favorite text 
+    editor.</para>
+    <para>You can add the virtual host domain you’re securing into the 
+    <emphasis>&quot;IfDefine HAVE_SSL&quot;</emphasis> section noted 
+    above. A minimal example entry straight from a default httpd.conf 
+    file is listed below for your reference. You should modify items 
+    such as paths and IP addresses to fit your own environment. The SSL 
+    port is 443 unless you’re specifically adjusting the port to 
+    another port number. This is depicted in 
+    <xref linkend="examp_SSL_Config"/> .</para>
+    <example id="examp_SSL_Config">
+      <title>Sample SSL Config</title>
+      <programlisting>
+
+./modules.d/40_mod_ssl.conf contains:
+
+&lt;IfDefine HAVE_SSL&gt;
+    &lt;IfModule !mod_ssl.c&gt;
+        LoadModule ssl_module   modules/mod_ssl.so
+    &lt;/IfModule&gt;
+&lt;/IfDefine&gt;
+
+&lt;IfModule mod_ssl.c&gt;
+   Listen 0.0.0.0:443
+&lt;IfModule mod_mime.c&gt;
+
+AddType application/x-x509-ca-cert .crt
+AddType application/x-pkcs7-crl    .crl
+
+&lt;/IfModule&gt;
+   SSLPassPhraseDialog  builtin
+   SSLSessionCache         shmcb:/var/cache/httpd/mod_ssl/ssl_scache(512000)
+   SSLSessionCacheTimeout  300
+   SSLMutex default
+   SSLRandomSeed startup /dev/urandom  256
+   SSLRandomSeed connect builtin
+   SSLCryptoDevice builtin
+&lt;/IfModule&gt;
+
+./conf/vhosts.d/99_domainname_com_ssl.conf:
+
+&lt;IfModule mod_ssl.c&gt;
+   &lt;VirtualHost default:443&gt;
+      ServerName www.domainname.com
+      ServerAlias domainname.com
+      ServerAdmin admin@domainname.com
+      ErrorLog logs/ssl_error_domainname_com_log
+      
+      &lt;IfModule mod_log_config.c&gt;
+         TransferLog logs/ssl_access_domainname_com_log
+      &lt;/IfModule&gt;
+
+      SSLEngine on
+      SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+      SSLProtocol all -SSLv2
+      SSLCertificateFile /etc/ssl/apache/domainname.com.crt
+      SSLCertificateKeyFile /etc/ssl/apache/domainname.com.key
+
+      &lt;FilesMatch “\.(cgi|shtml|phtml|php)$”&gt;
+         SSLOptions +StdEnvVars
+      &lt;/FilesMatch&gt;
+
+      DocumentRoot “/var/www/domainname_com/html”
+      
+      &lt;Directory “/var/www/domainname_com/html”&gt;
+         Options Indexes FollowSymLinks MultiViews
+         AllowOverride None
+         Order allow,deny
+         Allow from all
+      &lt;/Directory&gt;
+
+      ScriptAlias /cgi-bin/ “/var/www/domainname_com/cgi-bin/”
+
+      &lt;Directory “/var/www/domainname_com/cgi-bin”&gt;
+         SSLOptions +StdEnvVars
+         AllowOverride None
+         Options None
+         Order allow,deny
+         Allow from all
+      &lt;/Directory&gt;
+
+      &lt;IfModule mod_setenvif.c&gt;
+         BrowserMatch “.*MSIE.*” nokeepalive ssl-unclean-shutdown \
+                  downgrade-1.0 force-response-1.0
+      &lt;/IfModule&gt;
+      
+      &lt;IfModule mod_log_config.c&gt;
+         CustomLog logs/ssl_request_log \
+             “%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \”%r\” %b”
+      &lt;/IfModule&gt;
+
+      &lt;IfModule mod_rewrite.c&gt;
+         RewriteEngine On
+         RewriteOptions inherit
+      &lt;/IfModule&gt;
+
+   &lt;/VirtualHost&gt;
+
+&lt;/IfModule&gt;
+
+
+            </programlisting>
+    </example>
+    <important>
+      <title>Restart</title>
+      <para>To have these changes take effect, Restart Apache!</para>
+    </important>
+    <para>Now, you must restart Apache to ensure that all your 
+    modifications are enabled. In Redhat based systems type the 
+    following:</para>
+    <screen>
+# service httpd restart
+        </screen>
+    <para>In other system you could use the Apache control command by 
+    typing the following:</para>
+    <screen>
+# /usr/sbin/apachectl -k restart
+        </screen>
+  </section>
+</chapter>
