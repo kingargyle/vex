@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Torsten Stolpmann - bug 257946 - fixed outline view to work with multipage editor.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.outline;
 
@@ -25,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -35,6 +37,7 @@ import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.editor.IVexEditorListener;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 import org.eclipse.wst.xml.vex.ui.internal.editor.SelectionProvider;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditorEvent;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
@@ -71,7 +74,12 @@ public class DocumentOutlinePage extends Page implements IContentOutlinePage {
 
 	public void init(IPageSite pageSite) {
 		super.init(pageSite);
-		this.vexEditor = (VexEditor) pageSite.getPage().getActiveEditor();
+		IEditorPart editor = pageSite.getPage().getActiveEditor();
+		if (editor instanceof VexEditor) {
+		    this.vexEditor = (VexEditor) editor;
+		} else if (editor instanceof VEXMultiPageEditorPart) {
+		    this.vexEditor = ((VEXMultiPageEditorPart) editor).getVexEditor();
+		}
 		this.vexEditor.addVexEditorListener(this.vexEditorListener);
 		this.vexEditor.getEditorSite().getSelectionProvider()
 				.addSelectionChangedListener(this.selectionListener);
