@@ -102,4 +102,8 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 	        model.releaseFromRead();
 	    }
 	}
+
+	public VexEditorMultiPage getVexEditor() {
+		return vexEditor;
+	}
 }
