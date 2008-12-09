@@ -36,6 +36,5 @@ public class Text extends Node {
 	@Override
 	public String getNodeType() {
 		return "Text";
-	}
-
+	}	
 }
