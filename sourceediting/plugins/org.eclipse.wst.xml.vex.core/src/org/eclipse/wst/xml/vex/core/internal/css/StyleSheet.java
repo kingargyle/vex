@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2008, 2009 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *     Dave Holroyd - Implement font-weight:bolder
  *     Dave Holroyd - Implement text decoration
  *     John Austin - More complete CSS constants. Add the colour "orange".
+ *     Travis Haagen - bug 260806 - enhanced support for 'content' CSS property
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
@@ -237,8 +238,19 @@ public class StyleSheet implements Serializable {
 
 			List content = new ArrayList();
 			while (lu != null) {
-				if (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE) {
+				switch (lu.getLexicalUnitType())
+				{
+				case LexicalUnit.SAC_STRING_VALUE :
+					// content: "A String"
 					content.add(lu.getStringValue());
+					break;
+				case LexicalUnit.SAC_ATTR :
+					// content: attr(attributeName)
+					String attributeValue = 
+						element.getParent().getAttribute(lu.getStringValue());
+					if (attributeValue != null) {
+						content.add(attributeValue);
+					}
 				}
 				lu = lu.getNextLexicalUnit();
 			}
