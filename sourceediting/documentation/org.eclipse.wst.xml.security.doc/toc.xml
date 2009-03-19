@@ -34,6 +34,8 @@
         <topic label="Encryption" href="setup/preferences_encrypt.html"/>
         <topic label="Signatures" href="setup/preferences_sign.html"/>
     </topic>
+    <topic href="tips.html" label="Tips and Tricks">
+    </topic>
     <topic href="whatsnew.html" label="What&apos;s New">
     </topic>
     <topic href="notices.html" label="Legal">
