@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="XML Signature">
+   <intro href="/org.eclipse.wst.xml.security.doc/tasks/sign.html">
+      <description>
+         Welcome to the XML Signature tutorial of the XML Security Tools.<br/>
+This tutorial will show you step by step how to sign an arbitrary XML document using the XML Signature Wizard. But first you will create a project and an XML document to sign.<br/>
+To start this signing session click the &apos;Click to Begin&apos; link below. You can skip the first item if you already have a project and an opened XML document.<br/>
+By the way, this tutorial shows only some possibilities of the XML Signature Wizard. You can find more information in the extensive German online help and on the home page of the XML-Security Plug-In.
+      </description>
+   </intro>
+   <item title="Project and XML document" dialog="true" skip="true" href="/org.eclipse.platform.doc.user/tasks/tasks-42.htm">
+      <description>
+         The first step is to create a new project (all your XML documents must be part of a project to work properly with the XML-Security Plug-In). It doesn&apos;t matter what type of project, the best type is of course an XML project. After that you create a new XML document with arbitrary elements, attributes and any content.<br/>
+It is advisable to start with a small XML document and to extend it step by step. You can create a sample project and a sample XML document automatically by clicking on the &apos;Click to Perform&apos; link below. You can skip this step (&apos;Click to Skip&apos; link) if you already have a project and a contained XML document.
+      </description>
+      <action class="org.eclipse.wst.xml.security.core.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.core" confirm="false">
+      </action>
+   </item>
+   <item title="Resource and Signature Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_resource.html">
+      <description>
+         Now it&apos;s time to actually sign your XML document. Start the XML Signature Wizard by clicking on &apos;New Signature...&apos; in the editor context menu &apos;XML Security&apos;. The wizard consists of three pages.<br/>
+On the first page you have to select the resource you want to sign (the complete document, a text selection or a node defined by an XPath expression). In order to sign a text selection you must select a well-formed part of your XML document before you start the wizard. After that you have to select which signature type you want to use (enveloping, enveloped or detached). The last choice - use an existing certificate, extend a keystore with a new certificate or create a new keystore with a new certificate - determines the following wizard page.
+      </description>
+   </item>
+   <item title="Certificate" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_certificate.html">
+      <description>
+         You can use an existing certificate in a Java Keystore (*.jks) and continue the signing process with it. To create a new certificate enter all data, select a keystore type (RSA is recommended) and click the button &apos;Create Certificate&apos;.<br/>
+In future signing sessions you can reuse this keystore and must only enter the password and certificate alias (that for the certificate was stored in the current project folder with the &apos;Common Name&apos; as file name).
+      </description>
+   </item>
+   <item title="Algorithms" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_algorithms.html">
+      <description>
+         The last page of the XML Signature Wizard requires the algorithms selections for the signature as well as the canonicalization and transformation algorithms. You must select an algorithm in every field.<br/>
+You can only use RSA algorithms with a RSA keystore and DSA algorithms with a DSA keystore.<br/>
+The Signature Properties are optional and can extend a signature with arbitrary information.<br/>
+At last you can enter an id to identify your signature (strongly recommended for verification).<br/>
+By selecting the &apos;Start Encryption Wizard afterwards&apos; checkbox the XML Encryption Wizard will be called after the signature is created.<br/>
+After providing all required information you can sign the document by clicking on the &apos;Finish&apos; button.
+      </description>
+   </item>
+</cheatsheet>

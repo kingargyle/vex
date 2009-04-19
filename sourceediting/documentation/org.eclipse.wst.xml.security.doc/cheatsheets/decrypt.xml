@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="XML Decryption">
+   <intro href="/org.eclipse.wst.xml.security.doc/plugin/decrypt.html">
+      <description>
+         Welcome to the <b>XML Decryption Tutorial</b> of the XML Security Tools.<br/>
+This tutorial will show you step by step how to decrypt an encrypted XML document using the <b>XML Decryption Wizard</b>. You will open an encrypted XML document and then decrypt it. To start this decrypting session click the <b>Click to Begin</b> link below.<br/>
+By the way, this tutorial shows only some possibilities of the <b>XML Decryption Wizard</b>. You can find more information in the extensive German online help.
+      </description>
+   </intro>
+   <item title="Open an encrypted XML document" skip="true" href="/org.eclipse.platform.doc.user/tasks/tasks-46.htm">
+      <description>
+         Open an encrypted XML document (you may have created with the <b>XML Encryption Wizard</b>). You can skip this item if your encrypted XML document is already opened in an editor.
+      </description>
+   </item>
+   <item title="Decrypt the document" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/decrypt_page_decryption.html">
+      <description>
+         Now it is time to actually decrypt your XML document. Start the <b>XML Decryption Wizard</b> via the context menu by clicking on <b>XML Security -> New Decryption...</b>.<br/>
+On the first and only page you have to select KeyStore containing the used key (you may have created this KeyStore in the <b>XML Encryption Wizard</b>) and enter the used key. Both, KeyStore and key, may require a password which you have to enter as well. After that you can select an encryption ID in the <b>Encryption ID</b> drop down box.<br/>
+Your XML document will be decrypted after clicking on <b>Finish</b>. If not you may have entered some incorrect information in the wizard. In this case launch the wizard again and enter the correct information.
+      </description>
+   </item>
+</cheatsheet>
