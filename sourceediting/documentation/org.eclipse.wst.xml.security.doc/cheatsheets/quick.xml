@@ -12,7 +12,7 @@ By the way, this tutorial only introduces you to some of the many possibilities 
          The first required step is to provide the necessary information in your workspace preferences. You have to enter all information normally provided in the respective wizard (except passwords).<br/>
 You can skip this item if you already entered this information.
       </description>
-      <action class="org.eclipse.wst.xml.security.core.cheatsheets.OpenPreferences" pluginId="org.eclipse.wst.xml.security.core" confirm="false">
+      <action class="org.eclipse.wst.xml.security.ui.cheatsheets.OpenPreferences" pluginId="org.eclipse.wst.xml.security.ui" confirm="false">
       </action>
    </item>
    <item title="Project and XML document" dialog="true" skip="true" href="/org.eclipse.platform.doc.user/tasks/tasks-42.htm">
@@ -20,7 +20,7 @@ You can skip this item if you already entered this information.
          Now it is time to create a new project (all your XML documents must be part of a project to work properly with the <b>XML Security Tools</b>). It doesn&apos;t matter what type of project. After that you create a new XML document with arbitrary elements, attributes and any content.<br/>
 It is advisable to start with a small XML document and to extend it step by step. You can create a sample project and a sample XML document automatically by clicking on the <b>Click to Perform</b> link below. You can skip this step (<b>Click to Skip</b> link) if you already have a project and a contained XML document.
       </description>
-      <action class="org.eclipse.wst.xml.security.core.cheatsheets.CreateProjectFile" pluginId="org.eclipse.wst.xml.security.core" confirm="false">
+      <action class="org.eclipse.wst.xml.security.ui.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.ui" confirm="false">
       </action>
    </item>
    <item title="Quick functions" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/tasks/quickfunctions.html">

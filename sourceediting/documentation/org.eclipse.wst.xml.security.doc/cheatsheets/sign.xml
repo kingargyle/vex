@@ -13,7 +13,7 @@ By the way, this tutorial shows only some possibilities of the XML Signature Wiz
          The first step is to create a new project (all your XML documents must be part of a project to work properly with the XML-Security Plug-In). It doesn&apos;t matter what type of project, the best type is of course an XML project. After that you create a new XML document with arbitrary elements, attributes and any content.<br/>
 It is advisable to start with a small XML document and to extend it step by step. You can create a sample project and a sample XML document automatically by clicking on the &apos;Click to Perform&apos; link below. You can skip this step (&apos;Click to Skip&apos; link) if you already have a project and a contained XML document.
       </description>
-      <action class="org.eclipse.wst.xml.security.core.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.core" confirm="false">
+      <action class="org.eclipse.wst.xml.security.ui.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.ui" confirm="false">
       </action>
    </item>
    <item title="Resource and Signature Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_resource.html">
