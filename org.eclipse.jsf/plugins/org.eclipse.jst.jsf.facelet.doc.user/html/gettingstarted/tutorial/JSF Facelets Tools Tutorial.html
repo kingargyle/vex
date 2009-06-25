@@ -69,31 +69,6 @@ Setup an instance of the Apache Tomcat Server using the information in
 and Running a Web Application.
 <p><a id="reglibs"></a></p>
 
-<h3>Register JSF libraries</h3>
-<p>This feature allows for a named sets of jars to be created for
-use with JSF Applications. We will be creating a library containing the
-Sun JSF RI<br>
-
-Select Windows-&gt;Preferences-&gt;Web and XML-&gt;-&gt;JavaServer Faces
-Tools-&gt;Libraries. Click on the New.. button to add a new library.
-Create the JSF Libraries as shown in the following figures. Check the <b>is
-JSF Implementation</b> check box when adding the Sun JSF RI library.</p>
-<br>
-<img alt="JSF Libraries-add" src="images/jsf-library-new.png"
-	height="538" width="626"> <br>
-<br>
-Create another JSF Library called <b>JSTL</b> that has the JavaServer
-Pages Standard Tag Library jar as shown below. <br>
-<br>
-<img alt="JSF Libraries" src="images/jsf-libraries.png" height="241"
-	width="729"> <br>
-<br>
-And finally, create another JSF Library called <b>Facelets</b> that has
-the Facelets jar as shown below. <br>
-<br>
-<img alt="JSF Libraries" src="images/jsf-libraries-facelets.png"
-	height="256" width="628"> <br>
-<p><a id="newproject"></a></p>
 <h3>Create a JavaServer Faces Project</h3>
 
 <p>Create a New Dynamic Web Application with the name of <b>JSFFaceletsTutorial</b>.
@@ -108,21 +83,49 @@ Project</b>. Skip the next panel to get to the JSF Capabilities page.<br>
 
 <br>
 
-<p>On the JSF Capabilities page, select the radio button adjacent to
-the JSF Library <b>JSF-RI-1.2</b>. Add the <b>JSTL</b> and <b>Facelets
-1.1.14</b> libraries.<br>
+<p>On the JSF Capabilities page, from the drop-down for the Type of
+the JSF Library, select <b>User Library</b>. <br>
 <br>
 
 <img alt="JSF Capabilities page"
-	src="images/jsf-capabilities-library-facelets.png" height="283"
-	width="554"></p>
+	src="images/jsf-capabilities-library.png"></p>
 
 
 <br>
-<p><img src="images/note.gif" height="13" width="62">If you
-deploy the JSF web application to a server runtime that includes the JSF
-1.2 reference implementation, then you should select the <b>Server
-Supplied JSF implementation</b> option.<br>
+<p>Click on the <b>Download library</b> icon.
+The Download Library dialog is displayed with the list of providers for
+the JSF implementation JAR files. Select the library from Sun
+Microsystem. Click <b>Next</b>. Accept the license and hit <b>Finish</b> <br><br>
+<img alt="JSF Capabilities page"
+	src="images/jsf-download-library.png"></p>
+
+
+<br>
+
+The tool downloads the JAR files, creates a JDT User Library and adds it to the current project. Select the checkbox for the new library if it is not selected. Next, select the <b>Manage libraries</b> icon.<br>
+<br>
+<img alt="JSF Capabilities page"
+	src="images/jsf-capabilities-library-2.png"></p>
+<br>
+<br>
+
+Create a JDT User Library to hold the JSTL JAR file. </b>
+<br><br>
+<img alt="JSF Capabilities page"
+	src="images/jsf-new-library.png"></p>
+<br>
+<br>
+Create a JDT User Library to hold the Facelets JAR file. Seelct <b>OK.</b>
+<br><br>
+<img alt="JSF Capabilities page"
+	src="images/facelets_user_library.png"></p>
+<br>
+<br>
+The JSTL library and the Facelets library are displayed in the JSF Capabilities dialog. Select both the libraries and hit <b>Finish</b>
+<br><br>
+<img alt="JSF Capabilities page"
+	src="images/jsf_add_libraries.png"></p>
+<br>
 <br>
 <p>On the Facelet page, select all the checkboxes. <br>
 <br>
