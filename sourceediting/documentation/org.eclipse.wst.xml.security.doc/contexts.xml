@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <contexts>
+   <context id="wizard_signature">
+      <description>Creates a new XML Signature with the help of a wizard.</description>
+      <topic href="tasks/sign.html" label="XML Signature Wizard"/>
+   </context>
 	<context id="wizard_signature_resource">
 		<description>Select a &lt;b&gt;resource&lt;/b&gt; to sign (the complete document or a fragment of it), the &lt;b&gt;signature type&lt;/b&gt; (enveloping, enveloped or detached) and a &lt;b&gt;key option&lt;/b&gt; (create a new one or use an existing one). The &lt;b&gt;Basic Security Profile&lt;/b&gt; option increases interoperability of Web Service Security.</description>
 		<topic href="tasks/sign.html" label="XML Signature Wizard"/>
