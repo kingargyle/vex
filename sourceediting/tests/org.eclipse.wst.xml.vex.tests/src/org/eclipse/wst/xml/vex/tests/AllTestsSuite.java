@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.tests;
 
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
+import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
 import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
 
 import junit.framework.TestSuite;
@@ -28,6 +29,7 @@ public class AllTestsSuite extends TestSuite {
 		super("All VEX Test Suites");
 		addTest(VEXCoreTestSuite.suite());
 		addTestSuite(ResourceTrackerTest.class);
+		addTestSuite(FindReplaceTargetTest.class);
 	}
 
 	/**
