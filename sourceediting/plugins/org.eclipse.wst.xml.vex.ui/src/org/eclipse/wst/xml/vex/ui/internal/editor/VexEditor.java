@@ -39,6 +39,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -1072,6 +1073,7 @@ public class VexEditor extends EditorPart {
 			return new DocumentOutlinePage();
 
 		} else if (adapter == IPropertySheetPage.class) {
+
 			PropertySheetPage page = new PropertySheetPage();
 			page.setPropertySourceProvider(new IPropertySourceProvider() {
 				public IPropertySource getPropertySource(Object object) {
@@ -1089,6 +1091,56 @@ public class VexEditor extends EditorPart {
 				}
 			});
 			return page;
+
+		} else if (adapter == IFindReplaceTarget.class) {
+
+			return new AbstractRegExFindReplaceTarget() {
+
+				protected int getSelectionStart() {
+					return getVexWidget().getSelectionStart();
+				}
+
+				protected int getSelectionEnd() {
+					return getVexWidget().getSelectionEnd();
+				}
+
+				protected void setSelection(int start, int end) {
+					getVexWidget().moveTo(start);
+					getVexWidget().moveTo(end, true);
+				}
+
+				protected CharSequence getDocument() {
+					return new CharSequence() {
+
+						public CharSequence subSequence(int start, int end) {
+							return doc.getRawText(start, end);
+						}
+
+						public int length() {
+							return doc.getLength();
+						}
+
+						public char charAt(int index) {
+							return doc.getCharacterAt(index);
+						}
+					};
+				}
+
+				protected void inDocumentReplaceSelection(CharSequence text) {
+					VexWidget vexWidget = getVexWidget();
+
+					// because of Undo this action must be atomic
+					vexWidget.beginWork();
+					try {
+						vexWidget.deleteSelection();
+						vexWidget.insertText(text.toString());
+					} finally {
+						vexWidget.endWork(true);
+					}
+				}
+
+			};
+
 		} else {
 			return super.getAdapter(adapter);
 		}

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.editor;
 
+import java.util.ResourceBundle;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
@@ -25,7 +27,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.part.EditorActionBarContributor;
+import org.eclipse.ui.texteditor.FindReplaceAction;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
@@ -122,6 +124,18 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 
 		this.getActionBars().setGlobalActionHandler(ActionFactory.UNDO.getId(),
 				this.undoAction);
+
+		// find/replace action
+		String findActionMessagesBundleId =
+			"org.eclipse.ui.texteditor.ConstructedEditorMessages";
+		String prefix = "Editor.FindReplace.";
+		ResourceBundle resourceBundle =
+			ResourceBundle.getBundle(findActionMessagesBundleId);
+		FindReplaceAction findAction = new FindReplaceAction(resourceBundle,
+                                                             prefix,
+                                                             this.activeEditor);
+		this.getActionBars().setGlobalActionHandler(ActionFactory.FIND.getId(),
+				                                    findAction);
 
 		this.enableActions();
 	}
