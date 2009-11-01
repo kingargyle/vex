@@ -225,24 +225,27 @@ public class FindReplaceTargetTest extends TestCase {
 		assertFalse(find());
 	}
 
-//	public void testFindWholeWord() throws Exception {
-//		setUp("xxx aaa xxx xyx xxx-ccc a-xxx%c �xxx xxx� xxx");
-//		setFindOptions("xxx", Direction.FORWARD, Case.SENSITVE, WholeWord.ON);
-//		findAndAssertEquals("[xxx] aaa xxx xyx xxx-ccc a-xxx%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa [xxx] xyx xxx-ccc a-xxx%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx [xxx]-ccc a-xxx%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx xxx-ccc a-[xxx]%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx xxx-ccc a-xxx%c �xxx xxx� [xxx]");
-//		assertFalse(find());
-//
-//		// crosscheck: backward; 'Whole word' disabled
-//		setFindOptions("xxx", Direction.BACKWARD, Case.SENSITVE, WholeWord.OFF);
-//		findAndAssertEquals("xxx aaa xxx xyx xxx-ccc a-xxx%c �xxx [xxx]� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx xxx-ccc a-xxx%c �[xxx] xxx� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx xxx-ccc a-[xxx]%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa xxx xyx [xxx]-ccc a-xxx%c �xxx xxx� xxx");
-//		findAndAssertEquals("xxx aaa [xxx] xyx xxx-ccc a-xxx%c �xxx xxx� xxx");
-//	}
+	public void testFindWholeWord() throws Exception {
+
+		// including special chars and German umlauts: sharp s = \u00df
+		//                                             ae      = \u00e4
+		setUp("xx aa xx xyx xx-cc a-xx%c \u00e4xx xx\u00df xx");
+		setFindOptions("xx", Direction.FORWARD, Case.SENSITVE, WholeWord.ON);
+		findAndAssertEquals("[xx] aa xx xyx xx-cc a-xx%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa [xx] xyx xx-cc a-xx%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa xx xyx [xx]-cc a-xx%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa xx xyx xx-cc a-[xx]%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa xx xyx xx-cc a-xx%c \u00e4xx xx\u00df [xx]");
+		assertFalse(find());
+
+		// crosscheck: backward; 'Whole word' disabled
+		setFindOptions("xx", Direction.BACKWARD, Case.SENSITVE, WholeWord.OFF);
+		findAndAssertEquals("xx aa xx xyx xx-cc a-xx%c \u00e4xx [xx]\u00df xx");
+		findAndAssertEquals("xx aa xx xyx xx-cc a-xx%c \u00e4[xx] xx\u00df xx");
+		findAndAssertEquals("xx aa xx xyx xx-cc a-[xx]%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa xx xyx [xx]-cc a-xx%c \u00e4xx xx\u00df xx");
+		findAndAssertEquals("xx aa [xx] xyx xx-cc a-xx%c \u00e4xx xx\u00df xx");
+	}
 
 	public void testFindRegEx() throws Exception {
 		setUp("h2o h5o h42o hoo h234o h3O");
