@@ -27,7 +27,10 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.texteditor.FindNextAction;
 import org.eclipse.ui.texteditor.FindReplaceAction;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
@@ -103,44 +106,56 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 		}
 
 		this.activeEditor = activeEditor;
+		setId(this.copyAction, ActionFactory.COPY.getId());
+		setId(this.cutAction, ActionFactory.CUT.getId());
+		setId(this.deleteAction, ActionFactory.DELETE.getId());
+		setId(this.pasteAction, ActionFactory.PASTE.getId());
+		setId(this.redoAction, ActionFactory.REDO.getId());
+		setId(this.selectAllAction, ActionFactory.SELECT_ALL.getId());
+		setId(this.undoAction, ActionFactory.UNDO.getId());
 
-		this.getActionBars().setGlobalActionHandler(ActionFactory.COPY.getId(),
-				this.copyAction);
-
-		this.getActionBars().setGlobalActionHandler(ActionFactory.CUT.getId(),
-				this.cutAction);
-
-		this.getActionBars().setGlobalActionHandler(
-				ActionFactory.DELETE.getId(), this.deleteAction);
-
-		this.getActionBars().setGlobalActionHandler(
-				ActionFactory.PASTE.getId(), this.pasteAction);
-
-		this.getActionBars().setGlobalActionHandler(ActionFactory.REDO.getId(),
-				this.redoAction);
-
-		this.getActionBars().setGlobalActionHandler(
-				ActionFactory.SELECT_ALL.getId(), this.selectAllAction);
-
-		this.getActionBars().setGlobalActionHandler(ActionFactory.UNDO.getId(),
-				this.undoAction);
-
-		// find/replace action
 		String findActionMessagesBundleId =
 			"org.eclipse.ui.texteditor.ConstructedEditorMessages";
-		String prefix = "Editor.FindReplace.";
 		ResourceBundle resourceBundle =
 			ResourceBundle.getBundle(findActionMessagesBundleId);
-		FindReplaceAction findAction = new FindReplaceAction(resourceBundle,
-                                                             prefix,
-                                                             this.activeEditor);
-		this.getActionBars().setGlobalActionHandler(ActionFactory.FIND.getId(),
-				                                    findAction);
 
-		this.enableActions();
+		// Find/Replace
+		IAction findAction = new FindReplaceAction(resourceBundle,
+                                                   "Editor.FindReplace.",
+                                                   this.activeEditor);
+		setId(findAction, ActionFactory.FIND.getId());
+
+		// Find Next
+		IAction findNextAction = new FindNextAction(resourceBundle,
+				                                    "Editor.FindNext.",
+				                                    this.activeEditor,
+				                                    true);
+		setIds(findNextAction,
+			   ITextEditorActionConstants.FIND_NEXT,
+			   IWorkbenchActionDefinitionIds.FIND_NEXT);
+
+		// Find Previous
+		IAction findPreviousAction = new FindNextAction(resourceBundle,
+				                                        "Editor.FindPrevious.",
+				                                        this.activeEditor,
+				                                        false);
+		setIds(findPreviousAction,
+  			   ITextEditorActionConstants.FIND_PREVIOUS,
+  			   IWorkbenchActionDefinitionIds.FIND_PREVIOUS);
+
+		enableActions();
 	}
 
-	// ===================================================== PRIVATE
+	private void setIds(IAction action,
+			            String actionId,
+			            String commandId) {
+		action.setActionDefinitionId(commandId);
+		setId(action, actionId);
+	}
+
+	private void setId(IAction action, String actionId) {
+		getActionBars().setGlobalActionHandler(actionId, action);
+	}
 
 	private IEditorPart activeEditor;
 
