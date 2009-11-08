@@ -1,6 +1,6 @@
 = Overview =
 
-'''XML Security Tools''' add three wizards for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/signature/signing.html | signing]], [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/encryption/encrypting.html | encrypting]] and [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/decryption/decrypting.html | decrypting]] various XML documents to the WTP XML editor and different views. A new view, XML Signatures, is included for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/verification/verify.html | verification]] of all XML signatures in the selected XML document as well as to provide detailed information on each signature.
+'''XML Security Tools''' add three wizards for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/signature/sign.html | signing]], [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/encryption/encrypt.html | encrypting]] and [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/decryption/decrypt.html | decrypting]] various XML documents to the WTP XML editor and different views. A new view, XML Signatures, is included for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/verification/verify.html | verification]] of all XML signatures in the selected XML document as well as to provide detailed information on each signature.
 
 == Launching XML Security Tools ==
 
