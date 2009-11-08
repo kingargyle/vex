@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="XML Security Tools User Guide" topic="book.html">
-   <topic href="html/overview/gettingstarted.html" label="Getting Started">
+<toc label="XML Security Tools User Guide" topic="html/contents.html">
+   <topic href="html/overview/overview.html" label="Overview">
    </topic>
-   <topic href="tasks/tasks.html" label="Tasks">
+   <topic href="html/overview/tasks.html" label="Tasks">
 		<topic label="Signature Wizard" href="html/signature/sign.html">
 	        <topic label="Resource and Signature Type" href="html/signature/page_resource.html"/>
 	        <topic label="Keystore and Keys" href="html/signature/page_keys.html">
