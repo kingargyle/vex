@@ -1,0 +1,47 @@
+= Overview =
+
+'''XML Security Tools''' add three wizards for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/signature/signing.html | signing]], [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/encryption/encrypting.html | encrypting]] and [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/decryption/decrypting.html | decrypting]] various XML documents to the WTP XML editor and different views. A new view, XML Signatures, is included for [[PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/verification/verify.html | verification]] of all XML signatures in the selected XML document as well as to provide detailed information on each signature.
+
+== Launching XML Security Tools ==
+
+To call any functionality of the XML Security Tools simply select an XML document in the ''Navigator'', ''Package Explorer'' or ''Project Explorer'' view or inside the WTP XML editor and choose the desired operation in the '''XML Security''' entry in the context menu. The XML Security context menu inside the mentioned views is only available in the ''XML perspective''. It is always available inside the WTP XML editor, no matter which perspective is active at the moment.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/overview/context_menu.png‎|XML Security Tools context menu|center]]
+
+== The XML Security menu ==
+
+The XML Security menu contains ten entries. The items with an icon launch a wizard ('''New Signature...''', '''New Encryption...''', '''New Decryption...''') or a view ('''New Verification...'''). The ones without any icon launch a command directly, with minimum or no user interaction at all.
+
+There are no differences in the menu when calling it from inside the XML editor on inside a view. However there is one difference in the '''XML Signature''' and '''XML Encryption''' wizard: it is not possible to sign/ encrypt a text selection when using the context menu inside a view. The text selection has to exist before opening the wizard, which is not possible from within a view.
+
+Calling any XML Security command from within the XML editor activates the Eclipse undo/ redo functionality. Keep that in mind since it makes it easy to undo any encryption while the editor is still open. Calling any XML Security command from within a view writes any changes directly to the selected file, without any undo/ redo possibility.
+
+== Quick Functionality ==
+
+The so called ''Quick Functions'' - '''Quick Signature''', '''Quick Verification''', '''Quick Encryption''' and '''Quick Decryption''' - require less or no user interaction at all. These commands use predefined preferences and only ask the user for security sensitive information like passwords. This is the fastest way to sign, verify, encrypt or decrypt any XML document. A dialog opens in case there are any missing preferences to continue the operation. You can either jump directly to the corresponding preference page and provide the information (like the keystore to use, the desired algorithm, signature id and so on) or cancel the complete operation.
+
+It is possible to mix ''normal'' XML Security operations with the quick functions. So you can encrypt an XML document with the wizard and decrypt it using the '''Quick Decryption''' function. The only requirement is that the settings you have chosen in the wizard do match the preference settings for XML Decryption.
+
+== XML Security Preferences ==
+
+The '''XML Security''' preferences are available as sub-pages in the '''XML''' category. Three pages are available, from general settings on the '''XML Security''' page to specific settings for '''Encryption''' and '''Signatures'''. It is wise to define different ids for signature and encryption, this makes verification and decryption much easier. Quick Verification and Quick Decryption may fail in case the ids are not unique.
+
+=== General Settings ===
+
+By default, an exclusive XML canonicalization is executed when selecting on of the Canonicalization entries in the menu. Select the inclusive option in case you do require this canonicalization type
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/general.png‎|XML Security Tools general preference page|center]]
+
+The canonicalization target is normally the same file, so the original file gets manipulated. In case you do want to keep the original file you can select to create a new document for canonicalization. This only affects canonicalization, not any of the other wizards! Creating a new file adds '''_canon''' to the filename, with additional numbering in case this file already exists.
+
+=== Encryption ===
+
+All settings on this page only affect '''Quick Encryption''' and '''Quick Decryption''', not the normal wizards. Here you can select what you want to encrypt - the whole document, a selection or a document fragment identified by an XPath expression. The encryption type is fixed to ''Enveloping'' at the moment. Select the algorithms to use and provide a keystore containing a key which match those algorithms. Chose the encryption id carefully. Quick Decryption searches for this id, so it should be unique.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/encryption.png‎|XML Security Tools Encryption preference page|center]]
+
+=== Signature ===
+
+All settings on this page only affect '''Quick Signature''' and '''Quick Verification''', not the normal wizard or view. Here you can select what you want to sign - the whole document, a selection or a document fragment identified by an XPath expression. The signature types ''Enveloping'' and ''Enveloped'' are available. Select the different algorithms to use and provide a keystore containing a key which match those algorithms. Chose the signature id carefully. Quick Verification searches for this id, so it should be unique.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/signature.png‎|XML Security Tools Signature preference page|center]]
