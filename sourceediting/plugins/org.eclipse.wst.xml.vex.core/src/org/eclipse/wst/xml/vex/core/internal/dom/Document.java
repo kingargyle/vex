@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -340,7 +338,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 		for (int i = 0; i < nodes.size(); i++) {
 			VEXNode node = nodes.get(i);
 			if (node instanceof Element) {
-				names.add(((VEXElement) node).getName());
+				names.add(((Element) node).getName());
 			} else {
 				names.add("#PCDATA");
 			}

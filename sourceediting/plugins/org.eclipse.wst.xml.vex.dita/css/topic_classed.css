@@ -434,7 +434,7 @@ expanse (page|column|textline) #IMPLIED
 }
 
 *[class~="topic\/entry"]    {
-  display: table-entry;
+  display: table-cell;
   border: thin solid black;
 }
 

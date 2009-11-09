@@ -21,3 +21,6 @@
   margin-left: 40px;
 }
 
+entry {
+  display: table-cell;
+}
