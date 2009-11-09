@@ -408,6 +408,7 @@ table {
 }
 
 thead > row > entry    {
+	display: table-cell;
 	font-weight: bold;
 }
 
@@ -432,7 +433,7 @@ row    {
 }
 
 entry    {
-	display: table-entry;
+	display: table-cell;
 	border: thin solid black;
 }
 

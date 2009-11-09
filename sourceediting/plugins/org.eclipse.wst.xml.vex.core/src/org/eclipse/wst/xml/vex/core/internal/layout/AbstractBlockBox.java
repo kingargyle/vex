@@ -920,27 +920,86 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		List<VEXElement> children = element.getChildElements();
 		for (int i = 0; i < children.size(); i++) {
 			VEXElement child = children.get(i);
-			if (child.getEndOffset() < startOffset) {
-				continue;
-			} else if (child.getStartOffset() >= endOffset) {
-				break;
-			} else {
-				Styles styles = context.getStyleSheet().getStyles(child);
-				if (!styles.getDisplay().equals(CSS.INLINE)) { // TODO do proper
-																// block display
-																// determination
-					return child;
-				} else {
-					VEXElement fromChild = findNextBlockElement(context, child,
-							startOffset, endOffset);
-					if (fromChild != null) {
-						return fromChild;
-					}
-				}
+
+            // inside range?
+			if (child.getEndOffset() < startOffset) continue;
+			if (child.getStartOffset() >= endOffset) break;
+
+            // found?
+			if (!isInline(context, child, element)) return child;
+
+			// recursion
+			VEXElement fromChild =
+				findNextBlockElement(context, child, startOffset, endOffset);
+			if (fromChild != null) {
+				return fromChild;
 			}
 		}
 
 		return null;
+	}
+	
+	private static boolean isInline(LayoutContext context,
+			                        VEXElement child,
+			                        VEXElement parent) {
+
+		String style = displayStyleOf(child, context);
+		String parentStyle = displayStyleOf(parent, context);
+		if (style.equals(CSS.INLINE)) {
+			return true;
+		}
+		
+		// invalid nested table elements have to be shown as 'inline': 
+		
+		// parent of 'table-cell': 'table-row'
+		if (   style.equals(CSS.TABLE_CELL)
+			&& !parentStyle.equals(CSS.TABLE_ROW)) {
+			return true;
+		}
+		
+		// parent of 'table-row': 'table', 'table-row-group', 
+		// 'table-header-group' or 'table-footer-group'
+		if (   style.equals(CSS.TABLE_ROW)
+			&& !parentStyle.equals(CSS.TABLE)
+			&& !parentStyle.equals(CSS.TABLE_ROW_GROUP)
+			&& !parentStyle.equals(CSS.TABLE_HEADER_GROUP)
+			&& !parentStyle.equals(CSS.TABLE_FOOTER_GROUP)) {
+			return true;
+		}
+		
+		// parent of 'table-row-group', table-header-group'
+		// or 'table-footer-group': 'table'
+		if (   (   style.equals(CSS.TABLE_ROW_GROUP)
+				|| style.equals(CSS.TABLE_HEADER_GROUP)
+				|| style.equals(CSS.TABLE_FOOTER_GROUP))
+			&& !parentStyle.equals(CSS.TABLE)) {
+			return true;
+		}
+		
+		// parent of 'table-column': 'table-column-group'
+		if (   style.equals(CSS.TABLE_COLUMN)
+			&& !parentStyle.equals(CSS.TABLE_COLUMN_GROUP)) {
+			return true;
+		}
+		
+		// parent of 'table-column-group': 'table'
+		if (   style.equals(CSS.TABLE_COLUMN_GROUP)
+			&& !parentStyle.equals(CSS.TABLE)) {
+			return true;
+		}
+		
+		// parent of 'table-caption': 'table'
+		if (   style.equals(CSS.TABLE_CAPTION)
+			&& !parentStyle.equals(CSS.TABLE)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private static String displayStyleOf(VEXElement element,
+			                             LayoutContext context) {
+		return context.getStyleSheet().getStyles(element).getDisplay();
 	}
 
 	/**

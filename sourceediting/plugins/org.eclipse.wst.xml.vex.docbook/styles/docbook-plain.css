@@ -260,6 +260,7 @@ emphasis {
 
 entry {
 	display: table-cell;
+	border: thin solid black;
 }
 
 entrytbl {
@@ -744,8 +745,17 @@ systemitem {
 	display: inline;
 }
 
+table {
+	display: table;
+}
+
 tbody {
 	display: table-row-group;
+}
+
+td {
+	display: table-cell;
+	border: thin solid black;
 }
 
 term {
@@ -756,12 +766,22 @@ textobject {
 	display: inline;
 }
 
-tgroup { /* display: table; */
-	display: block;
+tfoot {
+	display: table-footer-group;
+}
+
+tgroup {
+	display: table-row-group;
 }
 
 thead {
-	display: table-row-group;
+	display: table-header-group;
+}
+
+th {
+	display: table-cell;
+	border: thin solid black;
+	font-weight: bold;
 }
 
 tip {
@@ -776,6 +796,10 @@ tip:before {
 
 title {
 	display: block;
+}
+
+tr {
+	display: table-row;
 }
 
 article>title {
