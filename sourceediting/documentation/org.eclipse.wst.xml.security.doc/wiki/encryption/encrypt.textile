@@ -1,1 +1,3 @@
 = XML Encryption Wizard =
+
+The '''XML Encryption Wizard''' consists of three pages, with a variable second page depending on the chosen keystore/ key option. To launch the wizard you either have to select an XML document in one of the supported views in the XML perspective or open an XML document in the WTP XML editor (in any perspective). Open the context menu, choose '''XML Security''' and click on '''New Encryption...'''. In order to encrypt a selected XML fragment select the desired document part in the editor and launch the wizard as described before. The selection has to exist before launching the wizard, and it has to be well-formed: in case a start-tag is selected the end-tag must be selected too. Encrypting only text-content of an element is possible too.

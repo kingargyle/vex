@@ -1,1 +1,21 @@
 = Resource and Encryption Type =
+
+This is the first page of the XML Encryption Wizard. You'll have to select the resource you want to encrypt, the encryption type, the keystore/ key option and the Basic Security Profile option.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_1.png‎|Resource and Encryption Type|center]]
+
+'''Resource'''
+
+It is possible to encrypt the complete document, the selected text or a document fragment specified by an XPath expression. The complete document is always possible. For a text selection this selection has to exist before launching the wizard and it has to be well-formed. XPath is always possible too. You can either enter an XPath expression in the textfield or you can select one in the dialog after clicking on the '''Browse...''' button. The XPath expression has to return exactly one element or element content. Encrypting attributes is not supported.
+
+'''Encryption Type'''
+
+The normal encryption type is a so called enveloping encryption, where the encrypted data is contained in the original document (it replaces the plain XML). A detached encryption doesn't encrypt the XML document you have chosen. Instead the data in the specified additional file here gets encrypted. Both documents will be changed. File A remains in plain XML, but does contain the encryption information for file B that gets encrypted (a detached encryption requires the whole document to be encrypted).
+
+'''Keystore and Key'''
+
+The chosen option here sets the following wizard page. You can either select to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_open_key.html | Use a key from an existing keystore]], to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_create_key.html | Insert a new key in an existing keystore]] or to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_create_keystore.html | Create a new key and a new keystore]].
+
+'''Basic Security Profile'''
+
+A Basic Security Profile compliant XML Encryption has some restrictions in comparison to a regular XML Encryption. By activating this checkbox all options in the XML Encryption Wizard will be limited to options that are compliant to this profile. In case of the XML Encryption Wizard this only limits the available algorithms on the [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_algorithms.html | Algorithms and Encryption Properties]] page.
