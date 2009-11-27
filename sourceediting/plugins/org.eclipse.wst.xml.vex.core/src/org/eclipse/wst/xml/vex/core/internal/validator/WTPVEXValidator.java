@@ -7,13 +7,12 @@
  *
  *Contributors:
  *    David Carver (STAR) - initial API and implementation
+ *    Holger Voormann - bug 283646 - Document wizard throws NPW with DITA is selected
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -35,38 +34,32 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ValidatorImpl;
 @SuppressWarnings("restriction")
 public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7632029717211069257L;
-	private static CMDocument contentModel;
 
-	public static CMDocument getContentModel() {
-		return contentModel;
+	/** The XML schema (= content model), e.g. DTD or XSD */
+	private transient CMDocument schema;
+	
+	private final URL url;
+	
+	private WTPVEXValidator(URL url) {
+		this.url = url;
+	}
+	
+	private CMDocument getSchema() {
+		if (schema == null) {
+			ContentModelManager modelManager = ContentModelManager.getInstance();
+			String resolved = url.toString();
+			schema = modelManager.createCMDocument(resolved, null);
+		}
+		return schema;
 	}
 
-	public static void setContentModel(CMDocument contentModel) {
-		WTPVEXValidator.contentModel = contentModel;
-	}
-
-	private CMDocument attributeContentModel;
-
-	private WTPVEXValidator() {
-	}
-
-	public static WTPVEXValidator create(URL url) throws IOException {
-		ContentModelManager contentModelManager = ContentModelManager
-				.getInstance();
-		String resolved = url.toString();
-		setContentModel(contentModelManager.createCMDocument(resolved, null));
-
-		return new WTPVEXValidator();
-
+	public static WTPVEXValidator create(URL url) {
+		return new WTPVEXValidator(url);
 	}
 
 	public AttributeDefinition getAttributeDefinition(String element,
 			String attribute) {
-		attributeContentModel = getContentModel();
 		CMElementDeclaration cmelement = getElementDeclaration(element);
 		CMAttributeDeclaration attr = (CMAttributeDeclaration) cmelement
 				.getAttributes().getNamedItem(attribute);
@@ -76,8 +69,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
 	public EList<AttributeDefinition> getAttributeDefinitions(String element) {
 		CMElementDeclaration cmelement = getElementDeclaration(element);
-		AttributeDefinition[] attributeDefs = new AttributeDefinition[cmelement
-				.getAttributes().getLength()];
 		EList<AttributeDefinition> attributeList = new BasicEList<AttributeDefinition>(
 				cmelement.getAttributes().getLength());
 		Iterator iter = cmelement.getAttributes().iterator();
@@ -92,7 +83,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	}
 
 	private CMElementDeclaration getElementDeclaration(String element) {
-		CMElementDeclaration cmelement = (CMElementDeclaration) contentModel
+		CMElementDeclaration cmelement = (CMElementDeclaration) getSchema()
 				.getElements().getNamedItem(element);
 		return cmelement;
 	}
@@ -119,7 +110,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	}
 
 	public Set<String> getValidItems(String element) {
-		CMElementDeclaration elementDec = (CMElementDeclaration) contentModel
+		CMElementDeclaration elementDec = (CMElementDeclaration) getSchema()
 				.getElements().getNamedItem(element);
 		List<CMNode> nodes = getAvailableContent(element, elementDec);
 		Set<String> results = new HashSet<String>();
@@ -155,7 +146,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			CMNode node = nodeList.item(i);
 			if (node instanceof CMElementDeclaration) {
-				String e = node.getNodeName();
 				list.add(node);
 			} else if (node instanceof CMGroup) {
 				list.addAll(getAllChildren((CMGroup)node));
@@ -167,7 +157,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	public Set getValidRootElements() {
 		Set<String> results = new HashSet<String>();
 
-		Iterator iter = contentModel.getElements().iterator();
+		Iterator iter = getSchema().getElements().iterator();
 		while (iter.hasNext()) {
 			CMElementDeclaration element = (CMElementDeclaration) iter.next();
 			results.add(element.getElementName());
@@ -178,11 +168,13 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
 	public boolean isValidSequence(String element, EList<String> nodes,
 			boolean partial) {
+		// TODO
 		return true;
 	}
 
 	public boolean isValidSequence(String element, EList<String> seq1,
 			EList<String> seq2, EList<String> seq3, boolean partial) {
+		// TODO
 		return true;
 	}
 }
