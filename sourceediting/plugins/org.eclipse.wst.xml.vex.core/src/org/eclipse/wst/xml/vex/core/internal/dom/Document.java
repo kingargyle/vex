@@ -186,6 +186,9 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 				endOffset - startOffset, null));
 
 		Iterator iter = e1.getChildNodes().iterator();
+		if (e1 instanceof Element) {
+			iter = ((Element) e1).getChildIterator();
+		}
 		while (iter.hasNext()) {
 			VEXNode child = (VEXNode) iter.next();
 			if (startOffset <= child.getStartOffset()

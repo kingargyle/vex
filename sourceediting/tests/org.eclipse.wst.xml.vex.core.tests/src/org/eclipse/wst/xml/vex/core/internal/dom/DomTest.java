@@ -279,111 +279,80 @@ public class DomTest extends TestCase {
 		doc.insertElement(9, new Element("y"));
 		doc.insertText(10, "f");
 
-		// 3a:
-		// | x | | y |
-		// c * d * e * f * g
-		// 0 1 2 3 4 5 6 7 8 9
-		frag = doc.getFragment(4, 13);
-		assertEquals(9, frag.getContent().getLength());
+        // 3a
+        expect_a_bc_d_e_f_gh_i_(doc);
 
-		elements = frag.getElements();
-		assertEquals(2, elements.size());
-		assertIsElement(elements.get(0), "x", null, 1, 3);
-		assertIsElement(elements.get(1), "y", null, 5, 7);
+        // 3b: remove and re-insert fragment "c*d*e*f*g"
+        frag = doc.getFragment(4, 13);
+        doc.delete(4, 13);
+        doc.insertFragment(4, frag);
+        expect_a_bc_d_e_f_gh_i_(doc);
 
-		nodes = frag.getNodes();
-		assertEquals(5, nodes.size());
-		assertIsText(nodes.get(0), "c", 0, 1);
-		assertIsElement(nodes.get(1), "x", null, 1, 3);
-		assertIsText(nodes.get(2), "e", 4, 5);
-		assertIsElement(nodes.get(3), "y", null, 5, 7);
-		assertIsText(nodes.get(4), "g", 8, 9);
+        // 3c: remove and re-insert fragment "*bc*d*e*f*gh*"
+        frag = doc.getFragment(2, 15);
+        doc.delete(2, 15);
+        doc.insertFragment(2, frag);
+        expect_a_bc_d_e_f_gh_i_(doc);
+    }
 
-		// 3b:
-		// z
-		// | |
-		// | | x | | y | |
-		// * b c * d * e * f * g h *
-		// 0 1 2 3 4 5 6 7 8 9 0 1 2 3
-		frag = doc.getFragment(2, 15);
-		assertEquals(13, frag.getContent().getLength());
+    private void expect_a_bc_d_e_f_gh_i_(VEXDocument doc) {
 
-		elements = frag.getElements();
-		assertEquals(1, elements.size());
-		assertIsElement(elements.get(0), "z", null, 0, 12);
+        VEXElement root = doc.getRootElement();
+        assertIsElement(root, "root", null, 0, 16);
+        List<VEXNode> childNodes = root.getChildNodes();
+        assertEquals(3, childNodes.size());
+        assertIsText(childNodes.get(0), "a", 1, 2);
+        assertIsElement(childNodes.get(1), "z", doc.getRootElement(), 2, 14);
+        assertIsText(childNodes.get(2), "i", 15, 16);
 
-		nodes = frag.getNodes();
-		assertEquals(1, nodes.size());
-		assertIsElement(nodes.get(0), "z", null, 0, 12);
+        VEXDocumentFragment frag = doc.getFragment(4, 13);
+        // | x | | y |
+        // c * d * e * f * g
+        // 0 1 2 3 4 5 6 7 8 9
+        assertEquals(9, frag.getContent().getLength());
 
-		z = elements.get(0);
-		childNodes = z.getChildNodes();
-		assertEquals(5, childNodes.size());
-		assertIsText(childNodes.get(0), "bc", 1, 3);
-		assertIsElement(childNodes.get(1), "x", z, 3, 5);
-		assertIsText(childNodes.get(2), "e", 6, 7);
-		assertIsElement(childNodes.get(3), "y", z, 7, 9);
-		assertIsText(childNodes.get(4), "gh", 10, 12);
+        List<VEXElement> elements = frag.getElements();
+        assertEquals(2, elements.size());
+        assertIsElement(elements.get(0), "x", null, 1, 3);
+        assertIsElement(elements.get(1), "y", null, 5, 7);
 
-		// 3c: remove and re-insert the same frag as in 3a
-		frag = doc.getFragment(4, 13);
-		doc.delete(4, 13);
-		doc.insertFragment(4, frag);
+        List<VEXNode> nodes = frag.getNodes();
+        assertEquals(5, nodes.size());
+        assertIsText(nodes.get(0), "c", 0, 1);
+        assertIsElement(nodes.get(1), "x", null, 1, 3);
+        assertIsText(nodes.get(2), "e", 4, 5);
+        assertIsElement(nodes.get(3), "y", null, 5, 7);
+        assertIsText(nodes.get(4), "g", 8, 9);
 
-		root = doc.getRootElement();
-		assertIsElement(root, "root", null, 0, 16);
-		childNodes = root.getChildNodes();
-		assertEquals(3, childNodes.size());
-		assertIsText(childNodes.get(0), "a", 1, 2);
-		assertIsElement(childNodes.get(1), "z", doc.getRootElement(), 2, 14);
-		assertIsText(childNodes.get(2), "i", 15, 16);
-		z = (VEXElement) childNodes.get(1);
-		childNodes = z.getChildNodes();
-		assertEquals(7, childNodes.size());
-		assertIsText(childNodes.get(0), "bc", 3, 5);
-		assertIsElement(childNodes.get(1), "x", z, 5, 7);
-		assertIsText(childNodes.get(2), "e", 8, 9);
-		assertIsElement(childNodes.get(3), "y", z, 9, 11);
-		//assertIsText(childNodes.get(4), "gh", 12, 14);
-		x = (VEXElement) childNodes.get(1);
-		y = (VEXElement) childNodes.get(3);
-		childNodes = x.getChildNodes();
-		assertEquals(1, nodes.size());
-		assertIsText(childNodes.get(0), "d", 6, 7);
-		childNodes = y.getChildNodes();
-		assertEquals(1, nodes.size());
-		assertIsText(childNodes.get(0), "f", 10, 11);
+        frag = doc.getFragment(2, 15);
+        // z
+        // | |
+        // | | x | | y | |
+        // * b c * d * e * f * g h *
+        // 0 1 2 3 4 5 6 7 8 9 0 1 2 3
+        assertEquals(13, frag.getContent().getLength());
+        elements = frag.getElements();
+        VEXElement z = elements.get(0);
+        childNodes = z.getChildNodes();
 
-		// 3d: remove and re-insert the same frag as in 3b
-		frag = doc.getFragment(2, 15);
-		doc.delete(2, 15);
-		doc.insertFragment(2, frag);
+        assertEquals(5, childNodes.size());
+        assertIsText(childNodes.get(0), "bc", 1, 3);
+        assertIsElement(childNodes.get(1), "x", z, 3, 5);
+        assertIsText(childNodes.get(2), "e", 6, 7);
+        assertIsElement(childNodes.get(3), "y", z, 7, 9);
+        assertIsText(childNodes.get(4), "gh", 10, 12);
 
-		root = doc.getRootElement();
-		assertIsElement(root, "root", null, 0, 16);
-		childNodes = root.getChildNodes();
-		assertEquals(3, childNodes.size());
-		assertIsText(childNodes.get(0), "a", 1, 2);
-		assertIsElement(childNodes.get(1), "z", doc.getRootElement(), 2, 14);
-		//assertIsText(childNodes.get(2), "i", 15, 16);
-		z = (VEXElement) childNodes.get(1);
-		childNodes = z.getChildNodes();
-		assertEquals(7, childNodes.size());
-		assertIsText(childNodes.get(0), "bc", 3, 5);
-		assertIsElement(childNodes.get(1), "x", z, 5, 7);
-		assertIsText(childNodes.get(2), "e", 8, 9);
-		assertIsElement(childNodes.get(3), "y", z, 9, 11);
-		assertIsText(childNodes.get(4), "g", 12, 13);
-		x = (VEXElement) childNodes.get(1);
-		y = (VEXElement) childNodes.get(3);
-		childNodes = x.getChildNodes();
-		assertEquals(1, childNodes.size());
-		assertIsText(childNodes.get(0), "d", 6, 7);
-		childNodes = y.getChildNodes();
-		assertEquals(1, childNodes.size());
-		assertIsText(childNodes.get(0), "f", 10, 11);
+        VEXElement x = (VEXElement) childNodes.get(1);
+        VEXElement y = (VEXElement) childNodes.get(3);
+        childNodes = x.getChildNodes();
 
-	}
+        nodes = frag.getNodes();
+        assertEquals(1, nodes.size());
+        assertIsText(childNodes.get(0), "d", 4, 5);
+        childNodes = y.getChildNodes();
+        assertEquals(1, nodes.size());
+        assertIsText(childNodes.get(0), "f", 8, 9);
+    }
 
 	public void assertIsElement(VEXNode node, String name, VEXElement parent,
 			int startOffset, int endOffset) {
