@@ -1,1 +1,3 @@
 = Keystores and Keys =
+
+The second page of the '''XML Encryption Wizard''' depends on your '''Keystore and Key''' selection on the first wizard page. You can select to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_open_key.html | Use a key from an existing keystore]], [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_create_key.html | Insert a new key in an existing keystore]] or to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_create_keystore.html | Create a new key and a new keystore]].

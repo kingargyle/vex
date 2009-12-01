@@ -1,1 +1,5 @@
-= Create a new Key =
+= Insert a new Key in an existing Keystore =
+
+'''Insert a new Key in an existing Keystore''' is one of the alternatives as the second wizard page.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_2b.png‎|Insert a new Key in an existing Keystore|center]]
