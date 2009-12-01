@@ -4,5 +4,4 @@
 
 [[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_2a.png‎|Use a Key from an existing Keystore|center]]
 
-The wizard stored the entered data for the keystore name and the key name between sessions. Passwords are never stored and have to be entered
-every time.
+The wizard automatically stores the entered data for the keystore name and the key name between sessions. Passwords are never stored and have to be entered every time.
