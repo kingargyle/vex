@@ -21,6 +21,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,6 +37,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -68,14 +70,11 @@ import org.eclipse.wst.xml.vex.core.internal.widget.HostComponent;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetImpl;
-import org.eclipse.wst.xml.vex.ui.internal.action.AbstractVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.DuplicateSelectionAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.NextTableCellAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.PreviousTableCellAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.RemoveElementAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.SplitAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.SplitItemAction;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.DuplicateSelectionHandler;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.IVexWidgetHandler;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.RemoveTagHandler;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.SplitBlockElementHandler;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.SplitItemHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -508,7 +507,10 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 	// ------------------------------------------------------ Fields
 
 	private static final char CHAR_NONE = 0;
-	private static Map keyMap;
+	
+	private static Map<KeyStroke, IVexWidgetHandler> keyMap =
+		new HashMap<KeyStroke, IVexWidgetHandler>();
+	static { buildKeyMap(); }
 
 	private VexWidgetImpl impl;
 
@@ -630,37 +632,26 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 	};
 
-	private static abstract class Action extends AbstractVexAction {
+	private static abstract class Action implements IVexWidgetHandler {
 
-		public void run(IVexWidget vexWidget) {
-			try {
-				this.runEx(vexWidget);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		public void execute(VexWidget widget) throws ExecutionException {
+			runEx(widget);
 		}
 
-		public abstract void runEx(IVexWidget w) throws Exception;
+		public abstract void runEx(IVexWidget w) throws ExecutionException;
+
 	}
 
-	private KeyListener keyListener = new KeyListener() {
+	private KeyListener keyListener = new KeyAdapter() {
 
 		public void keyPressed(KeyEvent e) {
-			// System.out.println("Key pressed, keyCode is " + e.keyCode +
-			// ", keyChar is " + ((int) e.character) + ", stateMask is " +
-			// e.stateMask);
 			KeyStroke keyStroke = new KeyStroke(e);
-			Map map = getKeyMap();
-			if (map.containsKey(keyStroke)) {
-				Object action = map.get(keyStroke);
-				if (action instanceof IVexAction) {
-					((IVexAction) action).run(VexWidget.this);
-				} else {
-					try {
-						((Action) map.get(keyStroke)).runEx(VexWidget.this);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
+			IVexWidgetHandler handler = keyMap.get(keyStroke);
+			if (handler != null) {
+				try {
+					handler.execute(VexWidget.this);
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			} else if (!Character.isISOControl(e.character)) {
 				try {
@@ -672,8 +663,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 			}
 		}
 
-		public void keyReleased(KeyEvent e) {
-		}
 	};
 
 	private MouseListener mouseListener = new MouseListener() {
@@ -779,12 +768,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 			Action action) {
 		keyMap.put(new KeyStroke(character, keyCode, stateMask), action);
 	}
-
-	private static void addKey(char character, int keyCode, int stateMask,
-			IVexAction action) {
-		keyMap.put(new KeyStroke(character, keyCode, stateMask), action);
-	}
-
+	
 	private static void buildKeyMap() {
 		addKey(CHAR_NONE, SWT.ARROW_DOWN, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
@@ -853,18 +837,23 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		});
 
 		addKey(SWT.BS, SWT.BS, SWT.NONE, new Action() {
-			public void runEx(IVexWidget w) throws Exception {
-				w.deletePreviousChar();
+			public void runEx(IVexWidget w) throws ExecutionException {
+				try {
+					w.deletePreviousChar();
+				} catch (DocumentValidationException e) {
+					throw new ExecutionException(e.getMessage(), e);
+				}
 			}
 		});
 		addKey(SWT.DEL, SWT.DEL, SWT.NONE, new Action() {
-			public void runEx(IVexWidget w) throws Exception {
-				w.deleteNextChar();
+			public void runEx(IVexWidget w) throws ExecutionException {
+				try {
+					w.deleteNextChar();
+				} catch (DocumentValidationException e) {
+					throw new ExecutionException(e.getMessage(), e);
+				}
 			}
 		});
-
-		addKey(SWT.TAB, SWT.TAB, SWT.NONE, new NextTableCellAction());
-		addKey(SWT.TAB, SWT.TAB, SWT.SHIFT, new PreviousTableCellAction());
 
 		addKey(CHAR_NONE, SWT.END, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
@@ -940,21 +929,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 						((VexWidget) w).showMorphElementPopup();
 					}
 				});
-		addKey((char) 23, 0, SWT.CONTROL, new RemoveElementAction());
-		// addKey('\r', '\r', SWT.NONE, new Action() { // Enter key
-		// public void runEx(IVexWidget w) throws Exception { w.split(); } });
-		addKey('\r', '\r', SWT.NONE, new SplitAction());
-		addKey('\r', '\r', SWT.SHIFT, new SplitItemAction());
-
-		addKey((char) 4, 100, SWT.CONTROL, new DuplicateSelectionAction()); // Ctrl-D
-	}
-
-	private static Map getKeyMap() {
-		if (keyMap == null) {
-			keyMap = new HashMap();
-			buildKeyMap();
-		}
-		return keyMap;
 	}
 
 	/**

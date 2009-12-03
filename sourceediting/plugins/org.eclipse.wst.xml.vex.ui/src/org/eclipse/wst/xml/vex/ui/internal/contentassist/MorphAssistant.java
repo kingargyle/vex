@@ -28,7 +28,7 @@ public class MorphAssistant extends ContentAssistant {
 
 	public String getTitle(VexWidget vexWidget) {
 		String message = Messages
-				.getString("ChangeElementAction.dynamic.label"); //$NON-NLS-1$
+				.getString("dialog.convertElement.dynamicTitle"); //$NON-NLS-1$
 		String name = vexWidget.getCurrentElement().getName();
 		return MessageFormat.format(message, new Object[] { name });
 	}

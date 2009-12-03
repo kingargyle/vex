@@ -4,28 +4,26 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.IVexAction;
-import org.eclipse.wst.xml.vex.ui.internal.contentassist.MorphAssistant;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Displays the Change Element dialog.
+ * Interface implemented by handler objects that can act on a {@link VexWidget}.
  */
-public class ChangeElementAction implements IVexAction {
+public interface IVexWidgetHandler {
 
-	public void run(IVexWidget vexWidget) {
-		new MorphAssistant().show((VexWidget) vexWidget);
-	}
-
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
-	}
+    /**
+     * Executes handler at the specified {@link VexWidget}.
+     *
+     * @param event the {@link VexWidget} at which to execute handler
+     * @throws ExecutionException if an exception occurred during execution
+     */
+    void execute(VexWidget widget) throws ExecutionException;
 
 }

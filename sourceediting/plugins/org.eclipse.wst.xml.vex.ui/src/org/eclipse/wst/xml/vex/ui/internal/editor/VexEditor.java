@@ -36,9 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -53,13 +51,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.services.IServiceLocator;
+import org.eclipse.ui.services.ISourceProviderService;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -75,43 +77,23 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
-import org.eclipse.wst.xml.vex.ui.internal.action.ChangeElementAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.DeleteColumnAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.DeleteRowAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.DuplicateSelectionAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnAfterAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnBeforeAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertElementAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowAboveAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowBelowAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnLeftAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnRightAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowDownAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowUpAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.NextTableCellAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.PasteTextAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.PreviousTableCellAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.RemoveElementAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.RestoreLastSelectionAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.SplitAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.SplitItemAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.VexActionAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.ConvertElementHandler;
+import org.eclipse.wst.xml.vex.ui.internal.handlers.RemoveTagHandler;
 import org.eclipse.wst.xml.vex.ui.internal.outline.DocumentOutlinePage;
 import org.eclipse.wst.xml.vex.ui.internal.property.ElementPropertySource;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
@@ -676,9 +658,9 @@ public class VexEditor extends EditorPart {
 		VexActionBarContributor contributor = (VexActionBarContributor) this
 				.getEditorSite().getActionBarContributor();
 
-		MenuManager menuMgr = contributor.getContextMenuManager();
-		this.getSite().registerContextMenu(menuMgr, this.vexWidget);
-		this.vexWidget.setMenu(menuMgr.createContextMenu(this.vexWidget));
+		MenuManager menuManager = new MenuManager();
+		getSite().registerContextMenu("org.eclipse.wst.xml.vex.ui.popup", menuManager, vexWidget);
+		vexWidget.setMenu(menuManager.createContextMenu(vexWidget));
 
 		this.savedUndoDepth = this.vexWidget.getUndoDepth();
 
@@ -689,103 +671,6 @@ public class VexEditor extends EditorPart {
 
 		IHandlerService hs = (IHandlerService) this.getSite().getService(
 				IHandlerService.class);
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.ChangeElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new ChangeElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.DeleteColumnAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DeleteColumnAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.DeleteRowAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DeleteRowAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.DuplicateSelectionAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new DuplicateSelectionAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertColumnAfterAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertColumnAfterAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertColumnBeforeAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertColumnBeforeAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.editor.action.InsertElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertRowAboveAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertRowAboveAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.InsertRowBelowAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new InsertRowBelowAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveColumnLeftAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveColumnLeftAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveColumnRightAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveColumnRightAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.MoveRowDownAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveRowDownAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.MoveRowUpAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new MoveRowUpAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.NextTableCellAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new NextTableCellAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.PasteTextAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new PasteTextAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.PreviousTableCellAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new PreviousTableCellAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.RemoveElementAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new RemoveElementAction())));
-
-		hs.activateHandler(
-				"org.eclipse.wst.xml.vex.ui.action.RestoreLastSelectionAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new RestoreLastSelectionAction())));
-
-		hs
-				.activateHandler(
-						"org.eclipse.wst.xml.vex.ui.action.SplitAction",
-						new ActionHandler(new VexActionAdapter(this,
-								new SplitAction())));
-
-		hs.activateHandler("org.eclipse.wst.xml.vex.ui.action.SplitItemAction",
-				new ActionHandler(new VexActionAdapter(this,
-						new SplitItemAction())));
 
 		this.vexWidget.addSelectionChangedListener(this.selectionProvider);
 
@@ -909,6 +794,22 @@ public class VexEditor extends EditorPart {
 				wasDirty = isDirty();
 			}
 			setStatus(getLocation());
+			
+			// update dynamic UI element labels
+			IEditorSite editorSite = VexEditor.this.getEditorSite();
+			IWorkbenchWindow window = editorSite.getWorkbenchWindow();
+			if (window instanceof IServiceLocator) {
+				IServiceLocator serviceLocator = (IServiceLocator) window;
+				ICommandService commandService = (ICommandService)serviceLocator.getService(ICommandService.class);
+				commandService.refreshElements(ConvertElementHandler.COMMAND_ID, null);
+				commandService.refreshElements(RemoveTagHandler.COMMAND_ID, null);
+			}
+			
+			// update context service
+			ISourceProviderService service = (ISourceProviderService) window.getService(ISourceProviderService.class);
+			DocumentContextSourceProvider contextProvider =
+				(DocumentContextSourceProvider) service.getSourceProvider(DocumentContextSourceProvider.IS_COLUMN);
+			contextProvider.fireUpdate(vexWidget);
 		}
 	};
 

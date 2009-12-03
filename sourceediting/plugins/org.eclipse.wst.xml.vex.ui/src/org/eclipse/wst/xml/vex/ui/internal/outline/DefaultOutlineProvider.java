@@ -58,10 +58,18 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 	public VEXElement getOutlineElement(VEXElement child) {
 		VEXElement element = child;
 		while (element != null) {
+			
+			// block element?
 			if (this.whitespacePolicy.isBlock(element)) {
 				return element;
 			}
-			element = element.getParent();
+			
+			// root?
+			VEXElement parent = element.getParent();
+			if (parent == null) {
+				return element;
+			}
+			element = parent;
 		}
 		return element;
 	}
