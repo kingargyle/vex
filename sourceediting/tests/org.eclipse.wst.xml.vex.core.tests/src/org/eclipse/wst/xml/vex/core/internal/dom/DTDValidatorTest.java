@@ -20,6 +20,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
@@ -110,6 +112,13 @@ public class DTDValidatorTest extends TestCase {
 		assertValidItemsAt(doc, 1, "section");
 	}
 	
+	public void testSequences() {
+		assertValidSequence("title", "#PCDATA");
+		assertInvalidSequence("empty", "#PCDATA");
+        // TODO test more sequences like:
+        // assertInvalidSequence("title", "section");
+	}
+
 	private void assertValidItemsAt(VEXDocument doc, int offset,
 			String... expectedItems) {
 		Set<String> expected = new HashSet<String>(expectedItems.length);
@@ -120,6 +129,44 @@ public class DTDValidatorTest extends TestCase {
 		String elementName = doc.getElementAt(offset).getName();
 		Set<String> validItems = doc.getValidator().getValidItems(elementName);
 		assertEquals(expected, validItems);
-	}	
+	}
+
+	private void assertValidSequence(String element, String...sequence) {
+		assertValidSequence(true, element, sequence);
+	}
+
+	private void assertInvalidSequence(String element, String...sequence) {
+		assertValidSequence(false, element, sequence);
+	}
+
+	private void assertValidSequence(boolean expected, String element, String...sequence) {
+		final EList<String> emptyList = new BasicEList<String>(0);
+		for (int i = 0; i < sequence.length; i++) {
+			
+			EList<String> pre = new BasicEList<String>();
+			for (int j = 0; j < i; j++) {
+				pre.add(sequence[j]);
+			}
+
+			EList<String> toInsert = new BasicEList<String>(1);
+			toInsert.add(sequence[i]);
+			
+			EList<String> suf = new BasicEList<String>();
+			for (int j = i + 1; j < sequence.length; j++) {
+				pre.add(sequence[j]);
+			}
+
+			assertEquals(expected, validator.isValidSequence(element,
+					                                         pre,
+					                                         toInsert,
+					                                         suf,
+					                                         false));
+			assertEquals(expected, validator.isValidSequence(element,
+					                                         pre,
+					                                         toInsert,
+					                                         emptyList,
+					                                         true));
+		}
+	}
 
 }

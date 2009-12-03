@@ -180,7 +180,20 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
 	public boolean isValidSequence(String element, EList<String> seq1,
 			EList<String> seq2, EList<String> seq3, boolean partial) {
+
 		// TODO
+
+		CMNode parent = getSchema().getElements().getNamedItem(element);
+		if (!(parent instanceof CMElementDeclaration)) return true;
+
+		// must be empty?
+		CMElementDeclaration declaration = (CMElementDeclaration) parent;
+		if (   declaration.getContentType() == CMElementDeclaration.EMPTY
+				&& seq2.size() > 0) {
+			return false;
+		}
+
 		return true;
 	}
+
 }
