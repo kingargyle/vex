@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
@@ -133,8 +134,13 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		List<CMNode> list = new ArrayList<CMNode>();
 		if (ed.getContentType() == CMElementDeclaration.ELEMENT
 				|| ed.getContentType() == CMElementDeclaration.MIXED) {
-			CMGroup groupContent = (CMGroup) ed.getContent();
-			list.addAll(getAllChildren(groupContent));
+			CMContent content = ed.getContent();
+			if (content instanceof CMElementDeclaration) {
+				list.add(content);
+			} else if (content instanceof CMGroup) {
+				CMGroup groupContent = (CMGroup) content;
+				list.addAll(getAllChildren(groupContent));
+			}
 		}
 		return list;
 	}

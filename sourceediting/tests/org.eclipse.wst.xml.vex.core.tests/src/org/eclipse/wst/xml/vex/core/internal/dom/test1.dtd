@@ -4,6 +4,7 @@
 <!ELEMENT section (title?, para+)>
 <!ELEMENT para (#PCDATA | emphasis)*>
 <!ELEMENT emphasis (#PCDATA)>
+<!ELEMENT one-kind-of-child (section+)>
 
 <!-- a dummy attribute, just to make sure attribute def serialization is OK -->
 <!ATTLIST section

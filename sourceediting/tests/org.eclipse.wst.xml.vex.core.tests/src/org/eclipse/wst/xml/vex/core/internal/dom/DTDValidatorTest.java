@@ -15,22 +15,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
+import junit.framework.TestCase;
+
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
-import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
-
-import junit.framework.TestCase;
 
 @SuppressWarnings("restriction")
 public class DTDValidatorTest extends TestCase {
@@ -93,49 +86,40 @@ public class DTDValidatorTest extends TestCase {
 //	}
 	
 	public void testSectionElement() {
-		VEXDocument doc;
-		Set expected;
 
 		// <section> <title> a b </title> <para> </para> </section>
 		// 1 2 3 4 5 6 7
-		doc = new Document(new RootElement("section"));
+		VEXDocument doc = new Document(new RootElement("section"));
 		doc.setValidator(validator);
 		doc.insertElement(1, new Element("title"));
 		doc.insertText(2, "ab");
 		doc.insertElement(5, new Element("para"));
 		
-		expected = new HashSet();
-		expected.add("title");
-		expected.add("para");
-		assertEquals(expected, getValidItemsAt(doc, 1));
-		
-		expected = Collections.emptySet();
-		assertEquals(expected, getValidItemsAt(doc, 2));
-		assertEquals(expected, getValidItemsAt(doc, 3));
-		assertEquals(expected, getValidItemsAt(doc, 4));
-		
-		expected = new HashSet();
-		expected.add("title");
-		expected.add("para");
-		assertEquals(expected, getValidItemsAt(doc, 5));
-		assertEquals(expected, getValidItemsAt(doc, 7));
-		
-		expected = new HashSet();
-		expected.add("emphasis");
-		assertEquals(expected, getValidItemsAt(doc, 6));		
+		assertValidItemsAt(doc, 1, "title", "para");
+		assertValidItemsAt(doc, 2);
+		assertValidItemsAt(doc, 3);
+		assertValidItemsAt(doc, 4);
+		assertValidItemsAt(doc, 5, "title", "para");
+		assertValidItemsAt(doc, 6, "emphasis");
+		assertValidItemsAt(doc, 7, "title", "para");
 	}
 
-
-	private Set getValidItemsAt(VEXDocument doc, int offset) {
-		VEXElement element = doc.getElementAt(offset);
-
-		return doc.getValidator().getValidItems(element.getName());
+	public void testOneKindOfChild() {
+		VEXDocument doc = new Document(new RootElement("one-kind-of-child"));
+		doc.setValidator(validator);
+		assertValidItemsAt(doc, 1, "section");
 	}
-	/*
-	 * private void dump(Validator validator, Document doc, int offset) { Set
-	 * set = getValidItemsAt(doc, offset);
-	 * 
-	 * Iterator iter = set.iterator(); while (iter.hasNext()) {
-	 * System.out.println("  " + iter.next()); } }
-	 */
+	
+	private void assertValidItemsAt(VEXDocument doc, int offset,
+			String... expectedItems) {
+		Set<String> expected = new HashSet<String>(expectedItems.length);
+		for (int i = 0; i < expectedItems.length; i++) {
+			expected.add(expectedItems[i]);
+		}
+		
+		String elementName = doc.getElementAt(offset).getName();
+		Set<String> validItems = doc.getValidator().getValidItems(elementName);
+		assertEquals(expected, validItems);
+	}	
+
 }
