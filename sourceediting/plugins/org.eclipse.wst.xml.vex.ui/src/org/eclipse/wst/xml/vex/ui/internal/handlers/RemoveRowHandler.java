@@ -4,31 +4,24 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
+import java.util.List;
+
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Abstract Vex action. This class provides default implementations for all
- * methods in IVexAction except for <code>run</code>.
+ * Deletes selected row(s).
  */
-public abstract class AbstractVexAction implements IVexAction {
+public class RemoveRowHandler extends AbstractRemoveTableCellsHandler {
 
-	/**
-	 * Class constructor.
-	 */
-	public AbstractVexAction() {
-	}
-
-	/**
-	 * Returns <code>true</code>.
-	 */
-	public boolean isEnabled(IVexWidget vexWidget) {
-		return true;
-	}
+    protected List<Object> collectCellsToDelete(VexWidget widget,
+                                                VexHandlerUtil.RowColumnInfo rcInfo) {
+        return VexHandlerUtil.getSelectedTableRows(widget).getRows();
+    }
 
 }

@@ -4,18 +4,24 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.ui.internal.action;
+package org.eclipse.wst.xml.vex.ui.internal.handlers;
+
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.wst.xml.vex.ui.internal.contentassist.InsertAssistant;
+import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
- * Inserts one or more table rows below the currently selected one(s).
+ * Shows the content assist to add a new element ({@link InsertAssistant}).
  */
-public class InsertRowBelowAction extends InsertRowAction {
+public class AddElementHandler extends AbstractVexWidgetHandler {
 
-	public InsertRowBelowAction() {
-		super(false);
-	}
+    @Override
+    public void execute(VexWidget widget) throws ExecutionException {
+        new InsertAssistant().show(widget);
+    }
+
 }

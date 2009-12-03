@@ -13,17 +13,14 @@ package org.eclipse.wst.xml.vex.ui.internal.editor;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
@@ -33,20 +30,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.action.ActionUtils;
-import org.eclipse.wst.xml.vex.ui.internal.action.DeleteColumnAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.DeleteRowAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnAfterAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertColumnBeforeAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertElementAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowAboveAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.InsertRowBelowAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnLeftAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveColumnRightAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowDownAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.MoveRowUpAction;
-import org.eclipse.wst.xml.vex.ui.internal.action.VexActionAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
@@ -56,10 +39,6 @@ import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 public class VexActionBarContributor extends XMLMultiPageEditorActionBarContributor {
 
 	public void dispose() {
-	}
-
-	public MenuManager getContextMenuManager() {
-		return this.contextMenuManager;
 	}
 
 	public VexEditor getVexEditor() {
@@ -76,10 +55,6 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 
 	public void init(IActionBars bars, IWorkbenchPage page) {
 		super.init(bars, page);
-
-		this.contextMenuManager = new MenuManager();
-		this.contextMenuManager.setRemoveAllWhenShown(true);
-		this.contextMenuManager.addMenuListener(this.contextMenuListener);
 
 		page.addSelectionListener(this.selectionListener);
 
@@ -174,44 +149,6 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 	private IAction selectAllAction = new SelectAllAction();
 	private IAction undoAction = new UndoAction();
 
-	private MenuManager contextMenuManager;
-	private IMenuListener contextMenuListener = new IMenuListener() {
-
-		public void menuAboutToShow(IMenuManager manager) {
-
-			boolean showTableActions = false;
-			IVexWidget vexWidget = getVexWidget();
-			if (vexWidget != null) {
-				showTableActions = ActionUtils.getSelectedTableRows(vexWidget)
-						.getRows() != null;
-			}
-
-			manager.add(globalUndoAction);
-			manager.add(globalRedoAction);
-			manager.add(new Separator());
-			manager.add(new VexActionAdapter(getVexEditor(),
-					new InsertElementAction()));
-
-			if (showTableActions) {
-				manager.add(new Separator());
-				manager.add(new RowMenuManager());
-				manager.add(new ColumnMenuManager());
-			}
-
-			manager.add(new Separator());
-			manager.add(globalCutAction);
-			manager.add(globalCopyAction);
-			manager.add(globalPasteAction);
-			manager.add(new Separator());
-			manager.add(globalDeleteAction);
-			manager.add(new Separator());
-			manager.add(new StyleMenuManager());
-			manager
-					.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-		}
-
-	};
-
 	private void enableActions() {
 		VexWidget widget = this.getVexWidget();
 		this.copyAction.setEnabled(widget != null && widget.hasSelection());
@@ -298,40 +235,6 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 					}
 				}
 			});
-		}
-	}
-
-	private class RowMenuManager extends MenuManager {
-		public RowMenuManager() {
-			super(Messages.getString("VexActionBarContributor.rowMenu.name")); //$NON-NLS-1$
-			this.add(new VexActionAdapter(getVexEditor(),
-					new InsertRowAboveAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new InsertRowBelowAction()));
-			this
-					.add(new VexActionAdapter(getVexEditor(),
-							new DeleteRowAction()));
-			this
-					.add(new VexActionAdapter(getVexEditor(),
-							new MoveRowUpAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new MoveRowDownAction()));
-		}
-	}
-
-	private class ColumnMenuManager extends MenuManager {
-		public ColumnMenuManager() {
-			super(Messages.getString("VexActionBarContributor.columnMenu.name")); //$NON-NLS-1$
-			this.add(new VexActionAdapter(getVexEditor(),
-					new InsertColumnBeforeAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new InsertColumnAfterAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new DeleteColumnAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new MoveColumnLeftAction()));
-			this.add(new VexActionAdapter(getVexEditor(),
-					new MoveColumnRightAction()));
 		}
 	}
 

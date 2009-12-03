@@ -25,6 +25,6 @@ public class InsertAssistant extends ContentAssistant {
 	}
 
 	public String getTitle(VexWidget vexWidget) {
-		return Messages.getString("InsertAssistant.title"); //$NON-NLS-1$
+		return Messages.getString("dialog.addElement.title"); //$NON-NLS-1$
 	}
 }
