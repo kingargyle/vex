@@ -2,7 +2,7 @@
 
 This is the last page of the XML Encryption Wizard. You must select the Encryption and the Key Wrap Algorithms. Optional, you can select to keep the root element as plain text and you can enter an encryption ID (strongly recommended). The '''Start Signature Wizard afterwards''' checkbox enables you to start the signature wizard after successfully encrypting the selected XML document.
 
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_3.png‎|Algorithms and Encryption Properties|center]]
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encrypt/page_3.png‎|Algorithms and Encryption Properties|center]]
 
 '''Encryption and Key Wrap Algorithm'''
 

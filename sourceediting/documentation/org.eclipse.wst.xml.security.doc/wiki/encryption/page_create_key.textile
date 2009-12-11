@@ -2,7 +2,7 @@
 
 '''Insert a new Key in an existing Keystore''' is one of the alternatives as the second wizard page. Select an existing keystore (probably one you created before with the help of the [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/page_create_keystore.html | Create a new Key and a new Keystore]] wizard) and enter the keystore password. After that simply select the desired algorithm and the algorithm size for the new key and enter a name and a password for it. Click the '''Generate''' button when you are done to create the new key. A short message informs you about the generation result and the '''Next''' button will be enabled. The key generated here will be used in the active encryption process.
 
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_2b.png‎|Insert a new Key in an existing Keystore|center]]
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encrypt/page_2b.png‎|Insert a new Key in an existing Keystore|center]]
 
 Keys must be unique inside a keystore, so the wizard verifies that the entered key name does not exist in the selected keystore.
 

@@ -1,1 +1,5 @@
 = XML Decryption Wizard =
+
+The '''XML Decryption Wizard''' consists of only one  page: [[help/topic/org.eclipse.wst.xml.security.doc/html/decyption/page_resourcen.html | Resource and Key Information]].
+
+To launch the wizard you either have to select an encrypted XML document  in one of the supported views in the XML perspective or open an XML document in the WTP XML editor (in any perspective). Open the context menu, choose '''XML Security''' and click on '''New Decryption...'''.
