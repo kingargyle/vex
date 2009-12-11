@@ -2,7 +2,7 @@
 
 This is the first page of the XML Encryption Wizard. You'll have to select the resource you want to encrypt, the encryption type, the keystore/ key option and the Basic Security Profile option.
 
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encryption/page_1.png‎|Resource and Encryption Type|center]]
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encrypt/page_1.png‎|Resource and Encryption Type|center]]
 
 '''Resource'''
 
