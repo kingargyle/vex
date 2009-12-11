@@ -29,40 +29,41 @@
 		<topic href="tasks/sign.html" label="XML Signature Wizard"/>
 		<topic href="tasks/sign_page_algorithms.html" label="Algorithms and Signature Properties"/>
 	</context>
-	<context id="wizard_encryption_resource">
-		<description>Select the &lt;b&gt;resource&lt;/b&gt; to encrypt (the complete document or a fragment of it), the &lt;b&gt;encryption type&lt;/b&gt; (enveloping or detached) and a &lt;b&gt;key option&lt;/b&gt; (create a new one or use an existing one). The &lt;b&gt;Basic Security Profile&lt;/b&gt; option increases interoperability of Web Service Security.</description>
-		<topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
-		<topic href="tasks/encrypt_page_resource.html" label="Resource and Encryption Type"/>
+	<context id="wizard_encryption_resource" title="Resource and Encryption Type">
+		<description>Select the &lt;b&gt;resource&lt;/b&gt; to encrypt (the complete document or a fragment of it), the &lt;b&gt;encryption type&lt;/b&gt; (enveloping or detached) and a &lt;b&gt;key option&lt;/b&gt; (use an existing one, insert a new key in a keystore, create a new keystore and a new key). The &lt;b&gt;Basic Security Profile&lt;/b&gt; option increases interoperability of Web Service Security.</description>
+		<topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
+		<topic href="html/encryption/page_resource.html" label="Resource and Encryption Type"/>
 	</context>
-    <context id="wizard_encryption_open_key">
-        <description>Provide all required information for the &lt;b&gt;key to use&lt;/b&gt; in the current encryption process.</description>
-        <topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
-        <topic href="tasks/encrypt_page_open_key.html" label="Open a key"/>
+    <context id="wizard_encryption_open_key" title="Use a key from an existing keystore">
+        <description>Use an existing key in the active encryption process. Provide all required information for this key and continue to the last wizard page.</description>
+        <topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
+        <topic href="html/encryption/page_open_key.html" label="Use a key from an existing keystore"/>
     </context>
-    <context id="wizard_encryption_create_key">
-        <description>Provide all required information to &lt;b&gt;insert a new key&lt;/b&gt; into a keystore. This key will be used in the current encryption process and is stored in the selected keystore.</description>
-        <topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
-        <topic href="tasks/encrypt_page_create_key.html" label="Create a key"/>
+    <context id="wizard_encryption_create_key" title="Insert a new key in an existing keystore">
+        <description>Create a new key for the active encryption process. Provide all required information and insert the new key into an existing keystore and continue to the last wizard page.</description>
+        <topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
+        <topic href="html/encryption/page_create_key.html" label="Insert a new key in an existing keystore"/>
     </context>
-    <context id="wizard_encryption_create_keystore">
-        <description>Provide all required information to &lt;b&gt;create a new keystore&lt;/b&gt; together with &lt;b&gt;a new key&lt;/b&gt;. This key will be used in the current encryption process and is stored in the current project folder as [Keystore Name].jks.</description>
-        <topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
-        <topic href="tasks/encrypt_page_create_keystore.html" label="Create a keystore and key"/>
+    <context id="wizard_encryption_create_keystore" title="Create a new key and a new keystore">
+        <description>Create a new keystore and insert a new key to use in the active encryption process. Provide all required information and continue to the last wizard page.&lt;br&gt;
+The keystore will be stored in the current (project) folder as [Keystore Name].jks.</description>
+        <topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
+        <topic href="html/encryption/page_create_keystore.html" label="Create a new key and a new keystore"/>
     </context>
-	<context id="wizard_encryption_algorithms">
-		<description>Select the &lt;b&gt;encryption algorithms&lt;/b&gt; and decide whether you want to completely encrypt the XML data or keep the root element as plain text. The &lt;b&gt;encryption id&lt;/b&gt; is optional but makes it much easier to identify the encryption. The characters &lt;, &gt;, &amp;, &quot;, &apos; and blanks are not allowed as id, the maximum length is 20 characters. Selecting the Start Digital Signature Wizard afterwards checkbox opens the Digital Signature Wizard after a successful encryption operation.</description>
-		<topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
-		<topic href="tasks/encrypt_page_algorithms.html" label="Algorithms"/>
+	<context id="wizard_encryption_algorithms" title="Algorithms and Encryption Properties">
+		<description>Select the &lt;b&gt;encryption algorithms&lt;/b&gt; and decide whether you want to completely encrypt the XML data or keep the root element as plain text. The &lt;b&gt;encryption id&lt;/b&gt; is optional but makes it much easier to identify the encryption. The characters &lt;, &gt;, &amp;, &quot;, &apos; and blanks are not allowed as id, the maximum length is 20 characters. Selecting the &lt;b&gt;Start Digital Signature Wizard afterwards&lt;/b&gt; checkbox opens the &lt;b&gt;XML Signature Wizard&lt;/b&gt; after a successful encryption operation.</description>
+		<topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
+		<topic href="html/encryption/page_algorithms.html" label="Algorithms and Encryption Properties"/>
 	</context>
 	<context id="xpath_dialog">
 		<description>This dialog displays all XML elements in the active XML document as unique XPath expressions. You can select exactly one element you want to use in the current signing or encrypting process.</description>
 		<topic href="tasks/sign.html" label="XML Signature Wizard"/>
 		<topic href="tasks/encrypt.html" label="XML Encryption Wizard"/>
 	</context>
-	<context id="wizard_decryption_resource">
+	<context id="wizard_decryption_resource" title="Resource and Key Information">
 		<description>Select the &lt;b&gt;Keystore&lt;/b&gt; used for encrypting this document (-fragment) and enter the &lt;b&gt;password&lt;/b&gt; for the store. Provide the &lt;b&gt;key name&lt;/b&gt; and enter the corresponding &lt;b&gt;password&lt;/b&gt;. If you didn&apos;t enter an &lt;b&gt;encryption id&lt;/b&gt; during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id and click &lt;b&gt;Finish&lt;/b&gt; to start the decryption process.</description>
-		<topic href="tasks/decrypt.html" label="XML Decryption Wizard"/>
-		<topic href="tasks/decrypt_page_decryption.html" label="Resource and Key information"/>
+		<topic href="html/decryption/decrypt.html" label="XML Decryption Wizard"/>
+		<topic href="html/decryption/page_resource.html" label="Resource and Key Information"/>
 	</context>
 	<context id="preferences_general">
 		<description>This preference page allows you to configure the general preferences of the &lt;b&gt;XML Security Tools&lt;/b&gt; including &lt;b&gt;Canonicalization&lt;/b&gt; settings.</description>
