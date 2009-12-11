@@ -14,9 +14,6 @@ import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -30,7 +27,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.ui.internal.config.Style;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -55,21 +51,7 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 
 	public void init(IActionBars bars, IWorkbenchPage page) {
 		super.init(bars, page);
-
 		page.addSelectionListener(this.selectionListener);
-
-		this.globalCopyAction = ActionFactory.COPY.create(page
-				.getWorkbenchWindow());
-		this.globalCutAction = ActionFactory.CUT.create(page
-				.getWorkbenchWindow());
-		this.globalDeleteAction = ActionFactory.DELETE.create(page
-				.getWorkbenchWindow());
-		this.globalPasteAction = ActionFactory.PASTE.create(page
-				.getWorkbenchWindow());
-		this.globalRedoAction = ActionFactory.REDO.create(page
-				.getWorkbenchWindow());
-		this.globalUndoAction = ActionFactory.UNDO.create(page
-				.getWorkbenchWindow());
 	}
 
 	public void setActiveEditor(IEditorPart activeEditor) {
@@ -134,13 +116,6 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 
 	private IEditorPart activeEditor;
 
-	private IAction globalCopyAction;
-	private IAction globalCutAction;
-	private IAction globalDeleteAction;
-	private IAction globalPasteAction;
-	private IAction globalRedoAction;
-	private IAction globalUndoAction;
-
 	private IAction copyAction = new CopyAction();
 	private IAction cutAction = new CutAction();
 	private IAction deleteAction = new DeleteAction();
@@ -198,45 +173,6 @@ public class VexActionBarContributor extends XMLMultiPageEditorActionBarContribu
 			getVexWidget().selectAll();
 		}
 	};
-
-	private class SetStyleAction extends Action {
-		public SetStyleAction(Style style) {
-			super(style.getName(), IAction.AS_RADIO_BUTTON);
-			this.style = style;
-		}
-
-		public void run() {
-			getVexEditor().setStyle(style);
-		}
-
-		private Style style;
-	}
-
-	private class StyleMenuManager extends MenuManager {
-		public StyleMenuManager() {
-			super(Messages.getString("VexActionBarContributor.styleMenu.name")); //$NON-NLS-1$
-			final Action noItemsAction = new Action(Messages
-					.getString("VexActionBarContributor.noValidItems")) {public void run() {}}; //$NON-NLS-1$
-			noItemsAction.setEnabled(false);
-			noItemsAction.setChecked(true);
-			this.add(noItemsAction);
-			this.addMenuListener(new IMenuListener() {
-				public void menuAboutToShow(IMenuManager manager) {
-					manager.removeAll();
-					String publicId = getVexWidget().getDocument()
-							.getPublicID();
-					Style[] styles = Style.getStylesForDoctype(publicId);
-					for (int i = 0; i < styles.length; i++) {
-						Action action = new SetStyleAction(styles[i]);
-						if (styles[i] == getVexEditor().getStyle()) {
-							action.setChecked(true);
-						}
-						manager.add(action);
-					}
-				}
-			});
-		}
-	}
 
 	private class RedoAction extends Action {
 		public void run() {

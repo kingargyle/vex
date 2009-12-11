@@ -32,9 +32,10 @@ public class VexPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public VexPlugin() {
-
+        if(instance != null) {
+        	throw new IllegalStateException("This plug-in must be a singleton.");
+        }
 		instance = this;
-
 	}
 
 	/**
