@@ -732,7 +732,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		return blockBoxes;
 	}
 
-	private class BlockInlineIterator {
+	private static class BlockInlineIterator {
 
 		public BlockInlineIterator(LayoutContext context, VEXElement element,
 				int startOffset, int endOffset) {

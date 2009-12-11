@@ -19,7 +19,10 @@ public class VEXCorePlugin extends AbstractUIPlugin {
 	private static VEXCorePlugin instance;
 
 	public VEXCorePlugin() {
-		instance = this;
+        if(instance != null) {
+        	throw new IllegalStateException("This plug-in must be a singleton.");
+        }
+        instance = this;
 	}
 
 	/**

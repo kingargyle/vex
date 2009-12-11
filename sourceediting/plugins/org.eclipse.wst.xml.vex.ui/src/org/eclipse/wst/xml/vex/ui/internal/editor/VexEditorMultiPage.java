@@ -891,7 +891,7 @@ public class VexEditorMultiPage extends VexEditor {
 	 * document, or that the document does not have a PUBLIC DOCTYPE decl, in
 	 * which case publicId is null.
 	 */
-	private class NoRegisteredDoctypeException extends RuntimeException {
+	private static class NoRegisteredDoctypeException extends RuntimeException {
 		public NoRegisteredDoctypeException(String publicId) {
 			this.publicId = publicId;
 		}
@@ -907,7 +907,7 @@ public class VexEditorMultiPage extends VexEditor {
 	 * Indicates that the document was matched to a registered doctype, but that
 	 * the given doctype does not have a matching style.
 	 */
-	private class NoStyleForDoctypeException extends RuntimeException {
+	private static class NoStyleForDoctypeException extends RuntimeException {
 
 		public NoStyleForDoctypeException(DocumentType doctype) {
 			this.doctype = doctype;

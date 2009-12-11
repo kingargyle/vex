@@ -19,9 +19,9 @@ public class Color {
 
 	public static final Color BLACK = new Color(0, 0, 0);
 
-	private int red;
-	private int green;
-	private int blue;
+	private final int red;
+	private final int green;
+	private final int blue;
 
 	/**
 	 * Class constructor.
@@ -60,13 +60,15 @@ public class Color {
 		return red;
 	}
 
-	public boolean equals(Object o) {
-		if (o.getClass() != this.getClass()) {
-			return false;
-		}
-		Color c = (Color) o;
-		return this.red == c.red && this.green == c.green
-				&& this.blue == c.blue;
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		
+		Color other = (Color) obj;
+		return    red == other.red
+		       && green == other.green
+		       && blue == other.blue;
 	}
 
 	public int hashCode() {

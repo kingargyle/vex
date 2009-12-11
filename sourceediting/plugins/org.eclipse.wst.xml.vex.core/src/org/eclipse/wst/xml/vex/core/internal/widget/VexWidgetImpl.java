@@ -1298,7 +1298,7 @@ public class VexWidgetImpl implements IVexWidget {
 	/**
 	 * Captures an UndoableAction and the offset at which it occurred.
 	 */
-	private class UndoableAndOffset {
+	private static class UndoableAndOffset {
 		public IUndoableEdit edit;
 		public int caretOffset;
 
