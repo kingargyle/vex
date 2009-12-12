@@ -24,24 +24,4 @@ It is possible to mix ''normal'' XML Security operations with the quick function
 
 == XML Security Preferences ==
 
-The '''XML Security''' preferences are available as sub-pages in the '''XML''' category. Three pages are available, from general settings on the '''XML Security''' page to specific settings for '''Encryption''' and '''Signatures'''. It is wise to define different ids for signature and encryption, this makes verification and decryption much easier. Quick Verification and Quick Decryption may fail in case the ids are not unique.
-
-=== General Settings ===
-
-By default, an exclusive XML canonicalization is executed when selecting on of the Canonicalization entries in the menu. Select the inclusive option in case you do require this canonicalization type
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/general.png‎|XML Security Tools general preference page|center]]
-
-The canonicalization target is normally the same file, so the original file gets manipulated. In case you do want to keep the original file you can select to create a new document for canonicalization. This only affects canonicalization, not any of the other wizards! Creating a new file adds '''_canon''' to the filename, with additional numbering in case this file already exists.
-
-=== Encryption ===
-
-All settings on this page only affect '''Quick Encryption''' and '''Quick Decryption''', not the normal wizards. Here you can select what you want to encrypt - the whole document, a selection or a document fragment identified by an XPath expression. The encryption type is fixed to ''Enveloping'' at the moment. Select the algorithms to use and provide a keystore containing a key which match those algorithms. Chose the encryption id carefully. Quick Decryption searches for this id, so it should be unique.
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/encryption.png‎|XML Security Tools Encryption preference page|center]]
-
-=== Signature ===
-
-All settings on this page only affect '''Quick Signature''' and '''Quick Verification''', not the normal wizard or view. Here you can select what you want to sign - the whole document, a selection or a document fragment identified by an XPath expression. The signature types ''Enveloping'' and ''Enveloped'' are available. Select the different algorithms to use and provide a keystore containing a key which match those algorithms. Chose the signature id carefully. Quick Verification searches for this id, so it should be unique.
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/signature.png‎|XML Security Tools Signature preference page|center]]
+The '''XML Security''' preferences are available as sub-pages in the '''XML''' category. Three pages are available, from general settings on the '''XML Security''' page to specific settings for '''Encryption''' and '''Signatures'''. It is wise to define different IDs for signature and encryption, this makes verification and decryption much easier. Quick Verification and Quick Decryption may fail in case the IDs are not unique.

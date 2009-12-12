@@ -1,1 +1,5 @@
 = Quick Functions =
+
+The so called ''Quick Functions'' - '''Quick Signature''', '''Quick Verification''', '''Quick Encryption''' and '''Quick Decryption''' - require less or no user interaction at all. These commands use predefined preferences and only ask the user for security sensitive information like passwords. This is the fastest way to sign, verify, encrypt or decrypt any XML document. A dialog opens in case there are any missing [[help/topic/org.eclipse.wst.xml.security.doc/html/preferences/general.html | preferences]] to continue the operation. You can either jump directly to the corresponding preference page and provide the information (like the keystore to use, the desired algorithm, signature id and so on) or cancel the complete operation.
+
+It is possible to mix ''normal'' XML Security operations with the quick functions. So you can encrypt an XML document with the wizard and decrypt it using the '''Quick Decryption''' function. The only requirement is that the settings you have chosen in the wizard do match the preference settings for XML Decryption.
