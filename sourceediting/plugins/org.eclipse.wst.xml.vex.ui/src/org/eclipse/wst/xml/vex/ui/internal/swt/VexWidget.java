@@ -52,6 +52,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
@@ -70,11 +71,7 @@ import org.eclipse.wst.xml.vex.core.internal.widget.HostComponent;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetImpl;
-import org.eclipse.wst.xml.vex.ui.internal.handlers.DuplicateSelectionHandler;
 import org.eclipse.wst.xml.vex.ui.internal.handlers.IVexWidgetHandler;
-import org.eclipse.wst.xml.vex.ui.internal.handlers.RemoveTagHandler;
-import org.eclipse.wst.xml.vex.ui.internal.handlers.SplitBlockElementHandler;
-import org.eclipse.wst.xml.vex.ui.internal.handlers.SplitItemHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -501,10 +498,19 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 	public int viewToModel(int x, int y) {
 		return this.impl.viewToModel(x, y);
 	}
-
-	// ====================================================== PRIVATE
-
-	// ------------------------------------------------------ Fields
+	
+	/**
+	 * @return the location of the left bottom corner of the caret relative to
+	 *         the VexWidget
+	 */
+	public Point getLocationForContentAssist() {
+		Caret vexCaret = impl.getCaret();
+		if (vexCaret == null) return new Point(0, 0);
+		
+		Rectangle caretBounds = vexCaret.getBounds();
+		return new Point(caretBounds.getX() + originX,
+						 caretBounds.getY() + originY + caretBounds.getHeight());
+	}
 
 	private static final char CHAR_NONE = 0;
 	
@@ -520,8 +526,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 	private List selectionListeners = new ArrayList();
 	private ISelection selection;
-
-	// ------------------------------------------------------ Inner Classes
 
 	private Runnable caretTimerRunnable = new Runnable() {
 		public void run() {
@@ -761,8 +765,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 		private String elementName;
 	}
-
-	// ------------------------------------------------------ Methods
 
 	private static void addKey(char character, int keyCode, int stateMask,
 			Action action) {
