@@ -1,1 +1,9 @@
 = General Preferences =
+
+The '''XML Security''' preferences are available as sub-pages in the '''XML''' category. Three pages are available, from general settings on the '''XML Security''' page to specific settings for [[help/topic/org.eclipse.wst.xml.security.doc/html/preferences/encryption.html | Encryption]] and [[help/topic/org.eclipse.wst.xml.security.doc/html/preferences/signature.html | Signatures]].
+
+The general XML Security Tools preference page allows you to specify some general settings for the whole plug-in.
+
+[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/general.png‎|XML Security Tools preferences|center]]
+
+By default, an exclusive XML canonicalization is executed when selecting on of the Canonicalization entries in the menu. Select the inclusive option in case you do require this canonicalization type. The canonicalization target is normally the same file, so the original file gets manipulated. In case you do want to keep the original file you can select to create a new document for canonicalization. This only affects canonicalization, not any of the other wizards! Creating a new file adds _canon to the filename, with additional numbering in case this file already exists.
