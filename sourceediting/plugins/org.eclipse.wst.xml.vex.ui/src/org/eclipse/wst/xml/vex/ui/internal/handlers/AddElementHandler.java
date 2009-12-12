@@ -11,7 +11,9 @@
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.wst.xml.vex.ui.internal.contentassist.InsertAssistant;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.wst.xml.vex.ui.internal.ContentAssist;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -19,9 +21,12 @@ import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
  */
 public class AddElementHandler extends AbstractVexWidgetHandler {
 
-    @Override
+	@Override
     public void execute(VexWidget widget) throws ExecutionException {
-        new InsertAssistant().show(widget);
+		String title = Messages.getString("dialog.addElement.title"); //$NON-NLS-1$
+		IAction[] actions = widget.getValidInsertActions();
+		ContentAssist assist = new ContentAssist(widget, actions, title);
+		assist.open();
     }
 
 }

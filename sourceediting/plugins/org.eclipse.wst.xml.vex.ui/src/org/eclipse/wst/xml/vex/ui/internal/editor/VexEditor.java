@@ -362,7 +362,8 @@ public class VexEditor extends EditorPart {
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
-			this.doctype = null;
+			this.doctype = null; // must be null to set it to a new value via
+			                     // entityResolveras by following read():
 			this.doc = reader.read(modelDocument);
 
 			if (this.debugging) {

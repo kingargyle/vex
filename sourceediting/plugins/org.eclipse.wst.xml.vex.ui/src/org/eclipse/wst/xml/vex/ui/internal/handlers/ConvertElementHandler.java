@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.menus.UIElement;
-import org.eclipse.wst.xml.vex.ui.internal.contentassist.MorphAssistant;
+import org.eclipse.wst.xml.vex.ui.internal.ContentAssist;
+import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -32,7 +35,17 @@ public class ConvertElementHandler extends AbstractVexWidgetHandler implements I
 
     @Override
     public void execute(VexWidget widget) throws ExecutionException {
-        new MorphAssistant().show(widget);
+
+    	// compute title
+		String message = Messages
+				.getString("dialog.convertElement.dynamicTitle"); //$NON-NLS-1$
+		String name = widget.getCurrentElement().getName();
+		String title = MessageFormat.format(message, new Object[] { name });
+
+        // show content assist
+		IAction[] actions = widget.getValidMorphActions();
+		ContentAssist assist = new ContentAssist(widget, actions, title);
+		assist.open();
     }
 
     public void updateElement(UIElement element, Map parameters) {
