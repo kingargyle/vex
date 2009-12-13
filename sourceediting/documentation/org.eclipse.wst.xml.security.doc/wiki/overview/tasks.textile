@@ -1,1 +1,3 @@
 = Tasks =
+
+The '''XML Security Tools''' enable you to [[help/topic/org.eclipse.wst.xml.security.doc/html/canonicalization/canonicalize.html | canonicalize]], [[help/topic/org.eclipse.wst.xml.security.doc/html/signature/sign.html | sign]], [[help/topic/org.eclipse.wst.xml.security.doc/html/verification/verify.html | verify]] and to [[help/topic/org.eclipse.wst.xml.security.doc/html/encryption/encrypt.html | encrypt]] and [[help/topic/org.eclipse.wst.xml.security.doc/html/decryption/decrypt.html | decrypt]] arbitrary XML documents in your Eclipse workbench.
