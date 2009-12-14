@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -43,13 +44,13 @@ import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CompoundEdit;
@@ -96,8 +97,8 @@ public class VexWidgetImpl implements IVexWidget {
 	private RootBox rootBox;
 
 	/** Stacks of UndoableEditEvents; items added and removed from end of list */
-	private LinkedList undoList = new LinkedList();
-	private LinkedList redoList = new LinkedList();
+	private LinkedList<UndoableAndOffset> undoList = new LinkedList<UndoableAndOffset>();
+	private LinkedList<UndoableAndOffset> redoList = new LinkedList<UndoableAndOffset>();
 	private static final int MAX_UNDO_STACK_SIZE = 100;
 	private int undoDepth;
 
@@ -121,8 +122,6 @@ public class VexWidgetImpl implements IVexWidget {
 	private int magicX = -1;
 
 	private boolean antiAliased = false;
-
-	// ======================================================= LISTENERS
 
 	private DocumentListener documentListener = new DocumentListener() {
 
@@ -168,8 +167,6 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 	};
-
-	// ======================================================= PUBLIC INTERFACE
 
 	/**
 	 * Class constructor.
@@ -548,14 +545,10 @@ public class VexWidgetImpl implements IVexWidget {
 	public String[] getValidInsertElements() {
 
 		VEXDocument doc = this.getDocument();
-		if (doc == null) {
-			return new String[0];
-		}
+		if (doc == null) return new String[0];
 
 		Validator validator = doc.getValidator();
-		if (validator == null) {
-			return new String[0];
-		}
+		if (validator == null) return new String[0];
 
 		int startOffset = this.getCaretOffset();
 		int endOffset = this.getCaretOffset();
@@ -565,22 +558,18 @@ public class VexWidgetImpl implements IVexWidget {
 		}
 
 		VEXElement parent = doc.getElementAt(startOffset);
-//		List<String> prefix = doc.getNodeNames(parent.getStartOffset() + 1,
-//				startOffset);
-//		List<String> suffix = doc.getNodeNames(endOffset, parent.getEndOffset());
 		
-		
-		List candidates = new ArrayList();
-		candidates.addAll(validator.getValidItems(parent.getName()));
+		Set<String> validItems = validator.getValidItems(parent.getName());
+		List<String> candidates = new ArrayList<String>(validItems);
 		candidates.remove(Validator.PCDATA);
 
 		// If there's a selection, root out those candidates that can't
 		// contain it.
-		if (this.hasSelection()) {
+		if (hasSelection()) {
 			EList<String> selectedNodes = doc.getNodeNames(startOffset, endOffset);
 
-			for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-				String candidate = (String) iter.next();
+			for (Iterator<String> iter = candidates.iterator(); iter.hasNext();) {
+				String candidate = iter.next();
 				if (!validator.isValidSequence(candidate, selectedNodes, true)) {
 					iter.remove();
 				}
@@ -605,14 +594,10 @@ public class VexWidgetImpl implements IVexWidget {
 	public String[] getValidMorphElements() {
 
 		VEXDocument doc = this.getDocument();
-		if (doc == null) {
-			return new String[0];
-		}
+		if (doc == null) return new String[0];
 
 		Validator validator = doc.getValidator();
-		if (validator == null) {
-			return new String[0];
-		}
+		if (validator == null) return new String[0];
 
 		VEXElement element = doc.getElementAt(this.getCaretOffset());
 		VEXElement parent = element.getParent();
@@ -621,35 +606,24 @@ public class VexWidgetImpl implements IVexWidget {
 			return new String[0];
 		}
 
-		List<String> listprefix = doc.getNodeNames(parent.getStartOffset() + 1, element
-				.getStartOffset());
-		String[] prefix = new String[listprefix.size()];
-		listprefix.toArray(prefix);
-
-		
-//		List<String> listsuffix = doc.getNodeNames(element.getEndOffset() + 1, parent
-//				.getEndOffset());
-//		String[] suffix = new String[listsuffix.size()];
-//		listprefix.toArray(suffix);
-		
-
-		List candidates = new ArrayList();
-		candidates.addAll(validator.getValidItems(parent.getName()));
-		candidates.remove(Validator.PCDATA);
+		Set<String> validItems = validator.getValidItems(parent.getName());
+		List<String> result = new ArrayList<String>(validItems);
+		result.remove(Validator.PCDATA);
+		result.remove(element.getName()); // exclude converting to the same
 
 		// root out those that can't contain the current content
 		EList<String> content = doc.getNodeNames(element.getStartOffset() + 1,
 				element.getEndOffset());
 		
-		for (Iterator iter = candidates.iterator(); iter.hasNext();) {
-			String candidate = (String) iter.next();
+		for (Iterator<String> iter = result.iterator(); iter.hasNext();) {
+			String candidate = iter.next();
 			if (!validator.isValidSequence(candidate, content, true)) {
 				iter.remove();
 			}
 		}
 
-		Collections.sort(candidates);
-		return (String[]) candidates.toArray(new String[candidates.size()]);
+		Collections.sort(result);
+		return result.toArray(new String[result.size()]);
 	}
 
 	public int getSelectionEnd() {
@@ -1050,7 +1024,7 @@ public class VexWidgetImpl implements IVexWidget {
 		if (redoList.size() == 0) {
 			throw new CannotRedoException();
 		}
-		UndoableAndOffset event = (UndoableAndOffset) redoList.removeLast();
+		UndoableAndOffset event = redoList.removeLast();
 		this.moveTo(event.caretOffset, false);
 		event.edit.redo();
 		this.undoList.add(event);
@@ -1146,9 +1120,9 @@ public class VexWidgetImpl implements IVexWidget {
 		this.document = document;
 		this.styleSheet = styleSheet;
 
-		this.undoList = new LinkedList();
+		this.undoList = new LinkedList<UndoableAndOffset>();
 		this.undoDepth = 0;
-		this.redoList = new LinkedList();
+		this.redoList = new LinkedList<UndoableAndOffset>();
 		this.beginWorkCount = 0;
 		this.compoundEdit = null;
 
@@ -1278,7 +1252,7 @@ public class VexWidgetImpl implements IVexWidget {
 		if (undoList.size() == 0) {
 			throw new CannotUndoException();
 		}
-		UndoableAndOffset event = (UndoableAndOffset) undoList.removeLast();
+		UndoableAndOffset event = undoList.removeLast();
 		this.undoDepth--;
 		event.edit.undo();
 		this.moveTo(event.caretOffset, false);
@@ -1323,20 +1297,19 @@ public class VexWidgetImpl implements IVexWidget {
 			return;
 		}
 
-		if (this.compoundEdit != null) {
-			this.compoundEdit.addEdit(edit);
+		if (compoundEdit != null) {
+			compoundEdit.addEdit(edit);
 		} else {
-			if (this.undoList.size() > 0
-					&& ((UndoableAndOffset) this.undoList.getLast()).edit
-							.combine(edit)) {
+			if (   undoList.size() > 0
+				&& undoList.getLast().edit.combine(edit)) {
 				return;
 			} else {
-				this.undoList.add(new UndoableAndOffset(edit, caretOffset));
-				this.undoDepth++;
+				undoList.add(new UndoableAndOffset(edit, caretOffset));
+				undoDepth++;
 				if (undoList.size() > MAX_UNDO_STACK_SIZE) {
 					undoList.removeFirst();
 				}
-				this.redoList.clear();
+				redoList.clear();
 			}
 		}
 	}
