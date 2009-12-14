@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet title="XML Signature">
-   <intro href="/org.eclipse.wst.xml.security.doc/tasks/sign.html">
+   <intro href="/org.eclipse.wst.xml.security.doc/html/signature/sign.html">
       <description>
          Welcome to the XML Signature tutorial of the XML Security Tools.<br/>
 This tutorial will show you step by step how to sign an arbitrary XML document using the XML Signature Wizard. But first you will create a project and an XML document to sign.<br/>
@@ -16,19 +16,19 @@ It is advisable to start with a small XML document and to extend it step by step
       <action class="org.eclipse.wst.xml.security.ui.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.ui" confirm="false">
       </action>
    </item>
-   <item title="Resource and Signature Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_resource.html">
+   <item title="Resource and Signature Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/html/signature/page_resource.html">
       <description>
          Now it&apos;s time to actually sign your XML document. Start the XML Signature Wizard by clicking on &apos;New Signature...&apos; in the editor context menu &apos;XML Security&apos;. The wizard consists of three pages.<br/>
 On the first page you have to select the resource you want to sign (the complete document, a text selection or a node defined by an XPath expression). In order to sign a text selection you must select a well-formed part of your XML document before you start the wizard. After that you have to select which signature type you want to use (enveloping, enveloped or detached). The last choice - use an existing certificate, extend a keystore with a new certificate or create a new keystore with a new certificate - determines the following wizard page.
       </description>
    </item>
-   <item title="Certificate" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_certificate.html">
+   <item title="Keystore and Key" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/html/signature/page_keys.html">
       <description>
          You can use an existing certificate in a Java Keystore (*.jks) and continue the signing process with it. To create a new certificate enter all data, select a keystore type (RSA is recommended) and click the button &apos;Create Certificate&apos;.<br/>
 In future signing sessions you can reuse this keystore and must only enter the password and certificate alias (that for the certificate was stored in the current project folder with the &apos;Common Name&apos; as file name).
       </description>
    </item>
-   <item title="Algorithms" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/sign_page_algorithms.html">
+   <item title="Algorithms and Signature Properties" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/html/signature/page_algorithms.html">
       <description>
          The last page of the XML Signature Wizard requires the algorithms selections for the signature as well as the canonicalization and transformation algorithms. You must select an algorithm in every field.<br/>
 You can only use RSA algorithms with a RSA keystore and DSA algorithms with a DSA keystore.<br/>

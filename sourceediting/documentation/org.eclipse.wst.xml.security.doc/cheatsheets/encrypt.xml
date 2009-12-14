@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet title="XML Encryption">
-   <intro href="/org.eclipse.wst.xml.security.doc/plugin/encrypt.html">
+   <intro href="/org.eclipse.wst.xml.security.doc/html/encryption/encrypt.html">
       <description>
          Welcome to the XML Encryption tutorial of the XML-Security Plug-In.<br/>
 This tutorial will show you step by step how to encrypt a new XML document using the Encryption Wizard. This tutorial shows only some possibilities of the XML Encryption Wizard and will give you some ideas on how to use it and what you can do with it. You will create a project and an XML document to encrypt. To start this encrypting session click the &apos;Click to Begin&apos; button below. You can skip the first item if you already have a project and an opened XML document.<br/>
@@ -15,13 +15,13 @@ It is advisable to start with a small XML document and to extend it step by step
       <action class="org.eclipse.wst.xml.security.ui.cheatsheets.CreateSampleProject" pluginId="org.eclipse.wst.xml.security.ui" confirm="false">
       </action>
    </item>
-   <item title="Resource and Encryption Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/encrypt_page_resource.html">
+   <item title="Resource and Encryption Type" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/html/encryption/page_resource.html">
       <description>
          Now it&apos;s time to actually encrypt your XML document. Start the XML Encryption Wizard by clicking on &apos;New Encryption...&apos; in the context menu &apos;XML Security&apos;. The wizard consists of three pages.<br/>
 On the first page you have to select the resource you want to encrypt (the complete document, a text selection or a node defined by an XPath expression). In order to encrypt a text selection you must select a well-formed part of your XML document before you start the wizard. By activating &apos;Encrypt only element content&apos; the root element of your document (or selection) will remain as plain text.
       </description>
    </item>
-   <item title="Algorithms" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/plugin/encrypt_page_algorithms.html">
+   <item title="Algorithms and Encryption Properties" dialog="true" skip="false" href="/org.eclipse.wst.xml.security.doc/html/encryption/page_algorithms.html">
       <description>
          On the last page of the Encryption Wizard you have to select different algorithms.<br/>
 After that you have to select a file in which you want to store the key used for encryption. Keep this file in a save place, you will need it again for decryption.<br/>
