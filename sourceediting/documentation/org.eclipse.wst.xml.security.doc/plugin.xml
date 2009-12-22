@@ -12,7 +12,7 @@
    <!-- Context Help -->
    <extension
          id="org.eclipse.wst.xml.security.doc.context"
-         name="org.eclipse.wst.xml.security.doc.context"
+         name="%extension.name"
          point="org.eclipse.help.contexts">
       <contexts file="contexts.xml"/>
    </extension>
