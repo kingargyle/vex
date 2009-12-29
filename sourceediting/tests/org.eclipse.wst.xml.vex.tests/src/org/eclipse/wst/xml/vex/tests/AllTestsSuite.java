@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.tests;
 
-import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
-import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
-import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
-
 import junit.framework.TestSuite;
 
-
+import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
+import org.eclipse.wst.xml.vex.ui.tests.VexUiTestSuite;
 
 /**
  * This class specifies all the bundles of this component that provide a test
@@ -24,12 +21,10 @@ import junit.framework.TestSuite;
  */
 public class AllTestsSuite extends TestSuite {
 
-
 	public AllTestsSuite() {
-		super("All VEX Test Suites");
+		super("All Vex Test Suites"); //$NON-NLS-1$
 		addTest(VEXCoreTestSuite.suite());
-		addTestSuite(ResourceTrackerTest.class);
-		addTestSuite(FindReplaceTargetTest.class);
+		addTest(VexUiTestSuite.suite());
 	}
 
 	/**

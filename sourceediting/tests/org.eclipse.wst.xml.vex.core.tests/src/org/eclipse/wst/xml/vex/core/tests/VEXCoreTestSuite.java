@@ -23,7 +23,7 @@ public class VEXCoreTestSuite extends TestSuite {
 	}
 
 	public VEXCoreTestSuite() {
-		super("VEX Core Tests");
+		super("Vex Core Tests");
 		addTestSuite(CssTest.class);
 		addTestSuite(PropertyTest.class);
 		addTestSuite(RuleTest.class);
