@@ -27,7 +27,7 @@ public class AllTestsSuite extends TestSuite {
 		super("All Vex Test Suites"); //$NON-NLS-1$
 		addTest(VEXCoreTestSuite.suite());
 //		addTest(VexUiTestSuite.suite());
-		addTestSuite(IconTest.class);
+//		addTestSuite(IconTest.class);
 		addTestSuite(ResourceTrackerTest.class);
 		addTestSuite(FindReplaceTargetTest.class);	
 	}
