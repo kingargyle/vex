@@ -13,6 +13,7 @@ package org.eclipse.wst.xml.vex.tests;
 import junit.framework.TestSuite;
 
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
+import org.eclipse.wst.xml.vex.ui.tests.IconTest;
 import org.eclipse.wst.xml.vex.ui.tests.VexUiTestSuite;
 
 /**
@@ -25,6 +26,8 @@ public class AllTestsSuite extends TestSuite {
 		super("All Vex Test Suites"); //$NON-NLS-1$
 		addTest(VEXCoreTestSuite.suite());
 		addTest(VexUiTestSuite.suite());
+		
+		addTestSuite(IconTest.class); // there must be at least one test 
 	}
 
 	/**
@@ -34,6 +37,5 @@ public class AllTestsSuite extends TestSuite {
 		// this method needs to exist, but doesn't really do anything
 		// other than to signal to create an instance of this class.
 		// The rest it automatic from the tests added in constructor.
-
 	}
 }
