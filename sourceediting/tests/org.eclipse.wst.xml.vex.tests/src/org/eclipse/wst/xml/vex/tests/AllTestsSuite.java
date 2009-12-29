@@ -15,7 +15,6 @@ import junit.framework.TestSuite;
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
 import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
 import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
-import org.eclipse.wst.xml.vex.ui.tests.IconTest;
 
 /**
  * This class specifies all the bundles of this component that provide a test
