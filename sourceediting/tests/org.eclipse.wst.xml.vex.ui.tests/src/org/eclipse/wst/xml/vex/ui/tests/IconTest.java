@@ -16,9 +16,9 @@ import junit.framework.TestCase;
 
 public class IconTest extends TestCase {
 
-	public void testAllImagesExists() throws Exception {
-		for (Icon vexImage : Icon.values()) {
-			assertNotNull(Icon.get(vexImage));
+	public void testWhetherAllIconsExist() throws Exception {
+		for (Icon icon : Icon.values()) {
+			assertNotNull(Icon.get(icon));
 		}
 	}
 

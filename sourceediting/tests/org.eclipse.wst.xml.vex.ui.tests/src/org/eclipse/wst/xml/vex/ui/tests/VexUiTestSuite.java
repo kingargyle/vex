@@ -17,12 +17,13 @@ import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
 import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
 
 public class VexUiTestSuite extends TestSuite {
+
 	public static Test suite() {
 		return new VexUiTestSuite();
 	}
 
 	public VexUiTestSuite() {
-		super("Vex Core Tests"); //$NON-NLS-1$
+		super("Vex UI Tests"); //$NON-NLS-1$
 		addTestSuite(IconTest.class);
 		addTestSuite(FindReplaceTargetTest.class);
 		addTestSuite(ResourceTrackerTest.class);

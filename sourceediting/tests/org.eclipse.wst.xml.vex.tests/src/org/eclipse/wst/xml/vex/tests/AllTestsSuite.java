@@ -13,8 +13,7 @@ package org.eclipse.wst.xml.vex.tests;
 import junit.framework.TestSuite;
 
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
-import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
-import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
+import org.eclipse.wst.xml.vex.ui.tests.VexUiTestSuite;
 
 /**
  * This class specifies all the bundles of this component that provide a test
@@ -23,12 +22,9 @@ import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
 public class AllTestsSuite extends TestSuite {
 
 	public AllTestsSuite() {
-		super("All VEX Test Suites"); //$NON-NLS-1$
+		super("All Vex Test Suites"); //$NON-NLS-1$
 		addTest(VEXCoreTestSuite.suite());
-//		addTest(VexUiTestSuite.suite());
-//		addTestSuite(IconTest.class);
-		addTestSuite(ResourceTrackerTest.class);
-		addTestSuite(FindReplaceTargetTest.class);	
+		addTest(VexUiTestSuite.suite());
 	}
 
 	/**
