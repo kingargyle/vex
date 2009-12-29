@@ -23,7 +23,7 @@ import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
 public class AllTestsSuite extends TestSuite {
 
 	public AllTestsSuite() {
-		super("All Vex Test Suites"); //$NON-NLS-1$
+		super("All VEX Test Suites"); //$NON-NLS-1$
 		addTest(VEXCoreTestSuite.suite());
 //		addTest(VexUiTestSuite.suite());
 //		addTestSuite(IconTest.class);
