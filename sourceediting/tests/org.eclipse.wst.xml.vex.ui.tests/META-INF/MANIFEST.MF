@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: VEX UI Test Plugin
 Bundle-SymbolicName: org.eclipse.wst.xml.vex.ui.tests
 Bundle-Version: 0.5.0.qualifier
-Bundle-Activator: org.eclipse.wst.xml.vex.ui.tests.Activator
 Bundle-Vendor: Eclipse
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

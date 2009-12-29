@@ -22,14 +22,12 @@ import javax.swing.undo.CannotUndoException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.PopupList;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -110,13 +108,9 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		// is disposed before focus is lost.
 	}
 
-	// ----------------------------------------- IInputProvider methods
-
 	public Object getInput() {
 		return this.impl.getDocument();
 	}
-
-	// ----------------------------------------- ISelectionProvider methods
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		this.selectionListeners.add(listener);
@@ -281,11 +275,16 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		this.impl.insertFragment(frag);
 	}
 
+	public void insertElement(String elementName)
+			throws DocumentValidationException {
+		insertElement(new Element(elementName));
+	}
+
 	public void insertElement(Element element)
 			throws DocumentValidationException {
 		this.impl.insertElement(element);
 	}
-
+	
 	public void insertText(String text) throws DocumentValidationException {
 		this.impl.insertText(text);
 	}
@@ -294,10 +293,14 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		return impl.isDebugging();
 	}
 
+	public void morph(String elementName) throws DocumentValidationException {
+		morph(new Element(elementName));
+	}
+
 	public void morph(Element element) throws DocumentValidationException {
 		this.impl.morph(element);
 	}
-
+	
 	public void moveBy(int distance) {
 		this.impl.moveBy(distance);
 	}
@@ -344,24 +347,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 	public void moveToPreviousWord(boolean select) {
 		this.impl.moveToPreviousWord(select);
-	}
-
-	public IAction[] getValidInsertActions() {
-		String[] names = this.getValidInsertElements();
-		IAction[] actions = new IAction[names.length];
-		for (int i = 0; i < names.length; i++) {
-			actions[i] = new InsertElementAction(names[i]);
-		}
-		return actions;
-	}
-
-	public IAction[] getValidMorphActions() {
-		String[] names = this.getValidMorphElements();
-		IAction[] actions = new IAction[names.length];
-		for (int i = 0; i < names.length; i++) {
-			actions[i] = new MorphElementAction(names[i]);
-		}
-		return actions;
 	}
 
 	/**
@@ -441,50 +426,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 	public void setStyleSheet(URL ssUrl) throws IOException {
 		this.impl.setStyleSheet(ssUrl);
-	}
-
-	/**
-	 * Show a popup list of elements that are valid to be inserted at the
-	 * current position. If one of the elements is selected, it is inserted
-	 * before returning.
-	 */
-	public void showInsertElementPopup() {
-		PopupList list = new PopupList(this.getShell());
-		list.setItems(this.getValidInsertElements());
-
-		Rectangle caret = this.impl.getCaret().getBounds();
-		Point display = this.toDisplay(caret.getX() + 10, caret.getY());
-		String selected = list.open(new org.eclipse.swt.graphics.Rectangle(
-				display.x, display.y, 200, 0));
-		if (selected != null) {
-			try {
-				this.insertElement(new Element(selected));
-			} catch (DocumentValidationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Show a popup list of elements to which it is valid to morph the current
-	 * element. If one of the elements is selected, the current element is
-	 * morphed before returning.
-	 */
-	public void showMorphElementPopup() {
-		PopupList list = new PopupList(this.getShell());
-		list.setItems(this.getValidMorphElements());
-
-		Rectangle caret = this.impl.getCaret().getBounds();
-		Point display = this.toDisplay(caret.getX() + 10, caret.getY());
-		String selected = list.open(new org.eclipse.swt.graphics.Rectangle(
-				display.x, display.y, 200, 0));
-		if (selected != null) {
-			try {
-				this.morph(new Element(selected));
-			} catch (DocumentValidationException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void split() throws DocumentValidationException {
@@ -732,46 +673,14 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		}
 	};
 
-	private class InsertElementAction extends org.eclipse.jface.action.Action {
-		public InsertElementAction(String name) {
-			this.name = name;
-			this.setText(name);
-		}
-
-		public void run() {
-			try {
-				insertElement(new Element(name));
-			} catch (DocumentValidationException e) {
-			}
-		}
-
-		private String name;
-	}
-
-	private class MorphElementAction extends org.eclipse.jface.action.Action {
-		public MorphElementAction(String elementName) {
-			this.elementName = elementName;
-			this.setText(elementName);
-		}
-
-		public void run() {
-			try {
-				morph(new Element(elementName));
-			} catch (DocumentValidationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		private String elementName;
-	}
-
 	private static void addKey(char character, int keyCode, int stateMask,
 			Action action) {
 		keyMap.put(new KeyStroke(character, keyCode, stateMask), action);
 	}
 	
 	private static void buildKeyMap() {
+		
+		// arrows: (Shift) Up/Down, {-, Shift, Ctrl, Shift+Ctrl} + Left/Right 
 		addKey(CHAR_NONE, SWT.ARROW_DOWN, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveToNextLine(false);
@@ -782,7 +691,16 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 				w.moveToNextLine(true);
 			}
 		});
-
+		addKey(CHAR_NONE, SWT.ARROW_UP, SWT.NONE, new Action() {
+			public void runEx(IVexWidget w) {
+				w.moveToPreviousLine(false);
+			}
+		});
+		addKey(CHAR_NONE, SWT.ARROW_UP, SWT.SHIFT, new Action() {
+			public void runEx(IVexWidget w) {
+				w.moveToPreviousLine(true);
+			}
+		});
 		addKey(CHAR_NONE, SWT.ARROW_LEFT, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveBy(-1);
@@ -804,7 +722,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 						w.moveToPreviousWord(true);
 					}
 				});
-
 		addKey(CHAR_NONE, SWT.ARROW_RIGHT, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveBy(+1);
@@ -827,17 +744,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 					}
 				});
 
-		addKey(CHAR_NONE, SWT.ARROW_UP, SWT.NONE, new Action() {
-			public void runEx(IVexWidget w) {
-				w.moveToPreviousLine(false);
-			}
-		});
-		addKey(CHAR_NONE, SWT.ARROW_UP, SWT.SHIFT, new Action() {
-			public void runEx(IVexWidget w) {
-				w.moveToPreviousLine(true);
-			}
-		});
-
+		// Delete/Backspace
 		addKey(SWT.BS, SWT.BS, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) throws ExecutionException {
 				try {
@@ -857,6 +764,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 			}
 		});
 
+		// {-, Shift, Ctrl, Shift+Ctrl} + Home/End
 		addKey(CHAR_NONE, SWT.END, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveToLineEnd(false);
@@ -877,7 +785,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 				w.moveTo(w.getDocument().getLength() - 1, true);
 			}
 		});
-
 		addKey(CHAR_NONE, SWT.HOME, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveToLineStart(false);
@@ -899,6 +806,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 			}
 		});
 
+		// (Shift) Page Up/Down
 		addKey(CHAR_NONE, SWT.PAGE_DOWN, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveToNextPage(false);
@@ -909,7 +817,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 				w.moveToNextPage(true);
 			}
 		});
-
 		addKey(CHAR_NONE, SWT.PAGE_UP, SWT.NONE, new Action() {
 			public void runEx(IVexWidget w) {
 				w.moveToPreviousPage(false);
@@ -920,17 +827,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 				w.moveToPreviousPage(true);
 			}
 		});
-
-		addKey(' ', 0, SWT.CONTROL, new Action() { // Ctrl-Space
-					public void runEx(IVexWidget w) {
-						((VexWidget) w).showInsertElementPopup();
-					}
-				});
-		addKey('\r', 0, SWT.CONTROL, new Action() { // Ctrl-M
-					public void runEx(IVexWidget w) {
-						((VexWidget) w).showMorphElementPopup();
-					}
-				});
 	}
 
 	/**
