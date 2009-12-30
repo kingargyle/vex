@@ -25,8 +25,6 @@ import junit.framework.TestCase;
 /**
  * Test rule matching.
  */
-@SuppressWarnings("restriction")
-
 public class RuleTest extends TestCase {
 
 	public void testRuleMatching() throws Exception {

@@ -55,7 +55,6 @@ import org.xml.sax.XMLReader;
 /**
  * Test the SpaceNormalizer class.
  */
-@SuppressWarnings("restriction")
 public class SpaceNormalizerTest extends TestCase {
 
 	protected static IProject fTestProject;

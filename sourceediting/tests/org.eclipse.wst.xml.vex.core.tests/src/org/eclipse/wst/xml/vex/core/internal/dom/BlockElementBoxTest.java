@@ -28,7 +28,6 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 
 import junit.framework.TestCase;
 
-@SuppressWarnings("restriction")
 public class BlockElementBoxTest extends TestCase {
 
 	private Graphics g;
@@ -61,14 +60,10 @@ public class BlockElementBoxTest extends TestCase {
 		BlockElementBox box = new BlockElementBox(context, parentBox, doc
 				.getRootElement());
 
-		List childrenList = box.createChildren(context);		
-		
-		Box[] children = new Box[childrenList.size()];
-        childrenList.toArray(children);
+		List<Box> childrenList = box.createChildren(context);		
+		Box[] children = childrenList.toArray(new Box[childrenList.size()]);
 		assertNotNull("No Children created.", children);
 		assertEquals(3, children.length);
-
-		Box child = children[1];
 	}
 
 	public int getGap(BlockElementBox box, int n) throws SecurityException,
@@ -77,7 +72,7 @@ public class BlockElementBoxTest extends TestCase {
 		Method getGap = BlockElementBox.class.getDeclaredMethod("getGap",
 				new Class[] { Integer.TYPE });
 		getGap.setAccessible(true);
-		return ((Integer) getGap.invoke(box, new Object[] { new Integer(n) }))
+		return ((Integer) getGap.invoke(box, new Object[] { Integer.valueOf(n) }))
 				.intValue();
 	}
 }

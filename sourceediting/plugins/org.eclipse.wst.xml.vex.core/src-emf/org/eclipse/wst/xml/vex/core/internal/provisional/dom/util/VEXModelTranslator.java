@@ -7,13 +7,10 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 
 public class VEXModelTranslator extends RootTranslator {
 
-
 	private static Translator[] children;
-	private static final DomEMFPackage VEX_PKG = DomEMFPackage.eINSTANCE;
-
 	
 	public VEXModelTranslator(String domNameAndPath) {
-		super(domNameAndPath, VEX_PKG.eINSTANCE.getVEXDocument());
+		super(domNameAndPath, DomEMFPackage.eINSTANCE.getVEXDocument());
 	}
 	
 
