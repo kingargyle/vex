@@ -5,23 +5,22 @@
 ! These bundles are currently being developed and released 
 ! from the HEAD branch
 
-plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
-fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
-
 feature@org.eclipse.wst.xml.vex.feature=v200811071337,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/features/org.eclipse.wst.xml.vex.feature
 feature@org.eclipse.wst.xml.vex.docbook.feature=v200810281306,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/features/org.eclipse.wst.xml.vex.docbook.feature
 feature@org.eclipse.wst.xml.vex_tests.feature=v200811040512,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/features/org.eclipse.wst.xml.vex_tests.feature
 feature@org.eclipse.wst.xml.vex_sdk.feature=v200811020910,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/features/org.eclipse.wst.xml.vex_sdk.feature
 
-plugin@org.eclipse.wst.xml.vex=v20081031,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex
-plugin@org.eclipse.wst.xml.vex.core=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.core
-plugin@org.eclipse.wst.xml.vex.ui=v200912291130,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.ui
-plugin@org.eclipse.wst.xml.vex.ui.tests=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.ui.tests
-plugin@org.eclipse.wst.xml.vex.core.tests=v200912291130,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.core.tests
-plugin@org.eclipse.wst.xml.vex.documentation=v200812082002,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/documentation/org.eclipse.wst.xml.vex.documentation
-plugin@org.eclipse.wst.xml.vex.tests=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.tests
+bundle@org.eclipse.wst.xml.vex=v20081031,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex
+bundle@org.eclipse.wst.xml.vex.core=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.core
+bundle@org.eclipse.wst.xml.vex.ui=v200912291130,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.ui
+bundle@org.eclipse.wst.xml.vex.ui.tests=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.ui.tests
+bundle@org.eclipse.wst.xml.vex.core.tests=v200912291130,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.core.tests
+bundle@org.eclipse.wst.xml.vex.documentation=v200812082002,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/documentation/org.eclipse.wst.xml.vex.documentation
+bundle@org.eclipse.wst.xml.vex.tests=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/tests/org.eclipse.wst.xml.vex.tests
 
-plugin@org.eclipse.wst.xml.vex.docbook=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.docbook
-plugin@org.eclipse.wst.xml.vex.dita=v200911092103,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.dita
+bundle@org.eclipse.wst.xml.vex.docbook=v200912291823,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.docbook
+bundle@org.eclipse.wst.xml.vex.dita=v200911092103,:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools,,incubator/sourceediting/plugins/org.eclipse.wst.xml.vex.dita
 
+plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
+fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
 !***************
