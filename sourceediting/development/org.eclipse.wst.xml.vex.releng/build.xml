@@ -1,8 +1,8 @@
 <project default="run" name="org.eclipse.wst.xml.xpath2.releng/build.xml - Run a PsychoPath build using the Athena CBI">
 	<target name="run">
 		<!-- load properties and set timestamp for the build -->
-		<property name="WORKSPACE" location="../../../../"/>
 		<property environment="env"/>
+		<property name="WORKSPACE" location="${env.WORKSPACE}"/>
 		<property file="build.properties" />
 		<tstamp>
 			<format property="buildTimestamp" pattern="yyyyMMddHHmm" />
@@ -19,7 +19,7 @@
 			can build in /tmp, eg., in /tmp/build, or in workspace, eg.,
 			${WORKSPACE}/build
 		-->
-		<property name="writableBuildRoot" value="${WORKSPACE}/build2" />
+		<property name="writableBuildRoot" value="${WORKSPACE}/build" />
 
 		<!-- 
 			can be simple path, eg., 
@@ -27,7 +27,7 @@
 			${writableBuildRoot}/${topprojectName}/${projectName}/downloads/drops/${version}/${buildType}${buildTimestamp} or
 			${writableBuildRoot}/${topprojectName}/${projectName}/${subprojectName}/downloads/drops/${version}/${buildType}${buildTimestamp}
 		-->
-		<property name="buildDir" value="${writableBuildRoot}/${buildType}${buildTimestamp}" />
+		<property name="buildDir" value="${writableBuildRoot}/athena" />
 
 		<delete dir="${writableBuildRoot}"/>
 		<echo message="Workspace: ${WORKSPACE}"/>
@@ -41,5 +41,27 @@
 		<ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}">
 			<property file="build.properties"/>
 		</ant>
+		
+		<cleanUpBuild/>
 	</target>
+	
+	<!-- = = = = = = = = = = = = = = = = =
+          macrodef: cleanUpBuild          
+         = = = = = = = = = = = = = = = = = -->
+    <macrodef name="cleanUpBuild">
+        <sequential>
+    		<delete dir="${buildDir}/eclipse" failonerror="false" />
+    		<delete dir="${buildDir}/testing" failonerror="false" />
+    		<delete dir="${buildDir}/compilelogs" failonerror="false"/>
+    		<delete dir="${buildDir}/testResults/consolelogs" failonerror="false"/>
+    		<delete dir="${buildDir}/testResults/html" failonerror="false"/>
+    		<delete>
+    			<fileset dir="${buildDir}">
+    				<include name="*AllFeatures*.zip*"/>
+    				<include name="*Master*.zip*"/>
+    			</fileset>
+    		</delete>
+            
+        </sequential>
+    </macrodef>	
 </project>
