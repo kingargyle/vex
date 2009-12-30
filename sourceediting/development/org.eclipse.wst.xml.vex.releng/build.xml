@@ -1,53 +1,51 @@
 <project default="run" name="org.eclipse.wst.xml.xpath2.releng/build.xml - Run a PsychoPath build using the Athena CBI">
-	<target name="run">
-		<!-- load properties and set timestamp for the build -->
-		<property environment="env"/>
-		<property name="WORKSPACE" location="${env.WORKSPACE}"/>
-		<property file="build.properties" />
-		<tstamp>
-			<format property="buildTimestamp" pattern="yyyyMMddHHmm" />
-		</tstamp>
-<!--		
-		<property name="forceContextQualifier" value="v${buildTimestamp}" />
-		<property name="fetchTag" value="HEAD" />
--->
-		<!-- calculate workspaceDir as parent of this folder, the project's .releng folder (relengBuilderDir) -->
-		<property name="relengBuilderDir" value="${basedir}" />
-		<dirname file="${relengBuilderDir}" property="workspaceDir" />
+	<!-- load properties and set timestamp for the build -->
+	<property environment="env"/>
+	<property name="WORKSPACE" location="${env.WORKSPACE}"/>
+	<property file="build.properties" />
+	<tstamp>
+		<format property="buildTimestamp" pattern="yyyyMMddHHmm" />
+	</tstamp>
+	<property name="forceContextQualifier" value="v${buildTimestamp}" />
+	<property name="fetchTag" value="HEAD" />
+	
+	<!-- calculate workspaceDir as parent of this folder, the project's .releng folder (relengBuilderDir) -->
+	<property name="relengBuilderDir" value="${basedir}" />
+	<import file="findbugs.xml"/>
+	<import file="pmd.xml"/>
+	<dirname file="${relengBuilderDir}" property="workspaceDir" />
 
-		<!-- 
-			can build in /tmp, eg., in /tmp/build, or in workspace, eg.,
-			${WORKSPACE}/build
-		-->
-		<property name="writableBuildRoot" value="${WORKSPACE}/build" />
+	<!-- 
+		can build in /tmp, eg., in /tmp/build, or in workspace, eg.,
+		${WORKSPACE}/build
+	-->
+	<property name="writableBuildRoot" value="/tmp/build" />
+	<property name="sdkzipUrl" value="https://build.eclipse.org/hudson/job/cbi-wtp-wst.xsl.psychopath/ws/build/athena/"/>
 
-		<!-- 
-			can be simple path, eg., 
-			${writableBuildRoot}/${buildType}${buildTimestamp} or longer, eg.,
-			${writableBuildRoot}/${topprojectName}/${projectName}/downloads/drops/${version}/${buildType}${buildTimestamp} or
-			${writableBuildRoot}/${topprojectName}/${projectName}/${subprojectName}/downloads/drops/${version}/${buildType}${buildTimestamp}
-		-->
-		<property name="buildDir" value="${writableBuildRoot}/athena" />
+	<!-- 
+		can be simple path, eg., 
+		${writableBuildRoot}/${buildType}${buildTimestamp} or longer, eg.,
+		${writableBuildRoot}/${topprojectName}/${projectName}/downloads/drops/${version}/${buildType}${buildTimestamp} or
+		${writableBuildRoot}/${topprojectName}/${projectName}/${subprojectName}/downloads/drops/${version}/${buildType}${buildTimestamp}
+	-->
+	<property name="buildDir" value="${writableBuildRoot}/athena" />
+	
+	<target name="init">
+		<delete dir="${buildDir}" failonerror="false"/>
+	</target>
 
-		<delete dir="${writableBuildRoot}"/>
+	<target name="run" depends="init">
 		<echo message="Workspace: ${WORKSPACE}"/>
 		<echo message="Writable Build Root: ${writableBuildRoot}"/>
-		<echo message="Common builder Dir: ${relengCommonBuilderDir}"/>
+		<mkdir dir="${writableBuildRoot}"/>
 		<!-- invoke a new Eclipse process and launch the build from the common.releng folder -->
 		<property name="relengCommonBuilderDir" value="${workspaceDir}/org.eclipse.dash.common.releng" />
-        <echo message="RelengBuilderDir: ${relengBuilderDir}"/>
-        <mkdir dir="${writableBuildRoot}"/>
-		
-		<ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}">
-			<property file="build.properties"/>
-		</ant>
-		
+		<ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}" />
+		<antcall target="findbugs" inheritall="true"/>
 		<cleanUpBuild/>
+		<antcall target="duplicateCode" inheritall="true"/>
 	</target>
-	
-	<!-- = = = = = = = = = = = = = = = = =
-          macrodef: cleanUpBuild          
-         = = = = = = = = = = = = = = = = = -->
+
     <macrodef name="cleanUpBuild">
         <sequential>
     		<delete dir="${buildDir}/eclipse" failonerror="false" />
@@ -55,13 +53,32 @@
     		<delete dir="${buildDir}/compilelogs" failonerror="false"/>
     		<delete dir="${buildDir}/testResults/consolelogs" failonerror="false"/>
     		<delete dir="${buildDir}/testResults/html" failonerror="false"/>
+    		<delete dir="${writableBuildRoot}/athena/findbugs"/>		
+    		<delete dir="${writableBuildRoot}/athena/findbugsclasses"/>		
     		<delete>
     			<fileset dir="${buildDir}">
     				<include name="*AllFeatures*.zip*"/>
     				<include name="*Master*.zip*"/>
     			</fileset>
     		</delete>
-            
         </sequential>
-    </macrodef>	
+    </macrodef>
+	
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="findbugs" description="Run a find bugs analysis based on a ZIP file contents.">
+		<patternset id="xpathjars">
+			<include name="eclipse/plugins/org.eclipse.wst.xml.xpath2.processor*.jar"/>
+		</patternset>
+		<getFindBugs downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/findbugs"/>
+		<extractJarsForAnalysis src="${sdkzipUrl}${zipPrefix}-SDK-${buildType}${buildTimestamp}.zip" refid="xpathjars"/>
+		<findBugs outputfile="${writableBuildRoot}/athena/fb-xpath20processor.xml"/>
+    </target>
+	
+	<target name="duplicateCode" description="Run PMD duplicate code analysis">
+		<getPMD downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/pmd"/>
+		<cpd outputfile="${writableBuildRoot}/athena/cpd-xpath20processor.xml" srcdir="${WORKSPACE}"/>
+	</target>
 </project>
