@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %plugin.name
+Bundle-Name: %pluginName
 Bundle-Version: 0.5.0.qualifier
-Bundle-Vendor: %plugin.provider
+Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.wst.xml.vex.documentation;singleton:=true
 Require-Bundle: org.eclipse.help;bundle-version="[3.3.0,4.0.0)"
 Bundle-Localization: plugin

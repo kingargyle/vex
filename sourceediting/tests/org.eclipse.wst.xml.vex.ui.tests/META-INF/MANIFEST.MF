@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VEX UI Test Plugin
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.wst.xml.vex.ui.tests
 Bundle-Version: 0.5.0.qualifier
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.wst.xml.vex.ui;bundle-version="0.5.0",
