@@ -13,7 +13,6 @@ package org.eclipse.wst.xml.vex.ui.internal.config;
 import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.wst.xml.vex.core.internal.validator.DTDValidator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
 

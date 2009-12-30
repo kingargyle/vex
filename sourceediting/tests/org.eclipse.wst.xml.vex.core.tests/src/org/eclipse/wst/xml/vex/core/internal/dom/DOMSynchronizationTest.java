@@ -4,24 +4,20 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
+import junit.framework.TestCase;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
-import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestPlugin;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.w3c.dom.Attr;
-
-import junit.framework.TestCase;
 
 public class DOMSynchronizationTest extends TestCase {
 	private IStructuredDocument loadTestFile()

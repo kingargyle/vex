@@ -12,25 +12,20 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
-import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
 import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xml.vex.core.internal.dom.Document;
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.dom.Text;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-
-import junit.framework.TestCase;
 
 /**
  * Test the <code>org.eclipse.wst.vex.core.internal.dom</code> package.
@@ -41,7 +36,7 @@ public class DomTest extends TestCase {
 		IDOMModel model = initDOM();
 		IDOMDocument domDocument = model.getDocument();
 		
-		this.assertNotNull("Structured Document NULL.", domDocument.getStructuredDocument());
+		assertNotNull("Structured Document NULL.", domDocument.getStructuredDocument());
 	}
 
 	private IDOMModel initDOM() {

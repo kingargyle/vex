@@ -11,7 +11,6 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl;
 
 import java.io.Serializable;
-
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -21,15 +20,10 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
-
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute;
@@ -40,7 +34,6 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;

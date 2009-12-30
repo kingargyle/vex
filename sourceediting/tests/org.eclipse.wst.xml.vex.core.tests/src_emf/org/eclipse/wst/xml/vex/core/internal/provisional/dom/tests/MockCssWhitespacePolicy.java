@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
-import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * Implementation of WhitespacePolicy using a CSS stylesheet.

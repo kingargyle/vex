@@ -11,7 +11,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
-import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeViewer;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 public class VEXMultiPageEditorPart extends MultiPageEditorPart {

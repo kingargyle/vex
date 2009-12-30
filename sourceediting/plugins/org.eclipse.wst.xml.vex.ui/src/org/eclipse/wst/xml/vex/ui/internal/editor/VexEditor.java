@@ -69,8 +69,6 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.xml.core.internal.contentmodel.modelquery.ModelQuery;
-import org.eclipse.wst.xml.core.internal.modelquery.ModelQueryUtil;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
@@ -114,8 +112,6 @@ public class VexEditor extends EditorPart {
 	 */
 	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"; //$NON-NLS-1$
 	
-	private ModelQuery modelQuery = null;
-
 	/**
 	 * Class constructor.
 	 */
@@ -351,13 +347,8 @@ public class VexEditor extends EditorPart {
 			}
 
 		    IDOMDocument modelDocument = getDOMDocument(file);
-  	        modelQuery = ModelQueryUtil.getModelQuery(modelDocument);
   	        IDOMElement documentElement = (IDOMElement)modelDocument.getDocumentElement();
   	        
-
-			
-//			URL url = inputPath.toFile().toURL();
-
 			DOMDocumentReader reader = new DOMDocumentReader();
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
