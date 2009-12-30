@@ -69,16 +69,16 @@
           target: default              
          ================================= -->
     <target name="findbugs" description="Run a find bugs analysis based on a ZIP file contents.">
-		<patternset id="xpathjars">
-			<include name="eclipse/plugins/org.eclipse.wst.xml.xpath2.processor*.jar"/>
+		<patternset id="vex">
+			<include name="eclipse/plugins/org.eclipse.wst.xml.vex.*.jar"/>
 		</patternset>
 		<getFindBugs downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/findbugs"/>
-		<extractJarsForAnalysis src="${sdkzipUrl}${zipPrefix}-SDK-${buildType}${buildTimestamp}.zip" refid="xpathjars"/>
-		<findBugs outputfile="${writableBuildRoot}/athena/fb-xpath20processor.xml"/>
+		<extractJarsForAnalysis src="${sdkzipUrl}${zipPrefix}-SDK${incubation}-${buildType}${buildTimestamp}.zip" refid="vex"/>
+		<findBugs outputfile="${writableBuildRoot}/athena/fb-vex.xml"/>
     </target>
 	
 	<target name="duplicateCode" description="Run PMD duplicate code analysis">
 		<getPMD downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/pmd"/>
-		<cpd outputfile="${writableBuildRoot}/athena/cpd-xpath20processor.xml" srcdir="${WORKSPACE}"/>
+		<cpd outputfile="${writableBuildRoot}/athena/cpd-vex.xml" srcdir="${WORKSPACE}"/>
 	</target>
 </project>
