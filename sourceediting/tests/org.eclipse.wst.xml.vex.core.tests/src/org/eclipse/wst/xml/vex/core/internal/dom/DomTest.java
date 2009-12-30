@@ -178,44 +178,36 @@ public class DomTest extends TestCase {
 
 	public void testFragments() throws Exception {
 
-		VEXDocument doc;
-		VEXDocumentFragment frag;
-		List<VEXNode> nodes;
-		VEXElement root;
-		VEXElement x;
-		VEXElement y;
-		VEXElement z;
-
 		// Case 1: just text
 		//
 		// root
 		// * a b c *
 		// 0 1 2 3 4 5
-		doc = new Document(new RootElement("root"));
+		VEXDocument doc = new Document(new RootElement("root"));
 		doc.insertText(1, "abc");
 
 		try {
-			frag = doc.getFragment(2, 2);
+			doc.getFragment(2, 2);
 			fail();
 		} catch (IllegalArgumentException ex) {
 		}
 
 		try {
-			frag = doc.getFragment(-1, 0);
+			doc.getFragment(-1, 0);
 			fail();
 		} catch (IllegalArgumentException ex) {
 		}
 
 		try {
-			frag = doc.getFragment(4, 5);
+			doc.getFragment(4, 5);
 			fail();
 		} catch (IllegalArgumentException ex) {
 		}
 
-		frag = doc.getFragment(2, 3);
+		VEXDocumentFragment frag = doc.getFragment(2, 3);
 		assertEquals(1, frag.getContent().getLength());
 		assertEquals(0, frag.getElements().size());
-		nodes = frag.getNodes();
+		List<VEXNode> nodes = frag.getNodes();
 		assertEquals(1, nodes.size());
 		this.assertIsText(nodes.get(0), "b", 0, 1);
 

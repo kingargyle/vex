@@ -647,9 +647,6 @@ public class VexEditor extends EditorPart {
 		gd.verticalAlignment = GridData.FILL;
 		this.vexWidget.setLayoutData(gd);
 
-		VexActionBarContributor contributor = (VexActionBarContributor) this
-				.getEditorSite().getActionBarContributor();
-
 		MenuManager menuManager = new MenuManager();
 		getSite().registerContextMenu("org.eclipse.wst.xml.vex.ui.popup", menuManager, vexWidget);
 		vexWidget.setMenu(menuManager.createContextMenu(vexWidget));

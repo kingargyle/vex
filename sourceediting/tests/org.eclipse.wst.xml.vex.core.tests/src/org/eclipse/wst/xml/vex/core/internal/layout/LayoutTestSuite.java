@@ -46,7 +46,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * Runs several suites of layout tests. Each suite is defined in an XML file.
  * The XML files to run are registered in the suite() method.
  */
-@SuppressWarnings("restriction")
 public class LayoutTestSuite extends TestCase {
 
 	public String id;

@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ContentImpl;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.PositionImpl;
 
@@ -31,7 +31,8 @@ public class MockGapContent extends ContentImpl implements Content {
 	private char[] content;
 	private int gapStart;
 	private int gapEnd;
-	private final Map positions = new HashMap();
+	private final Set<Position> positions = new HashSet<Position>();
+	
 
 	/**
 	 * Class constructor.
@@ -55,12 +56,9 @@ public class MockGapContent extends ContentImpl implements Content {
 	 *            initial offset of the position
 	 */
 	public Position createPosition(int offset) {
-
 		assertOffset(offset, 0, this.getLength());
-
 		Position pos = new GapContentPosition(offset);
-		this.positions.put(pos, pos);
-
+		positions.add(pos);
 		return pos;
 	}
 
@@ -97,8 +95,7 @@ public class MockGapContent extends ContentImpl implements Content {
 			//
 			// Update positions
 			//
-			for (Iterator i = this.positions.keySet().iterator(); i.hasNext();) {
-				GapContentPosition pos = (GapContentPosition) i.next();
+			for (Position pos : positions) {
 				if (pos.getOffset() >= offset) {
 					pos.setOffset(pos.getOffset() + s.length());
 				}
@@ -122,8 +119,7 @@ public class MockGapContent extends ContentImpl implements Content {
 		this.moveGap(offset + length);
 		this.gapStart -= length;
 
-		for (Iterator i = this.positions.keySet().iterator(); i.hasNext();) {
-			GapContentPosition pos = (GapContentPosition) i.next();
+		for (Position pos : positions) {
 			if (pos.getOffset() >= offset + length) {
 				pos.setOffset(pos.getOffset() - length);
 			} else if (pos.getOffset() >= offset) {
