@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  * Tests the DocumentTestBox class. We focus here on proper offsets, since text
  * splitting is tested thoroughly in TestStaticTextBox.
  */
-@SuppressWarnings("restriction")
 public class TestDocumentTextBox extends TestCase {
 
 	FakeGraphics g;

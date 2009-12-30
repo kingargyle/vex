@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  * Tests proper function of a block-level element within an inline element.
  * These must be layed out as a block child of the containing block element.
  */
-@SuppressWarnings("restriction")
 public class TestBlocksInInlines extends TestCase {
 
 	FakeGraphics g;
