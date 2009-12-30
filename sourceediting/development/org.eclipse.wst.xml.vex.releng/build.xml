@@ -20,7 +20,7 @@
 		${WORKSPACE}/build
 	-->
 	<property name="writableBuildRoot" value="/tmp/build" />
-	<property name="sdkzipUrl" value="https://build.eclipse.org/hudson/job/cbi-wtp-wst.xsl.psychopath/ws/build/athena/"/>
+	<property name="sdkzipUrl" value="https://build.eclipse.org/hudson/job/cbi-wtp-inc.vex/ws/build/athena/"/>
 
 	<!-- 
 		can be simple path, eg., 
