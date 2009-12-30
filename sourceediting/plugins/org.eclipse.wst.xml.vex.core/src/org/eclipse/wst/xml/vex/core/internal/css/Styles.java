@@ -24,9 +24,9 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
 public class Styles {
 
 	/** Maps property name (String) => value (Object) */
-	private Map values = new HashMap();
+	private Map<String, Object> values = new HashMap<String, Object>();
 
-	private List content;
+	private List<String> content;
 	private FontSpec font;
 
 	/**
@@ -122,7 +122,7 @@ public class Styles {
 	 * Returns a <code>List</code> of <code>ContentPart</code> objects
 	 * representing the <code>content</code> property.
 	 */
-	public List getContent() {
+	public List<String> getContent() {
 		return content;
 	}
 
@@ -241,7 +241,7 @@ public class Styles {
 	 *            <code>List</code> of <code>ContentPart</code> objects
 	 *            representing the content.
 	 */
-	public void setContent(List content) {
+	public void setContent(List<String> content) {
 		this.content = content;
 	}
 

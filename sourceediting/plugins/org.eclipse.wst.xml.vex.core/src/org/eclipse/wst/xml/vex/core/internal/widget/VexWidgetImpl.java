@@ -1020,7 +1020,7 @@ public class VexWidgetImpl implements IVexWidget {
 				"Must be implemented in tookit-specific widget.");
 	}
 
-	public void redo() {
+	public void redo() throws CannotRedoException {
 		if (redoList.size() == 0) {
 			throw new CannotRedoException();
 		}
@@ -1248,7 +1248,7 @@ public class VexWidgetImpl implements IVexWidget {
 		this.repaintCaret();
 	}
 
-	public void undo() {
+	public void undo() throws CannotUndoException {
 		if (undoList.size() == 0) {
 			throw new CannotUndoException();
 		}

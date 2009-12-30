@@ -21,7 +21,7 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class ColorProperty extends AbstractProperty {
 
-	private static Map colorNames = new HashMap();
+	private static Map<String, Color> colorNames = new HashMap<String, Color>();
 
 	static {
 		colorNames.put(CSS.AQUA, new Color(0, 255, 255));

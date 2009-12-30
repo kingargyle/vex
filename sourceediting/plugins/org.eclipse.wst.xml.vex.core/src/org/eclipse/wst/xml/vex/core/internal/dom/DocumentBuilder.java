@@ -222,15 +222,6 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 	}
 	
-	private StringBuffer cleanUpText(boolean trim) {
-		StringBuffer sb;
-
-		sb = cleanUpTextContent(trim);
-		
-		return sb;
-		
-	}
-
 	public void startPrefixMapping(String prefix, String uri) {
 	}
 

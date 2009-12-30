@@ -33,6 +33,8 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class StyleSheet implements Serializable {
 
+	private static final long serialVersionUID = -7309907170251446189L;
+
 	/**
 	 * Standard CSS properties.
 	 */
@@ -207,9 +209,9 @@ public class StyleSheet implements Serializable {
 		if (styles == null) {
 			// Yes, they can be null if element is a PseudoElement with no
 			// content property
-			this.getStyleMap().put(element, null);
+			getStyleMap().put(element, null);
 		} else {
-			this.getStyleMap().put(element, new WeakReference(styles));
+			getStyleMap().put(element, new WeakReference(styles));
 		}
 
 		return styles;
@@ -235,7 +237,7 @@ public class StyleSheet implements Serializable {
 				return null;
 			}
 
-			List content = new ArrayList();
+			List<String> content = new ArrayList<String>();
 			while (lu != null) {
 				switch (lu.getLexicalUnitType())
 				{
@@ -322,7 +324,7 @@ public class StyleSheet implements Serializable {
 	 */
 	private Map getApplicableDecls(VEXElement element) {
 		// Find all the property declarations that apply to this element.
-		List declList = new ArrayList();
+		List<PropertyDecl> declList = new ArrayList<PropertyDecl>();
 		Rule[] rules = this.getRules();
 
 		for (int i = 0; i < rules.length; i++) {

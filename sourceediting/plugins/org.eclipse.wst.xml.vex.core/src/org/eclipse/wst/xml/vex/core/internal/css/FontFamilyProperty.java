@@ -55,7 +55,7 @@ public class FontFamilyProperty extends AbstractProperty {
 	}
 
 	private static String[] getFontFamilies(LexicalUnit lu) {
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		while (lu != null) {
 			if (lu.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE
 					|| lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {

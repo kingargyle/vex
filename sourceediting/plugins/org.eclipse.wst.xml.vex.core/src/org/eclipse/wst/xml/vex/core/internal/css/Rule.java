@@ -49,7 +49,7 @@ public class Rule implements Serializable {
 
 	private byte source;
 	private Selector selector;
-	private List propertyDecls = new ArrayList();
+	private List<PropertyDecl> propertyDecls = new ArrayList<PropertyDecl>();
 
 	/**
 	 * Class constructor.

@@ -28,7 +28,7 @@ public class FontWeightProperty extends AbstractProperty {
 	}
 
 	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
-		return new Integer(this.calculateInternal(lu, parentStyles, styles));
+		return Integer.valueOf(calculateInternal(lu, parentStyles, styles));
 	}
 
 	public int calculateInternal(LexicalUnit lu, Styles parentStyles,
