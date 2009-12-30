@@ -16,25 +16,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
+
 import junit.framework.TestCase;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

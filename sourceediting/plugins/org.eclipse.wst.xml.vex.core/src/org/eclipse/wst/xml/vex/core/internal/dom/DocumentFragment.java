@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,8 +23,8 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl;
 
 /**
  * Represents a fragment of an XML document.

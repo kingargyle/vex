@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 /**
  * Test the TextWrapper class.
  */
-@SuppressWarnings("restriction")
 public class TextWrapperTest extends TestCase {
 
 	public void testWrap() {

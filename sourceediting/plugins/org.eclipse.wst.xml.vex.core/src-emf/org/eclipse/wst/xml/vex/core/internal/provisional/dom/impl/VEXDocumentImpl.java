@@ -11,21 +11,14 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
-
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;

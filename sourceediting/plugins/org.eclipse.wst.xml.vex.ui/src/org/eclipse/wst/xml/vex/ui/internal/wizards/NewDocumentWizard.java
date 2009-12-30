@@ -33,7 +33,6 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;

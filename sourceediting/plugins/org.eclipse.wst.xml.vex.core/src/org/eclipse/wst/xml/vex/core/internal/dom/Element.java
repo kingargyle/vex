@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,13 +17,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMText;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;

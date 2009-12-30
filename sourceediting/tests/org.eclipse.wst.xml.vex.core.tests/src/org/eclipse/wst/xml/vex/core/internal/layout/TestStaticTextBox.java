@@ -25,7 +25,6 @@ import org.eclipse.wst.xml.vex.core.internal.layout.StaticTextBox;
 
 import junit.framework.TestCase;
 
-@SuppressWarnings("restriction")
 public class TestStaticTextBox extends TestCase {
 
 	FakeGraphics g;

@@ -29,7 +29,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(RuleTest.class);
 		addTestSuite(SerializationTest.class);
 		addTestSuite(BlockElementBoxTest.class);
-		addTestSuite(DFABuilderTest.class);
 		addTestSuite(DocumentWriterTest.class);
 		addTestSuite(DomTest.class);
 		addTestSuite(DTDValidatorTest.class);

@@ -14,16 +14,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.dom.*;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.outline.IOutlineProvider;
 
