@@ -111,7 +111,7 @@ public class PropertyTest extends TestCase {
 		styles.put(CSS.BORDER_LEFT_STYLE, CSS.SOLID);
 		prop = new BorderWidthProperty(CSS.BORDER_LEFT_WIDTH,
 				CSS.BORDER_LEFT_STYLE, IProperty.AXIS_HORIZONTAL);
-		assertEquals(new Integer(10), prop.calculate(MockLU.createFloat(
+		assertEquals(Integer.valueOf(10), prop.calculate(MockLU.createFloat(
 				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles));
 	}
 
@@ -122,7 +122,7 @@ public class PropertyTest extends TestCase {
 	public void testColorProperty() throws Exception {
 	}
 
-	private class DummyDisplayDevice extends DisplayDevice {
+	private static class DummyDisplayDevice extends DisplayDevice {
 
 		public DummyDisplayDevice(int horizontalPPI, int verticalPPI) {
 			this.horizontalPPI = horizontalPPI;
