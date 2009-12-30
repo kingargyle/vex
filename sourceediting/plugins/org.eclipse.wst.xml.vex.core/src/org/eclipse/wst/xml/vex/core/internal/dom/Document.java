@@ -1026,7 +1026,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 				if (domNode.getNodeType() == org.w3c.dom.Node.TEXT_NODE) {
 					int offset = content.getLength();
 					String text = domNode.getNodeValue();
-					content.insertString(this.content.getLength(), domNode.getNodeValue());
+					content.insertString(this.content.getLength(), text);
 					content.insertString(content.getLength(), "\0");
 					vexElement.setContent(content, offset, content.getLength() - 1);
 				}

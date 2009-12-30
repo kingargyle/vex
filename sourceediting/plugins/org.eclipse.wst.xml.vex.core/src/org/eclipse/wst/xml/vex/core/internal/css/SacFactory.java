@@ -283,7 +283,6 @@ public class SacFactory {
 					|| this.type == SAC_KILOHERTZ || this.type == SAC_DIMENSION) {
 				this.dimensionText = lu.getDimensionUnitText();
 			}
-			this.stringRepresentation = lu.toString();
 		}
 
 		public short getLexicalUnitType() {
@@ -322,17 +321,8 @@ public class SacFactory {
 			return this.s;
 		}
 
-		public String getStringRepresentation() {
-			return this.stringRepresentation;
-		}
-
 		public LexicalUnit getSubValues() {
 			return this.parameters;
-		}
-
-		// ================================================= PRIVATE
-
-		private LexicalUnitImpl() {
 		}
 
 		private short type;
@@ -344,7 +334,6 @@ public class SacFactory {
 		private float f;
 		private String functionName;
 		private String dimensionText;
-		private String stringRepresentation;
 	}
 
 	private static class SelectorImpl implements Selector, Serializable {

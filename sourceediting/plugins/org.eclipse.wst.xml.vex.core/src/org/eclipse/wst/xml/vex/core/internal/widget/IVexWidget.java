@@ -443,7 +443,7 @@ public interface IVexWidget {
 	 *             if the last action cannot be re-done, or if there is nothing
 	 *             to redo.
 	 */
-	public void redo();
+	public void redo() throws CannotRedoException;
 
 	/**
 	 * Removes an attribute from the current element. Attributes removed in this
@@ -556,7 +556,7 @@ public interface IVexWidget {
 	 *             if the last action cannot be undone, or if there's nothing
 	 *             left to undo.
 	 */
-	public void undo();
+	public void undo() throws CannotUndoException;
 
 	/**
 	 * Return the offset into the document for the given coordinates.
