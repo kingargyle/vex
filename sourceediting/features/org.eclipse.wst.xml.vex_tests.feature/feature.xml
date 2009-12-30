@@ -22,31 +22,49 @@
       <discovery label="Web Tools Platform (WTP) Updates" url="http://download.eclipse.org/webtools/updates"/>
    </url>
 
+   <includes
+         id="org.eclipse.wst.xml.vex.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.wst.xml.vex.docbook.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.wst.xml.vex.core.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.wst.xml.vex.ui.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
+         version="0.0.0"/>
 
-   <!-- Note: the plugin with test.xml in it, should be unpacked when installed -->
    <plugin
          id="org.eclipse.wst.xml.vex.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
-<plugin
-  id="org.eclipse.test"
-  download-size="0" install-size="0" version="0.0.0"/>
- 
-<plugin
-  id="org.eclipse.ant.optional.junit"
-  download-size="0" install-size="0" version="0.0.0" fragment="true"/>        
+   <plugin
+         id="org.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.ant.optional.junit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.junit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
