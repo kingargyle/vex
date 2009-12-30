@@ -1,0 +1,34 @@
+<project name="pmd">
+
+	<macrodef name="getPMD">
+		<attribute name="downloadDir"/>
+		<attribute name="destDir"/>
+		<sequential>
+			<mkdir dir="@{downloadDir}"/>
+	    	<get src="http://downloads.sourceforge.net/project/pmd/pmd/4.2.5/pmd-bin-4.2.5.zip?use_mirror=softlayer" dest="@{downloadDir}/pmd.zip" usetimestamp="true"/>
+	    	<unzip src="${writableBuildRoot}/downloads/pmd.zip" dest="@{destDir}"/>
+		</sequential>
+	</macrodef>
+		
+	<macrodef name="cpd">
+		<attribute name="outputfile"/>
+		<attribute name="srcdir"/>
+		<sequential>
+			<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+	    		<classpath>
+		    	   <path>
+		    	      <fileset dir="${writableBuildRoot}/3rdPartyJars/pmd/pmd-4.2.5/lib" includes="*.jar"/>
+		    	    </path>
+	    		</classpath>
+			</taskdef>
+		    <cpd minimumTokenCount="100" format="xml" outputFile="@{outputfile}">
+		        <fileset dir="@{srcdir}">
+		            <include name="**/*.java"/>
+		        </fileset>
+		    </cpd>
+		</sequential>
+	</macrodef>
+	
+	
+	
+</project>

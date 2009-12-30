@@ -1,0 +1,52 @@
+<project name="findBugs">
+
+	<macrodef name="getFindBugs">
+		<attribute name="downloadDir"/>
+		<attribute name="destDir"/>
+		<sequential>
+			<mkdir dir="@{downloadDir}"/>
+	    	<get src="http://downloads.sourceforge.net/project/findbugs/findbugs/1.3.9/findbugs-1.3.9.zip?use_mirror=voxel" dest="@{downloadDir}/findbugs.zip"/>
+	    	<unzip src="${writableBuildRoot}/downloads/findbugs.zip" dest="@{destDir}"/>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="extractJarsForAnalysis">
+		<attribute name="refid"/>
+		<attribute name="src"/>
+		<sequential>
+	    	<get src="@{src}" dest="${writableBuildRoot}/eclipse.zip"/>
+			<delete dir="${writableBuildRoot}/athena/findbugs"/>
+	    	<mkdir dir="${writableBuildRoot}/athena/findbugs"/>
+	    	<unzip src="${writableBuildRoot}/eclipse.zip" dest="${writableBuildRoot}/athena/findbugs/">
+	    		<patternset refid="@{refid}"/>
+	    	</unzip>
+	    	<unzip dest="${writableBuildRoot}/athena/findbugsclasses/">
+	    		<fileset dir="${writableBuildRoot}/athena/findbugs/">
+	    			<include name="**/*.jar"/>
+	    		</fileset>
+	    	</unzip>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="findBugs">
+		<attribute name="outputfile"/>
+		<sequential>
+	    	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+	    		<classpath>
+		    	   <path>
+		    	      <fileset dir="${writableBuildRoot}/3rdPartyJars/findbugs/findbugs-1.3.9/lib" includes="*.jar"/>
+		    	    </path>
+	    		</classpath>
+	    	</taskdef>
+	    	
+	    	 <findbugs home="${writableBuildRoot}/3rdPartyJars/findbugs/findbugs-1.3.9/lib"
+	    	              output="xml"
+	    	              outputFile="@{outputfile}" >
+	    	      <class location="${writableBuildRoot}/athena/findbugsclasses"/>
+	    	 </findbugs>
+		</sequential>
+	</macrodef>
+	
+	
+	
+</project>
