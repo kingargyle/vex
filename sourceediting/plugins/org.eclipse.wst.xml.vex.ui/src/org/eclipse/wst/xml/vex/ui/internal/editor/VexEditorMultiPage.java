@@ -436,7 +436,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 				String msg = MessageFormat.format(Messages
 						.getString("VexEditor.parseError"), //$NON-NLS-1$
-						new Object[] { new Integer(ex.getLineNumber()), file,
+						new Object[] { Integer.valueOf(ex.getLineNumber()), file,
 								ex.getLocalizedMessage() });
 
 				this.showLabel(msg);
@@ -843,7 +843,7 @@ public class VexEditorMultiPage extends VexEditor {
 			style = VexEditorMultiPage.findStyleForDoctype(doctype
 					.getPublicId());
 			if (style == null) {
-				throw new NoStyleForDoctypeException(doctype);
+				throw new NoStyleForDoctypeException();
 			}
 
 			return new CssWhitespacePolicy(style.getStyleSheet());
@@ -903,25 +903,10 @@ public class VexEditorMultiPage extends VexEditor {
 		private String publicId;
 	}
 
-	/**
-	 * Indicates that the document was matched to a registered doctype, but that
-	 * the given doctype does not have a matching style.
-	 */
-	private static class NoStyleForDoctypeException extends RuntimeException {
-
-		public NoStyleForDoctypeException(DocumentType doctype) {
-			this.doctype = doctype;
-		}
-
-		public DocumentType getDoctype() {
-			return this.doctype;
-		}
-
-		private DocumentType doctype;
-	}
+	private static class NoStyleForDoctypeException extends RuntimeException {}
 
 	private String getLocation() {
-		List path = new ArrayList();
+		List<String> path = new ArrayList<String>();
 		VEXElement element = this.vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
