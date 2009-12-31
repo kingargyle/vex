@@ -328,39 +328,32 @@ public class VexEditor extends EditorPart {
 		try {
 			long start = System.currentTimeMillis();
 
-			IPath inputPath = null;
 			IFile file = null;
 
 			if (input instanceof IFileEditorInput) {
 				file = ((IFileEditorInput) input).getFile();
-				inputPath = file.getRawLocation();
-			} else if (input instanceof ILocationProvider) {
-				// Yuck, this a crappy way for Eclipse to do this
-				// How about an exposed IJavaFileEditorInput, pleeze?
-				inputPath = ((ILocationProvider) input).getPath(input);
 			} else {
 				String msg = MessageFormat.format(Messages
 						.getString("VexEditor.unknownInputClass"), //$NON-NLS-1$
 						new Object[] { input.getClass() });
-				this.showLabel(msg);
+				showLabel(msg);
 				return;
 			}
 
-		    IDOMDocument modelDocument = getDOMDocument(file);
-  	        IDOMElement documentElement = (IDOMElement)modelDocument.getDocumentElement();
-  	        
-			DOMDocumentReader reader = new DOMDocumentReader();
+		    DOMDocumentReader reader = new DOMDocumentReader();
 			reader.setDebugging(this.debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
 			this.doctype = null; // must be null to set it to a new value via
 			                     // entityResolveras by following read():
-			this.doc = reader.read(modelDocument);
+			this.doc = reader.read(getDOMDocument(file));
 
 			if (this.debugging) {
 				long end = System.currentTimeMillis();
-				System.out
-						.println("Parsed document in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				String message =   "Parsed document in " //$NON-NLS-1$
+					             + (end - start)
+					             + "ms"; //$NON-NLS-1$
+				System.out.println(message);
 			}
 
 			// this.doctype is set either by wsPolicyFactory or entityResolver
@@ -426,7 +419,7 @@ public class VexEditor extends EditorPart {
 
 				String msg = MessageFormat.format(Messages
 						.getString("VexEditor.parseError"), //$NON-NLS-1$
-						new Object[] { new Integer(ex.getLineNumber()), file,
+						new Object[] { Integer.valueOf(ex.getLineNumber()), file,
 								ex.getLocalizedMessage() });
 
 				this.showLabel(msg);
@@ -639,31 +632,28 @@ public class VexEditor extends EditorPart {
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 
-		this.vexWidget = new VexWidget(this.parentControl, SWT.V_SCROLL);
+		vexWidget = new VexWidget(parentControl, SWT.V_SCROLL);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
-		this.vexWidget.setLayoutData(gd);
+		vexWidget.setLayoutData(gd);
 
 		MenuManager menuManager = new MenuManager();
 		getSite().registerContextMenu("org.eclipse.wst.xml.vex.ui.popup", menuManager, vexWidget);
 		vexWidget.setMenu(menuManager.createContextMenu(vexWidget));
 
-		this.savedUndoDepth = this.vexWidget.getUndoDepth();
+		savedUndoDepth = this.vexWidget.getUndoDepth();
 
 		// new for scopes
 		IContextService cs = (IContextService) this.getSite().getService(
 				IContextService.class);
 		cs.activateContext("org.eclipse.wst.xml.vex.ui.VexEditorContext");
 
-		IHandlerService hs = (IHandlerService) this.getSite().getService(
-				IHandlerService.class);
+		vexWidget.addSelectionChangedListener(this.selectionProvider);
 
-		this.vexWidget.addSelectionChangedListener(this.selectionProvider);
-
-		this.parentControl.layout(true);
+		parentControl.layout(true);
 
 	}
 
@@ -863,7 +853,7 @@ public class VexEditor extends EditorPart {
 
 			style = VexEditor.findStyleForDoctype(doctype.getPublicId());
 			if (style == null) {
-				throw new NoStyleForDoctypeException(doctype);
+				throw new NoStyleForDoctypeException();
 			}
 
 			return new CssWhitespacePolicy(style.getStyleSheet());
@@ -927,21 +917,10 @@ public class VexEditor extends EditorPart {
 	 * Indicates that the document was matched to a registered doctype, but that
 	 * the given doctype does not have a matching style.
 	 */
-	private static class NoStyleForDoctypeException extends RuntimeException {
-
-		public NoStyleForDoctypeException(DocumentType doctype) {
-			this.doctype = doctype;
-		}
-
-		public DocumentType getDoctype() {
-			return this.doctype;
-		}
-
-		private DocumentType doctype;
-	}
+	private static class NoStyleForDoctypeException extends RuntimeException {}
 
 	private String getLocation() {
-		List path = new ArrayList();
+		List<String> path = new ArrayList<String> ();
 		VEXElement element = this.vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
