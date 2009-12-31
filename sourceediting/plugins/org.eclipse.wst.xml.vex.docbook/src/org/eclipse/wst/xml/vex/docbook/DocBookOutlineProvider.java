@@ -92,7 +92,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @return
      */
     private VEXElement[] getOutlineChildren(final VEXElement element) {
-        final List children = new ArrayList();
+        final List<VEXElement> children = new ArrayList<VEXElement>();
         final EList<VEXElement> childElements = element.getChildElements();
         for (int i = 0; i < childElements.size(); i++) {
             if (titledElements.contains(childElements.get(i).getName())) {
