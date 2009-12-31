@@ -775,18 +775,6 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			}
 		}
 
-		public Object peek() {
-			if (this.pushStack.size() == 0) {
-				Object next = next();
-				if (next == null) {
-					return null;
-				} else {
-					push(next);
-				}
-			}
-			return pushStack.getLast();
-		}
-
 		public void push(Object pushed) {
 			this.pushStack.addLast(pushed);
 		}
