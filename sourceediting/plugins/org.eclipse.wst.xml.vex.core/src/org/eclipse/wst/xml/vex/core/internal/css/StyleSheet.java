@@ -116,7 +116,7 @@ public class StyleSheet implements Serializable {
 	 * This must be transient to prevent it from being serialized, as
 	 * WeakHashMaps are not serializable.
 	 */
-	private transient Map styleMap = null;
+	private transient Map<VEXElement, WeakReference<Styles>> styleMap;
 
 	/**
 	 * Class constructor.
@@ -189,7 +189,7 @@ public class StyleSheet implements Serializable {
 	public Styles getStyles(VEXElement element) {
 
 		Styles styles;
-		WeakReference ref = (WeakReference) this.getStyleMap().get(element);
+		WeakReference<Styles> ref = getStyleMap().get(element);
 
 		if (ref != null) {
 			// can't combine these tests, since calling ref.get() twice
@@ -199,7 +199,7 @@ public class StyleSheet implements Serializable {
 			if (styles != null) {
 				return styles;
 			}
-		} else if (this.getStyleMap().containsKey(element)) {
+		} else if (getStyleMap().containsKey(element)) {
 			// this must be a pseudo-element with no content
 			return null;
 		}
@@ -211,7 +211,7 @@ public class StyleSheet implements Serializable {
 			// content property
 			getStyleMap().put(element, null);
 		} else {
-			getStyleMap().put(element, new WeakReference(styles));
+			getStyleMap().put(element, new WeakReference<Styles>(styles));
 		}
 
 		return styles;
@@ -225,7 +225,7 @@ public class StyleSheet implements Serializable {
 			parentStyles = this.getStyles(element.getParent());
 		}
 
-		Map decls = this.getApplicableDecls(element);
+		Map<String, LexicalUnit> decls = getApplicableDecls(element);
 
 		LexicalUnit lu;
 
@@ -322,7 +322,7 @@ public class StyleSheet implements Serializable {
 	/**
 	 * Returns all the declarations that apply to the given element.
 	 */
-	private Map getApplicableDecls(VEXElement element) {
+	private Map<String, LexicalUnit> getApplicableDecls(VEXElement element) {
 		// Find all the property declarations that apply to this element.
 		List<PropertyDecl> declList = new ArrayList<PropertyDecl>();
 		Rule[] rules = this.getRules();
@@ -342,8 +342,8 @@ public class StyleSheet implements Serializable {
 		// come later and overwrite lower-priority ones.
 		Collections.sort(declList);
 
-		Map decls = new HashMap();
-		Iterator iter = declList.iterator();
+		Map<String, PropertyDecl> decls = new HashMap<String, PropertyDecl>();
+		Iterator<PropertyDecl> iter = declList.iterator();
 		while (iter.hasNext()) {
 			PropertyDecl decl = (PropertyDecl) iter.next();
 			PropertyDecl prevDecl = (PropertyDecl) decls
@@ -354,8 +354,8 @@ public class StyleSheet implements Serializable {
 			}
 		}
 
-		Map values = new HashMap();
-		for (Iterator it = decls.keySet().iterator(); it.hasNext();) {
+		Map<String, LexicalUnit> values = new HashMap<String, LexicalUnit>();
+		for (Iterator<String> it = decls.keySet().iterator(); it.hasNext();) {
 			PropertyDecl decl = (PropertyDecl) decls.get(it.next());
 			values.put(decl.getProperty(), decl.getValue());
 		}
@@ -363,10 +363,10 @@ public class StyleSheet implements Serializable {
 		return values;
 	}
 
-	private Map getStyleMap() {
-		if (this.styleMap == null) {
-			this.styleMap = new WeakHashMap();
+	private Map<VEXElement, WeakReference<Styles>> getStyleMap() {
+		if (styleMap == null) {
+			styleMap = new WeakHashMap<VEXElement, WeakReference<Styles>>();
 		}
-		return this.styleMap;
+		return styleMap;
 	}
 }
