@@ -32,6 +32,8 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public abstract class ConfigSource implements Serializable {
 
+	private static final long serialVersionUID = -3438659781471827569L;
+
 	/**
 	 * Adds the given item to the configuration.
 	 * 
@@ -127,7 +129,7 @@ public abstract class ConfigSource implements Serializable {
 	/**
 	 * Returns a list of all items in this configuration.
 	 */
-	public List getAllItems() {
+	public List<ConfigItem> getAllItems() {
 		return items;
 	}
 
@@ -138,9 +140,9 @@ public abstract class ConfigSource implements Serializable {
 	 * @param type
 	 *            The type of ConfigItem to return.
 	 */
-	public Collection getAllItems(String type) {
-		List items = new ArrayList();
-		for (Iterator it = this.items.iterator(); it.hasNext();) {
+	public Collection<ConfigItem> getAllItems(String type) {
+		List<ConfigItem> items = new ArrayList<ConfigItem>();
+		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
 			ConfigItem item = (ConfigItem) it.next();
 			if (item.getExtensionPointId().equals(type)) {
 				items.add(item);
@@ -163,7 +165,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Simple ID of the item to return.
 	 */
 	public ConfigItem getItem(String simpleId) {
-		for (Iterator it = this.items.iterator(); it.hasNext();) {
+		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
 			ConfigItem item = (ConfigItem) it.next();
 			if (item.getSimpleId() != null
 					&& item.getSimpleId().equals(simpleId)) {
@@ -181,7 +183,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Path of the resource.
 	 */
 	public ConfigItem getItemForResource(String resourcePath) {
-		for (Iterator it = this.items.iterator(); it.hasNext();) {
+		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
 			ConfigItem item = (ConfigItem) it.next();
 			if (item.getResourcePath().equals(resourcePath)) {
 				return item;
@@ -216,10 +218,10 @@ public abstract class ConfigSource implements Serializable {
 	 * @param type
 	 *            The type of ConfigItem to return.
 	 */
-	public Collection getValidItems(String type) {
-		Collection allItems = this.getAllItems(type);
-		List validItems = new ArrayList();
-		for (Iterator it = allItems.iterator(); it.hasNext();) {
+	public Collection<ConfigItem> getValidItems(String type) {
+		Collection<ConfigItem> allItems = this.getAllItems(type);
+		List<ConfigItem> validItems = new ArrayList<ConfigItem>();
+		for (Iterator<ConfigItem> it = allItems.iterator(); it.hasNext();) {
 			ConfigItem item = (ConfigItem) it.next();
 			if (item.isValid()) {
 				validItems.add(item);
@@ -242,7 +244,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Handler for build problems. May be null.
 	 */
 	public void parseResources(IBuildProblemHandler problemHandler) {
-		for (Iterator it = this.items.iterator(); it.hasNext();) {
+		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
 			ConfigItem item = (ConfigItem) it.next();
 			String uri = item.getResourcePath();
 			if (!this.parsedResources.containsKey(uri)) {
@@ -280,9 +282,9 @@ public abstract class ConfigSource implements Serializable {
 	private String id;
 
 	// all config items in this configuration
-	private List items = new ArrayList();
+	private List<ConfigItem> items = new ArrayList<ConfigItem>();
 
 	// map String URI => parsed resource
-	private Map parsedResources = new HashMap();
+	private Map<String, Object> parsedResources = new HashMap<String, Object>();
 
 }

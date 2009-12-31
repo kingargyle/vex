@@ -20,8 +20,8 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.ILock;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 
@@ -132,9 +132,7 @@ public class ConfigRegistry {
 	 * Returns an array of all config item factories.
 	 */
 	public IConfigItemFactory[] getAllConfigItemFactories() {
-		List f = this.configItemFactories;
-		return (IConfigItemFactory[]) f
-				.toArray(new IConfigItemFactory[f.size()]);
+		return configItemFactories.toArray(new IConfigItemFactory[configItemFactories.size()]);
 	}
 
 	/**
@@ -144,12 +142,12 @@ public class ConfigRegistry {
 	 * @param extensionPoint
 	 *            ID of the desired extension point.
 	 */
-	public List getAllConfigItems(String extensionPoint) {
+	public List<ConfigItem> getAllConfigItems(String extensionPoint) {
 		try {
 			this.lock();
-			List items = new ArrayList();
-			for (Iterator it = this.configs.iterator(); it.hasNext();) {
-				ConfigSource config = (ConfigSource) it.next();
+			List<ConfigItem> items = new ArrayList<ConfigItem>();
+			for (Iterator<ConfigSource> it = this.configs.iterator(); it.hasNext();) {
+				ConfigSource config = it.next();
 				items.addAll(config.getValidItems(extensionPoint));
 			}
 			return items;
@@ -163,10 +161,10 @@ public class ConfigRegistry {
 	 * 
 	 * @return
 	 */
-	public List getAllConfigSources() {
+	public List<ConfigSource> getAllConfigSources() {
 		try {
 			this.lock();
-			List result = new ArrayList();
+			List<ConfigSource> result = new ArrayList<ConfigSource>();
 			result.addAll(this.configs);
 			return result;
 		} finally {
@@ -187,8 +185,8 @@ public class ConfigRegistry {
 	public ConfigItem getConfigItem(String extensionPoint, String id) {
 		try {
 			this.lock();
-			List items = this.getAllConfigItems(extensionPoint);
-			for (Iterator it = items.iterator(); it.hasNext();) {
+			List<ConfigItem> items = this.getAllConfigItems(extensionPoint);
+			for (Iterator<ConfigItem> it = items.iterator(); it.hasNext();) {
 				ConfigItem item = (ConfigItem) it.next();
 				if (item.getUniqueId().equals(id)) {
 					return item;
@@ -208,8 +206,8 @@ public class ConfigRegistry {
 	 *            Extension point ID for which to search.
 	 */
 	public IConfigItemFactory getConfigItemFactory(String extensionPointId) {
-		for (Iterator it = this.configItemFactories.iterator(); it.hasNext();) {
-			IConfigItemFactory factory = (IConfigItemFactory) it.next();
+		for (Iterator<IConfigItemFactory> it = configItemFactories.iterator(); it.hasNext();) {
+			IConfigItemFactory factory = it.next();
 			if (factory.getExtensionPointId().equals(extensionPointId)) {
 				return factory;
 			}
@@ -269,19 +267,20 @@ public class ConfigRegistry {
 
 	private static ConfigRegistry instance = new ConfigRegistry();
 
-	private ILock lock = Platform.getJobManager().newLock();
-	private List configs = new ArrayList();
+	private ILock lock = Job.getJobManager().newLock();
+	private List<ConfigSource> configs = new ArrayList<ConfigSource>();
 	private ListenerList configListeners = new ListenerList(
 			IConfigListener.class, ConfigEvent.class);
 	private boolean configLoaded = false;
-	private List configItemFactories = new ArrayList();
+	private List<IConfigItemFactory> configItemFactories =
+		new ArrayList<IConfigItemFactory>();
 
 	/**
 	 * Class constructor. All initialization is performed here.
 	 */
 	private ConfigRegistry() {
-		this.configItemFactories.add(new DoctypeFactory());
-		this.configItemFactories.add(new StyleFactory());
+		configItemFactories.add(new DoctypeFactory());
+		configItemFactories.add(new StyleFactory());
 		// TODO do we ever unregister this?
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(
 				this.resourceChangeListener);
