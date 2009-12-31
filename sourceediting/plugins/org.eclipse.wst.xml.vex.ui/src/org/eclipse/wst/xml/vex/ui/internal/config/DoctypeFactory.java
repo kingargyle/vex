@@ -78,7 +78,6 @@ public class DoctypeFactory implements IConfigItemFactory {
 		return Messages.getString("DoctypeFactory.pluralName"); //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("restriction")
 	public Object parseResource(URL baseUrl, String resourcePath,
 			IBuildProblemHandler problemHandler) throws IOException {
 		try {
