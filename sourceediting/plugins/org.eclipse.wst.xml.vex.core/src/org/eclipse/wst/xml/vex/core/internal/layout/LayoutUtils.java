@@ -37,10 +37,10 @@ public class LayoutUtils {
 	 * @param pseudoElement
 	 *            Element representing the generated content.
 	 */
-	public static List createGeneratedInlines(LayoutContext context,
+	public static List<StaticTextBox> createGeneratedInlines(LayoutContext context,
 			VEXElement pseudoElement) {
 		String text = getGeneratedContent(context, pseudoElement);
-		List list = new ArrayList();
+		List<StaticTextBox> list = new ArrayList<StaticTextBox>();
 		if (text.length() > 0) {
 			list.add(new StaticTextBox(context, pseudoElement, text));
 		}
@@ -114,7 +114,7 @@ public class LayoutUtils {
 			Set displayStyles, VEXElement element, int startOffset, int endOffset,
 			ElementOrRangeCallback callback) {
 
-		List nonMatching = new ArrayList();
+		List<VEXNode> nonMatching = new ArrayList<VEXNode>();
 
 		List<VEXNode> nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.size(); i++) {
@@ -208,7 +208,7 @@ public class LayoutUtils {
 			final VEXElement element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
 
-		iterateChildrenByDisplayStyle(styleSheet, nonRowStyles, element,
+		iterateChildrenByDisplayStyle(styleSheet, NON_ROW_STYLES, element,
 				startOffset, endOffset, new ElementOrRangeCallback() {
 					public void onElement(Element child, String displayStyle) {
 						if (displayStyle.equals(CSS.TABLE_ROW_GROUP)
@@ -217,7 +217,7 @@ public class LayoutUtils {
 
 							// iterate rows in group
 							iterateChildrenByDisplayStyle(styleSheet,
-									rowStyles, child,
+									ROW_STYLES, child,
 									child.getStartOffset() + 1, child
 											.getEndOffset(), callback);
 						} else {
@@ -228,7 +228,7 @@ public class LayoutUtils {
 					public void onRange(VEXElement parent, int startOffset,
 							int endOffset) {
 						// iterate over rows in range
-						iterateChildrenByDisplayStyle(styleSheet, rowStyles,
+						iterateChildrenByDisplayStyle(styleSheet, ROW_STYLES,
 								element, startOffset, endOffset, callback);
 					}
 				});
@@ -238,13 +238,13 @@ public class LayoutUtils {
 	public static void iterateTableCells(StyleSheet styleSheet,
 			VEXElement element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
-		iterateChildrenByDisplayStyle(styleSheet, cellStyles, element,
+		iterateChildrenByDisplayStyle(styleSheet, CELL_STYLES, element,
 				startOffset, endOffset, callback);
 	}
 
 	public static void iterateTableCells(StyleSheet styleSheet,
 			VEXElement row, final ElementOrRangeCallback callback) {
-		iterateChildrenByDisplayStyle(styleSheet, cellStyles, row, row
+		iterateChildrenByDisplayStyle(styleSheet, CELL_STYLES, row, row
 				.getStartOffset(), row.getEndOffset(), callback);
 	}
 
@@ -252,27 +252,27 @@ public class LayoutUtils {
 	 * Set of CSS display values that represent elements that can be children of
 	 * table elements.
 	 */
-	public static Set TABLE_CHILD_STYLES = new HashSet();
+	public static final Set<String> TABLE_CHILD_STYLES = new HashSet<String>();
 
-	private static Set nonRowStyles = new HashSet();
-	private static Set rowStyles = new HashSet();
-	private static Set cellStyles = new HashSet();
+	private static final Set<String> NON_ROW_STYLES = new HashSet<String>();
+	private static final Set<String> ROW_STYLES = new HashSet<String>();
+	private static final Set<String> CELL_STYLES = new HashSet<String>();
 
 	static {
-		nonRowStyles.add(CSS.TABLE_CAPTION);
-		nonRowStyles.add(CSS.TABLE_COLUMN);
-		nonRowStyles.add(CSS.TABLE_COLUMN_GROUP);
-		nonRowStyles.add(CSS.TABLE_ROW_GROUP);
-		nonRowStyles.add(CSS.TABLE_HEADER_GROUP);
-		nonRowStyles.add(CSS.TABLE_FOOTER_GROUP);
+		NON_ROW_STYLES.add(CSS.TABLE_CAPTION);
+		NON_ROW_STYLES.add(CSS.TABLE_COLUMN);
+		NON_ROW_STYLES.add(CSS.TABLE_COLUMN_GROUP);
+		NON_ROW_STYLES.add(CSS.TABLE_ROW_GROUP);
+		NON_ROW_STYLES.add(CSS.TABLE_HEADER_GROUP);
+		NON_ROW_STYLES.add(CSS.TABLE_FOOTER_GROUP);
 
-		rowStyles.add(CSS.TABLE_ROW);
+		ROW_STYLES.add(CSS.TABLE_ROW);
 
-		cellStyles.add(CSS.TABLE_CELL);
+		CELL_STYLES.add(CSS.TABLE_CELL);
 
-		TABLE_CHILD_STYLES.addAll(nonRowStyles);
-		TABLE_CHILD_STYLES.addAll(rowStyles);
-		TABLE_CHILD_STYLES.addAll(cellStyles);
+		TABLE_CHILD_STYLES.addAll(NON_ROW_STYLES);
+		TABLE_CHILD_STYLES.addAll(ROW_STYLES);
+		TABLE_CHILD_STYLES.addAll(CELL_STYLES);
 	}
 
 }

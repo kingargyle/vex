@@ -47,7 +47,7 @@ public class BlockPseudoElementBox extends AbstractBox implements BlockBox {
 				+ styles.getPaddingRight().get(width);
 
 		int childWidth = width - leftInset - rightInset;
-		List inlines = LayoutUtils.createGeneratedInlines(context,
+		List<StaticTextBox> inlines = LayoutUtils.createGeneratedInlines(context,
 				pseudoElement);
 		this.para = ParagraphBox.create(context, pseudoElement, inlines,
 				childWidth);

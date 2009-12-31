@@ -97,10 +97,10 @@ public class ElementPropertySource implements IPropertySource2 {
 			String[] values = this.getEnumValues(def);
 			for (int i = 0; i < values.length; i++) {
 				if (values[i].equals(value)) {
-					return new Integer(i);
+					return Integer.valueOf(i);
 				}
 			}
-			return new Integer(0); // TODO: if the actual value is not
+			return Integer.valueOf(0); // TODO: if the actual value is not
 			// in the list, we should probably
 			// add it
 		} else {
