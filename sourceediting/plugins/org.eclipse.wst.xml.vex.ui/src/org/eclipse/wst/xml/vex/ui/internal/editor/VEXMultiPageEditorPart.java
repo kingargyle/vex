@@ -1,14 +1,10 @@
 package org.eclipse.wst.xml.vex.ui.internal.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.wst.sse.core.StructuredModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.ui.internal.Logger;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
@@ -79,27 +75,6 @@ public class VEXMultiPageEditorPart extends MultiPageEditorPart {
 
 	public boolean isSaveAsAllowed() {
 		return vexEditor.isSaveAsAllowed();
-	}
-
-	private IDocument getDocument() {
-		IDocument document = null;
-		if (textEditor != null) {
-			document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
-		}
-		return document;
-	}
-	
-	private void setDOMDocument(IDocument document) {
-	    IStructuredModel model = StructuredModelManager.getModelManager().getExistingModelForRead(getDocument());
-	    IDOMDocument modelDocument = null;
-	    try {
-	      if (model instanceof IDOMModel) {
-	        modelDocument = ((IDOMModel)model).getDocument();
-	      }
-	    } finally {
-	      if (model != null)
-	        model.releaseFromRead();
-	    }
 	}
 
 	public VexEditorMultiPage getVexEditor() {
