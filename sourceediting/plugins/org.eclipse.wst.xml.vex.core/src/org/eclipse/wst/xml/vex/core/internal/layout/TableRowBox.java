@@ -219,31 +219,24 @@ public class TableRowBox extends AbstractBlockBox {
 
 	public int viewToModel(LayoutContext context, int x, int y) {
 
-		Box[] children = this.getChildren();
-
+		Box[] children = getChildren();
 		if (children == null) {
-			int charCount = this.getEndOffset() - this.getStartOffset() - 1;
-			if (charCount == 0 || this.getHeight() == 0) {
-				return this.getEndOffset();
-			} else {
-				return this.getStartOffset() + charCount * y / this.getHeight();
-			}
-		} else {
-			for (int i = 0; i < children.length; i++) {
-				Box child = children[i];
-				if (!child.hasContent()) {
-					continue;
-				}
-				if (x < child.getX()) {
-					return child.getStartOffset() - 1;
-				} else if (x < child.getX() + child.getWidth()) {
-					return child.viewToModel(context, x - child.getX(), y
-							- child.getY());
-				}
+			return super.viewToModel(context, x, y);
+		}
+		
+		for (Box child : children) {
+			if (!child.hasContent()) continue;
+			
+			if (x < child.getX()) return child.getStartOffset() - 1;
+			
+			if (x < child.getX() + child.getWidth()) {
+				return child.viewToModel(context,
+						                 x - child.getX(),
+						                 y - child.getY());
 			}
 		}
 
-		return this.getEndOffset();
+		return getEndOffset();
 	}
 
 }
