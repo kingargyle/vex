@@ -1,6 +1,6 @@
 = Algorithms and Signature Properties =
 
-This is the last page of the XML Signature Wizard. You must select algorithms for the message digest and the signature as well as  a canonicalization and  transformation algorithm. Optional, you can define some signature properties and you can enter a signature ID (strongly recommended). The '''Start Encryption Wizard afterwards''' checkbox enables you to start the encryption wizard after successfully signing the selected XML document.
+This is the last page of the XML Signature Wizard. You must select algorithms for the message digest and the signature as well as a canonicalization and transformation algorithm. Optional, you can define some signature properties and you can enter a signature ID (strongly recommended). The '''Start Encryption Wizard afterwards''' checkbox enables you to start the encryption wizard after successfully signing the selected XML document.
 
 [[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/sign/page_3.png‎|Algorithms and Signature Properties|center]]
 
