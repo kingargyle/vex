@@ -24,6 +24,10 @@ import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 public class SelectionProvider implements ISelectionProvider,
 		ISelectionChangedListener {
 
+	ISelection selection;
+	private ListenerList<ISelectionChangedListener, SelectionChangedEvent> listeners =
+		new ListenerList<ISelectionChangedListener, SelectionChangedEvent>();
+
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		this.listeners.add(listener);
 	}
@@ -31,8 +35,7 @@ public class SelectionProvider implements ISelectionProvider,
 	/**
 	 * Fire a SelectionChangedEvent to all registered listeners.
 	 * 
-	 * @param e
-	 *            Event to be passed to the listeners' selectionChanged method.
+	 * @param e Event to be passed to the listeners' selectionChanged method.
 	 */
 	public void fireSelectionChanged(SelectionChangedEvent e) {
 		this.selection = e.getSelection();
@@ -56,9 +59,4 @@ public class SelectionProvider implements ISelectionProvider,
 		this.fireSelectionChanged(event);
 	}
 
-	// ===================================================== PRIVATE
-
-	ISelection selection;
-	private ListenerList listeners = new ListenerList(
-			ISelectionChangedListener.class, SelectionChangedEvent.class);
 }

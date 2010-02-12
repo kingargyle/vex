@@ -569,8 +569,8 @@ public class VexEditorMultiPage extends VexEditor {
 	// AND the user wants to always use the doctype for this document
 	private boolean updateDoctypeDecl;
 
-	private ListenerList vexEditorListeners = new ListenerList(
-			IVexEditorListener.class, VexEditorEvent.class);
+	private ListenerList<IVexEditorListener, VexEditorMultiPageEvent> vexEditorListeners =
+	    new ListenerList<IVexEditorListener, VexEditorMultiPageEvent>();
 
 	private SelectionProvider selectionProvider = new SelectionProvider();
 
