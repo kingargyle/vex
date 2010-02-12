@@ -565,8 +565,8 @@ public class VexEditor extends EditorPart {
 	// AND the user wants to always use the doctype for this document
 	private boolean updateDoctypeDecl;
 
-	private ListenerList vexEditorListeners = new ListenerList(
-			IVexEditorListener.class, VexEditorEvent.class);
+	private ListenerList<IVexEditorListener, VexEditorEvent> vexEditorListeners =
+	    new ListenerList<IVexEditorListener, VexEditorEvent>();
 
 	private SelectionProvider selectionProvider = new SelectionProvider();
 

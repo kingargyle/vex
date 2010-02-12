@@ -41,5 +41,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(TestStaticTextBox.class);
 		addTestSuite(DOMSynchronizationTest.class);
 		addTestSuite(TableLayoutTest.class);
+		addTestSuite(ListenerListTest.class);
 	}
 }

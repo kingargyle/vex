@@ -269,8 +269,8 @@ public class ConfigRegistry {
 
 	private ILock lock = Job.getJobManager().newLock();
 	private List<ConfigSource> configs = new ArrayList<ConfigSource>();
-	private ListenerList configListeners = new ListenerList(
-			IConfigListener.class, ConfigEvent.class);
+	private ListenerList<IConfigListener, ConfigEvent> configListeners =
+	    new ListenerList<IConfigListener, ConfigEvent>();
 	private boolean configLoaded = false;
 	private List<IConfigItemFactory> configItemFactories =
 		new ArrayList<IConfigItemFactory>();
