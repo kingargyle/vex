@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.tests;
 
+import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite;
@@ -34,6 +35,15 @@ public class AllTestsSuite extends TestSuite {
 		// this method needs to exist, but doesn't really do anything
 		// other than to signal to create an instance of this class.
 		// The rest it automatic from the tests added in constructor.
+	}
+
+	/**
+	 * Enable tests to run under JUnit 4 (see bug 300951).
+	 * 
+	 * @return all Vex tests (only required by JUnit 4)
+	 */
+	public static Test suite() {
+	     return new AllTestsSuite();
 	}
 
 }
