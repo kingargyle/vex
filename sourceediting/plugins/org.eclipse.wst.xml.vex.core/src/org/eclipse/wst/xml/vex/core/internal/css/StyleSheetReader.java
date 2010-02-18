@@ -80,56 +80,32 @@ public class StyleSheetReader {
 			throws CSSException, IOException {
 
 		Parser parser = createParser();
-		List rules = new ArrayList();
-		StyleSheetBuilder ssBuilder = new StyleSheetBuilder(this.source, rules,
-				url);
+		List<Rule> rules = new ArrayList<Rule>();
+		StyleSheetBuilder ssBuilder = new StyleSheetBuilder(rules, url);
 		parser.setDocumentHandler(ssBuilder);
 		parser.parseStyleSheet(inputSource);
-		Rule[] ruleArray = (Rule[]) rules.toArray(new Rule[rules.size()]);
+		Rule[] ruleArray = rules.toArray(new Rule[rules.size()]);
 		return new StyleSheet(ruleArray);
-	}
-
-	/**
-	 * Returns the source of the stylesheet.
-	 */
-	public byte getSource() {
-		return source;
-	}
-
-	/**
-	 * Sets the source of the stylesheet. Must be one of StyleSheet.SOURCE_USER,
-	 * StyleSheet.SOURCE_AUTHOR, or StyleSheet.SOURCE_DEFAULT.
-	 * 
-	 * @param source
-	 *            The source to set.
-	 */
-	public void setSource(byte source) {
-		this.source = source;
 	}
 
 	// ======================================================== PRIVATE
 
-	private byte source = StyleSheet.SOURCE_DEFAULT;
-
 	private static class StyleSheetBuilder implements DocumentHandler {
 
-		private byte source;
-
 		// The rules that will be added to the stylesheet
-		private List rules;
+		private final List<Rule> rules;
 
 		// The rules to which decls are currently being added
-		private List currentRules;
+		private List<Rule> currentRules;
 
 		// URL from which @import rules relative URIs are resolved.
 		// May be null!
-		private URL url;
+		private final URL url;
 
 		// Factory for creating serializable clones of SAC objects
 		SacFactory factory = new SacFactory();
 
-		public StyleSheetBuilder(byte source, List rules, URL url) {
-			this.source = source;
+		public StyleSheetBuilder(List<Rule> rules, URL url) {
 			this.rules = rules;
 			this.url = url;
 		}
@@ -169,8 +145,8 @@ public class StyleSheetReader {
 			try {
 				Parser parser = createParser();
 				URL importUrl = new URL(this.url, uri);
-				StyleSheetBuilder ssBuilder = new StyleSheetBuilder(
-						this.source, rules, importUrl);
+				StyleSheetBuilder ssBuilder = new StyleSheetBuilder(rules,
+						importUrl);
 				parser.setDocumentHandler(ssBuilder);
 				parser.parseStyleSheet(new InputSource(importUrl.toString()));
 			} catch (CSSException e) {
@@ -228,10 +204,10 @@ public class StyleSheetReader {
 		}
 
 		public void startSelector(SelectorList selectors) {
-			this.currentRules = new ArrayList();
+			this.currentRules = new ArrayList<Rule>();
 			for (int i = 0; i < selectors.getLength(); i++) {
 				Selector selector = factory.cloneSelector(selectors.item(i));
-				Rule rule = new Rule(this.source, selector);
+				Rule rule = new Rule(selector);
 				this.currentRules.add(rule);
 			}
 		}
@@ -244,7 +220,7 @@ public class StyleSheetReader {
 		 * Adds a PropertyDecl to the current set of rules.
 		 */
 		private void addDecl(String name, LexicalUnit value, boolean important) {
-			Iterator iter = this.currentRules.iterator();
+			Iterator<Rule> iter = this.currentRules.iterator();
 			while (iter.hasNext()) {
 				Rule rule = (Rule) iter.next();
 				rule.add(new PropertyDecl(rule, name, value, important));
@@ -536,12 +512,12 @@ public class StyleSheetReader {
 		 * which is given.
 		 */
 		private static LexicalUnit[] getLexicalUnitList(LexicalUnit lu) {
-			List lus = new ArrayList();
+			List<LexicalUnit> lus = new ArrayList<LexicalUnit>();
 			while (lu != null) {
 				lus.add(lu);
 				lu = lu.getNextLexicalUnit();
 			}
-			return (LexicalUnit[]) lus.toArray(new LexicalUnit[lus.size()]);
+			return lus.toArray(new LexicalUnit[lus.size()]);
 		}
 
 	}

@@ -30,7 +30,6 @@ public class RuleTest extends TestCase {
 	public void testRuleMatching() throws Exception {
 		URL url = RuleTest.class.getResource("testRules.css");
 		StyleSheetReader reader = new StyleSheetReader();
-		reader.setSource(StyleSheet.SOURCE_USER);
 		StyleSheet ss = reader.read(url);
 		Rule[] rules = ss.getRules();
 

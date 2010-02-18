@@ -11,24 +11,34 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Represents a particular CSS property declaration.
  */
-public class PropertyDecl implements Comparable, Serializable {
+public class PropertyDecl implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final byte SOURCE_DEFAULT = 0;
-	public static final byte SOURCE_AUTHOR = 1;
-	public static final byte SOURCE_USER = 2;
+	private final Rule rule;
+	private final String property;
+	private final LexicalUnit value;
+	private final boolean important;
+	
+	public static final Comparator<PropertyDecl> CASCADE_ORDERING = new Comparator<PropertyDecl>() {
+		public int compare(PropertyDecl propertyDecl1,
+				           PropertyDecl propertyDecl2) {
+			if (propertyDecl1.isImportant() != propertyDecl2.isImportant()) {
+				return    (propertyDecl1.isImportant() ? 1 : 0)
+				        - (propertyDecl2.isImportant() ? 1 : 0);
+			}
 
-	private Rule rule;
-	private String property;
-	private LexicalUnit value;
-	private boolean important;
+			return   propertyDecl1.getRule().getSpecificity()
+			       - propertyDecl2.getRule().getSpecificity();
+		}
+	};
 
 	/**
 	 * Class constructor.
@@ -39,24 +49,6 @@ public class PropertyDecl implements Comparable, Serializable {
 		this.property = property;
 		this.value = value;
 		this.important = important;
-	}
-
-	/**
-	 * Implementation of <code>Comparable.compareTo(Object)</code> that
-	 * implements CSS cascade ordering.
-	 */
-	public int compareTo(Object o) {
-		PropertyDecl other = (PropertyDecl) o;
-		int thisWeight = this.getWeight();
-		int otherWeight = other.getWeight();
-		if (thisWeight != otherWeight) {
-			return thisWeight - otherWeight;
-		}
-
-		int thisSpec = this.getRule().getSpecificity();
-		int otherSpec = other.getRule().getSpecificity();
-
-		return thisSpec - otherSpec;
 	}
 
 	/**
@@ -86,32 +78,5 @@ public class PropertyDecl implements Comparable, Serializable {
 	public LexicalUnit getValue() {
 		return this.value;
 	}
-
-	// ===================================================== PRIVATE
-
-	/**
-	 * Returns the weight of this declaration, as follows...
-	 * 
-	 * <pre>
-	 * 4 =&gt; user stylesheet, important decl
-	 * 3 =&gt; author stylesheet, important decl
-	 * 2 =&gt; author stylesheet, not important
-	 * 1 =&gt; user stylesheet, not important
-	 * 0 =&gt; default stylesheet
-	 * </pre>
-	 */
-	private int getWeight() {
-		int source = this.getRule().getSource();
-		if (this.isImportant() && source == StyleSheet.SOURCE_USER) {
-			return 4;
-		} else if (this.isImportant() && source == StyleSheet.SOURCE_AUTHOR) {
-			return 3;
-		} else if (!this.isImportant() && source == StyleSheet.SOURCE_AUTHOR) {
-			return 2;
-		} else if (!this.isImportant() && source == StyleSheet.SOURCE_USER) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+	
 }

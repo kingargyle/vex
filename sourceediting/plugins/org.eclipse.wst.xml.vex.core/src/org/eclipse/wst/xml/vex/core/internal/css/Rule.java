@@ -47,20 +47,16 @@ public class Rule implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private byte source;
-	private Selector selector;
-	private List<PropertyDecl> propertyDecls = new ArrayList<PropertyDecl>();
+	private final Selector selector;
+	private final List<PropertyDecl> propertyDecls = new ArrayList<PropertyDecl>();
 
 	/**
 	 * Class constructor.
 	 * 
-	 * @param source
-	 *            Source of the rule.
 	 * @param selector
 	 *            Selector for the rule.
 	 */
-	public Rule(byte source, Selector selector) {
-		this.source = source;
+	public Rule(Selector selector) {
 		this.selector = selector;
 	}
 
@@ -82,20 +78,10 @@ public class Rule implements Serializable {
 	}
 
 	/**
-	 * Returns the source of this rule.
-	 * 
-	 * @return one of StyleSheet.SOURCE_DEFAULT, StyleSheet.SOURCE_AUTHOR, or
-	 *         StyleSheet.SOURCE_USER.
-	 */
-	public byte getSource() {
-		return this.source;
-	}
-
-	/**
 	 * Returns an array of the property declarations in this rule.
 	 */
 	public PropertyDecl[] getPropertyDecls() {
-		return (PropertyDecl[]) this.propertyDecls
+		return this.propertyDecls
 				.toArray(new PropertyDecl[propertyDecls.size()]);
 	}
 
@@ -205,14 +191,12 @@ public class Rule implements Serializable {
 					&& matches(ss.getSiblingSelector(), element)) {
 
 				// find next sibling
-
-				final Iterator i = element.getParent().getChildElements().iterator();
+				final Iterator<VEXElement> i = element.getParent().getChildElements().iterator();
 				VEXElement e = null;
 				VEXElement f = null;
-
 				while (i.hasNext() && e != element) {
 					f = e;
-					e = (VEXElement) i.next();
+					e = i.next();
 				}
 
 				if (e == element) {
