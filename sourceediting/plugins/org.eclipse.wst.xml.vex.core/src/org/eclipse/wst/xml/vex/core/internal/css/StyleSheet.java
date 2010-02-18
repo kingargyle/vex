@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,20 @@ import org.w3c.css.sac.LexicalUnit;
 public class StyleSheet implements Serializable {
 
 	private static final long serialVersionUID = -7309907170251446189L;
+	
+	private static final Comparator<PropertyDecl> PROPERTY_CASCADE_ORDERING =
+		new Comparator<PropertyDecl>() {
+		public int compare(PropertyDecl propertyDecl1,
+				           PropertyDecl propertyDecl2) {
+			if (propertyDecl1.isImportant() != propertyDecl2.isImportant()) {
+				return    (propertyDecl1.isImportant() ? 1 : 0)
+				        - (propertyDecl2.isImportant() ? 1 : 0);
+			}
+
+			return   propertyDecl1.getRule().getSpecificity()
+			       - propertyDecl2.getRule().getSpecificity();
+		}
+	};
 
 	/**
 	 * Standard CSS properties.
@@ -323,7 +338,7 @@ public class StyleSheet implements Serializable {
 		// Sort in cascade order. We can then just stuff them into a
 		// map and get the right values since higher-priority values
 		// come later and overwrite lower-priority ones.
-		Collections.sort(declList, PropertyDecl.CASCADE_ORDERING);
+		Collections.sort(declList, PROPERTY_CASCADE_ORDERING);
 
 		Map<String, PropertyDecl> decls = new HashMap<String, PropertyDecl>();
 		Iterator<PropertyDecl> iter = declList.iterator();

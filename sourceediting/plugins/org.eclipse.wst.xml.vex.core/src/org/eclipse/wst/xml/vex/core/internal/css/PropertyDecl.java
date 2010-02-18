@@ -11,7 +11,6 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import org.w3c.css.sac.LexicalUnit;
 
@@ -27,19 +26,6 @@ public class PropertyDecl implements Serializable {
 	private final LexicalUnit value;
 	private final boolean important;
 	
-	public static final Comparator<PropertyDecl> CASCADE_ORDERING = new Comparator<PropertyDecl>() {
-		public int compare(PropertyDecl propertyDecl1,
-				           PropertyDecl propertyDecl2) {
-			if (propertyDecl1.isImportant() != propertyDecl2.isImportant()) {
-				return    (propertyDecl1.isImportant() ? 1 : 0)
-				        - (propertyDecl2.isImportant() ? 1 : 0);
-			}
-
-			return   propertyDecl1.getRule().getSpecificity()
-			       - propertyDecl2.getRule().getSpecificity();
-		}
-	};
-
 	/**
 	 * Class constructor.
 	 */
