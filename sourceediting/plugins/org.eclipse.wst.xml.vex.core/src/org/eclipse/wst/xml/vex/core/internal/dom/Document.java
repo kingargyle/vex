@@ -39,7 +39,8 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 
 	//private Content content;
 	//private RootElement rootElement;
-	private ListenerList<DocumentListener, DocumentEvent> listeners = new ListenerList<DocumentListener, DocumentEvent>();
+	private ListenerList<DocumentListener, DocumentEvent> listeners =
+		new ListenerList<DocumentListener, DocumentEvent>(DocumentListener.class);
 	private boolean undoEnabled = true;
 
 	//private String publicID;

@@ -570,7 +570,7 @@ public class VexEditorMultiPage extends VexEditor {
 	private boolean updateDoctypeDecl;
 
 	private ListenerList<IVexEditorListener, VexEditorMultiPageEvent> vexEditorListeners =
-	    new ListenerList<IVexEditorListener, VexEditorMultiPageEvent>();
+	    new ListenerList<IVexEditorListener, VexEditorMultiPageEvent>(IVexEditorListener.class);
 
 	private SelectionProvider selectionProvider = new SelectionProvider();
 

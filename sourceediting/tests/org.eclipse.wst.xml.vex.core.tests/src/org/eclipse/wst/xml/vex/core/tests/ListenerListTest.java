@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.tests;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.EventListener;
 import java.util.EventObject;
 
@@ -26,7 +27,7 @@ public class ListenerListTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        listenerList = new ListenerList<MockEventListener, EventObject>() {
+        listenerList = new ListenerList<MockEventListener, EventObject>(MockEventListener.class) {
             @Override
             public void handleException(Exception e) {
                 handledException = e;
@@ -51,10 +52,17 @@ public class ListenerListTest extends TestCase {
 
         public void throwException(EventObject event) {
             throwExceptionMethodInvoced = true;
-            throw new RuntimeException("Error during event handling.");
+            throw new MyException();
         }
+        
     }
+    
+    private static class MyException extends RuntimeException {
 
+		private static final long serialVersionUID = 1L;
+
+    }
+    
     public void testListenerInvocation() throws Exception {
         final MockEventListener eventListener = new MockEventListener();
 
@@ -106,27 +114,20 @@ public class ListenerListTest extends TestCase {
         }
     }
 
-    public void testHandlesUnknownMethodSilently() throws Exception {
+    public void testNoSuchMethod() throws Exception {
         listenerList.add(new MockEventListener());
-        try {
-            listenerList.fireEvent("unknownMethod", new EventObject(""));
-            assertNotNull(handledException);
-        } catch (Throwable t) {
-            fail("The list should handle unknown methods silently.");
-        }
+        listenerList.fireEvent("unknownMethod", new EventObject(""));
+        assertTrue(handledException instanceof NoSuchMethodException);
     }
 
-    public void testHandlesRuntimeExceptionSilently() throws Exception {
+    public void testExceptionWhileFireEvent() throws Exception {
         final MockEventListener eventListener = new MockEventListener();
 
         listenerList.add(eventListener);
-        try {
-            listenerList.fireEvent("throwException", new EventObject(""));
-            assertTrue(eventListener.throwExceptionMethodInvoced);
-            assertNotNull(handledException);
-        } catch (Throwable t) {
-            fail("The list should handle runtime exceptions silently.");
-        }
+        listenerList.fireEvent("throwException", new EventObject(""));
+        assertTrue(eventListener.throwExceptionMethodInvoced);
+        assertTrue(handledException instanceof InvocationTargetException);
+        assertTrue(handledException.getCause() instanceof MyException);
     }
-
+    
 }

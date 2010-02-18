@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -28,10 +29,20 @@ import java.util.Map;
  */
 public class ListenerList<L, E extends EventObject> {
 
-    private List<L> listeners = new ArrayList<L>();
+    private final Class<L> listenerClass;
+	private final List<L> listeners = new ArrayList<L>();
 
     /** Mapping: method name => method object */
     private Map<String, Method> methods = new HashMap<String, Method>();
+    
+	/**
+	 * Class constructor.
+	 * 
+	 * @param listenerClass Class of the listener interface.
+	 */
+	public ListenerList(Class<L> listenerClass) {
+		this.listenerClass = listenerClass;
+	}
 
     /**
      * Adds a listener to the list. Rejects listeners that are not subclasses of
@@ -44,52 +55,15 @@ public class ListenerList<L, E extends EventObject> {
     }
 
     /**
-     * Calls the given method on each registered listener. Any exception thrown
-     * from one of the called methods is passed to handleException, as is any
-     * introspection error, e.g. if the given method doesn't exist.
+     * Removes a listener from the list.
      *
-     * @param methodName
-     *            Listener method to call.
-     * @param event
-     *            Event to be passed to each call.
+     * @param listener
+     *            Listener to remove.
      */
-    public void fireEvent(String methodName, E event) {
-        final Method method = getMethod(methodName, event.getClass());
-        if (method == null)
-            return;
-
-        for (L listener : listeners)
-            try {
-                method.invoke(listener, event);
-            } catch (Exception e) {
-                this.handleException(e);
-            }
+    public void remove(L listener) {
+    	this.listeners.remove(listener);
     }
-
-    private Method getMethod(String methodName, Class<?> eventClass) {
-        if (this.methods.containsKey(methodName))
-            return this.methods.get(methodName);
-
-        final Method method = inferMethod(methodName, eventClass);
-        if (method != null)
-            this.methods.put(methodName, method);
-        return method;
-    }
-
-    private Method inferMethod(String methodName, Class<?> eventClass) {
-        if (listeners.isEmpty())
-            return null;
-
-        final L listener = listeners.get(0);
-        final Class<?> listenerClass = listener.getClass();
-        try {
-            return listenerClass.getMethod(methodName, eventClass);
-        } catch (Exception e) {
-            this.handleException(e);
-            return null;
-        }
-    }
-
+    
     /**
      * Called from fireEvent whenever a called listener method throws an
      * exception, or if there is a problem looking up the listener method by
@@ -103,13 +77,45 @@ public class ListenerList<L, E extends EventObject> {
     }
 
     /**
-     * Removes a listener from the list.
+     * Calls the given method on each registered listener. Any exception thrown
+     * from one of the called methods is passed to handleException, as is any
+     * introspection error, e.g. if the given method doesn't exist.
      *
-     * @param listener
-     *            Listener to remove.
+     * @param methodName Listener method to call.
+     * @param event Event to be passed to each call.
      */
-    public void remove(L listener) {
-        this.listeners.remove(listener);
+    public void fireEvent(String methodName, E event) {
+    	final Method method = getMethod(methodName, event.getClass());
+    	if (method == null)
+    		return; // Exception handling already done by getMethod
+
+    	for (L listener : listeners) {
+    		try {
+    			method.invoke(listener, event);
+    		} catch (IllegalArgumentException e) {
+    			handleException(e);
+    		} catch (IllegalAccessException e) {
+    			handleException(e);
+    		} catch (InvocationTargetException e) {
+    			handleException(e);
+    		}
+    	}
+    }
+
+    private Method getMethod(String methodName, Class<?> eventClass) {
+        if (this.methods.containsKey(methodName))
+            return this.methods.get(methodName);
+        
+		try {
+			Method method = listenerClass.getMethod(methodName, eventClass);
+			this.methods.put(methodName, method);
+			return method;
+		} catch (SecurityException e) {
+			handleException(e);
+		} catch (NoSuchMethodException e) {
+			handleException(e);
+		}
+		return null;
     }
 
 }
