@@ -87,21 +87,6 @@ public class StyleSheet implements Serializable {
 	private static IProperty[] properties = CSS_PROPERTIES;
 
 	/**
-	 * Style sheet is the default for the renderer.
-	 */
-	public static final byte SOURCE_DEFAULT = 0;
-
-	/**
-	 * Style sheet was provided by the document author.
-	 */
-	public static final byte SOURCE_AUTHOR = 1;
-
-	/**
-	 * Style sheet was provided by the user.
-	 */
-	public static final byte SOURCE_USER = 2;
-
-	/**
 	 * The rules that comprise the stylesheet.
 	 */
 	private Rule[] rules;
@@ -317,8 +302,6 @@ public class StyleSheet implements Serializable {
 		StyleSheet.properties = properties;
 	}
 
-	// ========================================================= PRIVATE
-
 	/**
 	 * Returns all the declarations that apply to the given element.
 	 */
@@ -340,7 +323,7 @@ public class StyleSheet implements Serializable {
 		// Sort in cascade order. We can then just stuff them into a
 		// map and get the right values since higher-priority values
 		// come later and overwrite lower-priority ones.
-		Collections.sort(declList);
+		Collections.sort(declList, PropertyDecl.CASCADE_ORDERING);
 
 		Map<String, PropertyDecl> decls = new HashMap<String, PropertyDecl>();
 		Iterator<PropertyDecl> iter = declList.iterator();
