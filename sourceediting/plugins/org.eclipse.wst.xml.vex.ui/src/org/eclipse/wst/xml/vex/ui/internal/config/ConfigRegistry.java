@@ -270,7 +270,7 @@ public class ConfigRegistry {
 	private ILock lock = Job.getJobManager().newLock();
 	private List<ConfigSource> configs = new ArrayList<ConfigSource>();
 	private ListenerList<IConfigListener, ConfigEvent> configListeners =
-	    new ListenerList<IConfigListener, ConfigEvent>();
+	    new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
 	private boolean configLoaded = false;
 	private List<IConfigItemFactory> configItemFactories =
 		new ArrayList<IConfigItemFactory>();

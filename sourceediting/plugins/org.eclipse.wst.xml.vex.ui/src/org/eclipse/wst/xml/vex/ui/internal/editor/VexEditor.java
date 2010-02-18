@@ -566,7 +566,7 @@ public class VexEditor extends EditorPart {
 	private boolean updateDoctypeDecl;
 
 	private ListenerList<IVexEditorListener, VexEditorEvent> vexEditorListeners =
-	    new ListenerList<IVexEditorListener, VexEditorEvent>();
+	    new ListenerList<IVexEditorListener, VexEditorEvent>(IVexEditorListener.class);
 
 	private SelectionProvider selectionProvider = new SelectionProvider();
 

@@ -26,7 +26,7 @@ public class SelectionProvider implements ISelectionProvider,
 
 	ISelection selection;
 	private ListenerList<ISelectionChangedListener, SelectionChangedEvent> listeners =
-		new ListenerList<ISelectionChangedListener, SelectionChangedEvent>();
+		new ListenerList<ISelectionChangedListener, SelectionChangedEvent>(ISelectionChangedListener.class);
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		this.listeners.add(listener);
