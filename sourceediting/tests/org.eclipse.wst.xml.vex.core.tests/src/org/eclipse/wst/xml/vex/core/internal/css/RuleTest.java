@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import java.net.URL;
+import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.css.Rule;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -31,7 +32,7 @@ public class RuleTest extends TestCase {
 		URL url = RuleTest.class.getResource("testRules.css");
 		StyleSheetReader reader = new StyleSheetReader();
 		StyleSheet ss = reader.read(url);
-		Rule[] rules = ss.getRules();
+		List<Rule> rules = ss.getRules();
 
 		RootElement a = new RootElement("a");
 		Element b = new Element("b");
@@ -54,7 +55,7 @@ public class RuleTest extends TestCase {
 		doc.insertElement(5, f);
 
 		// /* 0 */ c { }
-		Rule rule = rules[0];
+		Rule rule = rules.get(0);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -62,7 +63,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 1 */ b c { }
-		rule = rules[1];
+		rule = rules.get(1);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -70,7 +71,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 2 */ b d { }
-		rule = rules[2];
+		rule = rules.get(2);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -78,7 +79,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 3 */ other b c { }
-		rule = rules[3];
+		rule = rules.get(3);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -86,7 +87,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 4 */ other b d { }
-		rule = rules[4];
+		rule = rules.get(4);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -94,7 +95,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 5 */ a c e { }
-		rule = rules[5];
+		rule = rules.get(5);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -102,7 +103,7 @@ public class RuleTest extends TestCase {
 		assertTrue(rule.matches(e));
 
 		// /* 6 */ c a e { }
-		rule = rules[6];
+		rule = rules.get(6);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -110,7 +111,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 7 */ * { }
-		rule = rules[7];
+		rule = rules.get(7);
 		assertTrue(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -118,7 +119,7 @@ public class RuleTest extends TestCase {
 		assertTrue(rule.matches(e));
 
 		// /* 8 */ *[color]
-		rule = rules[8];
+		rule = rules.get(8);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -126,7 +127,7 @@ public class RuleTest extends TestCase {
 		assertTrue(rule.matches(e));
 
 		// /* 9 */ a[color]
-		rule = rules[9];
+		rule = rules.get(9);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -134,7 +135,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 10 */ b[color]
-		rule = rules[10];
+		rule = rules.get(10);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -142,7 +143,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 11 */ c[color]
-		rule = rules[11];
+		rule = rules.get(11);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -150,7 +151,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 12 */ d[color]
-		rule = rules[12];
+		rule = rules.get(12);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -158,7 +159,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 13 */ *[color=blue]
-		rule = rules[13];
+		rule = rules.get(13);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -166,7 +167,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 14 */ a[color=blue]
-		rule = rules[14];
+		rule = rules.get(14);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -174,7 +175,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 15 */ b[color=blue]
-		rule = rules[15];
+		rule = rules.get(15);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -182,7 +183,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 16 */ b[color='blue']
-		rule = rules[16];
+		rule = rules.get(16);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -190,7 +191,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 17 */ b[color="blue"]
-		rule = rules[17];
+		rule = rules.get(17);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -198,7 +199,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 18 */ c[color=blue]
-		rule = rules[18];
+		rule = rules.get(18);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -206,7 +207,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 19 */ a * { }
-		rule = rules[19];
+		rule = rules.get(19);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -214,7 +215,7 @@ public class RuleTest extends TestCase {
 		assertTrue(rule.matches(e));
 
 		// /* 20 */ a > * { }
-		rule = rules[20];
+		rule = rules.get(20);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -222,7 +223,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 21 */ a *[color] { }
-		rule = rules[21];
+		rule = rules.get(21);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -230,7 +231,7 @@ public class RuleTest extends TestCase {
 		assertTrue(rule.matches(e));
 
 		// /* 22 */ a > *[color] { }
-		rule = rules[22];
+		rule = rules.get(22);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertFalse(rule.matches(c));
@@ -238,7 +239,7 @@ public class RuleTest extends TestCase {
 		assertFalse(rule.matches(e));
 
 		// /* 23 */ *[color~=blue] { }
-		rule = rules[23];
+		rule = rules.get(23);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
@@ -255,14 +256,14 @@ public class RuleTest extends TestCase {
 		d.setAttribute("class", "bar");
 
 		// /* 24 */ .foo { }
-		rule = rules[24];
+		rule = rules.get(24);
 		assertFalse(rule.matches(a));
 		assertTrue(rule.matches(b));
 		assertTrue(rule.matches(c));
 		assertFalse(rule.matches(d));
 
 		// /* 25 */ .foo.bar { }
-		rule = rules[25];
+		rule = rules.get(25);
 		assertFalse(rule.matches(a));
 		assertFalse(rule.matches(b));
 		assertTrue(rule.matches(c));
