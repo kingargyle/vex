@@ -78,14 +78,12 @@ public class StyleSheetReader {
 	 */
 	public StyleSheet read(InputSource inputSource, URL url)
 			throws CSSException, IOException {
-
-		Parser parser = createParser();
-		List<Rule> rules = new ArrayList<Rule>();
-		StyleSheetBuilder ssBuilder = new StyleSheetBuilder(rules, url);
-		parser.setDocumentHandler(ssBuilder);
+		final Parser parser = createParser();
+		final List<Rule> rules = new ArrayList<Rule>();
+		final StyleSheetBuilder styleSheetBuilder = new StyleSheetBuilder(rules, url);
+		parser.setDocumentHandler(styleSheetBuilder);
 		parser.parseStyleSheet(inputSource);
-		Rule[] ruleArray = rules.toArray(new Rule[rules.size()]);
-		return new StyleSheet(ruleArray);
+		return new StyleSheet(rules);
 	}
 
 	// ======================================================== PRIVATE

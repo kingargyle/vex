@@ -17,10 +17,10 @@ package org.eclipse.wst.xml.vex.core.internal.css;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -97,14 +97,9 @@ public class StyleSheet implements Serializable {
 					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), };
 
 	/**
-	 * The properties to calculate. This can be changed by the app.
-	 */
-	private static IProperty[] properties = CSS_PROPERTIES;
-
-	/**
 	 * The rules that comprise the stylesheet.
 	 */
-	private Rule[] rules;
+	private final List<Rule> rules;
 
 	/**
 	 * Computing styles can be expensive, e.g. we have to calculate the styles
@@ -124,8 +119,8 @@ public class StyleSheet implements Serializable {
 	 * @param rules
 	 *            Rules that constitute the style sheet.
 	 */
-	public StyleSheet(Rule[] rules) {
-		this.rules = rules;
+	public StyleSheet(final Collection<Rule> rules) {
+		this.rules = new ArrayList<Rule>(rules);
 	}
 
 	/**
@@ -173,13 +168,6 @@ public class StyleSheet implements Serializable {
 	}
 
 	/**
-	 * Returns the array of standard CSS properties.
-	 */
-	public static IProperty[] getCssProperties() {
-		return CSS_PROPERTIES;
-	}
-
-	/**
 	 * Returns the styles for the given element. The styles are cached to ensure
 	 * reasonable performance.
 	 * 
@@ -195,7 +183,7 @@ public class StyleSheet implements Serializable {
 			// can't combine these tests, since calling ref.get() twice
 			// (once to query for null, once to get the value) would
 			// cause a race condition should the GC happen btn the two.
-			styles = (Styles) ref.get();
+			styles = ref.get();
 			if (styles != null) {
 				return styles;
 			}
@@ -225,14 +213,14 @@ public class StyleSheet implements Serializable {
 			parentStyles = this.getStyles(element.getParent());
 		}
 
-		Map<String, LexicalUnit> decls = getApplicableDecls(element);
+		Map<String, LexicalUnit> decls = getApplicableDeclarations(element);
 
 		LexicalUnit lu;
 
 		// If we're finding a pseudo-element, look at the 'content' property
 		// first, since most of the time it'll be empty and we'll return null.
 		if (element instanceof PseudoElement) {
-			lu = (LexicalUnit) decls.get(CSS.CONTENT);
+			lu = decls.get(CSS.CONTENT);
 			if (lu == null) {
 				return null;
 			}
@@ -258,9 +246,8 @@ public class StyleSheet implements Serializable {
 			styles.setContent(content);
 		}
 
-		for (int i = 0; i < properties.length; i++) {
-			IProperty property = properties[i];
-			lu = (LexicalUnit) decls.get(property.getName());
+		for (final IProperty property : CSS_PROPERTIES) {
+			lu = decls.get(property.getName());
 			Object value = property.calculate(lu, parentStyles, styles);
 			styles.put(property.getName(), value);
 		}
@@ -293,72 +280,48 @@ public class StyleSheet implements Serializable {
 	}
 
 	/**
-	 * Returns the list of properties to be parsed by StyleSheets in this app.
-	 */
-	public static IProperty[] getProperties() {
-		return StyleSheet.properties;
-	}
-
-	/**
 	 * Returns the rules comprising this stylesheet.
 	 */
-	public Rule[] getRules() {
-		return this.rules;
+	public List<Rule> getRules() {
+		return Collections.unmodifiableList(this.rules);
 	}
-
-	/**
-	 * Sets the list of properties to be used by StyleSheets in this
-	 * application.
-	 * 
-	 * @param properties
-	 *            New array of IProperty objects to be used.
-	 */
-	public static void setProperties(IProperty[] properties) {
-		StyleSheet.properties = properties;
-	}
-
+	
 	/**
 	 * Returns all the declarations that apply to the given element.
 	 */
-	private Map<String, LexicalUnit> getApplicableDecls(VEXElement element) {
-		// Find all the property declarations that apply to this element.
-		List<PropertyDecl> declList = new ArrayList<PropertyDecl>();
-		Rule[] rules = this.getRules();
-
-		for (int i = 0; i < rules.length; i++) {
-			Rule rule = rules[i];
-			if (rule.matches(element)) {
-				PropertyDecl[] ruleDecls = rule.getPropertyDecls();
-				for (int j = 0; j < ruleDecls.length; j++) {
-					declList.add(ruleDecls[j]);
-				}
-			}
-		}
+	private Map<String, LexicalUnit> getApplicableDeclarations(final VEXElement element) {
+		final List<PropertyDecl> rawDeclarationsForElement = findAllDeclarationsFor(element);
 
 		// Sort in cascade order. We can then just stuff them into a
 		// map and get the right values since higher-priority values
 		// come later and overwrite lower-priority ones.
-		Collections.sort(declList, PROPERTY_CASCADE_ORDERING);
+		Collections.sort(rawDeclarationsForElement, PROPERTY_CASCADE_ORDERING);
 
-		Map<String, PropertyDecl> decls = new HashMap<String, PropertyDecl>();
-		Iterator<PropertyDecl> iter = declList.iterator();
-		while (iter.hasNext()) {
-			PropertyDecl decl = (PropertyDecl) iter.next();
-			PropertyDecl prevDecl = (PropertyDecl) decls
-					.get(decl.getProperty());
-			if (prevDecl == null || !prevDecl.isImportant()
-					|| decl.isImportant()) {
-				decls.put(decl.getProperty(), decl);
+		final Map<String, PropertyDecl> distilledDeclarations = new HashMap<String, PropertyDecl>();
+		final Map<String, LexicalUnit> values = new HashMap<String, LexicalUnit>();
+		for (final PropertyDecl declaration : rawDeclarationsForElement) {
+			final PropertyDecl previousDeclaration = distilledDeclarations.get(declaration.getProperty());
+			if (previousDeclaration == null || !previousDeclaration.isImportant()
+					|| declaration.isImportant()) {
+				distilledDeclarations.put(declaration.getProperty(), declaration);
+				values.put(declaration.getProperty(), declaration.getValue());
 			}
 		}
 
-		Map<String, LexicalUnit> values = new HashMap<String, LexicalUnit>();
-		for (Iterator<String> it = decls.keySet().iterator(); it.hasNext();) {
-			PropertyDecl decl = (PropertyDecl) decls.get(it.next());
-			values.put(decl.getProperty(), decl.getValue());
-		}
-
 		return values;
+	}
+	
+	private List<PropertyDecl> findAllDeclarationsFor(final VEXElement element) {
+		final List<PropertyDecl> rawDeclarations = new ArrayList<PropertyDecl>();
+		for (final Rule rule : rules) {
+			if (rule.matches(element)) {
+				PropertyDecl[] ruleDecls = rule.getPropertyDecls();
+				for (final PropertyDecl ruleDecl : ruleDecls) {
+					rawDeclarations.add(ruleDecl);
+				}
+			}
+		}
+		return rawDeclarations;
 	}
 
 	private Map<VEXElement, WeakReference<Styles>> getStyleMap() {
