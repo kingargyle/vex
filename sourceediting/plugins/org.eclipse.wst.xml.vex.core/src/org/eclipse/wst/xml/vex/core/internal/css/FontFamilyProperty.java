@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,10 +7,12 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Florian Thienel - bug 304413 - fix immutable array issue.
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.w3c.css.sac.LexicalUnit;
@@ -39,7 +41,7 @@ public class FontFamilyProperty extends AbstractProperty {
 			if (parentStyles != null) {
 				return parentStyles.getFontFamilies();
 			} else {
-				return DEFAULT_FONT_FAMILY;
+				return Arrays.copyOf(DEFAULT_FONT_FAMILY, DEFAULT_FONT_FAMILY.length);
 			}
 		}
 	}
