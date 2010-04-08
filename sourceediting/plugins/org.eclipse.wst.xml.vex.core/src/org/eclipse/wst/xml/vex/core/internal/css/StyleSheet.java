@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,11 @@
  *     Dave Holroyd - Implement text decoration
  *     John Austin - More complete CSS constants. Add the colour "orange".
  *     Travis Haagen - bug 260806 - enhanced support for 'content' CSS property
+ *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
+ *                       and dependend classes
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +33,8 @@ import org.w3c.css.sac.LexicalUnit;
 /**
  * Represents a CSS style sheet.
  */
-public class StyleSheet implements Serializable {
+public class StyleSheet {
 
-	private static final long serialVersionUID = -7309907170251446189L;
-	
 	private static final Comparator<PropertyDecl> PROPERTY_CASCADE_ORDERING =
 		new Comparator<PropertyDecl>() {
 		public int compare(PropertyDecl propertyDecl1,

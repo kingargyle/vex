@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,10 +9,11 @@
  *     John Krasnay - initial API and implementation
  *     Dave Holroyd - Proper specificity for wildcard selector
  *     John Austin - Implement sibling selectors
+ *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
+ *                       and dependend classes
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,9 +44,7 @@ import org.w3c.css.sac.SiblingSelector;
  * <code>java.util</code> package, unless a suitable <code>Comparator</code> is
  * also used.
  */
-public class Rule implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Rule {
 
 	private final Selector selector;
 	private final List<PropertyDecl> propertyDecls = new ArrayList<PropertyDecl>();
