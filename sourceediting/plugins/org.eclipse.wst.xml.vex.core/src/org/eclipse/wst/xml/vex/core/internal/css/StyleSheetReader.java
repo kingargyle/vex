@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,8 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
+ *                       and dependend classes
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
@@ -100,9 +102,6 @@ public class StyleSheetReader {
 		// May be null!
 		private final URL url;
 
-		// Factory for creating serializable clones of SAC objects
-		SacFactory factory = new SacFactory();
-
 		public StyleSheetBuilder(List<Rule> rules, URL url) {
 			this.rules = rules;
 			this.url = url;
@@ -157,35 +156,30 @@ public class StyleSheetReader {
 		}
 
 		public void property(String name, LexicalUnit value, boolean important) {
-
-			// Create a serializable clone of the value for storage in our
-			// stylesheet.
-			LexicalUnit val = factory.cloneLexicalUnit(value);
-
 			if (name.equals(CSS.BORDER)) {
-				this.expandBorder(val, important);
+				this.expandBorder(value, important);
 			} else if (name.equals(CSS.BORDER_BOTTOM)) {
-				this.expandBorder(val, CSS.BORDER_BOTTOM, important);
+				this.expandBorder(value, CSS.BORDER_BOTTOM, important);
 			} else if (name.equals(CSS.BORDER_LEFT)) {
-				this.expandBorder(val, CSS.BORDER_LEFT, important);
+				this.expandBorder(value, CSS.BORDER_LEFT, important);
 			} else if (name.equals(CSS.BORDER_RIGHT)) {
-				this.expandBorder(val, CSS.BORDER_RIGHT, important);
+				this.expandBorder(value, CSS.BORDER_RIGHT, important);
 			} else if (name.equals(CSS.BORDER_TOP)) {
-				this.expandBorder(val, CSS.BORDER_TOP, important);
+				this.expandBorder(value, CSS.BORDER_TOP, important);
 			} else if (name.equals(CSS.BORDER_COLOR)) {
-				this.expandBorderColor(val, important);
+				this.expandBorderColor(value, important);
 			} else if (name.equals(CSS.BORDER_STYLE)) {
-				this.expandBorderStyle(val, important);
+				this.expandBorderStyle(value, important);
 			} else if (name.equals(CSS.BORDER_WIDTH)) {
-				this.expandBorderWidth(val, important);
+				this.expandBorderWidth(value, important);
 			} else if (name.equals(CSS.FONT)) {
-				this.expandFont(val, important);
+				this.expandFont(value, important);
 			} else if (name.equals(CSS.MARGIN)) {
-				this.expandMargin(val, important);
+				this.expandMargin(value, important);
 			} else if (name.equals(CSS.PADDING)) {
-				this.expandPadding(val, important);
+				this.expandPadding(value, important);
 			} else {
-				this.addDecl(name, val, important);
+				this.addDecl(name, value, important);
 			}
 		}
 
@@ -204,7 +198,7 @@ public class StyleSheetReader {
 		public void startSelector(SelectorList selectors) {
 			this.currentRules = new ArrayList<Rule>();
 			for (int i = 0; i < selectors.getLength(); i++) {
-				Selector selector = factory.cloneSelector(selectors.item(i));
+				Selector selector = selectors.item(i);
 				Rule rule = new Rule(selector);
 				this.currentRules.add(rule);
 			}

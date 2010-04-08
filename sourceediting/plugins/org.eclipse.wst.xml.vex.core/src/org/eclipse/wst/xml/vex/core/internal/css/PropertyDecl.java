@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,19 +7,17 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
+ *                       and dependend classes
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
-
-import java.io.Serializable;
 
 import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Represents a particular CSS property declaration.
  */
-public class PropertyDecl implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class PropertyDecl {
 
 	private final Rule rule;
 	private final String property;
