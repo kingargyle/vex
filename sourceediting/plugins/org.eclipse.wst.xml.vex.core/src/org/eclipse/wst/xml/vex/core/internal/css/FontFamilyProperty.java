@@ -41,10 +41,13 @@ public class FontFamilyProperty extends AbstractProperty {
 			if (parentStyles != null) {
 				return parentStyles.getFontFamilies();
 			} else {
-				return Arrays.copyOf(DEFAULT_FONT_FAMILY, DEFAULT_FONT_FAMILY.length);
+				String[] fonts = new String[DEFAULT_FONT_FAMILY.length];
+				System.arraycopy(DEFAULT_FONT_FAMILY, 0, fonts, 0, DEFAULT_FONT_FAMILY.length);
+				return fonts;
 			}
 		}
 	}
+	
 
 	// ================================================= PRIVATE
 
