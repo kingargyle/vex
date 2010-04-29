@@ -2,6 +2,25 @@
 <?eclipse version="3.4"?>
 <plugin>
 
+	<!-- Registers DITA-related content types extensions as xml content-->
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type id="org.eclipse.wst.xml.vex.ui.dita" name="%contentType.name"
+			base-type="org.eclipse.core.runtime.xml" file-extensions="dita, ditamap, ditaval">
+		</content-type>
+		<content-type id="org.eclipse.wst.xml.vex.ui.dita.map"
+			name="%contentType.map.name" base-type="org.eclipse.wst.xml.vex.ui.dita.map"
+			file-extensions="ditamap, bookmap">
+		</content-type>
+		<content-type id="org.eclipse.wst.xml.vex.ui.dita.ditaval"
+			name="%contentType.ditaval.name" base-type="org.eclipse.wst.xml.vex.ui.dita.ditaval"
+			file-extensions="ditaval">
+		</content-type>
+		<content-type id="org.eclipse.wst.xml.vex.ui.dita.topic"
+			name="%contentType.topic.name" base-type="org.eclipse.wst.xml.vex.ui.dita.topic"
+			file-extensions="dita">
+		</content-type>
+	</extension>
+	
    <extension
          id="concept"
          name="%doctype.concept"
@@ -100,4 +119,5 @@
          </doctypeRef>
       </style>
    </extension>
+	
 </plugin>
