@@ -34,12 +34,12 @@
          point="org.eclipse.ui.newWizards">
       <category
             name="%NewWizardCategory.name"
-            id="org.eclipse.wst.xml.vex.ui.vex.NewWizardCategory">
+            id="org.eclipse.wst.xml.vex.XMLAuthoringCategory">
       </category>
       <wizard
             name="%NewDocumentWizard.name"
             icon="$nl$/vex16.gif"
-            category="org.eclipse.wst.xml.vex.ui.NewWizardCategory"
+            category="org.eclipse.wst.xml.vex.XMLAuthoringCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.wizards.NewDocumentWizard"
             id="org.eclipse.wst.xml.vex.ui.NewDocumentWizard">
          <description>%NewDocumentWizard.desc</description>
@@ -469,10 +469,14 @@
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
+      <category
+            name="%NewWizardCategory.name"
+            id="org.eclipse.wst.xml.vex.XMLAuthoringCategory">
+      </category>
       <wizard
             name="%NewPluginProjectWizard.name"
             icon="$nl$/icons/vex16.gif"
-            category="org.eclipse.wst.xml.vex.ui.NewWizardCategory"
+            category="org.eclipse.wst.xml.vex.XMLAuthoringCategory"
             class="org.eclipse.wst.xml.vex.ui.internal.config.NewPluginProjectWizard"
             project="true"
             id="org.eclipse.wst.xml.vex.ui.config.NewPluginProjectWizard">
