@@ -1,18 +1,43 @@
 <project default="run" name="org.eclipse.wst.xml.xpath2.releng/build.xml - Run a PsychoPath build using the Athena CBI">
 	<!-- load properties and set timestamp for the build -->
-	<property environment="env"/>
-	<property name="WORKSPACE" location="${env.WORKSPACE}"/>
-	<property file="build.properties" />
+
+	<property environment="env" />
+	<property name="WORKSPACE" location="${env.WORKSPACE}" />
+
+	<ant antfile="bootstrap.xml" target="init">
+		<property name="basebuilderTag" value="r35x_v20090811" />
+		<property name="commonrelengTag" value="HEAD" />
+		<property name="ANTCONTRIB_VERSION" value="1.0b2" />
+		<property name="ANT4ECLIPSE_VERSION" value="1.0.0.M3" />
+		<property name="build.properties" value="build.properties" />
+	</ant>
+
+	<!-- FIXME if required: Set a valid path to JAVA_HOME, if Eclipse's ${java.home}/../bin/javac cannot be found -->
+	<condition property="JAVA_HOME" value="${java.home}" else="${java.home}/..">
+		<available file="${java.home}/bin/javac" type="file" />
+	</condition>
+
+	<!-- FIXME if required: if not using this type of qualifier, comment next 4 lines -->
 	<tstamp>
 		<format property="buildTimestamp" pattern="yyyyMMddHHmm" />
 	</tstamp>
+
+	<!-- 1. To build from sources using information in the ./maps/*.map files, comment these next two properties
+				 2. Or, to build from sources in the workspace, use these properties. You can also use absolute paths if needed.
+			-->
+	<!-- <property name="localSourceCheckoutDir" value="${basedir}/.." />
+			<property name="relengBuilderDir" value="${basedir}" /> -->
+
+	<property name="build.properties" value="build.properties" />
+	<property file="${build.properties}" />
+
 	<property name="forceContextQualifier" value="v${buildTimestamp}" />
 	<property name="fetchTag" value="HEAD" />
-	
+
 	<!-- calculate workspaceDir as parent of this folder, the project's .releng folder (relengBuilderDir) -->
-	<property name="relengBuilderDir" value="${basedir}" />
-	<import file="findbugs.xml"/>
-	<import file="pmd.xml"/>
+<!--	<property name="relengBuilderDir" value="${basedir}" /> -->
+	<import file="findbugs.xml" />
+	<import file="pmd.xml" />
 	<dirname file="${relengBuilderDir}" property="workspaceDir" />
 
 	<!-- 
@@ -20,7 +45,7 @@
 		${WORKSPACE}/build
 	-->
 	<property name="writableBuildRoot" value="/tmp/build" />
-	<property name="sdkzipUrl" value="https://build.eclipse.org/hudson/job/cbi-wtp-inc.vex/ws/build/athena/"/>
+	<property name="sdkzipUrl" value="https://build.eclipse.org/hudson/job/cbi-wtp-inc.vex/ws/build/athena/" />
 
 	<!-- 
 		can be simple path, eg., 
@@ -29,56 +54,63 @@
 		${writableBuildRoot}/${topprojectName}/${projectName}/${subprojectName}/downloads/drops/${version}/${buildType}${buildTimestamp}
 	-->
 	<property name="buildDir" value="${writableBuildRoot}/athena" />
-	
+
 	<target name="init">
-		<delete dir="${buildDir}" failonerror="false"/>
+		<delete dir="${buildDir}" failonerror="false" />
 	</target>
 
 	<target name="run" depends="init">
-		<echo message="Workspace: ${WORKSPACE}"/>
-		<echo message="Writable Build Root: ${writableBuildRoot}"/>
-		<mkdir dir="${writableBuildRoot}"/>
+		<echo message="Workspace: ${WORKSPACE}" />
+		<echo message="Writable Build Root: ${writableBuildRoot}" />
+		<mkdir dir="${writableBuildRoot}" />
 		<!-- invoke a new Eclipse process and launch the build from the common.releng folder -->
-		<property name="relengCommonBuilderDir" value="${workspaceDir}/org.eclipse.dash.common.releng" />
-		<ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}" />
-		<antcall target="findbugs" inheritall="true"/>
-		<cleanUpBuild/>
-		<antcall target="duplicateCode" inheritall="true"/>
+		<!--<property name="relengCommonBuilderDir" value="${workspaceDir}/org.eclipse.dash.common.releng" />-->
+
+		<condition property="JAVA_HOME" value="${java.home}" else="${java.home}/..">
+			<available file="${java.home}/bin/javac" type="file" />
+		</condition>
+
+		<!-- <ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}" />-->
+		<ant antfile="${relengCommonBuilderDir}/build.xml" />
+
+<!--		<antcall target="findbugs" inheritall="true" /> -->
+		<cleanUpBuild />
+<!--		<antcall target="duplicateCode" inheritall="true" /> -->
 	</target>
 
-    <macrodef name="cleanUpBuild">
-        <sequential>
-    		<delete dir="${buildDir}/eclipse" failonerror="false" />
-    		<delete dir="${buildDir}/testing" failonerror="false" />
-    		<delete dir="${buildDir}/compilelogs" failonerror="false"/>
-    		<delete dir="${buildDir}/testResults/consolelogs" failonerror="false"/>
-    		<delete dir="${buildDir}/testResults/html" failonerror="false"/>
-    		<delete dir="${writableBuildRoot}/athena/findbugs"/>		
-    		<delete dir="${writableBuildRoot}/athena/findbugsclasses"/>		
-    		<delete>
-    			<fileset dir="${buildDir}">
-    				<include name="*AllFeatures*.zip*"/>
-    				<include name="*Master*.zip*"/>
-    			</fileset>
-    		</delete>
-        </sequential>
-    </macrodef>
-	
+	<macrodef name="cleanUpBuild">
+		<sequential>
+			<delete dir="${buildDir}/eclipse" failonerror="false" />
+			<delete dir="${buildDir}/testing" failonerror="false" />
+			<delete dir="${buildDir}/compilelogs" failonerror="false" />
+			<delete dir="${buildDir}/testResults/consolelogs" failonerror="false" />
+			<delete dir="${buildDir}/testResults/html" failonerror="false" />
+			<delete dir="${writableBuildRoot}/athena/findbugs" />
+			<delete dir="${writableBuildRoot}/athena/findbugsclasses" />
+			<delete>
+				<fileset dir="${buildDir}">
+					<include name="*AllFeatures*.zip*" />
+					<include name="*Master*.zip*" />
+				</fileset>
+			</delete>
+		</sequential>
+	</macrodef>
 
-    <!-- ================================= 
+
+	<!-- ================================= 
           target: default              
          ================================= -->
-    <target name="findbugs" description="Run a find bugs analysis based on a ZIP file contents.">
+	<target name="findbugs" description="Run a find bugs analysis based on a ZIP file contents.">
 		<patternset id="vex">
-			<include name="eclipse/plugins/org.eclipse.wst.xml.vex.*.jar"/>
+			<include name="eclipse/plugins/org.eclipse.wst.xml.vex.*.jar" />
 		</patternset>
-		<getFindBugs downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/findbugs"/>
-		<extractJarsForAnalysis src="${sdkzipUrl}${zipPrefix}-SDK${incubation}-${buildType}${buildTimestamp}.zip" refid="vex"/>
-		<findBugs outputfile="${writableBuildRoot}/athena/fb-vex.xml"/>
-    </target>
-	
+		<getFindBugs downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/findbugs" />
+		<extractJarsForAnalysis src="${sdkzipUrl}${zipPrefix}-SDK${incubation}-${buildType}${buildTimestamp}.zip" refid="vex" />
+		<findBugs outputfile="${writableBuildRoot}/athena/fb-vex.xml" />
+	</target>
+
 	<target name="duplicateCode" description="Run PMD duplicate code analysis">
-		<getPMD downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/pmd"/>
-		<cpd outputfile="${writableBuildRoot}/athena/cpd-vex.xml" srcdir="${WORKSPACE}"/>
+		<getPMD downloadDir="${writableBuildRoot}/downloads" destDir="${writableBuildRoot}/3rdPartyJars/pmd" />
+		<cpd outputfile="${writableBuildRoot}/athena/cpd-vex.xml" srcdir="${WORKSPACE}" />
 	</target>
 </project>
