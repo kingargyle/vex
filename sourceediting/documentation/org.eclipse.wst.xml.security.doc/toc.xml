@@ -25,7 +25,9 @@
 	        <topic label="Algorithms and Encryption Properties" href="html/encryption/page_algorithms.html"/>
 	    </topic>
 	    <topic label="Decryption Wizard" href="html/decryption/decrypt.html">
-	        <topic label="Resource and Key Information" href="html/decryption/page_resource.html"/>
+	        <topic label="Resource and Decryption Type" href="html/decryption/page_resource.html"/>
+         <topic href="html/decryption/page_open_a_key.html" label="Open a Key">
+         </topic>
 	    </topic>
 	    <topic label="Canonicalization" href="html/canonicalization/canonicalize.html"/>
 	    <topic label="Quick Functions" href="html/quickfunctions/quickfunctions.html"/>

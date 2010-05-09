@@ -57,10 +57,15 @@ The keystore will be stored in the current (project) folder as [Keystore Name].j
 		<topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
 	</context>
 	<context id="wizard_decryption_resource" title="Resource and Key Information">
-		<description>Select the &lt;b&gt;Keystore&lt;/b&gt; used for encrypting this document (-fragment) and enter the &lt;b&gt;password&lt;/b&gt; for the store. Provide the &lt;b&gt;key name&lt;/b&gt; and enter the corresponding &lt;b&gt;password&lt;/b&gt;. If you didn&apos;t enter an &lt;b&gt;encryption id&lt;/b&gt; during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id and click &lt;b&gt;Finish&lt;/b&gt; to start the decryption process.</description>
+		<description>If you didn&apos;t enter an &lt;b&gt;encryption id&lt;/b&gt; during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id and click &lt;b&gt;Next&lt;/b&gt;.</description>
 		<topic href="html/decryption/decrypt.html" label="XML Decryption Wizard"/>
-		<topic href="html/decryption/page_resource.html" label="Resource and Key Information"/>
+		<topic href="html/decryption/page_resource.html" label="Resource"/>
 	</context>
+    <context id="wizard_decryption_keystore">
+       <description>Select the &lt;b&gt;Keystore&lt;/b&gt; used for encrypting this document (-fragment) and enter the &lt;b&gt;password&lt;/b&gt; for the store. Provide the &lt;b&gt;key name&lt;/b&gt; and enter the corresponding &lt;b&gt;password&lt;/b&gt;. Click &lt;b&gt;Next&lt;/b&gt; to start the decryption process.</description>
+       <topic href="html/decryption/decrypt.html" label="XML Decryption Wizard"/>
+       <topic href="html/decryption/page_open_a_key.html" label="Open a key"/>
+    </context>
 	<context id="preferences_general">
 		<description>This preference page allows you to configure the general preferences of the &lt;b&gt;XML Security Tools&lt;/b&gt; including &lt;b&gt;Canonicalization&lt;/b&gt; settings.</description>
 		<topic href="html/canonicalization/canonicalize.html" label="Canonicalization"/>

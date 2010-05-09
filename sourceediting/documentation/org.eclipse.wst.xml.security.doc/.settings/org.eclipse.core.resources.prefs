@@ -1,8 +1,9 @@
-#Sun Jan 24 13:08:09 CET 2010
+#Sun May 09 19:09:28 CEST 2010
 eclipse.preferences.version=1
 encoding//html/canonicalization/canonicalize.html=utf-8
 encoding//html/contents.html=utf-8
 encoding//html/decryption/decrypt.html=utf-8
+encoding//html/decryption/page_open_a_key.html=utf-8
 encoding//html/decryption/page_resource.html=utf-8
 encoding//html/encryption/encrypt.html=utf-8
 encoding//html/encryption/page_algorithms.html=utf-8
