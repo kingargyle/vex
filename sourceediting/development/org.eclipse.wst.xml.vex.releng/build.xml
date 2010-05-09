@@ -73,9 +73,9 @@
 		<!-- <ant antfile="${relengCommonBuilderDir}/buildAll.xml" target="runEclipse" dir="${relengCommonBuilderDir}" />-->
 		<ant antfile="${relengCommonBuilderDir}/build.xml" />
 
-<!--		<antcall target="findbugs" inheritall="true" /> -->
+		<antcall target="findbugs" inheritall="true" />
 		<cleanUpBuild />
-<!--		<antcall target="duplicateCode" inheritall="true" /> -->
+		<antcall target="duplicateCode" inheritall="true" />
 	</target>
 
 	<macrodef name="cleanUpBuild">
