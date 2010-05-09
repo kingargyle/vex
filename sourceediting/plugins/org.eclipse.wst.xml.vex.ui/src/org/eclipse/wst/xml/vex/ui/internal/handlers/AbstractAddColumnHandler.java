@@ -7,11 +7,11 @@
  *
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -49,19 +49,18 @@ public abstract class AbstractAddColumnHandler extends AbstractHandler {
         // adding possible?
         if (indexToDup == -1) return;
 
-        final List cellsToDup = new ArrayList();
+        final List<Element> cellsToDup = new ArrayList<Element>();
         VexHandlerUtil.iterateTableCells(widget, new TableCellCallbackAdapter() {
             public void onCell(Object row, Object cell, int rowIndex,
                     int cellIndex) {
                 if (cellIndex == indexToDup && cell instanceof Element) {
-                    cellsToDup.add(cell);
+                    cellsToDup.add((Element) cell);
                 }
             }
         });
 
         int finalOffset = -1;
-        for (Iterator it = cellsToDup.iterator(); it.hasNext();) {
-            Element element = (Element) it.next();
+        for (Element element : cellsToDup) {
             if (finalOffset == -1) {
                 finalOffset = element.getStartOffset() + 1;
             }

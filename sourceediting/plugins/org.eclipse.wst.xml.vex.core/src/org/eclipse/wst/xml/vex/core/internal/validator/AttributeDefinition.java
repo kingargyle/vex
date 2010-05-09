@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
@@ -20,7 +21,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
  * 
  */
 @SuppressWarnings("restriction")
-public class AttributeDefinition implements Comparable, Serializable {
+public class AttributeDefinition implements Comparable<AttributeDefinition>, Serializable {
 
 	/**
 	 * 
@@ -124,8 +125,8 @@ public class AttributeDefinition implements Comparable, Serializable {
 	 *            The attribute to which this one is to be compared.
 	 *
 	 */
-	public int compareTo(Object other) {
-		return this.name.compareTo(((AttributeDefinition) other).name);
+	public int compareTo(AttributeDefinition other) {
+		return this.name.compareTo(other.name);
 	}
 
 	/**

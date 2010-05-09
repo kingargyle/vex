@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -17,7 +18,7 @@ import java.net.URL;
 /**
  * Base class of all configurtion items such as document types and styles.
  */
-public abstract class ConfigItem implements Comparable, Serializable {
+public abstract class ConfigItem implements Comparable<ConfigItem>, Serializable {
 
 	/**
 	 * Class constructor.
@@ -29,8 +30,8 @@ public abstract class ConfigItem implements Comparable, Serializable {
 		this.config = config;
 	}
 
-	public int compareTo(Object o) {
-		return this.getName().compareTo(((ConfigItem) o).getName());
+	public int compareTo(ConfigItem o) {
+		return this.getName().compareTo(o.getName());
 	}
 
 	/**

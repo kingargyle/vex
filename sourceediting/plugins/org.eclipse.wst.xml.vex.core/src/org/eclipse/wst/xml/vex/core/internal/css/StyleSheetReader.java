@@ -9,6 +9,7 @@
  *     John Krasnay - initial API and implementation
  *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
  *                       and dependend classes
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
@@ -17,7 +18,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.w3c.css.sac.CSSException;
@@ -212,9 +212,7 @@ public class StyleSheetReader {
 		 * Adds a PropertyDecl to the current set of rules.
 		 */
 		private void addDecl(String name, LexicalUnit value, boolean important) {
-			Iterator<Rule> iter = this.currentRules.iterator();
-			while (iter.hasNext()) {
-				Rule rule = (Rule) iter.next();
+			for (Rule rule : this.currentRules) {
 				rule.add(new PropertyDecl(rule, name, value, important));
 			}
 		}

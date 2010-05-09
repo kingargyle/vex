@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -201,25 +202,15 @@ public class DoctypePropertyPage extends PropertyPage {
 
 		// collect root Elements from the rootElementsTable
 
-		final TableItem[] tia = this.rootElementsTable.getItems();
-
-		final ArrayList selectedRootElements = new ArrayList();
-
-		for (int i = 0; i < tia.length; i++) {
-			if (tia[i].getChecked()) {
-				selectedRootElements.add(tia[i].getText());
+		final ArrayList<String> selectedRootElements = new ArrayList<String>();
+		for (TableItem item : this.rootElementsTable.getItems()) {
+			if (item.getChecked()) {
+				selectedRootElements.add(item.getText());
 			}
 		}
 
-		final String[] selectedRootElementsArray = new String[selectedRootElements
-				.size()];
-
-		for (int i = 0; i < selectedRootElementsArray.length; i++) {
-			selectedRootElementsArray[i] = (String) selectedRootElements.get(i);
-		}
-
-		this.doctype.setRootElements(selectedRootElementsArray);
-
+		this.doctype.setRootElements(selectedRootElements.toArray(new String[]{}));
+		
 		try {
 			this.getPluginProject().writeConfigXml();
 		} catch (Exception ex) {
@@ -288,8 +279,8 @@ public class DoctypePropertyPage extends PropertyPage {
 
 		if (validator != null) {
 
-			final List list = Arrays.asList(doctype.getRootElements());
-			final Set selectedRootElements = new TreeSet(list);
+			final List<String> list = Arrays.asList(doctype.getRootElements());
+			final Set<String> selectedRootElements = new TreeSet<String>(list);
 
 			rootElementsTable.removeAll();
 

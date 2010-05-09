@@ -7,11 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -146,8 +146,7 @@ public class ConfigRegistry {
 		try {
 			this.lock();
 			List<ConfigItem> items = new ArrayList<ConfigItem>();
-			for (Iterator<ConfigSource> it = this.configs.iterator(); it.hasNext();) {
-				ConfigSource config = it.next();
+			for (ConfigSource config : this.configs) {
 				items.addAll(config.getValidItems(extensionPoint));
 			}
 			return items;
@@ -185,9 +184,7 @@ public class ConfigRegistry {
 	public ConfigItem getConfigItem(String extensionPoint, String id) {
 		try {
 			this.lock();
-			List<ConfigItem> items = this.getAllConfigItems(extensionPoint);
-			for (Iterator<ConfigItem> it = items.iterator(); it.hasNext();) {
-				ConfigItem item = (ConfigItem) it.next();
+			for (ConfigItem item : this.getAllConfigItems(extensionPoint)) {
 				if (item.getUniqueId().equals(id)) {
 					return item;
 				}
@@ -206,11 +203,10 @@ public class ConfigRegistry {
 	 *            Extension point ID for which to search.
 	 */
 	public IConfigItemFactory getConfigItemFactory(String extensionPointId) {
-		for (Iterator<IConfigItemFactory> it = configItemFactories.iterator(); it.hasNext();) {
-			IConfigItemFactory factory = it.next();
+		for (IConfigItemFactory factory : this.configItemFactories) {
 			if (factory.getExtensionPointId().equals(extensionPointId)) {
 				return factory;
-			}
+			}			
 		}
 		return null;
 	}

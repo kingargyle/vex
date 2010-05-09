@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -77,7 +78,7 @@ public class ConfigurationView extends ViewPart {
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof IConfigItemFactory) {
 				IConfigItemFactory factory = (IConfigItemFactory) parentElement;
-				List items = ConfigRegistry.getInstance().getAllConfigItems(
+				List<ConfigItem> items = ConfigRegistry.getInstance().getAllConfigItems(
 						factory.getExtensionPointId());
 				Collections.sort(items);
 				return items.toArray();

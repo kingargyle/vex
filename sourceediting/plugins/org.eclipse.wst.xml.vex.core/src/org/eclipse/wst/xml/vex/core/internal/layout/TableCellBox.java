@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -47,7 +48,7 @@ public class TableCellBox extends AbstractBlockBox {
 		this.setWidth(width);
 	}
 
-	protected List createChildren(LayoutContext context) {
+	protected List<Box> createChildren(LayoutContext context) {
 		return this.createBlockBoxes(context, this.getStartOffset(), this
 				.getEndOffset(), this.getWidth(), null, null);
 	}

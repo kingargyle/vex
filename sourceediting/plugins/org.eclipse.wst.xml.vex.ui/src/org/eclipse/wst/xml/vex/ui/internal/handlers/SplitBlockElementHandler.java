@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
@@ -76,8 +77,8 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
                     // and put them in a list of fragments to be reconstructed
                     // when
                     // we clone the element.
-                    List children = new ArrayList();
-                    List frags = new ArrayList();
+                    List<VEXElement> children = new ArrayList<VEXElement>();
+                    List<VEXDocumentFragment> frags = new ArrayList<VEXDocumentFragment>();
                     VEXElement child = vexWidget.getCurrentElement();
                     while (true) {
                         children.add(child);
@@ -92,8 +93,8 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
                     }
 
                     for (int i = children.size() - 1; i >= 0; i--) {
-                        child = (Element) children.get(i);
-                        VEXDocumentFragment frag = (VEXDocumentFragment) frags.get(i);
+                        child = children.get(i);
+                        VEXDocumentFragment frag = frags.get(i);
                         vexWidget.insertElement((Element) child.clone());
                         int offset = vexWidget.getCaretOffset();
                         if (frag != null) {

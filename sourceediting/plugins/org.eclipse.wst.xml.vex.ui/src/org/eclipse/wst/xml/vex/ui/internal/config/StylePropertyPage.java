@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -159,27 +160,24 @@ public class StylePropertyPage extends PropertyPage {
 
 		this.style.setName(this.nameText.getText());
 
-		List doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
+		List<ConfigItem> doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
 				DocumentType.EXTENSION_POINT);
 		Collections.sort(doctypeList);
 
-		final ArrayList selectedDoctypes = new ArrayList();
-		final TableItem[] tia = this.doctypesTable.getItems();
-
-		for (int i = 0; i < tia.length; i++) {
-			if (tia[i].getChecked()) {
-				selectedDoctypes.add(tia[i].getText());
+		final ArrayList<String> selectedDoctypes = new ArrayList<String>();
+		for (TableItem item : this.doctypesTable.getItems()) {
+			if (item.getChecked()) {
+				selectedDoctypes.add(item.getText());
 			}
 		}
 
 		this.style.removeAllDocumentTypes();
 
-		for (int i = 0; i < doctypeList.size(); i++) {
-			if (selectedDoctypes.contains(((DocumentType) doctypeList.get(i))
-					.getName())) {
-				this.style.addDocumentType(((DocumentType) doctypeList.get(i))
-						.getPublicId());
-			}
+		for (ConfigItem configItem : doctypeList) {
+			DocumentType documentType = (DocumentType)configItem;
+			if (selectedDoctypes.contains(documentType.getName())) {
+				this.style.addDocumentType(documentType.getPublicId());
+			}			
 		}
 
 		try {
@@ -231,19 +229,17 @@ public class StylePropertyPage extends PropertyPage {
 
 	private void populateDoctypes() {
 
-		final Set selectedDoctypes = new TreeSet(this.style.getDocumentTypes());
+		final Set<String> selectedDoctypes = new TreeSet<String>(this.style.getDocumentTypes());
 		doctypesTable.removeAll();
 
-		List doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
+		List<ConfigItem> doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
 				DocumentType.EXTENSION_POINT);
 		Collections.sort(doctypeList);
-		for (int i = 0; i < doctypeList.size(); i++) {
-
+		for (ConfigItem configItem : doctypeList) {
+			DocumentType documentType=(DocumentType)configItem;
 			TableItem item1 = new TableItem(doctypesTable, SWT.NONE);
-			item1.setText(((DocumentType) doctypeList.get(i)).getName());
-			if (selectedDoctypes.contains(((DocumentType) doctypeList.get(i))
-					.getPublicId())) {
-
+			item1.setText(documentType.getName());
+			if (selectedDoctypes.contains(documentType.getPublicId())) {
 				item1.setChecked(true);
 			}
 		}

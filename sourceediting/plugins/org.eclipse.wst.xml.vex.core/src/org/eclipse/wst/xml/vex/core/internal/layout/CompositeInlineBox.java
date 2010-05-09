@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -105,14 +106,14 @@ public abstract class CompositeInlineBox extends AbstractBox implements
 	public Pair split(LayoutContext context, int maxWidth, boolean force) {
 
 		// list of children that have yet to be added to the left side
-		LinkedList rights = new LinkedList(Arrays.asList(this.getChildren()));
+		LinkedList<Box> rights = new LinkedList<Box>(Arrays.asList(this.getChildren()));
 
 		// pending is a list of inlines we are trying to add to the left side
 		// but which cannot end at a split
-		List pending = new ArrayList();
+		List<InlineBox> pending = new ArrayList<InlineBox>();
 
 		// list of inlines that make up the left side
-		List lefts = new ArrayList();
+		List<InlineBox> lefts = new ArrayList<InlineBox>();
 
 		int remaining = maxWidth;
 		boolean eol = false;
@@ -147,11 +148,8 @@ public abstract class CompositeInlineBox extends AbstractBox implements
 			rights.addAll(0, pending);
 		}
 
-		InlineBox[] leftKids = (InlineBox[]) lefts.toArray(new InlineBox[lefts
-				.size()]);
-		InlineBox[] rightKids = (InlineBox[]) rights
-				.toArray(new InlineBox[rights.size()]);
-
+		InlineBox[] leftKids = lefts.toArray(new InlineBox[lefts.size()]);
+		InlineBox[] rightKids = rights.toArray(new InlineBox[rights.size()]);
 		return this.split(context, leftKids, rightKids);
 	}
 

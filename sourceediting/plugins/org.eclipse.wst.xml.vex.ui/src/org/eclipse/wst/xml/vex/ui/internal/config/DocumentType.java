@@ -7,11 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
@@ -20,7 +20,7 @@ import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 /**
  * A registered document type.
  */
-public class DocumentType extends ConfigItem implements Comparable {
+public class DocumentType extends ConfigItem {
 
 	public static final String EXTENSION_POINT = "org.eclipse.wst.xml.vex.ui.doctypes"; //$NON-NLS-1$
 
@@ -37,10 +37,10 @@ public class DocumentType extends ConfigItem implements Comparable {
 	 */
 	public static DocumentType getDocumentType(String publicId) {
 		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List doctypes = registry
+		List<ConfigItem> doctypes = registry
 				.getAllConfigItems(DocumentType.EXTENSION_POINT);
-		for (Iterator it = doctypes.iterator(); it.hasNext();) {
-			DocumentType doctype = (DocumentType) it.next();
+		for (ConfigItem configItem : doctypes) {
+			DocumentType doctype = (DocumentType) configItem;
 			if (doctype.getPublicId().equals(publicId)) {
 				return doctype;
 			}
@@ -56,17 +56,16 @@ public class DocumentType extends ConfigItem implements Comparable {
 		// TODO quite inefficent, try caching results, clearing the cache upon
 		// config changes.
 		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List withStyles = new ArrayList();
-		List doctypes = registry
+		List<DocumentType> withStyles = new ArrayList<DocumentType>();
+		List<ConfigItem> doctypes = registry
 				.getAllConfigItems(DocumentType.EXTENSION_POINT);
-		for (Iterator it = doctypes.iterator(); it.hasNext();) {
-			DocumentType doctype = (DocumentType) it.next();
+		for (ConfigItem configItem : doctypes) {
+			DocumentType doctype = (DocumentType) configItem;
 			if (VexEditor.findStyleForDoctype(doctype.getPublicId()) != null) {
 				withStyles.add(doctype);
 			}
 		}
-		return (DocumentType[]) withStyles.toArray(new DocumentType[withStyles
-				.size()]);
+		return withStyles.toArray(new DocumentType[withStyles.size()]);
 	}
 
 	/**

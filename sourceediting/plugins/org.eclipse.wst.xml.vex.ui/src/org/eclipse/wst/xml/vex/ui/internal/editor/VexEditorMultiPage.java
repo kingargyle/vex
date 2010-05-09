@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.editor;
 
@@ -19,7 +20,6 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -79,6 +79,7 @@ import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigItem;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
@@ -248,9 +249,8 @@ public class VexEditorMultiPage extends VexEditor {
 
 		Style firstStyle = null;
 		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List styles = registry.getAllConfigItems(Style.EXTENSION_POINT);
-		for (Iterator it = styles.iterator(); it.hasNext();) {
-			Style style = (Style) it.next();
+		for (ConfigItem configItem : registry.getAllConfigItems(Style.EXTENSION_POINT)) {
+			Style style = (Style) configItem;
 			if (style.appliesTo(publicId)) {
 				if (firstStyle == null) {
 					firstStyle = style;
@@ -914,9 +914,9 @@ public class VexEditorMultiPage extends VexEditor {
 		}
 		Collections.reverse(path);
 		StringBuffer sb = new StringBuffer(path.size() * 15);
-		for (int i = 0; i < path.size(); i++) {
+		for (String part : path) {
 			sb.append("/"); //$NON-NLS-1$
-			sb.append(path.get(i));
+			sb.append(part);
 		}
 		return sb.toString();
 	}

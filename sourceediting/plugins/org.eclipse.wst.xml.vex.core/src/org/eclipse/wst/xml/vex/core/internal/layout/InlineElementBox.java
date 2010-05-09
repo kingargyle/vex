@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -56,7 +57,7 @@ public class InlineElementBox extends CompositeInlineBox {
 
 		this.element = element;
 
-		List childList = new ArrayList();
+		List<InlineBox> childList = new ArrayList<InlineBox>();
 
 		Styles styles = context.getStyleSheet().getStyles(element);
 
@@ -116,9 +117,8 @@ public class InlineElementBox extends CompositeInlineBox {
 			}
 		}
 
-		this.children = (InlineBox[]) childList.toArray(new InlineBox[childList
-				.size()]);
-		this.layout(context);
+		this.children = childList.toArray(new InlineBox[childList.size()]);
+		layout(context);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			InlineBox[] children) {
 		this.element = element;
 		this.children = children;
-		this.layout(context);
+		layout(context);
 		for (int i = 0; i < children.length; i++) {
 			InlineBox child = children[i];
 			if (child.hasContent()) {
@@ -243,7 +243,7 @@ public class InlineElementBox extends CompositeInlineBox {
 	static class InlineBoxes {
 
 		/** List of generated boxes */
-		public List boxes = new ArrayList();
+		public List<InlineBox> boxes = new ArrayList<InlineBox>();
 
 		/** First generated box that has content */
 		public InlineBox firstContentBox;

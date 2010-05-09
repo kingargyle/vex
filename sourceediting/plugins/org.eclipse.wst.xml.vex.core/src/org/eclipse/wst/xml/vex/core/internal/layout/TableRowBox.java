@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -33,9 +34,9 @@ public class TableRowBox extends AbstractBlockBox {
 		super(context, parent, startOffset, endOffset);
 	}
 
-	protected List createChildren(final LayoutContext context) {
+	protected List<Box> createChildren(final LayoutContext context) {
 
-		final List children = new ArrayList();
+		final List<Box> children = new ArrayList<Box>();
 
 		VEXElement element = this.findContainingElement();
 		final int[] widths = this.getTableBox().getColumnWidths();

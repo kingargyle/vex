@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -80,7 +80,7 @@ public class DocumentFragment extends VEXDocumentFragmentImpl implements Seriali
 	public EList<String> getNodeNames() {
 
 		EList<VEXNode> nodes = getNodes();
-		EList<String> names = new BasicEList(nodes.size());
+		EList<String> names = new BasicEList<String>(nodes.size());
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i) instanceof Text) {
 				names.add(Validator.PCDATA);
@@ -98,23 +98,17 @@ public class DocumentFragment extends VEXDocumentFragmentImpl implements Seriali
 	public EList<VEXNode> getNodes() {
 		return Document.createNodeList(getContent(), 0, getContent()
 				.getLength(), getNodes(getElements()));
-//		return Arrays.asList(Document.createNodeArray(getContent(), 0, getContent()
-//				.getLength(), getElements()));
 	}
 	
 	private EList<VEXNode> getNodes(EList<VEXElement> elements) {
 		EList<VEXNode> nodes = new BasicEList<VEXNode>();
-		Iterator iter = elements.iterator();
-		while (iter.hasNext()) {
-			VEXNode node = (VEXNode) iter.next();
+		for (VEXNode node : elements) {
 			if (node.getNodeType().equals("Element")) {
 				nodes.add(node);
-			}
+			}	
 		}
 		return nodes;
 	}
-
-	// ======================================================= PRIVATE
 
 	/*
 	 * Custom Serialization Methods

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -61,14 +62,14 @@ public class TableRowGroupBox extends AbstractBlockBox {
 
 	}
 
-	protected List createChildren(final LayoutContext context) {
+	protected List<Box> createChildren(final LayoutContext context) {
 		// TODO Auto-generated method stub
 
 		// Walk children in range
 		// - table-row children get non-anonymous TableRowBox
 		// - runs of others get anonymous TableRowBox
 
-		final List children = new ArrayList();
+		final List<Box> children = new ArrayList<Box>();
 
 		this.iterateChildrenByDisplayStyle(context.getStyleSheet(),
 				childDisplayStyles, new ElementOrRangeCallback() {
@@ -137,7 +138,7 @@ public class TableRowGroupBox extends AbstractBlockBox {
 
 	// ====================================================== PRIVATE
 
-	private static Set childDisplayStyles = new HashSet();
+	private static Set<String> childDisplayStyles = new HashSet<String>();
 
 	static {
 		childDisplayStyles.add(CSS.TABLE_ROW);

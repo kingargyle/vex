@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -17,7 +18,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -141,14 +141,13 @@ public abstract class ConfigSource implements Serializable {
 	 *            The type of ConfigItem to return.
 	 */
 	public Collection<ConfigItem> getAllItems(String type) {
-		List<ConfigItem> items = new ArrayList<ConfigItem>();
-		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		List<ConfigItem> selectedItems = new ArrayList<ConfigItem>();
+		for (ConfigItem item : this.items) {
 			if (item.getExtensionPointId().equals(type)) {
-				items.add(item);
+				selectedItems.add(item);
 			}
 		}
-		return items;
+		return selectedItems;
 	}
 
 	/**
@@ -165,8 +164,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Simple ID of the item to return.
 	 */
 	public ConfigItem getItem(String simpleId) {
-		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		for (ConfigItem item : this.items) {
 			if (item.getSimpleId() != null
 					&& item.getSimpleId().equals(simpleId)) {
 				return item;
@@ -183,8 +181,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Path of the resource.
 	 */
 	public ConfigItem getItemForResource(String resourcePath) {
-		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		for (ConfigItem item : this.items) {
 			if (item.getResourcePath().equals(resourcePath)) {
 				return item;
 			}
@@ -219,10 +216,8 @@ public abstract class ConfigSource implements Serializable {
 	 *            The type of ConfigItem to return.
 	 */
 	public Collection<ConfigItem> getValidItems(String type) {
-		Collection<ConfigItem> allItems = this.getAllItems(type);
 		List<ConfigItem> validItems = new ArrayList<ConfigItem>();
-		for (Iterator<ConfigItem> it = allItems.iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		for (ConfigItem item : this.getAllItems(type)) {
 			if (item.isValid()) {
 				validItems.add(item);
 			}
@@ -244,8 +239,7 @@ public abstract class ConfigSource implements Serializable {
 	 *            Handler for build problems. May be null.
 	 */
 	public void parseResources(IBuildProblemHandler problemHandler) {
-		for (Iterator<ConfigItem> it = this.items.iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		for (ConfigItem item : this.items) {
 			String uri = item.getResourcePath();
 			if (!this.parsedResources.containsKey(uri)) {
 				IConfigItemFactory factory = ConfigRegistry.getInstance()

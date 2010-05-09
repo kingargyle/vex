@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -185,7 +186,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 		this.fireBeforeContentDeleted(new DocumentEvent(this, e1, startOffset,
 				endOffset - startOffset, null));
 
-		Iterator iter = e1.getChildNodes().iterator();
+		Iterator<VEXNode> iter = e1.getChildNodes().iterator();
 		if (e1 instanceof Element) {
 			iter = ((Element) e1).getChildIterator();
 		}
@@ -336,7 +337,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 	public EList<String> getNodeNames(int startOffset, int endOffset) {
 
 		EList<VEXNode> nodes = this.getNodes(startOffset, endOffset);
-		EList<String> names = new BasicEList(nodes.size());
+		EList<String> names = new BasicEList<String>(nodes.size());
 
 		for (int i = 0; i < nodes.size(); i++) {
 			VEXNode node = nodes.get(i);
@@ -364,7 +365,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 					+ this.getElementAt(endOffset).getName());
 		}
 
-		EList list = new BasicEList();
+		EList<VEXNode> list = new BasicEList<VEXNode>();
 		List<VEXNode> nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.size(); i++) {
 			VEXNode node = nodes.get(i);
@@ -409,7 +410,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 	static EList<VEXNode> createNodeList(Content content, int startOffset,
 			int endOffset, EList<VEXNode> elements) {
 
-		EList nodes = new BasicEList();
+		EList<VEXNode> nodes = new BasicEList<VEXNode>();
 		int offset = startOffset;
 		for (int i = 0; i < elements.size(); i++) {
 			int start = elements.get(i).getStartOffset();
@@ -503,7 +504,7 @@ public class Document extends VEXDocumentImpl implements VEXDocument {
 			VEXElement parent = this.getElementAt(offset);
 			EList<String> seq1 = this.getNodeNames(parent.getStartOffset() + 1,
 					offset);
-			EList<String> seq2 = new BasicEList();
+			EList<String> seq2 = new BasicEList<String>();
 			seq2.add(element.getName());
 			EList<String> seq3 = this.getNodeNames(offset, parent.getEndOffset());
 

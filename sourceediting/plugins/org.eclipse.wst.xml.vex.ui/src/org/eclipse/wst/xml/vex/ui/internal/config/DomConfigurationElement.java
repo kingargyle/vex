@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -47,25 +48,18 @@ public class DomConfigurationElement implements IConfigElement {
 	}
 
 	public IConfigElement[] getChildren(String name) {
-		List children = new ArrayList();
+		List<IConfigElement> children = new ArrayList<IConfigElement>();
 		NodeList list = this.element.getChildNodes();
 		for (int i = 0; i < list.getLength(); i++) {
 			Node node = list.item(i);
 			if (node instanceof Element) {
 				if (name == null || name.equals(node.getNodeName())) {
-					children.add(node);
+					children.add(new DomConfigurationElement((Element)node));
 				}
 			}
 		}
-
-		int n = children.size();
-		IConfigElement[] childArray = new IConfigElement[n];
-		for (int i = 0; i < n; i++) {
-			childArray[i] = new DomConfigurationElement((Element) children
-					.get(i));
-		}
-
-		return childArray;
+		
+		return children.toArray(new IConfigElement[children.size()]);
 	}
 
 	public String getName() {

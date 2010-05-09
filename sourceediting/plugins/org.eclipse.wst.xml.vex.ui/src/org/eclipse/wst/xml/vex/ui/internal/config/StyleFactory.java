@@ -7,14 +7,13 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.w3c.css.sac.CSSParseException;
@@ -31,7 +30,7 @@ public class StyleFactory implements IConfigItemFactory {
 	 *            Public ID of the desired doctype.
 	 * @return List of Style objects.
 	 */
-	public static List getStylesForDoctype(String publicId) {
+	public static List<Style> getStylesForDoctype(String publicId) {
 		// List result = new ArrayList();
 		// Iterator it = this.getAll().iterator();
 		// while (it.hasNext()) {
@@ -49,9 +48,7 @@ public class StyleFactory implements IConfigItemFactory {
 		Style style = (Style) item;
 		ConfigurationElement element = new ConfigurationElement("style"); //$NON-NLS-1$
 		element.setAttribute("css", style.getResourcePath()); //$NON-NLS-1$
-		Set doctypes = style.getDocumentTypes();
-		for (Iterator it = doctypes.iterator(); it.hasNext();) {
-			String publicId = (String) it.next();
+		for (String publicId : style.getDocumentTypes()) {
 			ConfigurationElement child = new ConfigurationElement("doctypeRef"); //$NON-NLS-1$
 			child.setAttribute("publicId", publicId); //$NON-NLS-1$
 			element.addChild(child);

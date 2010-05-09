@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.outline;
 
@@ -83,11 +84,11 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 	private class ContentProvider implements ITreeContentProvider {
 
 		public Object[] getChildren(Object parentElement) {
-			List blockChildren = new ArrayList();
+			List<VEXElement> blockChildren = new ArrayList<VEXElement>();
 			List<VEXElement> children = ((VEXElement) parentElement).getChildElements();
-			for (int i = 0; i < children.size(); i++) {
-				if (whitespacePolicy.isBlock(children.get(i))) {
-					blockChildren.add(children.get(i));
+			for (VEXElement child : children) {
+				if (whitespacePolicy.isBlock(child)) {
+					blockChildren.add(child);
 				}
 			}
 			return blockChildren.toArray();
@@ -117,9 +118,8 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 		// ====================================================== PRIVATE
 
 		private boolean hasBlockChild(VEXElement element) {
-			List<VEXElement> children = element.getChildElements();
-			for (int i = 0; i < children.size(); i++) {
-				if (whitespacePolicy.isBlock(children.get(i))) {
+			for (VEXElement child : element.getChildElements()) {
+				if (whitespacePolicy.isBlock(child)) {
 					return true;
 				}
 			}

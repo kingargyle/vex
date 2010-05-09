@@ -8,11 +8,11 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Florian Thienel - bug 304413 - fix immutable array issue.
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.w3c.css.sac.LexicalUnit;
@@ -29,10 +29,6 @@ public class FontFamilyProperty extends AbstractProperty {
 		super(CSS.FONT_FAMILY);
 	}
 
-	/**
-     *
-     */
-
 	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
 		if (isFontFamily(lu)) {
 			return getFontFamilies(lu);
@@ -48,9 +44,6 @@ public class FontFamilyProperty extends AbstractProperty {
 		}
 	}
 	
-
-	// ================================================= PRIVATE
-
 	private static final String[] DEFAULT_FONT_FAMILY = new String[] { "sans-serif" };
 
 	private static boolean isFontFamily(LexicalUnit lu) {
@@ -69,7 +62,7 @@ public class FontFamilyProperty extends AbstractProperty {
 			}
 			lu = lu.getNextLexicalUnit();
 		}
-		return (String[]) list.toArray(new String[list.size()]);
+		return list.toArray(new String[list.size()]);
 	}
 
 }

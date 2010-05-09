@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.undo;
 
@@ -61,5 +62,5 @@ public class CompoundEdit implements IUndoableEdit {
 
 	// ===================================================== PRIVATE
 
-	private List edits = new ArrayList();
+	private List<IUndoableEdit> edits = new ArrayList<IUndoableEdit>();
 }

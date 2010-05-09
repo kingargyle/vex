@@ -7,13 +7,13 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +63,7 @@ public class Style extends ConfigItem {
 	 * Returns a set of public IDs of all document types supported by this
 	 * style.
 	 */
-	public Set getDocumentTypes() {
+	public Set<String> getDocumentTypes() {
 		return Collections.unmodifiableSet(this.publicIds);
 	}
 
@@ -75,15 +75,14 @@ public class Style extends ConfigItem {
 	 */
 	public static Style[] getStylesForDoctype(String publicId) {
 		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List styles = new ArrayList();
-		List allStyles = registry.getAllConfigItems(Style.EXTENSION_POINT);
-		for (Iterator it = allStyles.iterator(); it.hasNext();) {
-			Style style = (Style) it.next();
+		List<Style> styles = new ArrayList<Style>();
+		for (ConfigItem configItem : registry.getAllConfigItems(Style.EXTENSION_POINT)) {
+			Style style = (Style) configItem;
 			if (style.appliesTo(publicId)) {
 				styles.add(style);
-			}
+			}	
 		}
-		return (Style[]) styles.toArray(new Style[styles.size()]);
+		return styles.toArray(new Style[styles.size()]);
 	}
 
 	/**
@@ -129,6 +128,6 @@ public class Style extends ConfigItem {
 	// ===================================================== PRIVATE
 
 	private BoxFactory boxFactory;
-	private Set publicIds = new HashSet();
+	private Set<String> publicIds = new HashSet<String>();
 
 }

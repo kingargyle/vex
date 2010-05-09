@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
@@ -32,7 +33,6 @@ public class MockGapContent extends ContentImpl implements Content {
 	private int gapStart;
 	private int gapEnd;
 	private final Set<Position> positions = new HashSet<Position>();
-	
 
 	/**
 	 * Class constructor.

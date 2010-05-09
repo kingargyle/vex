@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.docbook;
 
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -92,14 +92,13 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @return
      */
     private VEXElement[] getOutlineChildren(final VEXElement element) {
-        final List<VEXElement> children = new ArrayList<VEXElement>();
-        final EList<VEXElement> childElements = element.getChildElements();
-        for (int i = 0; i < childElements.size(); i++) {
-            if (titledElements.contains(childElements.get(i).getName())) {
-                children.add(childElements.get(i));
+    	final List<VEXElement> children = new ArrayList<VEXElement>();
+        for (VEXElement child : element.getChildElements()) {
+        	if (titledElements.contains(child.getName())) {
+                children.add(child);
             }
-        }
-        return (VEXElement[]) children.toArray(new VEXElement[children.size()]);
+		}
+        return children.toArray(new VEXElement[children.size()]);
     }
 
     
@@ -154,19 +153,17 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * facility.
      */
     private VEXElement findChild(VEXElement parent, String childName) {
-        List<VEXElement> children = parent.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            VEXElement child = children.get(i);
-            if (child.getName().equals(childName)) {
+    	for (VEXElement child : parent.getChildElements()) {
+    		if (child.getName().equals(childName)) {
                 return child;
             }
-        }
+		}
         return null;
     }
     
     private final static int MAPSIZE = 101; // prime greater than 65/.80
     
-    private final static HashSet titledElements = new HashSet(MAPSIZE);
+    private final static HashSet<String> titledElements = new HashSet<String>(MAPSIZE);
     
     static {
  // Comment on each line indicates tags content model if different than title

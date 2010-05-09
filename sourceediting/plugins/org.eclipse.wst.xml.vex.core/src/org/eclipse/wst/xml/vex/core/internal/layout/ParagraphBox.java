@@ -7,11 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
@@ -58,12 +58,10 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 	 *            List of InlineBox objects to be wrapped
 	 * @param width
 	 *            width to which the paragraph is to be wrapped
-	 * @return
 	 */
 	public static ParagraphBox create(LayoutContext context, VEXElement element,
-			List inlines, int width) {
-		InlineBox[] array = (InlineBox[]) inlines.toArray(new InlineBox[inlines
-				.size()]);
+			List<InlineBox> inlines, int width) {
+		InlineBox[] array = inlines.toArray(new InlineBox[inlines.size()]);
 		return create(context, element, array, width);
 	}
 
@@ -84,12 +82,14 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 			InlineBox[] inlines, int width) {
 
 		// lines is the list of LineBoxes we are creating
-		List lines = new ArrayList();
+		List<Box> lines = new ArrayList<Box>();
 
 		InlineBox right = new LineBox(context, element, inlines);
 
 		while (right != null) {
 			InlineBox.Pair pair = right.split(context, width, true);
+			//FIXME icampist this indicates some design problem, since later on, LineBoxes are expected
+			//either we cast here to LineBox or we make an if later on.
 			lines.add(pair.getLeft());
 			right = pair.getRight();
 		}
@@ -102,10 +102,10 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 
 		int actualWidth = 0;
 
-		for (Iterator it = lines.iterator(); it.hasNext();) {
+		//children for the ParagraphBox constructor that accepts only LineBoxes
+		List<LineBox> lineBoxesChildren = new ArrayList<LineBox>();
 
-			LineBox lineBox = (LineBox) it.next();
-
+		for (Box lineBox : lines) {
 			int x;
 			if (textAlign.equals(CSS.RIGHT)) {
 				x = width - lineBox.getWidth();
@@ -120,12 +120,14 @@ public class ParagraphBox extends AbstractBox implements BlockBox {
 
 			y += lineBox.getHeight();
 			actualWidth = Math.max(actualWidth, lineBox.getWidth());
+			
+			//strange, but we need to check the case because it's not explicit anywhere
+			if (lineBox instanceof LineBox) {
+				lineBoxesChildren.add((LineBox) lineBox);
+			}
 		}
-
-		LineBox[] children = (LineBox[]) lines
-				.toArray(new LineBox[lines.size()]);
-
-		ParagraphBox para = new ParagraphBox(children);
+		
+		ParagraphBox para = new ParagraphBox(lineBoxesChildren.toArray(new LineBox[lineBoxesChildren.size()]));
 		para.setWidth(actualWidth);
 		para.setHeight(y);
 

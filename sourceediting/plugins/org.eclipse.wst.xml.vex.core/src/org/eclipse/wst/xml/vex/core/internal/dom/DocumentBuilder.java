@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -59,7 +60,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	private Content content = new GapContent(100);
 
 	// Stack of StackElement objects
-	private LinkedList stack = new LinkedList();
+	private LinkedList<StackEntry> stack = new LinkedList<StackEntry>();
 
 	private VEXElement rootElement;
 

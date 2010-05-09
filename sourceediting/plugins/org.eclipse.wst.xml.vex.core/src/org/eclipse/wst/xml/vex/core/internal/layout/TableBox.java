@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -43,7 +44,7 @@ public class TableBox extends AbstractBlockBox {
 		super(context, parent, startOffset, endOffset);
 	}
 
-	protected List createChildren(final LayoutContext context) {
+	protected List<Box> createChildren(final LayoutContext context) {
 
 		// Walk children:
 		// each table-caption gets a BEB
@@ -51,7 +52,7 @@ public class TableBox extends AbstractBlockBox {
 		// each table-column-group gets a TableColumnGroupBox
 		// runs of others get TableBodyBox
 
-		final List children = new ArrayList();
+		final List<Box> children = new ArrayList<Box>();
 
 		this.iterateChildrenByDisplayStyle(context.getStyleSheet(),
 				captionOrColumnStyles, new ElementOrRangeCallback() {
@@ -123,7 +124,7 @@ public class TableBox extends AbstractBlockBox {
 
 	// ============================================================ PRIVATE
 
-	private static Set captionOrColumnStyles = new HashSet();
+	private static Set<String> captionOrColumnStyles = new HashSet<String>();
 
 	static {
 		captionOrColumnStyles.add(CSS.TABLE_CAPTION);

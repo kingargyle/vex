@@ -25,7 +25,6 @@ Export-Package: org.eclipse.wst.xml.vex.core.internal;x-friends:="org.eclipse.ws
  org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl;x-friends:="org.eclipse.wst.xml.vex.core.tests",
  org.eclipse.wst.xml.vex.core.internal.provisional.dom.util;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.undo;x-internal:=true,
- org.eclipse.wst.xml.vex.core.internal.util;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.validator;x-friends:="org.eclipse.wst.xml.vex.ui",
  org.eclipse.wst.xml.vex.core.internal.widget;x-friends:="org.eclipse.wst.xml.vex.core.tests,org.eclipse.wst.xml.vex.ui",
  org.w3c.flute.parser,
