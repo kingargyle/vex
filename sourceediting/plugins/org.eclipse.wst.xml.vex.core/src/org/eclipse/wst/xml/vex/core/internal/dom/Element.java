@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -38,7 +39,7 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	//private String name;
 	//private VEXElement parent = null;
 	//private List children = new ArrayList();
-	private Map attributes = new HashMap();
+	private Map<String,String> attributes = new HashMap<String,String>();
 	//private String namespaceURI = null;
 	//private String namespacePrefix = null;
 
@@ -50,12 +51,12 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	 */
 	public Element(String name) {
 		this.name = name;
-		childNodes = new BasicEList();
+		childNodes = new BasicEList<VEXNode>();
 	}
 	
 	public Element(String name, IDOMDocument document) {
 		this.name = name;
-		childNodes = new BasicEList();
+		childNodes = new BasicEList<VEXNode>();
 		setElement(document.createElement(name));
 	}
 
@@ -79,11 +80,9 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 	public Object clone() {
 		try {
 			VEXElement element = new Element(this.getName());
-			for (Iterator it = this.attributes.keySet().iterator(); it
-					.hasNext();) {
-				String attrName = (String) it.next();
-				element.setAttribute(attrName, (String) this.attributes
-						.get(attrName));
+			//add the attributes to the element instance to be cloned
+			for (Map.Entry<String, String> attr : this.attributes.entrySet()) {
+				element.setAttribute(attr.getKey(), attr.getValue());
 			}
 			return element;
 
@@ -93,43 +92,24 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 */
 	public String getAttribute(String name) {
 		return (String) attributes.get(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getAttributeNames()
-	 */
 	public EList<String> getAttributeNames() {
-		Collection names = this.attributes.keySet();
-		EList attributeNames = new BasicEList(Arrays.asList((String[]) names.toArray(new String[names.size()])));
+		Collection<String> names = this.attributes.keySet();
+		EList<String> attributeNames = new BasicEList<String>(Arrays.asList((String[]) names.toArray(new String[names.size()])));
 		return attributeNames;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildIterator()
-	 */
-	public Iterator getChildIterator() {
+	public Iterator<VEXNode> getChildIterator() {
 		return childNodes.iterator();
 	}
 
-	/**
-	 * 
-	 */
 	public EList<VEXElement> getChildElements() {
 		EList<VEXNode> nodes = getChildNodes();
 		Iterator<VEXNode> iter = nodes.iterator();
-		EList<VEXElement> elements = new BasicEList();
+		EList<VEXElement> elements = new BasicEList<VEXElement>();
 		while (iter.hasNext()) {
 			VEXNode node = iter.next();
 			if (node.getNodeType().equals("Element")) {
@@ -139,22 +119,11 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		return elements;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getChildNodes()
-	 */
 	public EList<VEXNode> getChildNodes() {
 		return Document.createNodeList(getContent(), getStartOffset() + 1,
 				getEndOffset(), childNodes);
 	}
  
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getDocument()
-	 */
 	public VEXDocument getDocument() {
 		VEXElement root = this;
 		while (root.getParent() != null) {
@@ -167,29 +136,14 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getName()
-	 */
 	public String getName() {
 		return this.name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getParent()
-	 */
 	public VEXElement getParent() {
 		return this.parent;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#getText()
-	 */
 	public String getText() {
 		String s = super.getText();
 		StringBuffer sb = new StringBuffer(s.length());
@@ -218,22 +172,10 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		child.setParent(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#isEmpty()
-	 */
 	public boolean isEmpty() {
 		return this.getStartOffset() + 1 == this.getEndOffset();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#removeAttribute
-	 * (java.lang.String)
-	 */
 	public void removeAttribute(String name) throws DocumentValidationException {
 
 		String oldValue = this.getAttribute(name);
@@ -255,13 +197,6 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#setAttribute(java
-	 * .lang.String, java.lang.String)
-	 */
 	public void setAttribute(String name, String value)
 			throws DocumentValidationException {
 
@@ -296,11 +231,6 @@ public class Element extends VEXElementImpl implements Cloneable, VEXElement {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#toString()
-	 */
 	public String toString() {
 
 		StringBuffer sb = new StringBuffer();

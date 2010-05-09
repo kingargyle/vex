@@ -7,12 +7,12 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,17 +30,17 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 public class LayoutUtils {
 
 	/**
-	 * Create a List of generated inline boxes for the given pseudo-element.
+	 * Creates a list of generated inline boxes for the given pseudo-element.
 	 * 
 	 * @param context
 	 *            LayoutContext in use
 	 * @param pseudoElement
 	 *            Element representing the generated content.
 	 */
-	public static List<StaticTextBox> createGeneratedInlines(LayoutContext context,
+	public static List<InlineBox> createGeneratedInlines(LayoutContext context,
 			VEXElement pseudoElement) {
 		String text = getGeneratedContent(context, pseudoElement);
-		List<StaticTextBox> list = new ArrayList<StaticTextBox>();
+		List<InlineBox> list = new ArrayList<InlineBox>();
 		if (text.length() > 0) {
 			list.add(new StaticTextBox(context, pseudoElement, text));
 		}
@@ -48,7 +48,8 @@ public class LayoutUtils {
 	}
 
 	/**
-	 * Returns true if the given offset falls within the given element or range.
+	 * Returns <code>true</code> if the given offset falls within the given
+	 * element or range.
 	 * 
 	 * @param elementOrRange
 	 *            Element or IntRange object representing a range of offsets.
@@ -80,10 +81,10 @@ public class LayoutUtils {
 	private static String getGeneratedContent(LayoutContext context,
 			VEXElement pseudoElement) {
 		Styles styles = context.getStyleSheet().getStyles(pseudoElement);
-		List content = styles.getContent();
+		List<String> content = styles.getContent();
 		StringBuffer sb = new StringBuffer();
-		for (Iterator it = content.iterator(); it.hasNext();) {
-			sb.append((String) it.next()); // TODO: change to ContentPart
+		for (String string : content) {
+			sb.append(string); // TODO: change to ContentPart
 		}
 		return sb.toString();
 	}
@@ -111,8 +112,11 @@ public class LayoutUtils {
 	 *            matching elements and non-matching ranges.
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
-			Set displayStyles, VEXElement element, int startOffset, int endOffset,
-			ElementOrRangeCallback callback) {
+			                                         Set<String> displayStyles,
+			                                         VEXElement element,
+			                                         int startOffset,
+			                                         int endOffset,
+			                                         ElementOrRangeCallback callback) {
 
 		List<VEXNode> nonMatching = new ArrayList<VEXNode>();
 
@@ -155,7 +159,7 @@ public class LayoutUtils {
 			}
 		}
 
-		if (nonMatching.size() > 0) {
+		if (!nonMatching.isEmpty()) {
 			VEXNode firstNode = (VEXNode) nonMatching.get(0);
 			VEXNode lastNode = (VEXNode) nonMatching.get(nonMatching.size() - 1);
 			if (lastNode instanceof Element) {
@@ -185,7 +189,9 @@ public class LayoutUtils {
 	 *            matching elements and non-matching ranges.
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
-			Set displayStyles, VEXElement table, ElementOrRangeCallback callback) {
+			                                         Set<String> displayStyles,
+			                                         VEXElement table,
+			                                         ElementOrRangeCallback callback) {
 		iterateChildrenByDisplayStyle(styleSheet, displayStyles, table,
 				table.getStartOffset() + 1, table.getEndOffset(), callback);
 	}

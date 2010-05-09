@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
 
@@ -56,7 +57,7 @@ public interface Validator extends Serializable {
 	 * document type.
 	 * @model 
 	 */
-	public Set getValidRootElements();
+	public Set<String> getValidRootElements();
 
 	/**
 	 * Returns a set of Strings representing items that are valid at point in

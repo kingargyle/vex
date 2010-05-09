@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -119,7 +120,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	 * Lays out the children as vertically stacked blocks. Runs of text and
 	 * inline elements are wrapped in DummyBlockBox's.
 	 */
-	public List createChildren(LayoutContext context) {
+	public List<Box> createChildren(LayoutContext context) {
 
 		long start = 0;
 		if (VEXCorePlugin.getInstance().isDebugging()) {
@@ -129,7 +130,7 @@ public class BlockElementBox extends AbstractBlockBox {
 		VEXElement element = this.getElement();
 		int width = this.getWidth();
 
-		List childList = new ArrayList();
+		List<Box> childList = new ArrayList<Box>();
 
 		StyleSheet ss = context.getStyleSheet();
 
@@ -138,13 +139,13 @@ public class BlockElementBox extends AbstractBlockBox {
 		Styles genStyles;
 
 		// :before content
-		List beforeInlines = null;
+		List<InlineBox> beforeInlines = null;
 		genElement = context.getStyleSheet()
 				.getBeforeElement(this.getElement());
 		if (genElement != null) {
 			genStyles = ss.getStyles(genElement);
 			if (genStyles.getDisplay().equals(CSS.INLINE)) {
-				beforeInlines = new ArrayList();
+				beforeInlines = new ArrayList<InlineBox>();
 				beforeInlines.addAll(LayoutUtils.createGeneratedInlines(
 						context, genElement));
 			} else {
@@ -155,12 +156,12 @@ public class BlockElementBox extends AbstractBlockBox {
 
 		// :after content
 		Box afterBlock = null;
-		List afterInlines = null;
+		List<InlineBox> afterInlines = null;
 		genElement = context.getStyleSheet().getAfterElement(this.getElement());
 		if (genElement != null) {
 			genStyles = context.getStyleSheet().getStyles(genElement);
 			if (genStyles.getDisplay().equals(CSS.INLINE)) {
-				afterInlines = new ArrayList();
+				afterInlines = new ArrayList<InlineBox>();
 				afterInlines.addAll(LayoutUtils.createGeneratedInlines(context,
 						genElement));
 			} else {

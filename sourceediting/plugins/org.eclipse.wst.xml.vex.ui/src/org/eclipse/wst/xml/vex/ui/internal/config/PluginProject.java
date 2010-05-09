@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -22,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -82,15 +82,13 @@ public class PluginProject extends ConfigSource {
 	 * @throws CoreException
 	 */
 	public static PluginProject get(IProject project) {
-
-		List sources = ConfigRegistry.getInstance().getAllConfigSources();
-		for (Iterator it = sources.iterator(); it.hasNext();) {
-			ConfigSource source = (ConfigSource) it.next();
+		for (ConfigSource source : ConfigRegistry.getInstance().getAllConfigSources()) {
 			if (source instanceof PluginProject) {
-				if (project.equals(((PluginProject) source).getProject())) {
-					return (PluginProject) source;
+				PluginProject pluginProject=(PluginProject)source;
+				if (project.equals(pluginProject.getProject())) {
+					return pluginProject;
 				}
-			}
+			}	
 		}
 		return null;
 	}
@@ -206,7 +204,7 @@ public class PluginProject extends ConfigSource {
 			String id = element.getAttribute("id"); //$NON-NLS-1$
 			String name = element.getAttribute("name"); //$NON-NLS-1$
 
-			List configElementList = new ArrayList();
+			List<Node> configElementList = new ArrayList<Node>();
 			NodeList childList = element.getChildNodes();
 			for (int j = 0; j < childList.getLength(); j++) {
 				Node child = childList.item(j);
@@ -253,17 +251,16 @@ public class PluginProject extends ConfigSource {
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
 
 		ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
-		for (Iterator it = this.getAllItems().iterator(); it.hasNext();) {
-			ConfigItem item = (ConfigItem) it.next();
+		for (ConfigItem item : this.getAllItems()) {
 			ConfigurationElement extElement = new ConfigurationElement(
-					"extension"); //$NON-NLS-1$
+			"extension"); //$NON-NLS-1$
 			extElement.setAttribute("id", item.getSimpleId()); //$NON-NLS-1$
 			extElement.setAttribute("name", item.getName()); //$NON-NLS-1$
 			extElement.setAttribute("point", item.getExtensionPointId()); //$NON-NLS-1$
 			IConfigItemFactory factory = ConfigRegistry.getInstance()
-					.getConfigItemFactory(item.getExtensionPointId());
+				.getConfigItemFactory(item.getExtensionPointId());
 			extElement.setChildren(factory.createConfigurationElements(item));
-			root.addChild(extElement);
+			root.addChild(extElement);	
 		}
 		writeElement(root, out, 0);
 

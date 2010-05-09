@@ -7,11 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
@@ -32,7 +32,7 @@ public class GapContent extends ContentImpl implements Content {
 	private char[] content;
 	private int gapStart;
 	private int gapEnd;
-	private final Map positions = new HashMap();
+	private final Map<Position, Position> positions = new HashMap<Position, Position>();
 
 	/**
 	 * Class constructor.
@@ -95,15 +95,14 @@ public class GapContent extends ContentImpl implements Content {
 		this.gapStart += s.length();
 
 		if (!atEnd) {
-			//
+
 			// Update positions
-			//
-			for (Iterator i = this.positions.keySet().iterator(); i.hasNext();) {
-				GapContentPosition pos = (GapContentPosition) i.next();
+			for (Position pos : this.positions.keySet()) {
 				if (pos.getOffset() >= offset) {
 					pos.setOffset(pos.getOffset() + s.length());
 				}
 			}
+
 		}
 	}
 
@@ -123,8 +122,7 @@ public class GapContent extends ContentImpl implements Content {
 		this.moveGap(offset + length);
 		this.gapStart -= length;
 
-		for (Iterator i = this.positions.keySet().iterator(); i.hasNext();) {
-			GapContentPosition pos = (GapContentPosition) i.next();
+		for (Position pos : this.positions.keySet()) {
 			if (pos.getOffset() >= offset + length) {
 				pos.setOffset(pos.getOffset() - length);
 			} else if (pos.getOffset() >= offset) {

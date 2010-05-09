@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Holger Voormann - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
@@ -29,7 +30,7 @@ public class MoveRowUpHandler extends AbstractMoveRowHandler {
 
     @Override
     protected int target(SelectedRows selected) {
-        List rows = selected.getRows();
+        List<Object> rows = selected.getRows();
         Object lastRow = rows.get(rows.size() - 1);
         return VexHandlerUtil.getOuterRange(lastRow).getEnd();
     }

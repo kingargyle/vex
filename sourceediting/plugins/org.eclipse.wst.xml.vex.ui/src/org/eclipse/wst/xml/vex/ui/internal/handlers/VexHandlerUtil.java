@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
@@ -304,24 +305,21 @@ public final class VexHandlerUtil {
 
         System.out.println("Matched " + parent);
 
-        List blockList = new ArrayList();
+        List<BlockBox> blockList = new ArrayList<BlockBox>();
 
         Box[] children = parent.getChildren();
         System.out.println("Parent has " + children.length + " children");
-        for (int i = 0; i < children.length; i++) {
-            Box child = children[i];
-            if (child instanceof BlockBox
+        for (Box child : children) {
+        	if (child instanceof BlockBox
                     && child.getStartOffset() >= vexWidget.getSelectionStart()
                     && child.getEndOffset() <= vexWidget.getSelectionEnd()) {
                 System.out.println("  adding " + child);
-                blockList.add(child);
+                blockList.add((BlockBox) child);
             } else {
                 System.out.println("  skipping " + child);
             }
-
-        }
-
-        return (BlockBox[]) blockList.toArray(new BlockBox[blockList.size()]);
+		}
+        return blockList.toArray(new BlockBox[blockList.size()]);
     }
 
     /**
@@ -340,7 +338,7 @@ public final class VexHandlerUtil {
                 if (VexHandlerUtil.elementOrRangeIsPartiallySelected(vexWidget,
                         row)) {
                     if (selected.rows == null) {
-                        selected.rows = new ArrayList();
+                        selected.rows = new ArrayList<Object>();
                     }
                     selected.rows.add(row);
                 } else {
@@ -516,7 +514,7 @@ public final class VexHandlerUtil {
             return;
         }
 
-        final List tableChildren = new ArrayList();
+        final List<Element> tableChildren = new ArrayList<Element>();
         final boolean[] found = new boolean[] { false };
         LayoutUtils.iterateChildrenByDisplayStyle(ss,
                 LayoutUtils.TABLE_CHILD_STYLES, table,
@@ -541,9 +539,8 @@ public final class VexHandlerUtil {
             return;
         }
 
-        int startOffset = ((Element) tableChildren.get(0)).getStartOffset();
-        int endOffset = ((Element) tableChildren.get(tableChildren.size() - 1))
-                .getEndOffset() + 1;
+        int startOffset = tableChildren.get(0).getStartOffset();
+        int endOffset = tableChildren.get(tableChildren.size() - 1).getEndOffset() + 1;
         LayoutUtils.iterateTableRows(ss, table, startOffset, endOffset,
                 callback);
     }

@@ -7,13 +7,13 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,8 +56,8 @@ public class ConfigurationElement implements IConfigElement {
 	}
 
 	public String[] getAttributeNames() {
-		Set keys = this.attributes.keySet();
-		return (String[]) keys.toArray(new String[keys.size()]);
+		Set<String> keys = this.attributes.keySet();
+		return keys.toArray(new String[keys.size()]);
 	}
 
 	public IConfigElement[] getChildren() {
@@ -66,14 +66,13 @@ public class ConfigurationElement implements IConfigElement {
 	}
 
 	public IConfigElement[] getChildren(String name) {
-		List kids = new ArrayList();
-		for (Iterator it = this.children.iterator(); it.hasNext();) {
-			IConfigElement child = (IConfigElement) it.next();
+		List<IConfigElement> kids = new ArrayList<IConfigElement>();
+		for (IConfigElement child : this.children) {
 			if (child.getName().equals(name)) {
 				kids.add(child);
 			}
 		}
-		return (IConfigElement[]) kids.toArray(new IConfigElement[kids.size()]);
+		return kids.toArray(new IConfigElement[kids.size()]);
 	}
 
 	public String getName() {
@@ -137,6 +136,6 @@ public class ConfigurationElement implements IConfigElement {
 
 	private String name;
 	private String value;
-	private Map attributes = new HashMap();
-	private List children = new ArrayList();
+	private Map<String, String> attributes = new HashMap<String, String>();
+	private List<IConfigElement> children = new ArrayList<IConfigElement>();
 }

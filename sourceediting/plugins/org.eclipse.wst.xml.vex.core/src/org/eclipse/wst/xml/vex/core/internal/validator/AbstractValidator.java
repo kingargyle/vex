@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
@@ -28,7 +29,7 @@ public abstract class AbstractValidator implements Validator {
 	public boolean isValidSequence(String element, List<String> seq1,
 			List<String> seq2, List<String> seq3, boolean partial) {
 
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < seq1.size(); i++) {
 			list.add(seq1.get(i));
 		}

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.swt;
 
@@ -465,7 +466,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 	int originX = 0;
 	int originY = 0;
 
-	private List selectionListeners = new ArrayList();
+	private List<ISelectionChangedListener> selectionListeners = new ArrayList<ISelectionChangedListener>();
 	private ISelection selection;
 
 	private Runnable caretTimerRunnable = new Runnable() {
@@ -530,9 +531,7 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 			SelectionChangedEvent e = new SelectionChangedEvent(VexWidget.this,
 					selection);
-			for (int i = 0; i < selectionListeners.size(); i++) {
-				ISelectionChangedListener listener = (ISelectionChangedListener) selectionListeners
-						.get(i);
+			for (ISelectionChangedListener listener : selectionListeners) {
 				listener.selectionChanged(e);
 			}
 			caretTimer.reset();

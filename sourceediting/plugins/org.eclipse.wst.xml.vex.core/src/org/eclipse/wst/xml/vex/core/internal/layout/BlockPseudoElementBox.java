@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -47,7 +48,7 @@ public class BlockPseudoElementBox extends AbstractBox implements BlockBox {
 				+ styles.getPaddingRight().get(width);
 
 		int childWidth = width - leftInset - rightInset;
-		List<StaticTextBox> inlines = LayoutUtils.createGeneratedInlines(context,
+		List<InlineBox> inlines = LayoutUtils.createGeneratedInlines(context,
 				pseudoElement);
 		this.para = ParagraphBox.create(context, pseudoElement, inlines,
 				childWidth);

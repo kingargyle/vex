@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -424,7 +425,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 *            matching elements and non-matching ranges.
 	 */
 	protected void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
-			Set displayStyles, ElementOrRangeCallback callback) {
+			Set<String> displayStyles, ElementOrRangeCallback callback) {
 		LayoutUtils.iterateChildrenByDisplayStyle(styleSheet, displayStyles,
 				this.findContainingElement(), this.getStartOffset(), this
 						.getEndOffset(), callback);
@@ -569,7 +570,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			// System.out.println("Redo layout of " +
 			// this.getElement().getName());
 
-			List childList = createChildren(context);
+			List<Box> childList = this.createChildren(context);
 			this.children = (BlockBox[]) childList
 					.toArray(new BlockBox[childList.size()]);
 
@@ -626,18 +627,18 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		}
 	}
 
-	protected abstract List createChildren(LayoutContext context);
+	protected abstract List<Box> createChildren(LayoutContext context);
 
 	/**
 	 * Creates a list of block boxes for a given document range. beforeInlines
 	 * and afterInlines are prepended/appended to the first/last block child,
 	 * and each may be null.
 	 */
-	protected List createBlockBoxes(LayoutContext context, int startOffset,
-			int endOffset, int width, List beforeInlines, List afterInlines) {
+	protected List<Box> createBlockBoxes(LayoutContext context, int startOffset,
+			int endOffset, int width, List<InlineBox> beforeInlines, List<InlineBox> afterInlines) {
 
-		List blockBoxes = new ArrayList();
-		List pendingInlines = new ArrayList();
+		List<Box> blockBoxes = new ArrayList<Box>();
+		List<InlineBox> pendingInlines = new ArrayList<InlineBox>();
 
 		if (beforeInlines != null) {
 			pendingInlines.addAll(beforeInlines);
@@ -779,7 +780,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		private VEXElement element;
 		private int startOffset;
 		private int endOffset;
-		private LinkedList pushStack = new LinkedList();
+		private LinkedList<Object> pushStack = new LinkedList<Object>();
 	}
 
 	protected boolean hasChildren() {

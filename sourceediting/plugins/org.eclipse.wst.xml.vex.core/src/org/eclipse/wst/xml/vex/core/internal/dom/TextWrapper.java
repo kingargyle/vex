@@ -8,11 +8,11 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     David Carver unit tests fixes
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class TextWrapper {
 
-	private List parts = new ArrayList();
+	private List<String> parts = new ArrayList<String>();
 
 	private boolean lastIsWhite = true;
 
@@ -36,7 +36,6 @@ public class TextWrapper {
 	 * @param s
 	 *            Text to be added.
 	 */
-	@SuppressWarnings("unchecked")
 	public void add(String s) {
 		int i = 0;
 		int j = 0;
@@ -94,12 +93,10 @@ public class TextWrapper {
 	 * @param width
 	 */
 	public String[] wrap(int width) {
-		List lines = new ArrayList();
+		List<String> lines = new ArrayList<String>();
 		StringBuffer line = new StringBuffer();
 
-		Iterator iter = this.parts.iterator();
-		while (iter.hasNext()) {
-			String s = (String) iter.next();
+		for (String s : this.parts) {
 			if (line.length() > 0 && line.length() + s.length() > width) {
 				// part won't fit on the current line
 				lines.add(line.toString());
@@ -121,7 +118,5 @@ public class TextWrapper {
 
 		return (String[]) lines.toArray(new String[lines.size()]);
 	}
-
-	// ====================================================== PRIVATE
 
 }
