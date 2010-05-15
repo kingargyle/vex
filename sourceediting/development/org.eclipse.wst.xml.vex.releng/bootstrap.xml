@@ -128,7 +128,7 @@
 
 						<echo>Create ${basedir}/psfs/athena.psf file</echo>
 						<mkdir dir="psfs" />
-						<echo file="${basedir}/psfs/athena.psf">&lt;?xml version="1.0" encoding="UTF-8"?>
+						<echo file="${COMMON_TOOLS}/psfs/athena.psf">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;psf version="2.0">
 &lt;provider id="org.eclipse.team.cvs.core.cvsnature">
 &lt;project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,org.eclipse.dash/athena/org.eclipse.dash.commonbuilder/org.eclipse.dash.commonbuilder.releng,org.eclipse.dash.common.releng,${commonrelengTag}"/>
@@ -142,7 +142,7 @@
 				                  cvsUser="anonymous"
 				                  cvsPwd=""
 				                  command="checkout"
-				                  projectSet="psfs/athena.psf"
+				                  projectSet="${COMMON_TOOLS}/psfs/athena.psf"
 				                  destination="${COMMON_TOOLS}"
 				/>
 				<property name="relengCommonBuilderDir" value="${COMMON_TOOLS}/org.eclipse.dash.common.releng" />
