@@ -119,15 +119,15 @@
 				<!-- fetch projects using psf file; create it if needed -->
 				<if>
 					<not>
-						<available file="${basedir}/psfs/athena.psf" type="file" />
+						<available file="${COMMON_TOOLS}/psfs/athena.psf" type="file" />
 					</not>
 					<then>
 						<!-- if required: use a different tag/branch -->
 						<property name="basebuilderTag" value="r35x_v20090811" />
 						<property name="commonrelengTag" value="HEAD" />
 
-						<echo>Create ${basedir}/psfs/athena.psf file</echo>
-						<mkdir dir="psfs" />
+						<echo>Create ${COMMON_TOOLS}/psfs/athena.psf file</echo>
+						<mkdir dir="${COMMON_TOOLS}/psfs" />
 						<echo file="${COMMON_TOOLS}/psfs/athena.psf">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;psf version="2.0">
 &lt;provider id="org.eclipse.team.cvs.core.cvsnature">
