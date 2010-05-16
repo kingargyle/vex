@@ -193,6 +193,7 @@
 </fail>
 			</then>
 		</if>
+<!--		
 		<property name="build.properties" value="build.properties" />
 		<echo file="${build.properties}" append="true">
 
@@ -209,6 +210,7 @@ relengBaseBuilderDir=${relengBaseBuilderDir}
 </echo>
 			</then>
 		</if>
+-->
 	</target>
 
 </project>
