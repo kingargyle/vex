@@ -104,7 +104,7 @@ public class PositionImpl extends EObjectImpl implements Position {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case DomEMFPackage.POSITION__OFFSET:
-				return new Integer(getOffset());
+				return getOffset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -118,7 +118,7 @@ public class PositionImpl extends EObjectImpl implements Position {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case DomEMFPackage.POSITION__OFFSET:
-				setOffset(((Integer)newValue).intValue());
+				setOffset((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

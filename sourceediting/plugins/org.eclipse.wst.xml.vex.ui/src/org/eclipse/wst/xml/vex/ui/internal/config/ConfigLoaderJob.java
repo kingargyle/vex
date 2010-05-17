@@ -8,6 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Ed Burnette - 7/23/2006 -  Changes needed to build on 3.2.
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -80,11 +81,8 @@ public class ConfigLoaderJob extends Job {
 
 		ConfigRegistry configRegistry = ConfigRegistry.getInstance();
 		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-		String[] namespaces = extRegistry.getNamespaces();
-		for (int i = 0; i < namespaces.length; i++) {
-
-			String ns = namespaces[i];
-			Bundle bundle = Platform.getBundle(ns);
+		for (String namespace : extRegistry.getNamespaces()) {
+			Bundle bundle = Platform.getBundle(namespace);
 			if (bundle == null)
 				continue;
 
@@ -118,7 +116,7 @@ public class ConfigLoaderJob extends Job {
 
 			if (source == null) {
 
-				source = ConfigPlugin.load(ns);
+				source = ConfigPlugin.load(namespace);
 
 				if (source != null) {
 					try {
@@ -191,20 +189,20 @@ public class ConfigLoaderJob extends Job {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject[] projects = root.getProjects();
 
-		for (int i = 0; i < projects.length; i++) {
+		for (IProject project : projects) {
 			try {
-				if (projects[i].isOpen()
-						&& projects[i].hasNature(PluginProjectNature.ID)) {
+				if (project.isOpen()
+						&& project.hasNature(PluginProjectNature.ID)) {
 					monitor
 							.subTask(Messages
-									.getString("ConfigLoaderJob.loadingProject") + projects[i].getName()); //$NON-NLS-1$
-					PluginProject.load(projects[i]);
+									.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
+					PluginProject.load(project);
 					monitor.worked(1);
 				}
 			} catch (CoreException e) {
 				String message = MessageFormat.format(Messages
 						.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
-						new Object[] { projects[i].getName() });
+						new Object[] { project.getName() });
 				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 			}
 		}

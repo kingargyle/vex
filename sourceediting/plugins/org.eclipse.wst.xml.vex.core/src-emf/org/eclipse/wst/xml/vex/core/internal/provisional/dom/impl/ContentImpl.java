@@ -149,7 +149,7 @@ public class ContentImpl extends EObjectImpl implements Content {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case DomEMFPackage.CONTENT__LENGTH:
-				return new Integer(getLength());
+				return getLength();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -163,7 +163,7 @@ public class ContentImpl extends EObjectImpl implements Content {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case DomEMFPackage.CONTENT__LENGTH:
-				setLength(((Integer)newValue).intValue());
+				setLength((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

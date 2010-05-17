@@ -301,8 +301,7 @@ public class ConfigRegistry {
 			} else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
 				IResourceDelta[] resources = event.getDelta()
 						.getAffectedChildren();
-				for (int i = 0; i < resources.length; i++) {
-					final IResourceDelta delta = resources[i];
+				for (final IResourceDelta delta : resources) {
 					if (delta.getResource() instanceof IProject) {
 						final IProject project = (IProject) delta.getResource();
 

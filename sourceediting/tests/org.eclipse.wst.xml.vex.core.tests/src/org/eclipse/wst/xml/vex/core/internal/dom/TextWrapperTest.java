@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -35,8 +36,8 @@ public class TextWrapperTest extends TestCase {
 				"words ",
 				"and here are some long ones. We make sure we have some short stuff and some long stuff, just to make sure it all wraps." };
 
-		for (int i = 0; i < inputs.length; i++) {
-			wrapper.add(inputs[i]);
+		for (String input : inputs) {
+			wrapper.add(input);
 		}
 		results = wrapper.wrap(40);
 		assertWidth(results, 40);
@@ -67,11 +68,11 @@ public class TextWrapperTest extends TestCase {
 	private void assertPreserved(String[] inputs, String[] results) {
 		StringBuffer inputSB = new StringBuffer();
 		StringBuffer resultSB = new StringBuffer();
-		for (int i = 0; i < inputs.length; i++) {
-			inputSB.append(inputs[i]);
+		for (String input : inputs) {
+			inputSB.append(input);
 		}
-		for (int i = 0; i < results.length; i++) {
-			resultSB.append(results[i]);
+		for (String result : results) {
+			resultSB.append(result);
 		}
 		assertEquals(inputSB.toString(), resultSB.toString());
 	}

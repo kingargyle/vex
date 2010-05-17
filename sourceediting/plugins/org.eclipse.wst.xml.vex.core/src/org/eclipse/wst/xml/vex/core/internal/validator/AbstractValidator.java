@@ -36,7 +36,7 @@ public abstract class AbstractValidator implements Validator {
 		if (seq2 != null) {
 			for (int i = 0; i < seq2.size(); i++) {
 				if (i == 0 && seq2.get(i).equals(Validator.PCDATA)
-						&& list.size() > 0
+						&& !list.isEmpty()
 						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;
@@ -47,7 +47,7 @@ public abstract class AbstractValidator implements Validator {
 		if (seq3 != null) {
 			for (int i = 0; i < seq3.size(); i++) {
 				if (i == 0 && seq3.get(i).equals(Validator.PCDATA)
-						&& list.size() > 0
+						&& !list.isEmpty()
 						&& list.get(list.size() - 1).equals(Validator.PCDATA)) {
 					// Avoid consecutive PCDATA's
 					continue;

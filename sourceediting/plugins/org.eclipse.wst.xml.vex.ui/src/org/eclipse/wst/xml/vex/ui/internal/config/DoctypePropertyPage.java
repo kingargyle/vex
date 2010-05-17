@@ -284,8 +284,8 @@ public class DoctypePropertyPage extends PropertyPage {
 
 			rootElementsTable.removeAll();
 
-			final java.util.List l = new ArrayList(validator
-					.getValidRootElements());
+			final List<String> l =
+				new ArrayList<String>(validator.getValidRootElements());
 			Collections.sort(l);
 			for (int i = 0; i < l.size(); i++) {
 

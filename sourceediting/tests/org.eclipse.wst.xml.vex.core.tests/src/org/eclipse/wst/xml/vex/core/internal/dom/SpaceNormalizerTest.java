@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -68,10 +69,10 @@ public class SpaceNormalizerTest extends TestCase {
 		if (!fTestProjectInitialized) {
 			getAndCreateProject();
 
-			Enumeration<String> e = Platform.getBundle(
+			Enumeration<?> e = Platform.getBundle(
 					VEXCoreTestPlugin.PLUGIN_ID).getEntryPaths("/projectFiles");
 			while (e.hasMoreElements()) {
-				String path = e.nextElement();
+				String path = (String) e.nextElement();
 				URL url = Platform.getBundle(VEXCoreTestPlugin.PLUGIN_ID)
 						.getEntry(path);
 				if (!url.getFile().endsWith("/")) {

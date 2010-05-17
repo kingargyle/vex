@@ -126,7 +126,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 		this.appendChars(true);
 
-		StackEntry entry = (StackEntry) this.stack.removeLast();
+		StackEntry entry = this.stack.removeLast();
 
 		// we must insert the trailing sentinel first, else the insertion
 		// pushes the end position of the element to after the sentinel
@@ -182,7 +182,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 			if (domDocument == null) {
 				initDOM();
 			}
-			if (stack.size() == 0) {
+			if (stack.isEmpty()) {
 				rootElement = new RootElement(qName);
 				org.w3c.dom.Element domElement = domDocument.createElement(qName);
 				element = this.rootElement;
@@ -197,7 +197,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				org.w3c.dom.Element domElement = domDocument.createElement(qName);
 				element.setElement(domElement);
 
-				VEXElement parent = ((StackEntry) stack.getLast()).element;
+				VEXElement parent = stack.getLast().element;
 				parent.addChild(element);
 			}
 
@@ -269,8 +269,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 
 	private StringBuffer cleanUpTextContent(boolean trimTrailing) {
 		StringBuffer sb;
-		StackEntry entry = this.stack.size() > 0 ? (StackEntry) this.stack
-				.getLast() : null;
+		StackEntry entry = this.stack.isEmpty() ? null : this.stack.getLast();
 
 		if (entry != null && entry.pre) {
 

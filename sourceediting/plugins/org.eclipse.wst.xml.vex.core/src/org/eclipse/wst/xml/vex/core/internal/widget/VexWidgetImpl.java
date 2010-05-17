@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.widget;
 
@@ -269,11 +270,11 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public boolean canRedo() {
-		return this.redoList.size() > 0;
+		return !this.redoList.isEmpty();
 	}
 
 	public boolean canUndo() {
-		return this.undoList.size() > 0;
+		return !this.undoList.isEmpty();
 	}
 
 	public boolean canUnwrap() {
@@ -1021,7 +1022,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void redo() throws CannotRedoException {
-		if (redoList.size() == 0) {
+		if (redoList.isEmpty()) {
 			throw new CannotRedoException();
 		}
 		UndoableAndOffset event = redoList.removeLast();
@@ -1249,7 +1250,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	public void undo() throws CannotUndoException {
-		if (undoList.size() == 0) {
+		if (undoList.isEmpty()) {
 			throw new CannotUndoException();
 		}
 		UndoableAndOffset event = undoList.removeLast();
@@ -1300,7 +1301,7 @@ public class VexWidgetImpl implements IVexWidget {
 		if (compoundEdit != null) {
 			compoundEdit.addEdit(edit);
 		} else {
-			if (   undoList.size() > 0
+			if (   !undoList.isEmpty()
 				&& undoList.getLast().edit.combine(edit)) {
 				return;
 			} else {

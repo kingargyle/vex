@@ -8,6 +8,7 @@
  * Contributors:
  *     John Krasnay - initial implementation
  *     Holger Voormann
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.swt;
 
@@ -218,12 +219,11 @@ public class ContentAssist extends PopupDialog {
     private void repopulateList() {
         String filterText = textWidget.getText();
         List<AbstractVexAction> actionList = new LinkedList<AbstractVexAction>();
-        for (int i = 0; i < actions.length; i++) {
-            AbstractVexAction action = actions[i];
-            if (action.getText().contains(filterText)) {
+        for (AbstractVexAction action : actions) {
+        	if (action.getText().contains(filterText)) {
                 actionList.add(action);
             }
-        }
+		}
         viewer.setInput(actionList.toArray(new AbstractVexAction[actionList.size()]));
         viewer.getTable().setSelection(0);
     }

@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
@@ -26,21 +27,21 @@ public class NextTableCellHandler extends AbstractNavigateTableCellHandler {
         Box[] cells = row.getChildren();
 
         // in this row
-        for (int i = 0; i < cells.length; i++) {
-            if (cells[i].getStartOffset() > offset) {
-                widget.moveTo(cells[i].getStartOffset());
-                widget.moveTo(cells[i].getEndOffset(), true);
+        for (Box cell : cells) {
+        	if (cell.getStartOffset() > offset) {
+                widget.moveTo(cell.getStartOffset());
+                widget.moveTo(cell.getEndOffset(), true);
                 return;
             }
-        }
+		}
 
         // in other row
         Box[] rows = row.getParent().getChildren();
-        for (int i = 0; i < rows.length; i++) {
-            if (rows[i].getStartOffset() > offset) {
-                cells = rows[i].getChildren();
-                if (cells.length > 0) {
-                    Box cell = cells[0];
+        for (Box boxRow : rows) {
+        	if (boxRow.getStartOffset() > offset) {
+            	Box[] rowCells = boxRow.getChildren();
+                if (rowCells.length > 0) {
+                    Box cell = rowCells[0];
                     widget.moveTo(cell.getStartOffset());
                     widget.moveTo(cell.getEndOffset(), true);
                 } else {
@@ -48,7 +49,7 @@ public class NextTableCellHandler extends AbstractNavigateTableCellHandler {
                 }
                 return;
             }
-        }
+		}
 
         // We didn't find a "next row", so let's dup the current one
         VexHandlerUtil.duplicateTableRow(widget, row);

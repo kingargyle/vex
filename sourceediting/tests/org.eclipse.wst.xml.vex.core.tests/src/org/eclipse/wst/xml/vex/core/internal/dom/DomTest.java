@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -16,7 +17,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
 import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
@@ -48,7 +48,6 @@ public class DomTest extends TestCase {
 	}
 	
 	public void testWTPStructruedDocument() throws Exception {
-		IStructuredModel model = null;
 		IModelManager modelManager = StructuredModelManager.getModelManager();
 		
 		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);

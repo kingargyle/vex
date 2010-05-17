@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -289,8 +290,8 @@ public class DocumentWriter {
 			List<String> attrs = element.getAttributeNames();
 			Collections.sort(attrs);
 
-			if (attrs.size() == 0) {
-				if (content.size() == 0) {
+			if (attrs.isEmpty()) {
+				if (content.isEmpty()) {
 					wrapper.add("<" + element.getName() + " />");
 				} else {
 					wrapper.add("<" + element.getName() + ">");
@@ -308,7 +309,7 @@ public class DocumentWriter {
 								.getAttribute(attrs.get(i))));
 					}
 					if (i == attrs.size() - 1) {
-						if (content.size() == 0) {
+						if (content.isEmpty()) {
 							sb.append("/>");
 						} else {
 							sb.append(">");
@@ -322,7 +323,7 @@ public class DocumentWriter {
 				addNode(content.get(i), wrapper);
 			}
 
-			if (content.size() > 0) {
+			if (!content.isEmpty()) {
 				wrapper.add("</" + element.getName() + ">");
 			}
 		}

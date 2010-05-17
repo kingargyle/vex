@@ -8,6 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Torsten Stolpmann - bug 257946 - fixed outline view to work with multipage editor.
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.outline;
 
@@ -173,7 +174,7 @@ public class DocumentOutlinePage extends Page implements IContentOutlinePage {
 		String providerClassName = doctype.getOutlineProvider();
 		if (bundle != null && providerClassName != null) {
 			try {
-				Class clazz = bundle.loadClass(providerClassName);
+				Class<?> clazz = bundle.loadClass(providerClassName);
 				this.outlineProvider = (IOutlineProvider) clazz.newInstance();
 			} catch (Exception ex) {
 				String message = Messages

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.wizards;
 
@@ -20,7 +21,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorRegistry;
-import org.eclipse.ui.IFileEditorMapping;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -153,8 +153,7 @@ public class NewDocumentWizard extends BasicNewResourceWizard {
 		FileEditorMapping[] mappings = (FileEditorMapping[]) ereg
 				.getFileEditorMappings();
 		FileEditorMapping mapping = null;
-		for (int i = 0; i < mappings.length; i++) {
-			IFileEditorMapping fem = mappings[i];
+		for (FileEditorMapping fem : mappings) {
 			if (fem.getLabel().equals(fileName)) {
 				mapping = (FileEditorMapping) fem;
 				break;
@@ -164,9 +163,8 @@ public class NewDocumentWizard extends BasicNewResourceWizard {
 		if (mapping != null) {
 			// found mapping for fileName
 			// make sure it includes our editor
-			IEditorDescriptor[] editors = mapping.getEditors();
-			for (int i = 0; i < editors.length; i++) {
-				if (editors[i].getId().equals(editorId)) {
+			for (IEditorDescriptor editor : mapping.getEditors()) {
+				if (editor.getId().equals(editorId)) {
 					// already mapped
 					return;
 				}
@@ -208,12 +206,12 @@ public class NewDocumentWizard extends BasicNewResourceWizard {
 	private static EditorDescriptor getEditorDescriptor(String editorId) {
 		EditorRegistry reg = (EditorRegistry) PlatformUI.getWorkbench()
 				.getEditorRegistry();
-		IEditorDescriptor[] editors = reg.getSortedEditorsFromPlugins();
-		for (int i = 0; i < editors.length; i++) {
-			if (editors[i].getId().equals(editorId)) {
-				return (EditorDescriptor) editors[i];
+		for (IEditorDescriptor editor : reg.getSortedEditorsFromPlugins()) {
+			if (editor.getId().equals(editorId)) {
+				return (EditorDescriptor) editor;
 			}
 		}
+
 		return null;
 	}
 }

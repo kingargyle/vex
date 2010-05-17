@@ -128,7 +128,7 @@ public class MockDocumentBuilder implements ContentHandler, LexicalHandler {
 
 		try {
 			VEXElement element;
-			if (stack.size() == 0) {
+			if (stack.isEmpty()) {
 				rootElement = DomEMFFactoryImpl.eINSTANCE.createVEXElement();
 				rootElement.setName(qName);
 				element = this.rootElement;
@@ -223,8 +223,7 @@ public class MockDocumentBuilder implements ContentHandler, LexicalHandler {
 
 		StringBuffer sb;
 
-		StackEntry entry = this.stack.size() > 0 ? (StackEntry) this.stack
-				.getLast() : null;
+		StackEntry entry = this.stack.isEmpty() ? null : this.stack.getLast();
 
 		if (entry != null && entry.pre) {
 

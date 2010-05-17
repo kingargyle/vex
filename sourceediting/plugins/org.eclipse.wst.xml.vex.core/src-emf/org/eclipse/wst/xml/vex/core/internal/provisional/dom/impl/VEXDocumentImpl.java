@@ -176,7 +176,6 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 * @generated
 	 */
 	protected VEXDocumentImpl() {
-		
 		super();
 	}
 
@@ -552,7 +551,7 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 			case DomEMFPackage.VEX_DOCUMENT__ENCODING:
 				return getEncoding();
 			case DomEMFPackage.VEX_DOCUMENT__LENGTH:
-				return new Integer(getLength());
+				return getLength();
 			case DomEMFPackage.VEX_DOCUMENT__ROOT_ELEMENT:
 				if (resolve) return getRootElement();
 				return basicGetRootElement();
@@ -581,7 +580,7 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				setEncoding((String)newValue);
 				return;
 			case DomEMFPackage.VEX_DOCUMENT__LENGTH:
-				setLength(((Integer)newValue).intValue());
+				setLength((Integer)newValue);
 				return;
 			case DomEMFPackage.VEX_DOCUMENT__ROOT_ELEMENT:
 				setRootElement((VEXElement)newValue);

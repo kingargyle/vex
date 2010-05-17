@@ -342,7 +342,7 @@ public class VexEditorMultiPage extends VexEditor {
 				return;
 			}
 
-			URL url = inputPath.toFile().toURL();
+			URL url = inputPath.toFile().toURI().toURL();
 
 			DocumentReader reader = new DocumentReader();
 			reader.setDebugging(this.debugging);

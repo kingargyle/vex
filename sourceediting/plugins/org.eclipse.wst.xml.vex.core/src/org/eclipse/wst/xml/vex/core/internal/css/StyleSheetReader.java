@@ -199,8 +199,7 @@ public class StyleSheetReader {
 			this.currentRules = new ArrayList<Rule>();
 			for (int i = 0; i < selectors.getLength(); i++) {
 				Selector selector = selectors.item(i);
-				Rule rule = new Rule(selector);
-				this.currentRules.add(rule);
+				this.currentRules.add(new Rule(selector));
 			}
 		}
 

@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.editor;
 
@@ -162,8 +163,8 @@ public class DocumentTypeSelectionPage extends WizardPage {
 		if (roots.length == 0) {
 			Validator validator = dt.getValidator();
 			if (validator != null) {
-				Set set = validator.getValidRootElements();
-				roots = (String[]) set.toArray(new String[set.size()]);
+				Set<String> set = validator.getValidRootElements();
+				roots = set.toArray(new String[set.size()]);
 			}
 		} else {
 			selectedRoot = roots[0];

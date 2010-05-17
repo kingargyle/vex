@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;
 
@@ -15,7 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
- * Implementation of WhitespacePolicy using a CSS stylesheet.
+ * Mock implementation of WhitespacePolicy using a CSS stylesheet.
  */
 public class MockCssWhitespacePolicy implements IWhitespacePolicy {
 
@@ -26,7 +27,6 @@ public class MockCssWhitespacePolicy implements IWhitespacePolicy {
 	 *            The stylesheet used for the policy.
 	 */
 	public MockCssWhitespacePolicy(StyleSheet styleSheet) {
-		this.styleSheet = styleSheet;
 	}
 
 	public boolean isBlock(VEXElement element) {
@@ -36,9 +36,5 @@ public class MockCssWhitespacePolicy implements IWhitespacePolicy {
 	public boolean isPre(VEXElement element) {
 		return false;
 	}
-
-	// ===================================================== PRIVATE
-
-	private StyleSheet styleSheet;
 
 }

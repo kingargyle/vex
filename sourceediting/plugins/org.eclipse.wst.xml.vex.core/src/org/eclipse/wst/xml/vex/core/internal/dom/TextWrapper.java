@@ -54,10 +54,10 @@ public class TextWrapper {
 				thisIsWhite = true;
 			}
 
-			if (lastIsWhite || parts.size() == 0) {
+			if (lastIsWhite || parts.isEmpty()) {
 				this.parts.add(s.substring(i, j));
 			}
-			else if (parts.size() > 0) { 
+			else if (!parts.isEmpty()) { 
 				
 				this.parts.add(((String) this.parts
 						.remove(this.parts.size() - 1))
