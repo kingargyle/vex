@@ -45,94 +45,96 @@ public abstract class AbstractAddRowHandler extends AbstractVexWidgetHandler {
     protected abstract boolean addAbove();
 
     private void addRow(final VexWidget widget) {
-        final List<Object> rowsToInsert = new ArrayList<Object>();
-        final List<List<Object>> rowCellsToInsert = new ArrayList<List<Object>>();
+    	final List<RowCells> rowCellsToInsert = new ArrayList<RowCells>();
 
         VexHandlerUtil.iterateTableCells(widget, new ITableCellCallback() {
 
-            private boolean rowSelected;
+            private boolean selectedRow;
             private List<Object> cellsToInsert;
 
             public void startRow(Object row, int rowIndex) {
-                rowSelected = VexHandlerUtil
-                .elementOrRangeIsPartiallySelected(
-                        widget, row);
+                selectedRow =
+                	VexHandlerUtil.elementOrRangeIsPartiallySelected(widget,
+                			                                         row);
 
-                if (rowSelected) {
+                if (selectedRow) {
                     cellsToInsert = new ArrayList<Object>();
                 }
             }
 
             public void onCell(Object row, Object cell,
                     int rowIndex, int cellIndex) {
-                if (rowSelected) {
+                if (selectedRow) {
                     cellsToInsert.add(cell);
                 }
             }
 
             public void endRow(Object row, int rowIndex) {
-                if (rowSelected) {
-                    rowsToInsert.add(row);
-                    rowCellsToInsert.add(cellsToInsert);
+                if (selectedRow) {
+                	rowCellsToInsert.add(new RowCells(row, cellsToInsert));
                 }
             }
 
         });
 
-        if (rowsToInsert.size() == 0) {
-            return;
-        }
+        // something to do?
+        if (rowCellsToInsert.isEmpty()) return;
 
-        //
-        // save the caret offset so that we return just inside the first
-        // table cell
-        //
+        // save the caret offset to return inside the first table cell after
+        // row has been added
+        RowCells firstRow = rowCellsToInsert.get(0);
+        int outerOffset = VexHandlerUtil.getOuterRange(firstRow.row).getStart();
+        Object firstInner = firstRow.cells.isEmpty()
+                            ? firstRow.row
+                            : firstRow.cells.get(0);
+        int innerOffset = VexHandlerUtil.getInnerRange(firstInner).getStart();
+        int insertOffset = addAbove()
+            ? VexHandlerUtil.getOuterRange(firstRow.row).getStart()
+            : VexHandlerUtil.getOuterRange(rowCellsToInsert.get(rowCellsToInsert.size() - 1).row).getEnd();
+
         // (innerOffset - outerOffset) represents the final offset of
         // the caret, relative to the insertion point of the new rows
-        //
-        int outerOffset = VexHandlerUtil.getOuterRange(rowsToInsert.get(0)).getStart();
-        List<Object> firstCells = rowCellsToInsert.get(0);
-        Object firstInner = firstCells.isEmpty()
-                            ? rowsToInsert.get(0)
-                            : firstCells.get(0);
-        int innerOffset = VexHandlerUtil.getInnerRange(firstInner).getStart();
-
-        int insertOffset = addAbove()
-            ? VexHandlerUtil.getOuterRange(rowsToInsert.get(0)).getStart()
-            : VexHandlerUtil.getOuterRange(rowsToInsert.get(rowsToInsert.size() - 1)).getEnd();
-
         int finalOffset = insertOffset + (innerOffset - outerOffset);
-
         widget.moveTo(insertOffset);
-
-        for (int i = 0; i < rowsToInsert.size(); i++) {
-
-            Object row = rowsToInsert.get(i);
-
-            if (row instanceof Element) {
-                widget.insertElement((Element) ((VEXElement) row)
-                        .clone());
+        
+        for (RowCells rowCells : rowCellsToInsert) {
+            if (rowCells.row instanceof Element) {
+                widget.insertElement((Element) ((VEXElement) rowCells.row).clone());
             }
 
-            List<Object> cellsToInsert = rowCellsToInsert.get(i);
-            for (int j = 0; j < cellsToInsert.size(); j++) {
-                Object cell = cellsToInsert.get(j);
-                if (cell instanceof Element) {
-                    widget.insertElement((Element) ((VEXElement) cell)
-                            .clone());
+            //cells that are to be inserted.
+            for (Object cell : rowCells.cells) {
+            	if (cell instanceof Element) {
+                    widget.insertElement((Element) ((VEXElement) cell).clone());
                     widget.moveBy(+1);
                 } else {
                     widget.insertText(" ");
                 }
-            }
+			}
 
-            if (row instanceof Element) {
+            if (rowCells.row instanceof Element) {
                 widget.moveBy(+1);
             }
-
-        }
-
+		}
+        
+        // move inside first inserted table cell
         widget.moveTo(finalOffset);
     }
-
+    
+    /** Represents a row and its cells. */
+    private static class RowCells {
+    	
+    	/** The row. */
+    	private final Object row;
+    	
+    	/** All cell objects that belong to this row.*/
+    	private final List<Object> cells;
+    	
+		private RowCells(Object row, List<Object> cells) {
+			this.row = row;
+			this.cells = cells;
+		}
+		
+    }
+        
 }
