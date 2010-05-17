@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.handlers;
 
@@ -45,7 +46,7 @@ public abstract class AbstractAddRowHandler extends AbstractVexWidgetHandler {
 
     private void addRow(final VexWidget widget) {
         final List<Object> rowsToInsert = new ArrayList<Object>();
-        final List<Object> rowCellsToInsert = new ArrayList<Object>();
+        final List<List<Object>> rowCellsToInsert = new ArrayList<List<Object>>();
 
         VexHandlerUtil.iterateTableCells(widget, new ITableCellCallback() {
 
@@ -90,7 +91,7 @@ public abstract class AbstractAddRowHandler extends AbstractVexWidgetHandler {
         // the caret, relative to the insertion point of the new rows
         //
         int outerOffset = VexHandlerUtil.getOuterRange(rowsToInsert.get(0)).getStart();
-        List firstCells = (List) rowCellsToInsert.get(0);
+        List<Object> firstCells = rowCellsToInsert.get(0);
         Object firstInner = firstCells.isEmpty()
                             ? rowsToInsert.get(0)
                             : firstCells.get(0);
@@ -113,7 +114,7 @@ public abstract class AbstractAddRowHandler extends AbstractVexWidgetHandler {
                         .clone());
             }
 
-            List cellsToInsert = (List) rowCellsToInsert.get(i);
+            List<Object> cellsToInsert = rowCellsToInsert.get(i);
             for (int j = 0; j < cellsToInsert.size(); j++) {
                 Object cell = cellsToInsert.get(j);
                 if (cell instanceof Element) {

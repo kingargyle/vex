@@ -236,7 +236,7 @@ public class VEXDocumentFragmentImpl extends EObjectImpl implements VEXDocumentF
 				if (resolve) return getContent();
 				return basicGetContent();
 			case DomEMFPackage.VEX_DOCUMENT_FRAGMENT__LENGTH:
-				return new Integer(getLength());
+				return getLength();
 			case DomEMFPackage.VEX_DOCUMENT_FRAGMENT__ELEMENTS:
 				return getElements();
 			case DomEMFPackage.VEX_DOCUMENT_FRAGMENT__NODE_NAMES:
@@ -260,7 +260,7 @@ public class VEXDocumentFragmentImpl extends EObjectImpl implements VEXDocumentF
 				setContent((Content)newValue);
 				return;
 			case DomEMFPackage.VEX_DOCUMENT_FRAGMENT__LENGTH:
-				setLength(((Integer)newValue).intValue());
+				setLength((Integer)newValue);
 				return;
 			case DomEMFPackage.VEX_DOCUMENT_FRAGMENT__ELEMENTS:
 				getElements().clear();

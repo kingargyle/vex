@@ -385,12 +385,12 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 				if (resolve) return getContent();
 				return basicGetContent();
 			case DomEMFPackage.VEX_NODE__END_OFFSET:
-				return new Integer(getEndOffset());
+				return getEndOffset();
 			case DomEMFPackage.VEX_NODE__END_POSITION:
 				if (resolve) return getEndPosition();
 				return basicGetEndPosition();
 			case DomEMFPackage.VEX_NODE__START_OFFSET:
-				return new Integer(getStartOffset());
+				return getStartOffset();
 			case DomEMFPackage.VEX_NODE__START_POSITION:
 				if (resolve) return getStartPosition();
 				return basicGetStartPosition();
@@ -414,13 +414,13 @@ public class VEXNodeImpl extends EObjectImpl implements VEXNode {
 				setContent((Content)newValue);
 				return;
 			case DomEMFPackage.VEX_NODE__END_OFFSET:
-				setEndOffset(((Integer)newValue).intValue());
+				setEndOffset((Integer)newValue);
 				return;
 			case DomEMFPackage.VEX_NODE__END_POSITION:
 				setEndPosition((Position)newValue);
 				return;
 			case DomEMFPackage.VEX_NODE__START_OFFSET:
-				setStartOffset(((Integer)newValue).intValue());
+				setStartOffset((Integer)newValue);
 				return;
 			case DomEMFPackage.VEX_NODE__START_POSITION:
 				setStartPosition((Position)newValue);

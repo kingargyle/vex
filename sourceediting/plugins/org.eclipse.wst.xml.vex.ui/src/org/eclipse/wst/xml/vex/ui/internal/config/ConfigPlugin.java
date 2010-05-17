@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -43,10 +44,7 @@ public class ConfigPlugin extends ConfigSource {
 		ConfigPlugin configPlugin = new ConfigPlugin(namespace);
 		configPlugin.setUniqueIdentifer(namespace);
 
-		IExtension[] exts = Platform.getExtensionRegistry().getExtensions(
-				namespace);
-		for (int i = 0; i < exts.length; i++) {
-			IExtension ext = exts[i];
+		for (IExtension ext : Platform.getExtensionRegistry().getExtensions(namespace)) {
 			try {
 				configPlugin.addItem(ext.getExtensionPointUniqueIdentifier(),
 						ext.getSimpleIdentifier(), ext.getLabel(),

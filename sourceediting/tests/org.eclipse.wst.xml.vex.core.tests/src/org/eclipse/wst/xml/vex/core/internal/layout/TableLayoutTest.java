@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Holger Voormann - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -159,9 +160,9 @@ public class TableLayoutTest extends TestCase {
     public void test(String ... elements) {
         resetDocument();
         insertElement("inline");
-        for (int i = 0; i < elements.length; i++) {
-            insertElement(elements[i]);
-        }
+        for (String element : elements) {
+        	insertElement(element);
+		}
         insertText("x");
         assertCount(1, DocumentTextBox.class);
         assertEquals("x", contentAsText());
@@ -234,10 +235,9 @@ public class TableLayoutTest extends TestCase {
             visitor.visit(current);
 
             // iterate deep-first
-            Box[] children = current.box.getChildren();
-            for (int i = 0; i < children.length; i++) {
-                stack.push(new StackElement(current.indent + 1, children[i]));
-            }
+            for (Box child : current.box.getChildren()) {
+            	stack.push(new StackElement(current.indent + 1, child));
+			}
         }
     }
 

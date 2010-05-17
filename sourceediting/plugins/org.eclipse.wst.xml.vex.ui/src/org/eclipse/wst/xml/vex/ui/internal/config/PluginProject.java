@@ -95,7 +95,7 @@ public class PluginProject extends ConfigSource {
 
 	public URL getBaseUrl() {
 		try {
-			return this.getProject().getLocation().toFile().toURL();
+			return this.getProject().getLocation().toFile().toURI().toURL();
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(Messages
 					.getString("PluginProject.malformedUrl"), e); //$NON-NLS-1$

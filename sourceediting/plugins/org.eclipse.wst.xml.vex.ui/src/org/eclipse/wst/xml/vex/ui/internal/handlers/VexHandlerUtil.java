@@ -269,13 +269,12 @@ public final class VexHandlerUtil {
         int previousSiblingStart = -1;
         VEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
         List<VEXNode> children = parent.getChildNodes();
-        for (int i = 0; i < children.size(); i++) {
-            VEXNode child = children.get(i);
-            if (startOffset == child.getStartOffset()) {
+        for (VEXNode child : children) {
+        	if (startOffset == child.getStartOffset()) {
                 break;
             }
-            previousSiblingStart = child.getStartOffset();
-        }
+            previousSiblingStart = child.getStartOffset();			
+		}
         return previousSiblingStart;
     }
 

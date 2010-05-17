@@ -50,10 +50,10 @@ public interface Validator extends EObject, Serializable {
 	 * @return the value of the '<em>Valid Root Elements</em>' attribute.
 	 * @see #setValidRootElements(Set)
 	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getValidator_ValidRootElements()
-	 * @model dataType="org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Set"
+	 * @model dataType="org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Set<org.eclipse.emf.ecore.EString>"
 	 * @generated
 	 */
-	Set getValidRootElements();
+	Set<String> getValidRootElements();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator#getValidRootElements <em>Valid Root Elements</em>}' attribute.
@@ -63,7 +63,7 @@ public interface Validator extends EObject, Serializable {
 	 * @see #getValidRootElements()
 	 * @generated
 	 */
-	void setValidRootElements(Set value);
+	void setValidRootElements(Set<String> value);
 
 	/**
 	 * <!-- begin-user-doc -->

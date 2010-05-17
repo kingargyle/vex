@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -122,8 +123,8 @@ public class DTDValidatorTest extends TestCase {
 	private void assertValidItemsAt(VEXDocument doc, int offset,
 			String... expectedItems) {
 		Set<String> expected = new HashSet<String>(expectedItems.length);
-		for (int i = 0; i < expectedItems.length; i++) {
-			expected.add(expectedItems[i]);
+		for (String item : expectedItems) {
+			expected.add(item);
 		}
 		
 		String elementName = doc.getElementAt(offset).getName();

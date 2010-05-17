@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
@@ -31,9 +32,7 @@ public class DoctypeFactory implements IConfigItemFactory {
 		doctypeElement.setAttribute(ATTR_OUTLINE_PROVIDER, doctype
 				.getOutlineProvider());
 
-		String[] names = doctype.getRootElements();
-		for (int i = 0; i < names.length; i++) {
-			String name = names[i];
+		for (String name : doctype.getRootElements()) {
 			ConfigurationElement rootElement = new ConfigurationElement(
 					ELT_ROOT_ELEMENT);
 			rootElement.setAttribute(ATTR_NAME, name);

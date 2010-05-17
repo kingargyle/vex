@@ -1,13 +1,14 @@
 /*******************************************************************************
- *Copyright (c) 2008 Standard for Technology in Automotive Retail  and others.
- *All rights reserved. This program and the accompanying materials
- *are made available under the terms of the Eclipse Public License v1.0
- *which accompanies this distribution, and is available at
- *http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008 Standard for Technology in Automotive Retail  and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *Contributors:
- *    David Carver (STAR) - initial API and implementation
- *    Holger Voormann - bug 283646 - Document wizard throws NPW with DITA is selected
+ * Contributors:
+ *     David Carver (STAR) - initial API and implementation
+ *     Holger Voormann - bug 283646 - Document wizard throws NPW with DITA is selected
+ *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
@@ -72,7 +73,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		CMElementDeclaration cmelement = getElementDeclaration(element);
 		EList<AttributeDefinition> attributeList = new BasicEList<AttributeDefinition>(
 				cmelement.getAttributes().getLength());
-		Iterator iter = cmelement.getAttributes().iterator();
+		Iterator<?> iter = cmelement.getAttributes().iterator();
 		while (iter.hasNext()) {
 			CMAttributeDeclaration attribute = (CMAttributeDeclaration) iter
 					.next();
@@ -113,11 +114,8 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	public Set<String> getValidItems(String element) {
 		CMElementDeclaration elementDec = (CMElementDeclaration) getSchema()
 				.getElements().getNamedItem(element);
-		List<CMNode> nodes = getAvailableContent(element, elementDec);
 		Set<String> results = new HashSet<String>();
-		Iterator iter = nodes.iterator();
-		while (iter.hasNext()) {
-			CMNode node = (CMNode) iter.next();
+		for (CMNode node : getAvailableContent(element, elementDec)) {
 			if (node instanceof CMElementDeclaration) {
 				CMElementDeclaration elem = (CMElementDeclaration) node;
 				results.add(elem.getElementName());
@@ -160,10 +158,9 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return list;
 	}
 
-	public Set getValidRootElements() {
+	public Set<String> getValidRootElements() {
 		Set<String> results = new HashSet<String>();
-
-		Iterator iter = getSchema().getElements().iterator();
+		Iterator<?> iter = getSchema().getElements().iterator();
 		while (iter.hasNext()) {
 			CMElementDeclaration element = (CMElementDeclaration) iter.next();
 			results.add(element.getElementName());

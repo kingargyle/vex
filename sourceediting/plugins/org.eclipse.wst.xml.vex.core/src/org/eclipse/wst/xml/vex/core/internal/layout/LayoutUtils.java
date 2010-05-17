@@ -134,7 +134,7 @@ public class LayoutUtils {
 					String display = styleSheet.getStyles(childElement)
 							.getDisplay();
 					if (displayStyles.contains(display)) {
-						if (nonMatching.size() > 0) {
+						if (!nonMatching.isEmpty()) {
 							VEXNode firstNode = (VEXNode) nonMatching.get(0);
 							VEXNode lastNode = (VEXNode) nonMatching.get(nonMatching
 									.size() - 1);

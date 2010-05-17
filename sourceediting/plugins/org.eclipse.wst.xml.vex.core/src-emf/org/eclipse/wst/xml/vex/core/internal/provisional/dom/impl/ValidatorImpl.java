@@ -49,7 +49,7 @@ public class ValidatorImpl extends EObjectImpl implements Validator {
 	 * @generated
 	 * @ordered
 	 */
-	protected Set validRootElements;
+	protected Set<String> validRootElements;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -75,7 +75,7 @@ public class ValidatorImpl extends EObjectImpl implements Validator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Set getValidRootElements() {
+	public Set<String> getValidRootElements() {
 		return validRootElements;
 	}
 
@@ -84,8 +84,8 @@ public class ValidatorImpl extends EObjectImpl implements Validator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValidRootElements(Set newValidRootElements) {
-		Set oldValidRootElements = validRootElements;
+	public void setValidRootElements(Set<String> newValidRootElements) {
+		Set<String> oldValidRootElements = validRootElements;
 		validRootElements = newValidRootElements;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VALIDATOR__VALID_ROOT_ELEMENTS, oldValidRootElements, validRootElements));
@@ -165,11 +165,12 @@ public class ValidatorImpl extends EObjectImpl implements Validator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case DomEMFPackage.VALIDATOR__VALID_ROOT_ELEMENTS:
-				setValidRootElements((Set)newValue);
+				setValidRootElements((Set<String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -184,7 +185,7 @@ public class ValidatorImpl extends EObjectImpl implements Validator {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case DomEMFPackage.VALIDATOR__VALID_ROOT_ELEMENTS:
-				setValidRootElements((Set)null);
+				setValidRootElements((Set<String>)null);
 				return;
 		}
 		super.eUnset(featureID);

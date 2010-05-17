@@ -551,7 +551,7 @@ public class VEXElementImpl extends Node implements VEXElement {
 			case DomEMFPackage.VEX_ELEMENT__NAME:
 				return getName();
 			case DomEMFPackage.VEX_ELEMENT__EMPTY:
-				return isEmpty() ? Boolean.TRUE : Boolean.FALSE;
+				return isEmpty();
 			case DomEMFPackage.VEX_ELEMENT__PARENT:
 				if (resolve) return getParent();
 				return basicGetParent();
@@ -593,7 +593,7 @@ public class VEXElementImpl extends Node implements VEXElement {
 				setName((String)newValue);
 				return;
 			case DomEMFPackage.VEX_ELEMENT__EMPTY:
-				setEmpty(((Boolean)newValue).booleanValue());
+				setEmpty((Boolean)newValue);
 				return;
 			case DomEMFPackage.VEX_ELEMENT__PARENT:
 				setParent((VEXElement)newValue);

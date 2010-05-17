@@ -678,7 +678,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 
 				} else {
 
-					if (pendingInlines.size() > 0) {
+					if (!pendingInlines.isEmpty()) {
 						blockBoxes.add(ParagraphBox.create(context, element,
 								pendingInlines, width));
 						pendingInlines.clear();
@@ -720,7 +720,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			pendingInlines.addAll(afterInlines);
 		}
  
-		if (pendingInlines.size() > 0) {
+		if (!pendingInlines.isEmpty()) {
 			blockBoxes.add(ParagraphBox.create(context, element,
 					pendingInlines, width));
 			pendingInlines.clear();
@@ -744,7 +744,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		 * the end.
 		 */
 		public Object next() {
-			if (this.pushStack.size() > 0) {
+			if (!this.pushStack.isEmpty()) {
 				return this.pushStack.removeLast();
 			} else if (startOffset == endOffset) {
 				return null;

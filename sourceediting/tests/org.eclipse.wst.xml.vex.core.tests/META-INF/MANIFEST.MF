@@ -23,3 +23,4 @@ Export-Package: org.eclipse.wst.xml.vex.core.internal.css;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.layout;x-internal:=true,
  org.eclipse.wst.xml.vex.core.internal.provisional.dom.tests;x-internal:=true,
  org.eclipse.wst.xml.vex.core.tests
+Bundle-Localization: plugin

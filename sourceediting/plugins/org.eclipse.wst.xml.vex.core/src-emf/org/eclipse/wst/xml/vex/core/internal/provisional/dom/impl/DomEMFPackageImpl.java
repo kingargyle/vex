@@ -215,20 +215,10 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this
-	 * model, and for any others upon which it depends.  Simple
-	 * dependencies are satisfied by calling this method on all
-	 * dependent packages before doing anything else.  This method drives
-	 * initialization for interdependent packages directly, in parallel
-	 * with this package, itself.
-	 * <p>Of this package and its interdependencies, all packages which
-	 * have not yet been registered by their URI values are first created
-	 * and registered.  The packages are then initialized in two steps:
-	 * meta-model objects for all of the packages are created before any
-	 * are initialized, since one package's meta-model objects may refer to
-	 * those of another.
-	 * <p>Invocation of this method will not affect any packages that have
-	 * already been initialized.
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * 
+	 * <p>This method is used to initialize {@link DomEMFPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
@@ -240,7 +230,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		if (isInited) return (DomEMFPackage)EPackage.Registry.INSTANCE.getEPackage(DomEMFPackage.eNS_URI);
 
 		// Obtain or create and register package
-		DomEMFPackageImpl theDomEMFPackage = (DomEMFPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof DomEMFPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(eNS_URI) : new DomEMFPackageImpl());
+		DomEMFPackageImpl theDomEMFPackage = (DomEMFPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof DomEMFPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new DomEMFPackageImpl());
 
 		isInited = true;
 
@@ -253,6 +243,9 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		// Mark meta-data to indicate it can't be changed
 		theDomEMFPackage.freeze();
 
+  
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(DomEMFPackage.eNS_URI, theDomEMFPackage);
 		return theDomEMFPackage;
 	}
 
@@ -1142,7 +1135,10 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		addEParameter(op, ecorePackage.getEString(), "value", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(validatorEClass, Validator.class, "Validator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getValidator_ValidRootElements(), this.getSet(), "validRootElements", null, 0, 1, Validator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		EGenericType g1 = createEGenericType(this.getSet());
+		EGenericType g2 = createEGenericType(ecorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		initEAttribute(getValidator_ValidRootElements(), g1, "validRootElements", null, 0, 1, Validator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(validatorEClass, this.getAttributeDefinition(), "getAttributeDefinition", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1153,8 +1149,8 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 
 		op = addEOperation(validatorEClass, null, "getValidItems", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
-		EGenericType g1 = createEGenericType(this.getSet());
-		EGenericType g2 = createEGenericType(ecorePackage.getEString());
+		g1 = createEGenericType(this.getSet());
+		g2 = createEGenericType(ecorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		initEOperation(op, g1);
 
