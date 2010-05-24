@@ -5,6 +5,9 @@
 <!ELEMENT para (#PCDATA | emphasis)*>
 <!ELEMENT emphasis (#PCDATA)>
 <!ELEMENT one-kind-of-child (section+)>
+<!ELEMENT document (title?, preface, section+, index)>
+<!ELEMENT preface (para+)>
+<!ELEMENT index (para+)>
 
 <!-- a dummy attribute, just to make sure attribute def serialization is OK -->
 <!ATTLIST section
