@@ -8,6 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
+ *     Florian Thienel - bug 299999 - completed implementation of validation
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
@@ -30,74 +31,73 @@ import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
 @SuppressWarnings("restriction")
 public class DTDValidatorTest extends TestCase {
-	Validator validator = null;
 
+	private Validator validator = null;
+
+	@Override
 	protected void setUp() {
 		try {
-			URL url = DTDValidatorTest.class.getResource("test1.dtd");
+			final URL url = DTDValidatorTest.class.getResource("test1.dtd");
 			validator = WTPVEXValidator.create(url);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			fail("Failed to load test1.dtd");
 		}
 	}
 
 	public void testAttributeDefinition() throws Exception {
-		AttributeDefinition.Type adType = validator
-				.getAttributeDefinitions("section").get(0).getType();
+		final AttributeDefinition.Type adType = validator.getAttributeDefinitions("section").get(0).getType();
 
 		// Test serialization while we're at it
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(validator);
 
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		ObjectInputStream ois = new ObjectInputStream(bais);
+		final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		final ObjectInputStream ois = new ObjectInputStream(bais);
 		validator = (Validator) ois.readObject();
 
-		AttributeDefinition.Type adType2 = validator
-				.getAttributeDefinitions("section").get(0).getType();
+		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions("section").get(0).getType();
 
 		assertSame(adType, adType2);
 
 	}
-	
-//	public void testEmptyDTD() throws Exception {
-//		VEXDocument doc;
-//		Set expected;
-//
-//		doc = new Document(new RootElement("empty"));
-//		doc.setValidator(validator);
-//		assertEquals(Collections.EMPTY_SET, getValidItemsAt(doc, 1));
-//	}
-	
-//	public void testAnyDTD() throws Exception {
-//		VEXDocument doc;
-//		Set expected;
-//
-//		doc = new Document(new RootElement("any"));
-//		doc.setValidator(validator);
-//		Set anySet = new HashSet();
-//		anySet.add(Validator.PCDATA);
-//		anySet.add("any");
-//		anySet.add("empty");
-//		anySet.add("section");
-//		anySet.add("title");
-//		anySet.add("para");
-//		anySet.add("emphasis");
-//		assertEquals(anySet, getValidItemsAt(doc, 1));
-//		
-//	}
-	
-	public void testSectionElement() {
 
+	// public void testEmptyDTD() throws Exception {
+	// VEXDocument doc;
+	// Set expected;
+	//
+	// doc = new Document(new RootElement("empty"));
+	// doc.setValidator(validator);
+	// assertEquals(Collections.EMPTY_SET, getValidItemsAt(doc, 1));
+	// }
+
+	// public void testAnyDTD() throws Exception {
+	// VEXDocument doc;
+	// Set expected;
+	//
+	// doc = new Document(new RootElement("any"));
+	// doc.setValidator(validator);
+	// Set anySet = new HashSet();
+	// anySet.add(Validator.PCDATA);
+	// anySet.add("any");
+	// anySet.add("empty");
+	// anySet.add("section");
+	// anySet.add("title");
+	// anySet.add("para");
+	// anySet.add("emphasis");
+	// assertEquals(anySet, getValidItemsAt(doc, 1));
+	//		
+	// }
+
+	public void testSectionElement() {
 		// <section> <title> a b </title> <para> </para> </section>
 		// 1 2 3 4 5 6 7
-		VEXDocument doc = new Document(new RootElement("section"));
+		final VEXDocument doc = new Document(new RootElement("section"));
 		doc.setValidator(validator);
 		doc.insertElement(1, new Element("title"));
 		doc.insertText(2, "ab");
 		doc.insertElement(5, new Element("para"));
-		
+
 		assertValidItemsAt(doc, 1, "title", "para");
 		assertValidItemsAt(doc, 2);
 		assertValidItemsAt(doc, 3);
@@ -108,65 +108,70 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	public void testOneKindOfChild() {
-		VEXDocument doc = new Document(new RootElement("one-kind-of-child"));
+		final VEXDocument doc = new Document(new RootElement("one-kind-of-child"));
 		doc.setValidator(validator);
 		assertValidItemsAt(doc, 1, "section");
 	}
-	
+
 	public void testSequences() {
-		assertValidSequence("title", "#PCDATA");
+		assertFullyValidSequence("title", "#PCDATA");
+		assertFullyValidSequence("para", "#PCDATA");
+
 		assertInvalidSequence("empty", "#PCDATA");
-        // TODO test more sequences like:
-        // assertInvalidSequence("title", "section");
+
+		assertFullyValidSequence("index", "para");
+
+		assertPartiallyValidSequence("section", "title"); // partially valid, para is still missing
+		// TODO assertFullyValidSequence("section", "title", "para");
+		assertFullyValidSequence("section", "para");
+		assertFullyValidSequence("section", "para", "para");
+		// TODO assertInvalidSequence("section", "para", "title");
+		assertInvalidSequence("section", "title", "title");
+		assertInvalidSequence("section", "title", "#PCDATA");
 	}
 
-	private void assertValidItemsAt(VEXDocument doc, int offset,
-			String... expectedItems) {
-		Set<String> expected = new HashSet<String>(expectedItems.length);
-		for (String item : expectedItems) {
-			expected.add(item);
-		}
-		
-		String elementName = doc.getElementAt(offset).getName();
-		Set<String> validItems = doc.getValidator().getValidItems(elementName);
+	private void assertValidItemsAt(final VEXDocument doc, final int offset, final String... expectedItems) {
+		final Set<String> expected = new HashSet<String>(expectedItems.length);
+		for (final String expectedItem : expectedItems)
+			expected.add(expectedItem);
+
+		final String elementName = doc.getElementAt(offset).getName();
+		final Set<String> validItems = doc.getValidator().getValidItems(elementName);
 		assertEquals(expected, validItems);
 	}
 
-	private void assertValidSequence(String element, String...sequence) {
-		assertValidSequence(true, element, sequence);
+	private void assertFullyValidSequence(final String element, final String... sequence) {
+		assertValidSequence(true, element, true, true, sequence);
 	}
 
-	private void assertInvalidSequence(String element, String...sequence) {
-		assertValidSequence(false, element, sequence);
+	private void assertPartiallyValidSequence(final String element, final String... sequence) {
+		assertValidSequence(true, element, false, true, sequence);
 	}
 
-	private void assertValidSequence(boolean expected, String element, String...sequence) {
+	private void assertInvalidSequence(final String element, final String... sequence) {
+		assertValidSequence(false, element, true, false, sequence);
+	}
+
+	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
+			final String... sequence) {
 		final EList<String> emptyList = new BasicEList<String>(0);
 		for (int i = 0; i < sequence.length; i++) {
-			
-			EList<String> pre = new BasicEList<String>();
-			for (int j = 0; j < i; j++) {
-				pre.add(sequence[j]);
-			}
 
-			EList<String> toInsert = new BasicEList<String>(1);
+			final EList<String> pre = new BasicEList<String>();
+			for (int j = 0; j < i; j++)
+				pre.add(sequence[j]);
+
+			final EList<String> toInsert = new BasicEList<String>(1);
 			toInsert.add(sequence[i]);
-			
-			EList<String> suf = new BasicEList<String>();
-			for (int j = i + 1; j < sequence.length; j++) {
-				pre.add(sequence[j]);
-			}
 
-			assertEquals(expected, validator.isValidSequence(element,
-					                                         pre,
-					                                         toInsert,
-					                                         suf,
-					                                         false));
-			assertEquals(expected, validator.isValidSequence(element,
-					                                         pre,
-					                                         toInsert,
-					                                         emptyList,
-					                                         true));
+			final EList<String> suf = new BasicEList<String>();
+			for (int j = i + 1; j < sequence.length; j++)
+				pre.add(sequence[j]);
+
+			if (validateFully)
+				assertEquals(expected, validator.isValidSequence(element, pre, toInsert, suf, false));
+			if (validatePartially)
+				assertEquals(expected, validator.isValidSequence(element, pre, toInsert, emptyList, true));
 		}
 	}
 
