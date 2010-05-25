@@ -125,12 +125,11 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		final CMElementDeclaration elementDec = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
 		final List<CMNode> nodes = getAvailableContent(element, elementDec);
 		final Set<String> results = new HashSet<String>();
-		for (CMNode node : getAvailableContent(element, elementDec)) {
+		for (final CMNode node : getAvailableContent(element, elementDec))
 			if (node instanceof CMElementDeclaration) {
 				final CMElementDeclaration elem = (CMElementDeclaration) node;
 				results.add(elem.getElementName());
 			}
-		}
 		return results;
 	}
 
@@ -185,7 +184,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 			return true;
 
 		final CMElementDeclaration elementDeclaration = (CMElementDeclaration) parent;
-		validator.printGraph(validator.createGraph(elementDeclaration)); // TRACE
 		final ElementPathRecordingResult validationResult = new ElementPathRecordingResult();
 		validator.validate(elementDeclaration, nodes, ELEMENT_CONTENT_COMPARATOR, validationResult);
 
