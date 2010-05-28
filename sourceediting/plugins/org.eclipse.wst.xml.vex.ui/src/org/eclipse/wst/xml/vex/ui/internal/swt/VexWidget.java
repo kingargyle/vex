@@ -588,8 +588,8 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 
 	private KeyListener keyListener = new KeyAdapter() {
 
-		public void keyPressed(KeyEvent e) {
-			KeyStroke keyStroke = new KeyStroke(e);
+		public void keyPressed(KeyEvent event) {
+			KeyStroke keyStroke = new KeyStroke(event);
 			IVexWidgetHandler handler = keyMap.get(keyStroke);
 			if (handler != null) {
 				try {
@@ -597,12 +597,13 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-			} else if (!Character.isISOControl(e.character)) {
+			} else if (!Character.isISOControl(event.character)) {
 				try {
-					insertChar(e.character);
-				} catch (DocumentValidationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					insertChar(event.character);
+				} catch (DocumentValidationException e) {
+					// TODO give feedback: at this document position
+					//                     no character could be entered
+					// e.printStackTrace();
 				}
 			}
 		}

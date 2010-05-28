@@ -98,8 +98,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	}
 
 	private CMElementDeclaration getElementDeclaration(final String element) {
-		final CMElementDeclaration cmelement = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
-		return cmelement;
+		return (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
 	}
 
 	private AttributeDefinition createAttributeDefinition(final CMAttributeDeclaration attribute) {
@@ -188,17 +187,9 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		validator.validate(elementDeclaration, nodes, ELEMENT_CONTENT_COMPARATOR, validationResult);
 
 		if (partial)
-			return validationResult.getPartialValidationCount() >= getElementCount(nodes);
+			return validationResult.errorIndex < 0;
 
 		return validationResult.isValid;
-	}
-
-	private static int getElementCount(final EList<String> nodes) {
-		int count = 0;
-		for (final String node : nodes)
-			if (ELEMENT_CONTENT_COMPARATOR.isElement(node))
-				count++;
-		return count;
 	}
 
 	@Override

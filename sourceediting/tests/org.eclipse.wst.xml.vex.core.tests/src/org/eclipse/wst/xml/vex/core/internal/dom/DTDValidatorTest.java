@@ -117,7 +117,7 @@ public class DTDValidatorTest extends TestCase {
 		assertFullyValidSequence("title", "#PCDATA");
 		assertFullyValidSequence("para", "#PCDATA");
 
-		assertInvalidSequence("empty", "#PCDATA");
+		assertInvalidPartialSequence("empty", "#PCDATA");
 
 		assertFullyValidSequence("index", "para");
 
@@ -127,7 +127,7 @@ public class DTDValidatorTest extends TestCase {
 		assertFullyValidSequence("section", "para", "para");
 		// TODO assertInvalidSequence("section", "para", "title");
 		assertInvalidSequence("section", "title", "title");
-		assertInvalidSequence("section", "title", "#PCDATA");
+		assertInvalidPartialSequence("section", "title", "#PCDATA");
 	}
 
 	private void assertValidItemsAt(final VEXDocument doc, final int offset, final String... expectedItems) {
@@ -152,6 +152,13 @@ public class DTDValidatorTest extends TestCase {
 		assertValidSequence(false, element, true, false, sequence);
 	}
 
+	private void assertInvalidPartialSequence(final String element, final String... sequence) {
+		
+		// validate partially _and_ fully
+		assertValidSequence(false, element, true, true, sequence);
+		
+	}
+	
 	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
 			final String... sequence) {
 		final EList<String> emptyList = new BasicEList<String>(0);
