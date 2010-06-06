@@ -186,10 +186,19 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		final ElementPathRecordingResult validationResult = new ElementPathRecordingResult();
 		validator.validate(elementDeclaration, nodes, ELEMENT_CONTENT_COMPARATOR, validationResult);
 
-		if (partial)
-			return validationResult.errorIndex < 0;
+		final int elementCount = getElementCount(nodes);
+		if (partial && elementCount > 0)
+			return validationResult.getPartialValidationCount() >= elementCount;
 
 		return validationResult.isValid;
+	}
+
+	private static int getElementCount(final EList<String> nodes) {
+		int count = 0;
+		for (final String node : nodes)
+			if (ELEMENT_CONTENT_COMPARATOR.isElement(node))
+				count++;
+		return count;
 	}
 
 	@Override

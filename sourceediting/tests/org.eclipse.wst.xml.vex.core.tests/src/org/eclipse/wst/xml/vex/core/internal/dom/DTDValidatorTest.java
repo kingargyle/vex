@@ -113,24 +113,7 @@ public class DTDValidatorTest extends TestCase {
 		assertValidItemsAt(doc, 1, "section");
 	}
 
-	public void testSequences() {
-		assertFullyValidSequence("title", "#PCDATA");
-		assertFullyValidSequence("para", "#PCDATA");
-
-		assertInvalidPartialSequence("empty", "#PCDATA");
-
-		assertFullyValidSequence("index", "para");
-
-		assertPartiallyValidSequence("section", "title"); // partially valid, para is still missing
-		// TODO assertFullyValidSequence("section", "title", "para");
-		assertFullyValidSequence("section", "para");
-		assertFullyValidSequence("section", "para", "para");
-		// TODO assertInvalidSequence("section", "para", "title");
-		assertInvalidSequence("section", "title", "title");
-		assertInvalidPartialSequence("section", "title", "#PCDATA");
-	}
-
-	private void assertValidItemsAt(final VEXDocument doc, final int offset, final String... expectedItems) {
+	private static void assertValidItemsAt(final VEXDocument doc, final int offset, final String... expectedItems) {
 		final Set<String> expected = new HashSet<String>(expectedItems.length);
 		for (final String expectedItem : expectedItems)
 			expected.add(expectedItem);
@@ -138,6 +121,35 @@ public class DTDValidatorTest extends TestCase {
 		final String elementName = doc.getElementAt(offset).getName();
 		final Set<String> validItems = doc.getValidator().getValidItems(elementName);
 		assertEquals(expected, validItems);
+	}
+
+	public void testSequences() {
+		assertFullyValidSequence("title", "#PCDATA");
+		assertFullyValidSequence("para", "#PCDATA");
+
+		assertInvalidSequence("empty", "#PCDATA");
+
+		assertFullyValidSequence("index", "para");
+
+		assertPartiallyValidSequence("section", "title"); // partially valid, para is still missing
+		assertFullyValidSequence("section", "title", "para");
+		assertFullyValidSequence("section", "para");
+		assertFullyValidSequence("section", "para", "para");
+		assertInvalidSequence("section", "para", "title");
+		assertInvalidSequence("section", "title", "title");
+		assertInvalidSequence("section", "title", "title", "para");
+		assertInvalidSequence("section", "title", "#PCDATA");
+
+		assertFullyValidSequence("document", "preface", "section", "index");
+		assertFullyValidSequence("document", "title", "preface", "section", "index");
+		assertPartiallyValidSequence("document", "title", "preface");
+		assertPartiallyValidSequence("document", "preface", "section");
+
+		/*
+		 * fthienel: No idea yet, how to partially validate a section where
+		 * something is missing in the middle.
+		 */
+		assertInvalidSequence("document", "title", "index");
 	}
 
 	private void assertFullyValidSequence(final String element, final String... sequence) {
@@ -149,37 +161,37 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	private void assertInvalidSequence(final String element, final String... sequence) {
-		assertValidSequence(false, element, true, false, sequence);
+		assertValidSequence(false, element, true, true, sequence);
 	}
 
-	private void assertInvalidPartialSequence(final String element, final String... sequence) {
-		
-		// validate partially _and_ fully
-		assertValidSequence(false, element, true, true, sequence);
-		
-	}
-	
 	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
 			final String... sequence) {
-		final EList<String> emptyList = new BasicEList<String>(0);
 		for (int i = 0; i < sequence.length; i++) {
-
-			final EList<String> pre = new BasicEList<String>();
-			for (int j = 0; j < i; j++)
-				pre.add(sequence[j]);
+			final EList<String> prefix = createPrefix(i, sequence);
 
 			final EList<String> toInsert = new BasicEList<String>(1);
 			toInsert.add(sequence[i]);
 
-			final EList<String> suf = new BasicEList<String>();
-			for (int j = i + 1; j < sequence.length; j++)
-				pre.add(sequence[j]);
+			final EList<String> suffix = createSuffix(i, sequence);
 
 			if (validateFully)
-				assertEquals(expected, validator.isValidSequence(element, pre, toInsert, suf, false));
+				assertEquals(expected, validator.isValidSequence(element, prefix, toInsert, suffix, false));
 			if (validatePartially)
-				assertEquals(expected, validator.isValidSequence(element, pre, toInsert, emptyList, true));
+				assertEquals(expected, validator.isValidSequence(element, prefix, toInsert, suffix, true));
 		}
 	}
 
+	private static EList<String> createPrefix(final int index, final String... sequence) {
+		final EList<String> prefix = new BasicEList<String>();
+		for (int i = 0; i < index; i++)
+			prefix.add(sequence[i]);
+		return prefix;
+	}
+
+	private static EList<String> createSuffix(final int index, final String... sequence) {
+		final EList<String> suffix = new BasicEList<String>();
+		for (int i = index + 1; i < sequence.length; i++)
+			suffix.add(sequence[i]);
+		return suffix;
+	}
 }
