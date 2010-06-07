@@ -142,26 +142,37 @@ public class DTDValidatorTest extends TestCase {
 
 		assertFullyValidSequence("document", "preface", "section", "index");
 		assertFullyValidSequence("document", "title", "preface", "section", "index");
+		assertFullyValidSequence("document", "title", "preface", "section", "section", "section", "index");
 		assertPartiallyValidSequence("document", "title", "preface");
 		assertPartiallyValidSequence("document", "preface", "section");
+		assertPartiallyValidSequence("document", "preface", "section", "section");
 
-		/*
-		 * fthienel: No idea yet, how to partially validate a section where
-		 * something is missing in the middle.
-		 */
 		assertInvalidSequence("document", "title", "index");
+		assertInvalidSequence("document", "title", "preface", "index");
+		assertInvalidSequence("document", "preface", "index");
 	}
 
 	private void assertFullyValidSequence(final String element, final String... sequence) {
+
+		// fully includes partially
 		assertValidSequence(true, element, true, true, sequence);
+
 	}
 
 	private void assertPartiallyValidSequence(final String element, final String... sequence) {
+
+		// as partial sequence valid...
 		assertValidSequence(true, element, false, true, sequence);
+
+		// ... but as full sequence invalid
+		assertValidSequence(false, element, true, false, sequence);
 	}
 
 	private void assertInvalidSequence(final String element, final String... sequence) {
+
+		// partially _and_ fully
 		assertValidSequence(false, element, true, true, sequence);
+
 	}
 
 	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
