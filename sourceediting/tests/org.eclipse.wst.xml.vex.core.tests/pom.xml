@@ -13,5 +13,19 @@
 		<version>0.5.0-SNAPSHOT</version>
 		<relativePath>../../development/org.eclipse.wst.xml.vex.releng/pom.xml</relativePath>
 	</parent>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-test-plugin</artifactId>
+				<version>0.8.0</version>
+				<configuration>
+					<useUIHarness>true</useUIHarness>
+					<testSuite>org.eclipse.wst.xml.vex.core.tests</testSuite>
+					<testClass>org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite</testClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
 
 </project>
