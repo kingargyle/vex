@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipse.wst.xml.vex</groupId>
+	<artifactId>org.eclipse.wst.xml.vex_parent</artifactId>
+	<version>0.5.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<tycho-version>0.8.0</tycho-version>
+	</properties>
+ 
+	<modules>
+	    <!-- Vex Core functionality -->
+		<module>../../plugins/org.eclipse.wst.xml.vex</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.core</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.ui</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.dita</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.docbook</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.documentation</module>
+		<module>../../features/org.eclipse.wst.xml.vex.feature</module>
+		<module>../../tests/org.eclipse.wst.xml.vex.core.tests</module>
+		<module>../../tests/org.eclipse.wst.xml.vex.ui.tests</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.sonatype.tycho</groupId>
+					<artifactId>maven-osgi-compiler-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-pmd-plugin</artifactId>
+			        <version>2.5</version>
+			        <configuration>
+			          <linkXref>false</linkXref>
+			          <sourceEncoding>UTF-8</sourceEncoding>
+			          <minimumTokens>100</minimumTokens>
+			          <targetJdk>1.5</targetJdk>
+			          <includes>
+			             <include>**/org/eclipse/wst/xquery/*.java</include>
+			          </includes>
+			          <excludes>
+			            <exclude>**/*Bean.java</exclude>
+			            <exclude>**/generated/*.java</exclude>
+			          </excludes>
+			          <excludeRoots>
+			            <excludeRoot>target/generated-sources/stubs</excludeRoot>
+			          </excludeRoots>
+			        </configuration>
+				</plugin>				
+			</plugins>
+			
+		</pluginManagement>
+	</build>
+	<repositories>
+		<repository>
+			<id>webtools-update</id>
+			<url>http://download.eclipse.org/webtools/updates</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>dltk1.0</id>
+			<url>http://download.eclipse.org/technology/dltk/updates-dev/1.0</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>galileo</id>
+			<url>http://download.eclipse.org/releases/galileo/</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>orbit</id>
+			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+</project>
+
