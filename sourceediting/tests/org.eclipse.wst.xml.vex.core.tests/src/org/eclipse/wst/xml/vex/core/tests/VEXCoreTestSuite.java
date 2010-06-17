@@ -18,6 +18,7 @@ import junit.framework.TestSuite;
 import org.eclipse.wst.xml.vex.core.internal.css.*;
 import org.eclipse.wst.xml.vex.core.internal.dom.*;
 import org.eclipse.wst.xml.vex.core.internal.layout.*;
+import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetTest;
 
 public class VEXCoreTestSuite extends TestSuite {
 	public static Test suite() {
@@ -43,5 +44,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(DOMSynchronizationTest.class);
 		addTestSuite(TableLayoutTest.class);
 		addTestSuite(ListenerListTest.class);
+		addTestSuite(VexWidgetTest.class);
 	}
 }

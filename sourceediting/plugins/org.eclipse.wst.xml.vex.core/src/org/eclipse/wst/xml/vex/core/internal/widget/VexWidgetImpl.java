@@ -8,6 +8,8 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
+ *     Holger Voormann - bug 315914: content assist should only show elements 
+ *			valid in the current context
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.widget;
 
@@ -563,6 +565,21 @@ public class VexWidgetImpl implements IVexWidget {
 		Set<String> validItems = validator.getValidItems(parent.getName());
 		List<String> candidates = new ArrayList<String>(validItems);
 		candidates.remove(Validator.PCDATA);
+		
+		// filter invalid sequences
+		EList<String> nodesBefore = doc.getNodeNames(parent.getStartOffset() + 1, startOffset);
+		EList<String> nodesAfter = doc.getNodeNames(endOffset, parent.getEndOffset());
+		int sequenceLength = nodesBefore.size() + 1 + nodesAfter.size();
+		for (Iterator<String> iter = candidates.iterator(); iter.hasNext();) {
+			String candidate = iter.next();
+			EList<String> sequence = new BasicEList<String>(sequenceLength);
+			sequence.addAll(nodesBefore);
+			sequence.add(candidate);
+			sequence.addAll(nodesAfter);
+			if (!validator.isValidSequence(parent.getName(), sequence, true)) {
+				iter.remove();
+			}
+		}
 
 		// If there's a selection, root out those candidates that can't
 		// contain it.
