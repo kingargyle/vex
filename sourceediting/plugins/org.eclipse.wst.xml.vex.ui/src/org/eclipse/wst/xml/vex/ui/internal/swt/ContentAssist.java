@@ -90,7 +90,7 @@ public class ContentAssist extends PopupDialog {
         super(vexWidget.getShell(),
               SWT.RESIZE,
               true,  // take focus on open
-              true,  // persist size
+              false,  // persist size
               false, // persist location
               false, // show dialog menu
               false, // show persist actions
@@ -163,7 +163,7 @@ public class ContentAssist extends PopupDialog {
         // 3. list of proposals
         viewer = new TableViewer(composite, SWT.H_SCROLL | SWT.V_SCROLL);
         Control viewerControl = viewer.getControl();
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(viewerControl);
+        GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 300).applyTo(viewerControl);
         boldFont = getModifiedFont(viewerControl.getFont(), SWT.BOLD);
         viewer.setLabelProvider(new MyLabelProvider());
         viewer.setContentProvider(new ArrayContentProvider());
