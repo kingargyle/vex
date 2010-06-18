@@ -60,9 +60,11 @@ public class VexWidgetTest extends TestCase {
 	}
 	
 	private static String[] sortedCopyOf(String[] strings) {
-		final String[] result = Arrays.copyOf(strings, strings.length);
+		final String[] result = new String[strings.length];
+		System.arraycopy(strings, 0, result, 0, strings.length);
 		Arrays.sort(result);
 		return result;
 	}
 
+	
 }
