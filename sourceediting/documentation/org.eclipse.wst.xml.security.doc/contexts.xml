@@ -56,12 +56,16 @@ The keystore will be stored in the current (project) folder as [Keystore Name].j
 		<topic href="html/signature/sign.html" label="XML Signature Wizard"/>
 		<topic href="html/encryption/encrypt.html" label="XML Encryption Wizard"/>
 	</context>
-	<context id="wizard_decryption_resource" title="Resource and Key Information">
-		<description>If you didn&apos;t enter an &lt;b&gt;encryption id&lt;/b&gt; during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id and click &lt;b&gt;Next&lt;/b&gt;.</description>
+	<context id="wizard_decryption_resource" title="Encryption Type and ID">
+		<description>If you didn&apos;t enter an &lt;b&gt;encryption id&lt;/b&gt; during the encryption process you can only select to decrypt the first encrypted data found in the selected document. Otherwise select the desired encryption id.
+
+Select the encryption type (enveloping or detached). Selecting detached starts to search the selected encryption (identified by the id) for the reference to the detached file. This URI information is displayed below.
+
+Click &lt;b&gt;Next&lt;/b&gt; to continue to the next wizard page.</description>
 		<topic href="html/decryption/decrypt.html" label="XML Decryption Wizard"/>
 		<topic href="html/decryption/page_resource.html" label="Resource"/>
 	</context>
-    <context id="wizard_decryption_keystore">
+    <context id="wizard_decryption_keystore" title="Encryption Keystore and Key">
        <description>Select the &lt;b&gt;Keystore&lt;/b&gt; used for encrypting this document (-fragment) and enter the &lt;b&gt;password&lt;/b&gt; for the store. Provide the &lt;b&gt;key name&lt;/b&gt; and enter the corresponding &lt;b&gt;password&lt;/b&gt;. Click &lt;b&gt;Next&lt;/b&gt; to start the decryption process.</description>
        <topic href="html/decryption/decrypt.html" label="XML Decryption Wizard"/>
        <topic href="html/decryption/page_open_a_key.html" label="Open a key"/>
