@@ -37,8 +37,8 @@ import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.StringElementContentComparator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ValidatorImpl;
+import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 
-@SuppressWarnings("restriction")
 public class WTPVEXValidator extends ValidatorImpl implements Validator {
 
 	private static final long serialVersionUID = -7632029717211069257L;
@@ -76,11 +76,21 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	}
 
 	@Override
-	public AttributeDefinition getAttributeDefinition(final String element, final String attribute) {
-		final CMElementDeclaration cmelement = getElementDeclaration(element);
-		final CMAttributeDeclaration attr = (CMAttributeDeclaration) cmelement.getAttributes().getNamedItem(attribute);
-		final AttributeDefinition vexAttr = createAttributeDefinition(attr);
-		return vexAttr;
+	public AttributeDefinition getAttributeDefinition(final String elementName, final String attributeName) {
+		final CMElementDeclaration cmElement = getElementDeclaration(elementName);
+		final CMAttributeDeclaration cmAttribute = (CMAttributeDeclaration) cmElement.getAttributes().getNamedItem(attributeName);
+		if (cmAttribute != null)
+			return createAttributeDefinition(cmAttribute);
+		/*
+		 * #318834 If we do not find the attribute, it is actually not valid.
+		 * But we are benevolent here since we do not want to loose data at this
+		 * point.
+		 */
+		return createUnknownAttributeDefinition(attributeName);
+	}
+
+	private AttributeDefinition createUnknownAttributeDefinition(String attributeName) {
+		return new AttributeDefinition(attributeName, Type.CDATA, /* default value */"", /* values */new String[0], /* required */false, /* fixed */true);
 	}
 
 	@Override
@@ -122,7 +132,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	@Override
 	public Set<String> getValidItems(final String element) {
 		final CMElementDeclaration elementDec = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
-		final List<CMNode> nodes = getAvailableContent(element, elementDec);
 		final Set<String> results = new HashSet<String>();
 		for (final CMNode node : getAvailableContent(element, elementDec))
 			if (node instanceof CMElementDeclaration) {
