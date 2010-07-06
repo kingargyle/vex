@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+
+<target name="Vex Helios">
+<locations>
+<location includeAllPlatforms="false" includeMode="planner" type="InstallableUnit">
+<unit id="org.w3c.css.sac" version="1.3.1.v200903091627"/>
+<unit id="org.w3c.css.sac.source" version="1.3.1.v200903091627"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" type="InstallableUnit">
+<unit id="org.eclipse.sdk.ide" version="3.6.0.I20100608-0911"/>
+<unit id="org.eclipse.wst.xml_ui.feature.feature.group" version="3.2.0.v201005241510-7H7AFUIDxumQGOb7ocjUR2Pvz-28"/>
+<unit id="org.eclipse.emf.ecoretools.sdk.feature.group" version="0.10.0.v20100615-1639"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.6.0.v20100614-1136"/>
+<unit id="org.eclipse.emf.ecore.edit.feature.group" version="2.6.0.v20100614-1136"/>
+<unit id="org.eclipse.gef.sdk.feature.group" version="3.6.0.v20100519-2050-7G7R-A5WNc7QL_fXBGjRZPUUiKPJ"/>
+<unit id="org.eclipse.gef.source.feature.group" version="3.6.0.v20100519-2050-777B-81A2Bz-69793A8B83447"/>
+<unit id="org.eclipse.emf.ecoretools.source.feature.group" version="0.10.0.v20100615-1639"/>
+<unit id="org.eclipse.emf.common.source.feature.group" version="2.6.0.v20100614-1136"/>
+<unit id="org.eclipse.emf.ecore.edit.source.feature.group" version="2.6.0.v20100614-1136"/>
+<unit id="org.eclipse.xsd.source.feature.group" version="2.6.0.v20100614-1136"/>
+<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.2.0.v201005241600-7B7DFEdF7RZHOZIvUqM4NJ"/>
+<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.2.0.v201005241600-7C78FPcEdhO_mXOgHjYfp_JwVrN5"/>
+<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.2.0.v201005241510-7C7OFXTF7RZHQHHxO4IuKe"/>
+<unit id="org.eclipse.xsd.sdk.feature.group" version="2.6.0.v20100614-1136"/>
+<repository location="http://download.eclipse.org/releases/helios"/>
+</location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+</target>
