@@ -39,7 +39,7 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 	public PluginProjectBuilder() {
 	}
 
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
+	protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor)
 			throws CoreException {
 
 		IProject project = this.getProject();
