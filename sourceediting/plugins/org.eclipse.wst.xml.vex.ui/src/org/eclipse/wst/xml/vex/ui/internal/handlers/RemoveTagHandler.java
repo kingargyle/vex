@@ -52,12 +52,13 @@ public class RemoveTagHandler extends AbstractVexWidgetHandler implements
                         widget.getCaretOffset());
                 widget.moveTo(element.getStartOffset() + 1, false);
                 widget.moveTo(element.getEndOffset(), true);
-                VEXDocumentFragment frag = widget.getSelectedFragment();
+                final VEXDocumentFragment frag = widget.getSelectedFragment();
                 widget.deleteSelection();
                 widget.moveBy(-1, false);
                 widget.moveBy(2, true);
                 widget.deleteSelection();
-                widget.insertFragment(frag);
+                if (frag != null)
+                	widget.insertFragment(frag);
             }
         });
     }
