@@ -14,6 +14,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,9 @@ import org.w3c.css.sac.SiblingSelector;
  * <code>java.util</code> package, unless a suitable <code>Comparator</code> is
  * also used.
  */
-public class Rule {
+public class Rule implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final Selector selector;
 	private final List<PropertyDecl> propertyDecls = new ArrayList<PropertyDecl>();
