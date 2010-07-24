@@ -30,6 +30,7 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(CssTest.class);
 		addTestSuite(PropertyTest.class);
 		addTestSuite(RuleTest.class);
+		addTestSuite(SerializationTest.class);
 		addTestSuite(BlockElementBoxTest.class);
 		addTestSuite(DocumentWriterTest.class);
 		addTestSuite(DomTest.class);
