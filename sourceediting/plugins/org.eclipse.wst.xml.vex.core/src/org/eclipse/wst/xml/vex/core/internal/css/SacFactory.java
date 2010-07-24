@@ -75,16 +75,16 @@ public class SacFactory {
 	/**
 	 * Clone the given lexical unit, returning one that is serializable.
 	 * 
-	 * @param lu
+	 * @param lexicalUnit
 	 *            LexicalUnit to clone.
 	 */
-	public LexicalUnit cloneLexicalUnit(LexicalUnit lu) {
-		if (lu == null) {
+	public LexicalUnit cloneLexicalUnit(LexicalUnit lexicalUnit) {
+		if (lexicalUnit == null) {
 			return null;
-		} else if (this.cache.containsKey(lu)) {
-			return (LexicalUnit) this.cache.get(lu);
+		} else if (this.cache.containsKey(lexicalUnit)) {
+			return this.cache.get(lexicalUnit);
 		} else {
-			return new LexicalUnitImpl(lu, this);
+			return new LexicalUnitImpl(lexicalUnit, this);
 		}
 	}
 
@@ -122,9 +122,11 @@ public class SacFactory {
 
 	// ===================================================== PRIVATE
 
-	private Map cache = new HashMap();
+	private Map<LexicalUnit, LexicalUnit> cache = new HashMap<LexicalUnit, LexicalUnit>();
 
 	private static class ConditionImpl implements Condition, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public ConditionImpl(Condition condition) {
 			this.type = condition.getConditionType();
 		}
@@ -138,6 +140,8 @@ public class SacFactory {
 
 	private static class AttributeConditionImpl extends ConditionImpl implements
 			AttributeCondition {
+		private static final long serialVersionUID = 1L;
+		
 		public AttributeConditionImpl(AttributeCondition condition) {
 			super(condition);
 			this.namespaceURI = condition.getNamespaceURI();
@@ -170,6 +174,8 @@ public class SacFactory {
 
 	private static class CombinatorConditionImpl extends ConditionImpl
 			implements CombinatorCondition {
+		private static final long serialVersionUID = 1L;
+		
 		public CombinatorConditionImpl(CombinatorCondition condition,
 				SacFactory factory) {
 			super(condition);
@@ -193,6 +199,8 @@ public class SacFactory {
 
 	private static class ContentConditionImpl extends ConditionImpl implements
 			ContentCondition {
+		private static final long serialVersionUID = 1L;
+
 		public ContentConditionImpl(ContentCondition condition) {
 			super(condition);
 			this.data = condition.getData();
@@ -207,6 +215,8 @@ public class SacFactory {
 
 	private static class LangConditionImpl extends ConditionImpl implements
 			LangCondition {
+		private static final long serialVersionUID = 1L;
+
 		public LangConditionImpl(LangCondition condition) {
 			super(condition);
 			this.lang = condition.getLang();
@@ -221,6 +231,8 @@ public class SacFactory {
 
 	private static class NegativeConditionImpl extends ConditionImpl implements
 			NegativeCondition {
+		private static final long serialVersionUID = 1L;
+
 		public NegativeConditionImpl(NegativeCondition condition,
 				SacFactory factory) {
 			super(condition);
@@ -236,6 +248,8 @@ public class SacFactory {
 
 	private static class PositionalConditionImpl extends ConditionImpl
 			implements PositionalCondition {
+		private static final long serialVersionUID = 1L;
+
 		public PositionalConditionImpl(PositionalCondition condition) {
 			super(condition);
 			this.position = condition.getPosition();
@@ -261,7 +275,8 @@ public class SacFactory {
 	}
 
 	private static class LexicalUnitImpl implements LexicalUnit, Serializable {
-
+		private static final long serialVersionUID = 1L;
+		
 		public LexicalUnitImpl(LexicalUnit lu, SacFactory factory) {
 			factory.cache.put(lu, this);
 			this.type = lu.getLexicalUnitType();
@@ -337,6 +352,8 @@ public class SacFactory {
 	}
 
 	private static class SelectorImpl implements Selector, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public SelectorImpl(Selector selector) {
 			this.type = selector.getSelectorType();
 		}
@@ -350,6 +367,8 @@ public class SacFactory {
 
 	private static class CharacterDataSelectorImpl extends SelectorImpl
 			implements CharacterDataSelector {
+		private static final long serialVersionUID = 1L;
+
 		public CharacterDataSelectorImpl(CharacterDataSelector selector) {
 			super(selector);
 			this.data = selector.getData();
@@ -364,6 +383,8 @@ public class SacFactory {
 
 	private static class ConditionalSelectorImpl extends SelectorImpl implements
 			ConditionalSelector {
+		private static final long serialVersionUID = 1L;
+		
 		public ConditionalSelectorImpl(ConditionalSelector selector,
 				SacFactory factory) {
 			super(selector);
@@ -386,6 +407,8 @@ public class SacFactory {
 
 	private static class DescendantSelectorImpl extends SelectorImpl implements
 			DescendantSelector {
+		private static final long serialVersionUID = 1L;
+		
 		public DescendantSelectorImpl(DescendantSelector selector,
 				SacFactory factory) {
 			super(selector);
@@ -409,6 +432,8 @@ public class SacFactory {
 
 	private static class ElementSelectorImpl extends SelectorImpl implements
 			ElementSelector {
+		private static final long serialVersionUID = 1L;
+		
 		public ElementSelectorImpl(ElementSelector selector) {
 			super(selector);
 			this.namespaceURI = selector.getNamespaceURI();
@@ -429,6 +454,8 @@ public class SacFactory {
 
 	private static class NegativeSelectorImpl extends SelectorImpl implements
 			NegativeSelector {
+		private static final long serialVersionUID = 1L;
+
 		public NegativeSelectorImpl(NegativeSelector selector,
 				SacFactory factory) {
 			super(selector);
@@ -445,6 +472,8 @@ public class SacFactory {
 
 	private static class ProcessingInstructionSelectorImpl extends SelectorImpl
 			implements ProcessingInstructionSelector {
+		private static final long serialVersionUID = 1L;
+		
 		public ProcessingInstructionSelectorImpl(
 				ProcessingInstructionSelector selector) {
 			super(selector);
@@ -466,6 +495,8 @@ public class SacFactory {
 
 	private static class SiblingSelectorImpl extends SelectorImpl implements
 			SiblingSelector {
+		private static final long serialVersionUID = 1L;
+		
 		private SiblingSelectorImpl(SiblingSelector selector, SacFactory factory) {
 			super(selector);
 			this.nodeType = selector.getNodeType();
