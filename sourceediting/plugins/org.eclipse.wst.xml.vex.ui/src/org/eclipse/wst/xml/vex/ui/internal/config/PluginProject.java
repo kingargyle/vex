@@ -49,6 +49,8 @@ import org.xml.sax.SAXException;
  */
 public class PluginProject extends ConfigSource {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String PLUGIN_XML = "vex-plugin.xml"; //$NON-NLS-1$
 	public static final String PROJECT_CONFIG_SER = ".vexConfig.ser"; //$NON-NLS-1$
 
@@ -229,6 +231,7 @@ public class PluginProject extends ConfigSource {
 	 * Saves the state of this project into .vexConfig.ser.
 	 */
 	public void saveState() throws CoreException, IOException {
+		// TODO bug 320796: implement alternative serialization strategy - get rid of "Serializable" in the whole model
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(this);
