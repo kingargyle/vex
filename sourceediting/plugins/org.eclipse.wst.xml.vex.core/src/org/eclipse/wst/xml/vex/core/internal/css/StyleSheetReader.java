@@ -162,32 +162,32 @@ public class StyleSheetReader {
 
 			// Create a serializable clone of the value for storage in our
 			// stylesheet.
-			LexicalUnit val = factory.cloneLexicalUnit(value);
+			final LexicalUnit clonedValue = factory.cloneLexicalUnit(value);
 
 			if (name.equals(CSS.BORDER)) {
-				this.expandBorder(val, important);
+				this.expandBorder(clonedValue, important);
 			} else if (name.equals(CSS.BORDER_BOTTOM)) {
-				this.expandBorder(val, CSS.BORDER_BOTTOM, important);
+				this.expandBorder(clonedValue, CSS.BORDER_BOTTOM, important);
 			} else if (name.equals(CSS.BORDER_LEFT)) {
-				this.expandBorder(val, CSS.BORDER_LEFT, important);
+				this.expandBorder(clonedValue, CSS.BORDER_LEFT, important);
 			} else if (name.equals(CSS.BORDER_RIGHT)) {
-				this.expandBorder(val, CSS.BORDER_RIGHT, important);
+				this.expandBorder(clonedValue, CSS.BORDER_RIGHT, important);
 			} else if (name.equals(CSS.BORDER_TOP)) {
-				this.expandBorder(val, CSS.BORDER_TOP, important);
+				this.expandBorder(clonedValue, CSS.BORDER_TOP, important);
 			} else if (name.equals(CSS.BORDER_COLOR)) {
-				this.expandBorderColor(val, important);
+				this.expandBorderColor(clonedValue, important);
 			} else if (name.equals(CSS.BORDER_STYLE)) {
-				this.expandBorderStyle(val, important);
+				this.expandBorderStyle(clonedValue, important);
 			} else if (name.equals(CSS.BORDER_WIDTH)) {
-				this.expandBorderWidth(val, important);
+				this.expandBorderWidth(clonedValue, important);
 			} else if (name.equals(CSS.FONT)) {
-				this.expandFont(val, important);
+				this.expandFont(clonedValue, important);
 			} else if (name.equals(CSS.MARGIN)) {
-				this.expandMargin(val, important);
+				this.expandMargin(clonedValue, important);
 			} else if (name.equals(CSS.PADDING)) {
-				this.expandPadding(val, important);
+				this.expandPadding(clonedValue, important);
 			} else {
-				this.addDecl(name, val, important);
+				this.addDecl(name, clonedValue, important);
 			}
 		}
 
@@ -206,7 +206,7 @@ public class StyleSheetReader {
 		public void startSelector(SelectorList selectors) {
 			this.currentRules = new ArrayList<Rule>();
 			for (int i = 0; i < selectors.getLength(); i++) {
-				Selector selector = selectors.item(i);
+				final Selector selector = factory.cloneSelector(selectors.item(i));
 				this.currentRules.add(new Rule(selector));
 			}
 		}
