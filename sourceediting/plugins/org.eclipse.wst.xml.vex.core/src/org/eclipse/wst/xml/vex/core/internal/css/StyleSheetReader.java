@@ -102,6 +102,9 @@ public class StyleSheetReader {
 		// May be null!
 		private final URL url;
 
+		// Factory for creating serializable clones of SAC objects
+		SacFactory factory = new SacFactory();
+
 		public StyleSheetBuilder(List<Rule> rules, URL url) {
 			this.rules = rules;
 			this.url = url;
@@ -156,30 +159,35 @@ public class StyleSheetReader {
 		}
 
 		public void property(String name, LexicalUnit value, boolean important) {
+
+			// Create a serializable clone of the value for storage in our
+			// stylesheet.
+			LexicalUnit val = factory.cloneLexicalUnit(value);
+
 			if (name.equals(CSS.BORDER)) {
-				this.expandBorder(value, important);
+				this.expandBorder(val, important);
 			} else if (name.equals(CSS.BORDER_BOTTOM)) {
-				this.expandBorder(value, CSS.BORDER_BOTTOM, important);
+				this.expandBorder(val, CSS.BORDER_BOTTOM, important);
 			} else if (name.equals(CSS.BORDER_LEFT)) {
-				this.expandBorder(value, CSS.BORDER_LEFT, important);
+				this.expandBorder(val, CSS.BORDER_LEFT, important);
 			} else if (name.equals(CSS.BORDER_RIGHT)) {
-				this.expandBorder(value, CSS.BORDER_RIGHT, important);
+				this.expandBorder(val, CSS.BORDER_RIGHT, important);
 			} else if (name.equals(CSS.BORDER_TOP)) {
-				this.expandBorder(value, CSS.BORDER_TOP, important);
+				this.expandBorder(val, CSS.BORDER_TOP, important);
 			} else if (name.equals(CSS.BORDER_COLOR)) {
-				this.expandBorderColor(value, important);
+				this.expandBorderColor(val, important);
 			} else if (name.equals(CSS.BORDER_STYLE)) {
-				this.expandBorderStyle(value, important);
+				this.expandBorderStyle(val, important);
 			} else if (name.equals(CSS.BORDER_WIDTH)) {
-				this.expandBorderWidth(value, important);
+				this.expandBorderWidth(val, important);
 			} else if (name.equals(CSS.FONT)) {
-				this.expandFont(value, important);
+				this.expandFont(val, important);
 			} else if (name.equals(CSS.MARGIN)) {
-				this.expandMargin(value, important);
+				this.expandMargin(val, important);
 			} else if (name.equals(CSS.PADDING)) {
-				this.expandPadding(value, important);
+				this.expandPadding(val, important);
 			} else {
-				this.addDecl(name, value, important);
+				this.addDecl(name, val, important);
 			}
 		}
 

@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
+import java.io.Serializable;
+
 import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Represents a particular CSS property declaration.
  */
-public class PropertyDecl {
+public class PropertyDecl implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final Rule rule;
 	private final String property;
