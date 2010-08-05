@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Dave Holroyd - Implement text decoration
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
@@ -255,6 +256,18 @@ public class Styles {
 		this.font = font;
 	}
 
+	public float getElementWidth() {
+		if (this.values.get(CSS.WIDTH) != null) 
+			return ((Float) this.values.get(CSS.WIDTH)).floatValue();
+		return WidthProperty.DEFAULT_WIDTH;
+	}
+
+	public float getElementHeight() {
+		if (this.values.get(CSS.HEIGHT) != null) 
+			return ((Float) this.values.get(CSS.HEIGHT)).floatValue();
+		return HeightProperty.DEFAULT_HEIGHT;
+	}
+	
 	/**
 	 * @return the value of border-bottom-width
 	 */

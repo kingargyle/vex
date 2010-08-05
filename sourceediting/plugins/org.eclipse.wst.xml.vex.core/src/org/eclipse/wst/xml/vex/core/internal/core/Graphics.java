@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,8 +7,11 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.core;
+
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Interface through which Vex performs graphics operations. Implemented by
@@ -48,6 +51,8 @@ public interface Graphics {
 
 	public void drawRect(int x, int y, int width, int height);
 
+	public void drawImage(Image image, int x, int y, int width, int height); // TODO this introduces a dependency to SWT. 'Image' should be encapsulated like FontMetrics 
+	
 	public void fillOval(int x, int y, int width, int height);
 
 	public void fillRect(int x, int y, int width, int height);

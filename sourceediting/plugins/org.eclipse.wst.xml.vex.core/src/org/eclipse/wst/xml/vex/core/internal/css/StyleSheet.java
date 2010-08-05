@@ -13,6 +13,7 @@
  *     Travis Haagen - bug 260806 - enhanced support for 'content' CSS property
  *     Florian Thienel - bug 306639 - remove serializability from StyleSheet
  *                       and dependend classes
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
@@ -96,7 +97,10 @@ public class StyleSheet implements Serializable {
 			new BorderWidthProperty(CSS.BORDER_RIGHT_WIDTH,
 					CSS.BORDER_RIGHT_STYLE, IProperty.AXIS_HORIZONTAL),
 			new BorderWidthProperty(CSS.BORDER_TOP_WIDTH, CSS.BORDER_TOP_STYLE,
-					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), };
+					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), 
+			new HeightProperty(),
+			new WidthProperty()
+		};
 
 	/**
 	 * The rules that comprise the stylesheet.

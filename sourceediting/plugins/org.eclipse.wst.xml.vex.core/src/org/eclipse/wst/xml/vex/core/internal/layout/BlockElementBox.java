@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,12 +8,15 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Drawable;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
@@ -179,7 +182,7 @@ public class BlockElementBox extends AbstractBlockBox {
 			childList.add(afterBlock);
 		}
 
-		Styles styles = context.getStyleSheet().getStyles(this.getElement());
+		final Styles styles = context.getStyleSheet().getStyles(this.getElement());
 		if (styles.getDisplay().equals(CSS.LIST_ITEM)
 				&& !styles.getListStyleType().equals(CSS.NONE)) {
 			this.createListMarker(context);
@@ -194,9 +197,46 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
+		if (this.getElement().getName().equals("graphic") // TODO this is specific for the Docbook DTD
+				&& !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
+			if (this.getElement() != null) {
+				this.callDrawImage(context, this.getElement(), styles);
+			}
+		}
+		
 		return childList;
 	}
 
+	private void callDrawImage(LayoutContext context, VEXElement element,
+			Styles styles) {
+		final String filename = element.getAttribute("url"); // TODO this is specific for the Docbook DTD
+		if (filename == null)
+			return;
+
+		final InlineBox markerInline = drawImage(element, styles, filename);
+		this.beforeMarker = ParagraphBox.create(context, this.getElement(),
+				new InlineBox[] { markerInline }, Integer.MAX_VALUE);
+	}
+
+	private static InlineBox drawImage(final VEXElement element, Styles styles,
+			final String filename) {
+		final int width = (int) styles.getElementWidth();
+		final int height = (int) styles.getElementHeight();
+		final int offset = 5;
+		final Drawable drawable = new Drawable() {
+			public Rectangle getBounds() {
+				return new Rectangle(0, -height, width, height);
+			}
+
+			public void draw(final Graphics g, final int x, final int y) {
+				final Image image = new Image(Display.getDefault(), filename); // TODO this introduces a dependency to SWT, should be encapsulated
+				g.drawImage(image, g.getClipBounds().getX() + offset, g
+						.getClipBounds().getY() - height, width, height);
+			}
+		};
+		return new DrawableBox(drawable, element);
+	}
+		
 	/**
 	 * Creates a marker box for this primary box and puts it in the beforeMarker
 	 * field.

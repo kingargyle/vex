@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,12 +7,14 @@
  * 
  * Contributors:
  *     John Krasnay - initial API and implementation
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
@@ -78,6 +80,10 @@ public class SwtGraphics implements Graphics {
 		this.gc.drawString(s, x + originX, y + originY, true);
 	}
 
+	public void drawImage(Image image, int x, int y, int width, int height) {
+		gc.drawImage(image, x + originX, y + originY);
+	}
+	
 	/**
 	 * Fills the given oval with the <em>foreground</em> color. This overrides
 	 * the default SWT behaviour to be more like Swing.
