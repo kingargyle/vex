@@ -6,15 +6,27 @@
    <extension-point id="styles" name="%extensionPoint.styles" schema="schema/style.exsd"/>
 
  
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type
+        base-type="org.eclipse.core.runtime.xml"
+        file-extensions="*.xml"
+        id="org.eclipse.wst.xml.vex.ui.XmlDocument"
+        name="%contentType.XmlDocument.name">
+		</content-type>
+	</extension>
+	
    <extension
          point="org.eclipse.ui.editors">
       <editor
             name="%VexEditor.name"
-            extensions="htm,html,xhtml,xml,pml"
+            extensions="xml"
             icon="$nl$/vex16.gif"
             class="org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"
             contributorClass="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionBarContributor"
             id="org.eclipse.wst.xml.vex.ui.VexEditor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.wst.xml.vex.ui.XmlDocument">
+         </contentTypeBinding>
       </editor>
       <editor
             class="org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart"
@@ -24,7 +36,7 @@
             name="%VexEditor.multipage.name"
             symbolicFontName="org.eclipse.wst.sse.ui.textfont">
          <contentTypeBinding
-               contentTypeId="org.eclipse.core.runtime.xml">
+               contentTypeId="org.eclipse.wst.xml.vex.ui.XmlDocument">
          </contentTypeBinding>
       </editor>
    </extension>

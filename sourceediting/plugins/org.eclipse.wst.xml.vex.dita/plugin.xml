@@ -5,7 +5,7 @@
 	<!-- Registers DITA-related content types extensions as xml content-->
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type id="org.eclipse.wst.xml.vex.ui.dita" name="%contentType.name"
-			base-type="org.eclipse.core.runtime.xml" file-extensions="dita, ditamap, ditaval">
+			base-type="org.eclipse.wst.xml.vex.ui.XmlDocument" file-extensions="dita, ditamap, bookmap, ditaval">
 		</content-type>
 		<content-type id="org.eclipse.wst.xml.vex.ui.dita.map"
 			name="%contentType.map.name" base-type="org.eclipse.wst.xml.vex.ui.dita.map"
