@@ -20,6 +20,37 @@
 			file-extensions="dita">
 		</content-type>
 	</extension>
+
+ <extension
+       point="org.eclipse.wst.xml.core.catalogContributions">
+    <catalogContribution
+          id="default">
+       <public
+             publicId="-//OASIS//DTD DITA 1.1 Concept//EN"
+             uri="dita11/concept.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Composite//EN"
+             uri="dita11/ditabase.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Reference//EN"
+             uri="dita11/reference.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Task//EN"
+             uri="dita11/task.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Topic//EN"
+             uri="dita11/topic.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Map//EN"
+             uri="dita11/map.dtd">
+       </public>
+    </catalogContribution>
+ </extension>
 	
    <extension
          id="concept"

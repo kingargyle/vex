@@ -7,6 +7,17 @@
 			base-type="org.eclipse.wst.xml.vex.ui.XmlDocument" file-extensions="xml, docbook">
 		</content-type>
 	</extension>
+ <extension
+       point="org.eclipse.wst.xml.core.catalogContributions">
+    <catalogContribution
+          id="default">
+       <public
+             publicId="-//OASIS//DTD DocBook XML V4.5//EN"
+             uri="4.5/docbookx.dtd"
+             webURL="http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+       </public>
+    </catalogContribution>
+ </extension>
 
    <extension
          id="docbook4_5"
