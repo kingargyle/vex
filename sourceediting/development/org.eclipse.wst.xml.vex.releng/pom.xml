@@ -61,45 +61,14 @@
 						<encoding>UTF-8</encoding>
 					</configuration>
 				</plugin>
-				<plugin>
-			        <groupId>org.apache.maven.plugins</groupId>
-			        <artifactId>maven-pmd-plugin</artifactId>
-			        <version>2.5</version>
-			        <configuration>
-			          <linkXref>false</linkXref>
-			          <sourceEncoding>UTF-8</sourceEncoding>
-			          <minimumTokens>100</minimumTokens>
-			          <targetJdk>1.5</targetJdk>
-			          <includes>
-			             <include>**/org/eclipse/wst/xquery/*.java</include>
-			          </includes>
-			          <excludes>
-			            <exclude>**/*Bean.java</exclude>
-			            <exclude>**/generated/*.java</exclude>
-			          </excludes>
-			          <excludeRoots>
-			            <excludeRoot>target/generated-sources/stubs</excludeRoot>
-			          </excludeRoots>
-			        </configuration>
-				</plugin>				
 			</plugins>
 			
 		</pluginManagement>
 	</build>
 	<repositories>
 		<repository>
-			<id>webtools-update</id>
-			<url>http://download.eclipse.org/webtools/updates</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>dltk1.0</id>
-			<url>http://download.eclipse.org/technology/dltk/updates-dev/1.0</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>galileo</id>
-			<url>http://download.eclipse.org/releases/galileo/</url>
+			<id>helios</id>
+			<url>http://download.eclipse.org/releases/helios/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>

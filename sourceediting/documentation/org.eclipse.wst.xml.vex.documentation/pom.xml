@@ -32,7 +32,7 @@
 				<executions>
 					<execution>
 						<id>mylyn-wiki-text</id>
-						<phase>generated-sources</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
