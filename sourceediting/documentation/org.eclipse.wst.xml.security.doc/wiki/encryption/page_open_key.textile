@@ -1,7 +1,0 @@
-= Use a Key from an existing Keystore =
-
-'''Use a Key from an existing Keystore''' is one of the alternatives as the second wizard page. Simply select the keystore containing the key you want to use in the current encryption process. All data is verified, you can only switch to the next case with a correct keystore and key password as well as an existing key alias.
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/encrypt/page_2a.png‎|Use a Key from an existing Keystore|center]]
-
-The wizard automatically stores the entered data for the keystore name and the key name between sessions. Passwords are never stored and have to be entered every time.
