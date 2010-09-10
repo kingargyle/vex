@@ -25,16 +25,6 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class ConfigPlugin extends ConfigSource {
 
-	/**
-	 * Filename prefix used when serializing the config from an installed
-	 * plugin. Since all versions of a plugin share the same persistence area,
-	 * we incorporate the plugin version number into the filename.
-	 */
-	public static final String SER_FILE_PREFIX = ".vexConfig-"; //$NON-NLS-1$
-
-	/** Filename suffix used when serializing an installed plugin */
-	public static final String SER_FILE_SUFFIX = ".ser"; //$NON-NLS-1$
-
 	protected ConfigPlugin(String namespace) {
 		this.namespace = namespace;
 	}
