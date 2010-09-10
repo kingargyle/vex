@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="test"
+         name="test doctype"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="test.dtd"
+            dtd="testdata/test.dtd"
+            publicId="-//Vex//DTD Test//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="test"
+         name="test style"
+         point="org.eclipse.wst.xml.vex.ui.styles">
+      <style
+            css="testdata/test.css">
+         <doctypeRef
+               publicId="-//Vex//DTD Test//EN">
+         </doctypeRef>
+      </style>
+   </extension>
+
+</plugin>

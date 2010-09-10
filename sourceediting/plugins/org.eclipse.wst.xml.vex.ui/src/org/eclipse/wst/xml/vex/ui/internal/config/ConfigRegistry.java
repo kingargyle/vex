@@ -12,7 +12,9 @@
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -60,6 +62,19 @@ public class ConfigRegistry {
 	}
 
 	/**
+	 * Removes all loaded ConfigSource instances and resets the configLoaded flag.
+	 */
+	public void clear() {
+		try {
+			this.lock();
+			configs.clear();
+			configLoaded = false;
+		} finally {
+			this.unlock();
+		}
+	}
+	
+	/**
 	 * Add a VexConfiguration to the list of configurations.
 	 * 
 	 * @param config
@@ -68,7 +83,7 @@ public class ConfigRegistry {
 	public void addConfigSource(ConfigSource config) {
 		try {
 			this.lock();
-			this.configs.add(config);
+			this.configs.put(config.getUniqueIdentifer(), config);
 		} finally {
 			this.unlock();
 		}
@@ -146,7 +161,7 @@ public class ConfigRegistry {
 		try {
 			this.lock();
 			List<ConfigItem> items = new ArrayList<ConfigItem>();
-			for (ConfigSource config : this.configs) {
+			for (ConfigSource config : this.configs.values()) {
 				items.addAll(config.getValidItems(extensionPoint));
 			}
 			return items;
@@ -164,7 +179,7 @@ public class ConfigRegistry {
 		try {
 			this.lock();
 			List<ConfigSource> result = new ArrayList<ConfigSource>();
-			result.addAll(this.configs);
+			result.addAll(this.configs.values());
 			return result;
 		} finally {
 			this.unlock();
@@ -264,7 +279,7 @@ public class ConfigRegistry {
 	private static ConfigRegistry instance = new ConfigRegistry();
 
 	private ILock lock = Job.getJobManager().newLock();
-	private List<ConfigSource> configs = new ArrayList<ConfigSource>();
+	private Map<String, ConfigSource> configs = new HashMap<String, ConfigSource>();
 	private ListenerList<IConfigListener, ConfigEvent> configListeners =
 	    new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
 	private boolean configLoaded = false;

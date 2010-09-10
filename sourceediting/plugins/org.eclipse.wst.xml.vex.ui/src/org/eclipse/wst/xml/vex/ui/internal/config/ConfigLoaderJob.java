@@ -12,12 +12,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IProject;
@@ -39,9 +33,6 @@ import org.osgi.framework.Constants;
  */
 public class ConfigLoaderJob extends Job {
 
-	public static final String PLUGIN_CONFIG_SER_PREFIX = ".vexConfig-"; //$NON-NLS-1$
-	public static final String PLUGIN_CONFIG_SER_SUFFIX = ".ser"; //$NON-NLS-1$
-
 	/**
 	 * Class constructor.
 	 */
@@ -54,12 +45,9 @@ public class ConfigLoaderJob extends Job {
 		// System.out.println("ConfigLoaderJob starts");
 
 		int pluginCount = Platform.getExtensionRegistry().getNamespaces().length;
-		int projectCount = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects().length;
+		int projectCount = ResourcesPlugin.getWorkspace().getRoot().getProjects().length;
 
-		monitor
-				.beginTask(
-						Messages.getString("ConfigLoaderJob.loadingConfig"), pluginCount + projectCount); //$NON-NLS-1$
+		monitor.beginTask(Messages.getString("ConfigLoaderJob.loadingConfig"), pluginCount + projectCount); //$NON-NLS-1$
 
 		this.loadPlugins(monitor);
 		this.loadPluginProjects(monitor);
@@ -78,106 +66,20 @@ public class ConfigLoaderJob extends Job {
 	 * Load configurations from all registered plugins.
 	 */
 	private void loadPlugins(IProgressMonitor monitor) {
-
-		ConfigRegistry configRegistry = ConfigRegistry.getInstance();
-		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-		for (String namespace : extRegistry.getNamespaces()) {
-			Bundle bundle = Platform.getBundle(namespace);
+		final ConfigRegistry configRegistry = ConfigRegistry.getInstance();
+		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		for (final String namespace : extensionRegistry.getNamespaces()) {
+			final Bundle bundle = Platform.getBundle(namespace);
 			if (bundle == null)
 				continue;
 
-			String name = (String) bundle.getHeaders().get(
-					Constants.BUNDLE_NAME);
-			monitor
-					.subTask(Messages.getString("ConfigLoaderJob.loading") + name); //$NON-NLS-1$
+			final String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
+			monitor.subTask(Messages.getString("ConfigLoaderJob.loading") + name); //$NON-NLS-1$
 
-			File stateDir = Platform.getStateLocation(bundle).toFile();
-			String version = (String) bundle.getHeaders().get(
-					Constants.BUNDLE_VERSION);
-			String serFile = PLUGIN_CONFIG_SER_PREFIX + version
-					+ PLUGIN_CONFIG_SER_SUFFIX;
-			File configSerFile = new File(stateDir, serFile);
-
-			ConfigSource source = null;
-			if (configSerFile.exists()) {
-				try {
-					// long start = System.currentTimeMillis();
-					source = loadConfigSourceFromFile(configSerFile);
-					// long end = System.currentTimeMillis();
-					// System.out.println("  load from ser file took " +
-					// (end-start) + "ms");
-				} catch (IOException ex) {
-					String message = MessageFormat.format(Messages
-							.getString("ConfigLoaderJob.loadingError"), //$NON-NLS-1$
-							new Object[] { configSerFile });
-					this.log(IStatus.WARNING, message, ex);
-				}
-			}
-
-			if (source == null) {
-
-				source = ConfigPlugin.load(namespace);
-
-				if (source != null) {
-					try {
-						saveConfigSourceToFile(source, configSerFile);
-					} catch (IOException ex) {
-						String message = MessageFormat.format(Messages
-								.getString("ConfigLoaderJob.cacheError"), //$NON-NLS-1$
-								new Object[] { configSerFile });
-						this.log(IStatus.WARNING, message, ex);
-					}
-				} else {
-					if (configSerFile.exists()) {
-						configSerFile.delete(); // Used to have a config, but
-												// now we don't
-					}
-				}
-
-			}
-
-			if (source != null) {
+			final ConfigSource source = ConfigPlugin.load(namespace);
+			if (source != null)
 				configRegistry.addConfigSource(source);
-			}
-
 			monitor.worked(1);
-		}
-	}
-
-	private static ConfigSource loadConfigSourceFromFile(File file)
-			throws IOException {
-
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			return (ConfigSource) ois.readObject();
-		} catch (ClassNotFoundException ex) {
-			throw new IOException(ex.getMessage());
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (IOException ex) {
-				}
-			}
-		}
-	}
-
-	private static void saveConfigSourceToFile(ConfigSource config, File file)
-			throws IOException {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(file);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(config);
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException ex) {
-				}
-			}
 		}
 	}
 
@@ -191,24 +93,17 @@ public class ConfigLoaderJob extends Job {
 
 		for (IProject project : projects) {
 			try {
-				if (project.isOpen()
-						&& project.hasNature(PluginProjectNature.ID)) {
-					monitor
-							.subTask(Messages
-									.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
+				if (project.isOpen() && project.hasNature(PluginProjectNature.ID)) {
+					monitor.subTask(Messages.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
 					PluginProject.load(project);
 					monitor.worked(1);
 				}
 			} catch (CoreException e) {
-				String message = MessageFormat.format(Messages
-						.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
+				String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
 						new Object[] { project.getName() });
 				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 			}
 		}
 	}
 
-	private void log(int severity, String message, Throwable exception) {
-		VexPlugin.getInstance().log(severity, message, exception);
-	}
 }

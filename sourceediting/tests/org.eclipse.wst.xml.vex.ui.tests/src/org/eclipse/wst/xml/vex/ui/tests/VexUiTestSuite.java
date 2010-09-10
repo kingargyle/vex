@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.tests;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.eclipse.wst.xml.vex.ui.internal.config.tests.ConfigLoaderJobTest;
 import org.eclipse.wst.xml.vex.ui.internal.editor.tests.FindReplaceTargetTest;
 import org.eclipse.wst.xml.vex.ui.internal.tests.ResourceTrackerTest;
 
@@ -24,6 +26,7 @@ public class VexUiTestSuite extends TestSuite {
 
 	public VexUiTestSuite() {
 		super("Vex UI Tests"); //$NON-NLS-1$
+		addTest(new JUnit4TestAdapter(ConfigLoaderJobTest.class));
 		addTestSuite(IconTest.class);
 		addTestSuite(FindReplaceTargetTest.class);
 		addTestSuite(ResourceTrackerTest.class);
