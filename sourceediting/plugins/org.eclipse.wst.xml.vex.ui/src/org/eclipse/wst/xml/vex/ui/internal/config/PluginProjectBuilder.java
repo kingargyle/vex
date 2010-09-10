@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -35,9 +34,6 @@ import org.xml.sax.SAXParseException;
 public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 	public static final String ID = "org.eclipse.wst.xml.vex.ui.pluginBuilder"; //$NON-NLS-1$
-
-	public PluginProjectBuilder() {
-	}
 
 	protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor)
 			throws CoreException {
@@ -117,22 +113,6 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 							VexPlugin.getInstance().log(IStatus.ERROR, message,
 									ex);
 						}
-
-						try {
-							// If auto-build is on this is unnecessary since
-							// another build will be triggered by us saving
-							// vex-plugin.xml above. This is just here in case
-							// we're not auto-building
-							pluginProject.saveState();
-						} catch (Exception ex) {
-							String message = MessageFormat
-									.format(
-											Messages
-													.getString("PluginProjectBuilder.cantSaveFile"), //$NON-NLS-1$
-											new Object[] { PluginProject.PROJECT_CONFIG_SER });
-							VexPlugin.getInstance().log(IStatus.WARNING,
-									message, ex);
-						}
 					}
 
 					return true;
@@ -197,16 +177,6 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 			};
 
 			pluginProject.parseResources(problemHandler);
-
-			// Write new config to SER file.
-			try {
-				pluginProject.saveState();
-			} catch (IOException ex) {
-				String message = MessageFormat.format(Messages
-						.getString("PluginProjectBuilder.cantSaveConfig"), //$NON-NLS-1$
-						new Object[] { project.getName() });
-				VexPlugin.getInstance().log(IStatus.WARNING, message, ex);
-			}
 		} finally {
 			registry.unlock();
 		}
@@ -222,7 +192,6 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 			registry.lock();
 			PluginProject pluginProject = PluginProject.get(this.getProject());
 			if (pluginProject != null) {
-				pluginProject.cleanState();
 				pluginProject.removeAllItems();
 				pluginProject.removeAllResources();
 				registry.fireConfigChanged(new ConfigEvent(this));
