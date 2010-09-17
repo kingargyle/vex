@@ -13,6 +13,10 @@
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -29,44 +33,34 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 
 /**
- * Job that loads Vex configuration objects from plugins and plugin projects.
+ * Job that loads Vex configuration objects from plug-ins and plug-in projects.
  */
 public class ConfigLoaderJob extends Job {
 
-	/**
-	 * Class constructor.
-	 */
+	private AtomicReference<List<ConfigSource>> allConfigSources = new AtomicReference<List<ConfigSource>>(Collections.<ConfigSource> emptyList());
+
 	public ConfigLoaderJob() {
 		super(Messages.getString("ConfigLoaderJob.loadingConfig")); //$NON-NLS-1$
 	}
 
-	protected IStatus run(IProgressMonitor monitor) {
-
-		// System.out.println("ConfigLoaderJob starts");
-
-		int pluginCount = Platform.getExtensionRegistry().getNamespaces().length;
-		int projectCount = ResourcesPlugin.getWorkspace().getRoot().getProjects().length;
+	@Override
+	protected IStatus run(final IProgressMonitor monitor) {
+		final int pluginCount = Platform.getExtensionRegistry().getNamespaces().length;
+		final int projectCount = ResourcesPlugin.getWorkspace().getRoot().getProjects().length;
 
 		monitor.beginTask(Messages.getString("ConfigLoaderJob.loadingConfig"), pluginCount + projectCount); //$NON-NLS-1$
-
-		this.loadPlugins(monitor);
-		this.loadPluginProjects(monitor);
-		ConfigRegistry.getInstance().fireConfigLoaded(new ConfigEvent(this));
-
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
+		result.addAll(loadPlugins(monitor));
+		result.addAll(loadPluginProjects(monitor));
+		allConfigSources.set(result);
+		// TODO ConfigRegistry.getInstance().fireConfigLoaded(new ConfigEvent(this));
 		monitor.done();
-
-		// System.out.println("ConfigLoaderJob ends");
 
 		return Status.OK_STATUS;
 	}
 
-	// ======================================================= PRIVATE
-
-	/**
-	 * Load configurations from all registered plugins.
-	 */
-	private void loadPlugins(IProgressMonitor monitor) {
-		final ConfigRegistry configRegistry = ConfigRegistry.getInstance();
+	private static List<ConfigSource> loadPlugins(final IProgressMonitor monitor) {
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		for (final String namespace : extensionRegistry.getNamespaces()) {
 			final Bundle bundle = Platform.getBundle(namespace);
@@ -78,32 +72,36 @@ public class ConfigLoaderJob extends Job {
 
 			final ConfigSource source = ConfigPlugin.load(namespace);
 			if (source != null)
-				configRegistry.addConfigSource(source);
+				result.add(source);
 			monitor.worked(1);
 		}
+		return result;
 	}
 
-	/**
-	 * Load configurations from all Vex Plugin Projects in the workspace.
-	 */
-	private void loadPluginProjects(IProgressMonitor monitor) {
+	private static List<ConfigSource> loadPluginProjects(final IProgressMonitor monitor) {
+		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		final IProject[] projects = root.getProjects();
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject[] projects = root.getProjects();
-
-		for (IProject project : projects) {
+		for (final IProject project : projects)
 			try {
 				if (project.isOpen() && project.hasNature(PluginProjectNature.ID)) {
 					monitor.subTask(Messages.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
-					PluginProject.load(project);
+					final ConfigSource source = PluginProject.load(project);
+					if (source != null)
+						result.add(source);
 					monitor.worked(1);
 				}
-			} catch (CoreException e) {
-				String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
+			} catch (final CoreException e) {
+				final String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
 						new Object[] { project.getName() });
 				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 			}
-		}
+
+		return result;
 	}
 
+	public List<ConfigSource> getAllConfigSources() {
+		return allConfigSources.get();
+	}
 }
