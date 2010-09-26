@@ -25,11 +25,9 @@
 					<testClass>org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite</testClass>
 					<dependencies>
 						<dependency>
-							<dependency>
-								<type>p2-installable-unit</type>
-								<artifactId>org.eclipse.sdk.ide</artifactId>
-								<version>0.0.0</version>
-							</dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.sdk.ide</artifactId>
+							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
 				</configuration>
