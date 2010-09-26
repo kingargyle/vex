@@ -23,9 +23,18 @@
 					<useUIHarness>true</useUIHarness>
 					<testSuite>org.eclipse.wst.xml.vex.core.tests</testSuite>
 					<testClass>org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite</testClass>
+					<dependencies>
+						<dependency>
+							<dependency>
+								<type>p2-installable-unit</type>
+								<artifactId>org.eclipse.sdk.ide</artifactId>
+								<version>0.0.0</version>
+							</dependency>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>	
+	</build>
 
 </project>
