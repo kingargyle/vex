@@ -13,12 +13,14 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
@@ -39,64 +41,78 @@ import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
-import org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder;
-import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.dom.Text;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestPlugin;
+import org.osgi.framework.Bundle;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-/**
- * Test the SpaceNormalizer class.
- */
 public class SpaceNormalizerTest extends TestCase {
 
 	protected static IProject fTestProject;
 	private static boolean fTestProjectInitialized;
 	private static final String TEST_PROJECT_NAME = "testproject";
+	private static final String PROJECT_FILES_FOLDER_NAME = "projectFiles";
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		DisplayDevice.setCurrent(new MockDisplayDevice(90, 90));
+		if (fTestProjectInitialized)
+			return;
+		
+		getAndCreateProject();
+		final Bundle coreTestBundle = Platform.getBundle(VEXCoreTestPlugin.PLUGIN_ID);
+		@SuppressWarnings("unchecked")
+		final Enumeration<String> projectFilePaths = coreTestBundle.getEntryPaths("/" + PROJECT_FILES_FOLDER_NAME);
+		while (projectFilePaths.hasMoreElements()) {
+			final String absolutePath = projectFilePaths.nextElement();
+			final URL url = coreTestBundle.getEntry(absolutePath);
 
-		if (!fTestProjectInitialized) {
-			getAndCreateProject();
-
-			Enumeration<?> e = Platform.getBundle(
-					VEXCoreTestPlugin.PLUGIN_ID).getEntryPaths("/projectFiles");
-			while (e.hasMoreElements()) {
-				String path = (String) e.nextElement();
-				URL url = Platform.getBundle(VEXCoreTestPlugin.PLUGIN_ID)
-						.getEntry(path);
-				if (!url.getFile().endsWith("/")) {
-					url = FileLocator.resolve(url);
-					path = path.substring("projectfiles".length());
-					IFile destFile = fTestProject.getFile(path);
-					System.out.println(destFile.getLocation() + " --> "
-							+ url.toExternalForm());
-					destFile.createLink(url.toURI(), IResource.REPLACE,
-							new NullProgressMonitor());
-				}
+			if (isFileUrl(url)) {
+				final URL resolvedUrl = FileLocator.resolve(url);
+				final String relativePath = absolutePath.substring(PROJECT_FILES_FOLDER_NAME.length());
+				final IFile destFile = fTestProject.getFile(relativePath);
+				System.out.println(destFile.getLocation() + " --> " + resolvedUrl.toExternalForm());
+				if (isFromJarFile(resolvedUrl)) {
+					copyTestFileToProject(coreTestBundle, absolutePath, destFile);
+				} else
+					//if resource is not compressed, link
+					destFile.createLink(resolvedUrl.toURI(), IResource.REPLACE, new NullProgressMonitor());
 			}
-			fTestProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-			fTestProjectInitialized = true;
 		}
+		fTestProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+		fTestProjectInitialized = true;
 	}
 
-	protected IFile getFile(String path) {
+	private static boolean isFileUrl(URL url) {
+		return !url.getFile().endsWith("/");
+	}
+	
+	private boolean isFromJarFile(final URL resolvedUrl) {
+		return resolvedUrl.toExternalForm().startsWith("jar:file");
+	}
+	
+	private void copyTestFileToProject(final Bundle coreTestBundle, final String sourcePath, final IFile destinationFile) throws IOException, CoreException {
+		final InputStream source = FileLocator.openStream(coreTestBundle, new Path(sourcePath), false);
+		if (destinationFile.exists())
+			destinationFile.delete(true, new NullProgressMonitor());
+		destinationFile.create(source, true, new NullProgressMonitor());
+	}
+
+	protected IFile getFileInProject(final String path) {
 		return fTestProject.getFile(new Path(path));
 	}
 
 	private static void getAndCreateProject() throws CoreException {
-		IWorkspace workspace = getWorkspace();
-		IWorkspaceRoot root = workspace.getRoot();
+		final IWorkspace workspace = getWorkspace();
+		final IWorkspaceRoot root = workspace.getRoot();
 		fTestProject = root.getProject(TEST_PROJECT_NAME);
 
 		createProject(fTestProject, null, null);
@@ -104,20 +120,16 @@ public class SpaceNormalizerTest extends TestCase {
 		assertTrue(fTestProject.exists());
 	}
 
-	private static void createProject(IProject project, IPath locationPath,
-			IProgressMonitor monitor) throws CoreException {
-		if (monitor == null) {
+	private static void createProject(final IProject project, IPath locationPath, IProgressMonitor monitor) throws CoreException {
+		if (monitor == null)
 			monitor = new NullProgressMonitor();
-		}
 		monitor.beginTask("creating test project", 10);
 		// create the project
 		try {
 			if (!project.exists()) {
-				IProjectDescription desc = project.getWorkspace()
-						.newProjectDescription(project.getName());
-				if (Platform.getLocation().equals(locationPath)) {
+				final IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
+				if (Platform.getLocation().equals(locationPath))
 					locationPath = null;
-				}
 				desc.setLocation(locationPath);
 				project.create(desc, monitor);
 				monitor = null;
@@ -127,9 +139,8 @@ public class SpaceNormalizerTest extends TestCase {
 				monitor = null;
 			}
 		} finally {
-			if (monitor != null) {
+			if (monitor != null)
 				monitor.done();
-			}
 		}
 	}
 
@@ -156,23 +167,19 @@ public class SpaceNormalizerTest extends TestCase {
 	 */
 	public void testNormalize() throws Exception {
 
-		String input = "<doc>\n\t  "
-				+ "<block>\n\t foo\n\t <inline>foo\n\t bar</inline>\n\t baz\n\t </block>\n\t "
-				+ "<block>\n\t foo\n\t <block>bar</block>\n\t baz</block>"
-				+ "<block>\n\t foo<inline> foo bar </inline>baz \n\t </block>"
-				+ "<block>\n\t foo<block>bar</block>baz \n\t</block>"
-				+ "\n\t </doc>";
+		final String input = "<doc>\n\t  " + "<block>\n\t foo\n\t <inline>foo\n\t bar</inline>\n\t baz\n\t </block>\n\t "
+				+ "<block>\n\t foo\n\t <block>bar</block>\n\t baz</block>" + "<block>\n\t foo<inline> foo bar </inline>baz \n\t </block>"
+				+ "<block>\n\t foo<block>bar</block>baz \n\t</block>" + "\n\t </doc>";
 
-		StyleSheet ss = getStyleSheet();
+		final StyleSheet ss = getStyleSheet();
 
-		VEXDocument doc = createDocument(input, ss);
+		final VEXDocument doc = createDocument(input, ss);
 		VEXElement element;
 
 		element = doc.getRootElement();
-		assertContent(element, new String[] { "<block>", "<block>", "<block>",
-				"<block>" });
+		assertContent(element, new String[] { "<block>", "<block>", "<block>", "<block>" });
 
-		List<VEXElement> children = element.getChildElements();
+		final List<VEXElement> children = element.getChildElements();
 
 		// --- Block 0 ---
 
@@ -200,61 +207,54 @@ public class SpaceNormalizerTest extends TestCase {
 
 	}
 
-	public void testPreNormalize1() throws ParserConfigurationException,
-			SAXException, IOException {
+	public void testPreNormalize1() throws ParserConfigurationException, SAXException, IOException {
 		// ========= Now test with a PRE element =========
 
-		String input = "<doc>\n " + "<pre>\n foo\n</pre>\n " + "\n </doc>";
+		final String input = "<doc>\n " + "<pre>\n foo\n</pre>\n " + "\n </doc>";
 
-		VEXDocument doc = createDocument(input, getStyleSheet());
+		final VEXDocument doc = createDocument(input, getStyleSheet());
 
-		VEXElement element = doc.getRootElement();
+		final VEXElement element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		VEXElement pre = element.getChildElements().get(0);
+		final VEXElement pre = element.getChildElements().get(0);
 		assertContent(pre, new String[] { "\n foo\n" });
 	}
 
 	public void testPreNormalize2() throws Exception {
 		// ========= Now test with a PRE element =========
 
-		String input = "<doc>\n "
-				+ "<pre>\n foo\n <inline>\n foo\n bar\n </inline></pre>\n "
-				+ "\n </doc>";
+		final String input = "<doc>\n " + "<pre>\n foo\n <inline>\n foo\n bar\n </inline></pre>\n " + "\n </doc>";
 
-		VEXDocument doc = createDocument(input, getStyleSheet());
+		final VEXDocument doc = createDocument(input, getStyleSheet());
 
-		VEXElement element = doc.getRootElement();
-		VEXElement pre = element.getChildElements().get(0);
-		VEXElement inline = pre.getChildElements().get(0);
+		final VEXElement element = doc.getRootElement();
+		final VEXElement pre = element.getChildElements().get(0);
+		final VEXElement inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n foo\n bar\n " });
 	}
 
-	public void testPreElementNormalize() throws ParserConfigurationException,
-			SAXException, IOException {
+	public void testPreElementNormalize() throws ParserConfigurationException, SAXException, IOException {
 		// ========= Now test with a PRE element =========
 
-		String input = "<doc>\n  "
-				+ "<pre>\n\t foo\n\t <inline>\n\t foo\n\t bar\n\t </inline>\n\t baz\n\t </pre>\n "
-				+ "\n </doc>";
+		final String input = "<doc>\n  " + "<pre>\n\t foo\n\t <inline>\n\t foo\n\t bar\n\t </inline>\n\t baz\n\t </pre>\n " + "\n </doc>";
 
-		VEXDocument doc = createDocument(input, getStyleSheet());
+		final VEXDocument doc = createDocument(input, getStyleSheet());
 
-		VEXElement element = doc.getRootElement();
+		final VEXElement element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		VEXElement pre = element.getChildElements().get(0);
-		assertContent(pre,
-				new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
+		final VEXElement pre = element.getChildElements().get(0);
+		assertContent(pre, new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
 
-		VEXElement inline = pre.getChildElements().get(0);
+		final VEXElement inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n\t foo\n\t bar\n\t " });
 	}
 
 	private StyleSheet getStyleSheet() throws IOException {
-		StyleSheetReader reader = new StyleSheetReader();
-		URL url = getFile("test.css").getLocationURI().toURL();
-		StyleSheet ss = reader.read(url);
+		final StyleSheetReader reader = new StyleSheetReader();
+		final URL url = getFileInProject("test.css").getLocationURI().toURL();
+		final StyleSheet ss = reader.read(url);
 		return ss;
 	}
 
@@ -267,38 +267,35 @@ public class SpaceNormalizerTest extends TestCase {
 	 * string in content is enclosed in angle brackets, it's assume to refer to
 	 * the name of an element; otherwise, it represents text content.
 	 */
-	private void assertContent(VEXElement element, String[] strings) {
-		List<VEXNode> content = element.getChildNodes();
+	private void assertContent(final VEXElement element, final String[] strings) {
+		final List<VEXNode> content = element.getChildNodes();
 		assertEquals(strings.length, content.size());
-		for (int i = 0; i < strings.length; i++) {
+		for (int i = 0; i < strings.length; i++)
 			if (strings[i].startsWith("<")) {
-				String name = strings[i].substring(1, strings[i].length() - 1);
+				final String name = strings[i].substring(1, strings[i].length() - 1);
 				assertTrue(content.get(i) instanceof Element);
 				assertEquals(name, ((VEXElement) content.get(i)).getName());
 			} else {
 				assertTrue(content.get(i) instanceof Text);
-				String contentText = content.get(i).getText();
+				final String contentText = content.get(i).getText();
 				assertEquals(strings[i], contentText);
 			}
-		}
 	}
 
-	private VEXDocument createDocument(String s, StyleSheet ss)
-			throws ParserConfigurationException, SAXException, IOException {
+	private VEXDocument createDocument(final String s, final StyleSheet ss) throws ParserConfigurationException, SAXException, IOException {
 
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		final XMLReader xmlReader = factory.newSAXParser().getXMLReader();
 		final StyleSheet mySS = ss;
-		DocumentBuilder builder = new DocumentBuilder(
-				new IWhitespacePolicyFactory() {
+		final DocumentBuilder builder = new DocumentBuilder(new IWhitespacePolicyFactory() {
 
-					public IWhitespacePolicy getPolicy(String publicId) {
-						return new CssWhitespacePolicy(mySS);
-					}
+			public IWhitespacePolicy getPolicy(final String publicId) {
+				return new CssWhitespacePolicy(mySS);
+			}
 
-				});
+		});
 
-		InputSource is = new InputSource(new ByteArrayInputStream(s.getBytes()));
+		final InputSource is = new InputSource(new ByteArrayInputStream(s.getBytes()));
 		xmlReader.setContentHandler(builder);
 		xmlReader.parse(is);
 		return builder.getDocument();
