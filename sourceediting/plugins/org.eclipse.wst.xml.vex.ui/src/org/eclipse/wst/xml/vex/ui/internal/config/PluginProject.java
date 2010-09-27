@@ -132,10 +132,6 @@ public class PluginProject extends ConfigSource {
 					project.getName()));
 		}
 
-		final ConfigRegistry registry = ConfigRegistry.getInstance();
-		registry.addConfigSource(pluginProject);
-		registry.fireConfigChanged(new ConfigEvent(PluginProject.class));
-
 		try {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
 		} catch (Exception ex) {
