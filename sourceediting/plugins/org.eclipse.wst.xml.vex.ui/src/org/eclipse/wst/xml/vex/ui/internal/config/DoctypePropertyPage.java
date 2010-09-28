@@ -85,9 +85,9 @@ public class DoctypePropertyPage extends PropertyPage {
 			}
 		};
 
-		ConfigRegistry.getInstance().addConfigListener(configListener);
+		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
 
-		if (ConfigRegistry.getInstance().isConfigLoaded()) {
+		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
 
 			populateDoctype();
 			populateRootElements();
@@ -220,7 +220,7 @@ public class DoctypePropertyPage extends PropertyPage {
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		}
 
-		ConfigRegistry.getInstance().fireConfigChanged(new ConfigEvent(this));
+		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
 	public void performDefaults() {
@@ -236,7 +236,7 @@ public class DoctypePropertyPage extends PropertyPage {
 		super.dispose();
 
 		if (this.configListener != null) {
-			ConfigRegistry.getInstance().removeConfigListener(
+			ConfigurationRegistry.INSTANCE.removeConfigListener(
 					this.configListener);
 		}
 	}

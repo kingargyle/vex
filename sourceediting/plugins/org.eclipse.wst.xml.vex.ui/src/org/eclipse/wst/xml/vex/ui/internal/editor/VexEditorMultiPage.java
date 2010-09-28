@@ -80,9 +80,9 @@ import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigItem;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
 import org.eclipse.wst.xml.vex.ui.internal.outline.DocumentOutlinePage;
 import org.eclipse.wst.xml.vex.ui.internal.property.ElementPropertySource;
@@ -129,7 +129,7 @@ public class VexEditorMultiPage extends VexEditor {
 		if (this.parentControl != null) {
 			// createPartControl was called, so we must de-register from config
 			// events
-			ConfigRegistry.getInstance().removeConfigListener(
+			ConfigurationRegistry.INSTANCE.removeConfigListener(
 					this.configListener);
 		}
 
@@ -248,8 +248,7 @@ public class VexEditorMultiPage extends VexEditor {
 		preferredStyleId = prefs.get(key, null);
 
 		Style firstStyle = null;
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-		for (ConfigItem configItem : registry.getAllConfigItems(Style.EXTENSION_POINT)) {
+		for (ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
 			Style style = (Style) configItem;
 			if (style.appliesTo(publicId)) {
 				if (firstStyle == null) {
@@ -479,11 +478,9 @@ public class VexEditorMultiPage extends VexEditor {
 
 		this.parentControl = parent;
 
-		ConfigRegistry registry = ConfigRegistry.getInstance();
 
-		registry.addConfigListener(this.configListener);
-
-		if (registry.isConfigLoaded()) {
+		ConfigurationRegistry.INSTANCE.addConfigListener(this.configListener);
+		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
 			this.loadInput();
 		} else {
 			this.showLabel(Messages.getString("VexEditor.loading")); //$NON-NLS-1$
@@ -752,9 +749,8 @@ public class VexEditorMultiPage extends VexEditor {
 
 		public void configChanged(ConfigEvent e) {
 			if (style != null) {
-				ConfigRegistry registry = ConfigRegistry.getInstance();
 				String currId = style.getUniqueId();
-				Style newStyle = (Style) registry.getConfigItem(
+				Style newStyle = (Style) ConfigurationRegistry.INSTANCE.getConfigItem(
 						Style.EXTENSION_POINT, currId);
 				if (newStyle == null) {
 					// Oops, style went bye-bye

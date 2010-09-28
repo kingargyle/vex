@@ -32,11 +32,8 @@ public class ConfigurationView extends ViewPart {
 
 		this.parentControl = parent;
 
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-
-		registry.addConfigListener(this.configListener);
-
-		if (registry.isConfigLoaded()) {
+		ConfigurationRegistry.INSTANCE.addConfigListener(this.configListener);
+		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
 			this.createTreeViewer();
 		} else {
 			this.loadingLabel = new Label(parent, SWT.NONE);
@@ -48,7 +45,7 @@ public class ConfigurationView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
-		ConfigRegistry.getInstance().removeConfigListener(this.configListener);
+		ConfigurationRegistry.INSTANCE.removeConfigListener(this.configListener);
 	}
 
 	public void setFocus() {
@@ -70,7 +67,7 @@ public class ConfigurationView extends ViewPart {
 		this.treeViewer.setContentProvider(new ContentProvider());
 		this.treeViewer.setLabelProvider(new MyLabelProvider());
 		this.treeViewer.setAutoExpandLevel(2);
-		this.treeViewer.setInput(ConfigRegistry.getInstance());
+		this.treeViewer.setInput(ConfigurationRegistry.INSTANCE);
 	}
 
 	private static class ContentProvider implements ITreeContentProvider {
@@ -78,7 +75,7 @@ public class ConfigurationView extends ViewPart {
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof IConfigItemFactory) {
 				IConfigItemFactory factory = (IConfigItemFactory) parentElement;
-				List<ConfigItem> items = ConfigRegistry.getInstance().getAllConfigItems(
+				List<ConfigItem> items = ConfigurationRegistry.INSTANCE.getAllConfigItems(
 						factory.getExtensionPointId());
 				Collections.sort(items);
 				return items.toArray();
@@ -90,10 +87,10 @@ public class ConfigurationView extends ViewPart {
 		public Object getParent(Object element) {
 			if (element instanceof ConfigItem) {
 				ConfigItem item = (ConfigItem) element;
-				return ConfigRegistry.getInstance().getConfigItemFactory(
+				return ConfigurationRegistry.INSTANCE.getConfigItemFactory(
 						item.getExtensionPointId());
 			} else {
-				return ConfigRegistry.getInstance();
+				return ConfigurationRegistry.INSTANCE;
 			}
 		}
 
@@ -102,7 +99,7 @@ public class ConfigurationView extends ViewPart {
 		}
 
 		public Object[] getElements(Object inputElement) {
-			return ConfigRegistry.getInstance().getAllConfigItemFactories();
+			return ConfigurationRegistry.INSTANCE.getAllConfigItemFactories();
 		}
 
 		public void dispose() {

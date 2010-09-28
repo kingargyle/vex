@@ -22,8 +22,10 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 
@@ -52,95 +54,96 @@ import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
  * fireConfigXXX methods may be called from other threads; this class will
  * ensure the listeners are called on the UI thread.
  */
-public class ConfigRegistry {
+public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
-	/**
-	 * Returns the singleton instance of the registry.
-	 */
-	public static ConfigRegistry getInstance() {
-		return instance;
+	private volatile ConfigLoaderJob loaderJob = null;
+	private volatile boolean loaded = false;
+
+	public ConfigurationRegistryImpl() {
+		configItemFactories.add(new DoctypeFactory());
+		configItemFactories.add(new StyleFactory());
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+	}
+
+	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+	}
+
+	public void loadConfigurations() {
+		lock();
+		try {
+			loaderJob = new ConfigLoaderJob();
+			loaderJob.addJobChangeListener(new JobChangeAdapter() {
+				@Override
+				public void done(final IJobChangeEvent event) {
+					lock();
+					try {
+						configs = new HashMap<String, ConfigSource>();
+						for (final ConfigSource configSource : loaderJob.getAllConfigSources())
+							configs.put(configSource.getUniqueIdentifer(), configSource);
+						loaded = true;
+						loaderJob = null;
+					} finally {
+						unlock();
+					}
+					fireConfigLoaded(new ConfigEvent(ConfigurationRegistryImpl.this));
+				}
+			});
+			loaderJob.schedule();
+		} finally {
+			unlock();
+		}
 	}
 
 	/**
-	 * Removes all loaded ConfigSource instances and resets the configLoaded flag.
+	 * Removes all loaded ConfigSource instances and resets the configLoaded
+	 * flag.
 	 */
 	public void clear() {
 		try {
-			this.lock();
-			configs.clear();
-			configLoaded = false;
+			lock();
+			configs = new HashMap<String, ConfigSource>();
+			loaded = false;
 		} finally {
-			this.unlock();
-		}
-	}
-	
-	/**
-	 * Add a VexConfiguration to the list of configurations.
-	 * 
-	 * @param config
-	 *            VexConfiguration to be added.
-	 */
-	public void addConfigSource(ConfigSource config) {
-		try {
-			this.lock();
-			this.configs.put(config.getUniqueIdentifer(), config);
-		} finally {
-			this.unlock();
+			unlock();
 		}
 	}
 
 	/**
-	 * Adds a ConfigChangeListener to the notification list.
+	 * Add a ConfigSource to the list of configurations.
 	 * 
-	 * @param listener
-	 *            Listener to be added.
+	 * @param config
+	 *            ConfigSource to be added.
 	 */
-	public void addConfigListener(IConfigListener listener) {
-		this.configListeners.add(listener);
+	public void addConfigSource(final ConfigSource config) {
+		try {
+			lock();
+			configs.put(config.getUniqueIdentifer(), config);
+		} finally {
+			unlock();
+		}
 	}
 
 	/**
 	 * Call the configChanged method on all registered ConfigChangeListeners.
-	 * The listeners are called from the display thread, even if this method was
-	 * called from another thread.
 	 * 
 	 * @param e
 	 *            ConfigEvent to be fired.
 	 */
 	public void fireConfigChanged(final ConfigEvent e) {
-		if (this.isConfigLoaded()) {
-			Runnable runnable = new Runnable() {
-				public void run() {
-					configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
-				}
-			};
-
-			Display display = Display.getDefault();
-			if (display.getThread() == Thread.currentThread()) {
-				runnable.run();
-			} else {
-				display.asyncExec(runnable);
-			}
-		}
+		configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
 	}
 
 	/**
-	 * Call the configLoaded method on all registered ConfigChangeListeners from
-	 * the display thread. This method is called from the ConfigLoaderJob
+	 * Call the configLoaded method on all registered ConfigChangeListeners.
+	 * This method is called from the ConfigLoaderJob
 	 * thread.
 	 * 
 	 * @param e
 	 *            ConfigEvent to be fired.
 	 */
 	public void fireConfigLoaded(final ConfigEvent e) {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				configLoaded = true;
-				configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
-			}
-		};
-
-		Display.getDefault().asyncExec(runnable);
+		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
 	}
 
 	/**
@@ -154,19 +157,18 @@ public class ConfigRegistry {
 	 * Returns an array of all registered ConfigItem objects implementing the
 	 * given extension point.
 	 * 
-	 * @param extensionPoint
+	 * @param extensionPointId
 	 *            ID of the desired extension point.
 	 */
-	public List<ConfigItem> getAllConfigItems(String extensionPoint) {
+	public List<ConfigItem> getAllConfigItems(final String extensionPointId) {
 		try {
-			this.lock();
-			List<ConfigItem> items = new ArrayList<ConfigItem>();
-			for (ConfigSource config : this.configs.values()) {
-				items.addAll(config.getValidItems(extensionPoint));
-			}
+			lock();
+			final List<ConfigItem> items = new ArrayList<ConfigItem>();
+			for (final ConfigSource config : configs.values())
+				items.addAll(config.getValidItems(extensionPointId));
 			return items;
 		} finally {
-			this.unlock();
+			unlock();
 		}
 	}
 
@@ -176,14 +178,27 @@ public class ConfigRegistry {
 	 * @return
 	 */
 	public List<ConfigSource> getAllConfigSources() {
+		checkLoaded();
 		try {
-			this.lock();
-			List<ConfigSource> result = new ArrayList<ConfigSource>();
-			result.addAll(this.configs.values());
+			lock();
+			final List<ConfigSource> result = new ArrayList<ConfigSource>();
+			result.addAll(configs.values());
 			return result;
 		} finally {
-			this.unlock();
+			unlock();
 		}
+	}
+
+	private void checkLoaded() {
+		if (!loaded)
+			if (loaderJob == null)
+				throw new IllegalStateException("The configurations are not loaded yet. Call 'loadConfigurations' first.");
+			else
+				try {
+					loaderJob.join();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
 	}
 
 	/**
@@ -196,17 +211,15 @@ public class ConfigRegistry {
 	 * @param id
 	 *            ID of the desired item.
 	 */
-	public ConfigItem getConfigItem(String extensionPoint, String id) {
+	public ConfigItem getConfigItem(final String extensionPoint, final String id) {
 		try {
-			this.lock();
-			for (ConfigItem item : this.getAllConfigItems(extensionPoint)) {
-				if (item.getUniqueId().equals(id)) {
+			lock();
+			for (final ConfigItem item : getAllConfigItems(extensionPoint))
+				if (item.getUniqueId().equals(id))
 					return item;
-				}
-			}
 			return null;
 		} finally {
-			this.unlock();
+			unlock();
 		}
 	}
 
@@ -217,12 +230,10 @@ public class ConfigRegistry {
 	 * @param extensionPointId
 	 *            Extension point ID for which to search.
 	 */
-	public IConfigItemFactory getConfigItemFactory(String extensionPointId) {
-		for (IConfigItemFactory factory : this.configItemFactories) {
-			if (factory.getExtensionPointId().equals(extensionPointId)) {
+	public IConfigItemFactory getConfigItemFactory(final String extensionPointId) {
+		for (final IConfigItemFactory factory : configItemFactories)
+			if (factory.getExtensionPointId().equals(extensionPointId))
 				return factory;
-			}			
-		}
 		return null;
 	}
 
@@ -231,15 +242,8 @@ public class ConfigRegistry {
 	 * 
 	 * @see org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob
 	 */
-	public boolean isConfigLoaded() {
-		return this.configLoaded;
-	}
-
-	/**
-	 * Locks the registry for modification or iteration over its config sources.
-	 */
-	public void lock() {
-		this.lock.acquire();
+	public boolean isLoaded() {
+		return loaded;
 	}
 
 	/**
@@ -248,13 +252,23 @@ public class ConfigRegistry {
 	 * @param config
 	 *            VexConfiguration to remove.
 	 */
-	public void removeConfigSource(ConfigSource config) {
+	public void removeConfigSource(final ConfigSource config) {
 		try {
-			this.lock();
-			this.configs.remove(config);
+			lock();
+			configs.remove(config);
 		} finally {
-			this.unlock();
+			unlock();
 		}
+	}
+
+	/**
+	 * Adds a ConfigChangeListener to the notification list.
+	 * 
+	 * @param listener
+	 *            Listener to be added.
+	 */
+	public void addConfigListener(final IConfigListener listener) {
+		configListeners.add(listener);
 	}
 
 	/**
@@ -263,74 +277,59 @@ public class ConfigRegistry {
 	 * @param listener
 	 *            Listener to be removed.
 	 */
-	public void removeConfigListener(IConfigListener listener) {
-		this.configListeners.remove(listener);
+	public void removeConfigListener(final IConfigListener listener) {
+		configListeners.remove(listener);
+	}
+
+	/**
+	 * Locks the registry for modification or iteration over its config sources.
+	 */
+	public void lock() {
+		lock.acquire();
 	}
 
 	/**
 	 * Unlocks the registry.
 	 */
 	public void unlock() {
-		this.lock.release();
+		lock.release();
 	}
 
 	// ======================================================== PRIVATE
 
-	private static ConfigRegistry instance = new ConfigRegistry();
-
-	private ILock lock = Job.getJobManager().newLock();
+	private final ILock lock = Job.getJobManager().newLock();
 	private Map<String, ConfigSource> configs = new HashMap<String, ConfigSource>();
-	private ListenerList<IConfigListener, ConfigEvent> configListeners =
-	    new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
-	private boolean configLoaded = false;
-	private List<IConfigItemFactory> configItemFactories =
-		new ArrayList<IConfigItemFactory>();
+	private final ListenerList<IConfigListener, ConfigEvent> configListeners = new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
+	private final List<IConfigItemFactory> configItemFactories = new ArrayList<IConfigItemFactory>();
 
-	/**
-	 * Class constructor. All initialization is performed here.
-	 */
-	private ConfigRegistry() {
-		configItemFactories.add(new DoctypeFactory());
-		configItemFactories.add(new StyleFactory());
-		// TODO do we ever unregister this?
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(
-				this.resourceChangeListener);
-	}
-
-	private IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
-
+	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
 		public void resourceChanged(final IResourceChangeEvent event) {
 
 			// System.out.println("resourceChanged, type is " + event.getType()
 			// + ", resource is " + event.getResource());
 
-			if (event.getType() == IResourceChangeEvent.PRE_CLOSE
-					|| event.getType() == IResourceChangeEvent.PRE_DELETE) {
-				PluginProject pp = PluginProject.get((IProject) event
-						.getResource());
+			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
+				final PluginProject pp = PluginProject.get((IProject) event.getResource());
 				if (pp != null) {
 					// System.out.println("  removing project from config registry");
 					removeConfigSource(pp);
 					fireConfigChanged(new ConfigEvent(this));
 				}
 			} else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-				IResourceDelta[] resources = event.getDelta()
-						.getAffectedChildren();
-				for (final IResourceDelta delta : resources) {
+				final IResourceDelta[] resources = event.getDelta().getAffectedChildren();
+				for (final IResourceDelta delta : resources)
 					if (delta.getResource() instanceof IProject) {
 						final IProject project = (IProject) delta.getResource();
 
 						// System.out.println("Project " + project.getName() +
 						// " changed, isOpen is " + project.isOpen());
 
-						PluginProject pluginProject = PluginProject
-								.get(project);
+						final PluginProject pluginProject = PluginProject.get(project);
 
 						boolean hasPluginProjectNature = false;
 						try {
-							hasPluginProjectNature = project
-									.hasNature(PluginProjectNature.ID);
-						} catch (CoreException ex) {
+							hasPluginProjectNature = project.hasNature(PluginProjectNature.ID);
+						} catch (final CoreException ex) {
 							// yup, sometimes checked exceptions really blow
 						}
 
@@ -341,15 +340,14 @@ public class ConfigRegistry {
 							removeConfigSource(pluginProject);
 							fireConfigChanged(new ConfigEvent(this));
 
-						} else if (project.isOpen() && pluginProject == null
-								&& hasPluginProjectNature) {
+						} else if (project.isOpen() && pluginProject == null && hasPluginProjectNature) {
 
 							// System.out.println("  newly opened project: " +
 							// project.getName() + ", rebuilding");
 
 							// Must be run in another thread, since the
 							// workspace is locked here
-							Runnable runnable = new Runnable() {
+							final Runnable runnable = new Runnable() {
 								public void run() {
 									PluginProject.load(project);
 								}
@@ -359,7 +357,6 @@ public class ConfigRegistry {
 							// System.out.println("  no action taken");
 						}
 					}
-				}
 			}
 		}
 	};

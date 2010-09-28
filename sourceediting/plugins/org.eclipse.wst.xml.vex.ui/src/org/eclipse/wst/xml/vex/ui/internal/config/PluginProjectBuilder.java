@@ -35,16 +35,15 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 	public static final String ID = "org.eclipse.wst.xml.vex.ui.pluginBuilder"; //$NON-NLS-1$
 
-	protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor)
-			throws CoreException {
+	@Override
+	protected IProject[] build(final int kind, @SuppressWarnings("rawtypes") final Map args, final IProgressMonitor monitor) throws CoreException {
 
-		IProject project = this.getProject();
+		final IProject project = getProject();
 
 		final PluginProject pluginProject = PluginProject.get(project);
 
 		if (pluginProject == null) {
-			String message = MessageFormat.format(Messages
-					.getString("PluginProjectBuilder.notConfigSource"), //$NON-NLS-1$
+			final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.notConfigSource"), //$NON-NLS-1$
 					new Object[] { project.getName() });
 			VexPlugin.getInstance().log(IStatus.ERROR, message);
 			return null;
@@ -52,14 +51,14 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 		boolean parseConfigXml;
 
-		IResourceDelta delta = this.getDelta(project);
+		final IResourceDelta delta = getDelta(project);
 
 		if (kind == FULL_BUILD || delta == null) {
 
 			// System.out.println("PluginProjectBuilder.build (full) starts for project "
 			// + project.getName());
 
-			this.clean(null);
+			clean(null);
 			parseConfigXml = true;
 
 		} else { // incremental or auto build
@@ -67,51 +66,41 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 			// System.out.println("PluginProjectBuilder.build (incremental) starts for project "
 			// + project.getName());
 
-			parseConfigXml = (delta.findMember(new Path(
-					PluginProject.PLUGIN_XML)) != null);
+			parseConfigXml = delta.findMember(new Path(PluginProject.PLUGIN_XML)) != null;
 
 			// If a resource is deleted, renamed, or moved, we'll update the
 			// config, but only if we're not going to parse it.
 			final boolean canUpdateConfig = !parseConfigXml;
 
-			IResourceDeltaVisitor visitor = new IResourceDeltaVisitor() {
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					IResource resource = delta.getResource();
-					String path = resource.getProjectRelativePath().toString();
+			final IResourceDeltaVisitor visitor = new IResourceDeltaVisitor() {
+				public boolean visit(final IResourceDelta delta) throws CoreException {
+					final IResource resource = delta.getResource();
+					final String path = resource.getProjectRelativePath().toString();
 					pluginProject.removeResource(path);
 
 					if (delta.getKind() == IResourceDelta.REMOVED) {
 
-						ConfigItem item = pluginProject
-								.getItemForResource(path);
+						final ConfigItem item = pluginProject.getItemForResource(path);
 
-						if (item == null) {
+						if (item == null)
 							return true;
-						}
 
-						if (canUpdateConfig
-								&& (delta.getFlags() & IResourceDelta.MOVED_TO) > 0) {
+						if (canUpdateConfig && (delta.getFlags() & IResourceDelta.MOVED_TO) > 0) {
 							// Resource was moved.
-							String newPath = delta.getMovedToPath()
-									.removeFirstSegments(1).toString();
+							final String newPath = delta.getMovedToPath().removeFirstSegments(1).toString();
 							item.setResourcePath(newPath);
-						} else {
+						} else
 							// Resource deleted, so let's nuke the item from the
 							// config
 							pluginProject.remove(item);
-						}
 
 						try {
 							pluginProject.writeConfigXml();
-						} catch (Exception ex) {
-							String message = MessageFormat
-									.format(
-											Messages
-													.getString("PluginProjectBuilder.cantSaveFile"), //$NON-NLS-1$
-											new Object[] { PluginProject.PLUGIN_XML });
+						} catch (final Exception ex) {
+							final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.cantSaveFile"), //$NON-NLS-1$
+									new Object[] { PluginProject.PLUGIN_XML });
 
-							VexPlugin.getInstance().log(IStatus.ERROR, message,
-									ex);
+							VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 						}
 					}
 
@@ -122,54 +111,46 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 			delta.accept(visitor);
 		}
 
-		IMarker[] oldMarkers = project.findMarkers(IMarker.PROBLEM, true,
-				IResource.DEPTH_INFINITE);
-		IResource[] markedResources = new IResource[oldMarkers.length];
-		for (int i = 0; i < markedResources.length; i++) {
+		final IMarker[] oldMarkers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+		final IResource[] markedResources = new IResource[oldMarkers.length];
+		for (int i = 0; i < markedResources.length; i++)
 			markedResources[i] = oldMarkers[i].getResource();
-		}
 
 		project.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		this.getBuildProblemDecorator().update(markedResources);
+		getBuildProblemDecorator().update(markedResources);
 
-		ConfigRegistry registry = ConfigRegistry.getInstance();
+		final ConfigurationRegistryImpl registry = (ConfigurationRegistryImpl) ConfigurationRegistry.INSTANCE;
 
 		try {
 			registry.lock();
 
 			if (parseConfigXml) {
-				IResource pluginXmlResource = this.getProject().getFile(
-						PluginProject.PLUGIN_XML);
+				final IResource pluginXmlResource = getProject().getFile(PluginProject.PLUGIN_XML);
 				try {
-					if (pluginXmlResource.exists()) {
+					if (pluginXmlResource.exists())
 						pluginProject.parseConfigXml();
-					} else {
+					else {
 						pluginProject.removeAllItems();
-						String message = MessageFormat.format(Messages
-								.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
+						final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
 								new Object[] { PluginProject.PLUGIN_XML });
-						this.flagError(this.getProject(), message);
+						this.flagError(getProject(), message);
 					}
-				} catch (SAXParseException ex) {
-					this.flagError(pluginXmlResource, ex.getLocalizedMessage(),
-							ex.getLineNumber());
-				} catch (Exception ex) {
-					String message = MessageFormat.format(Messages
-							.getString("PluginProjectBuilder.parseError"), //$NON-NLS-1$
+				} catch (final SAXParseException ex) {
+					this.flagError(pluginXmlResource, ex.getLocalizedMessage(), ex.getLineNumber());
+				} catch (final Exception ex) {
+					final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.parseError"), //$NON-NLS-1$
 							new Object[] { PluginProject.PLUGIN_XML });
-					VexPlugin.getInstance().log(IStatus.ERROR, message, ex); //$NON-NLS-1$
+					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 					this.flagError(pluginXmlResource, ex.getLocalizedMessage());
 				}
 			}
 
-			IBuildProblemHandler problemHandler = new IBuildProblemHandler() {
-				public void foundProblem(BuildProblem problem) {
+			final IBuildProblemHandler problemHandler = new IBuildProblemHandler() {
+				public void foundProblem(final BuildProblem problem) {
 					try {
-						IResource resource = getProject().getFile(
-								problem.getResourcePath());
-						flagError(resource, problem.getMessage(), problem
-								.getLineNumber());
-					} catch (CoreException e) {
+						final IResource resource = getProject().getFile(problem.getResourcePath());
+						flagError(resource, problem.getMessage(), problem.getLineNumber());
+					} catch (final CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -186,11 +167,12 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 		return null;
 	}
 
-	protected void clean(IProgressMonitor monitor) throws CoreException {
-		ConfigRegistry registry = ConfigRegistry.getInstance();
+	@Override
+	protected void clean(final IProgressMonitor monitor) throws CoreException {
+		final ConfigurationRegistryImpl registry = (ConfigurationRegistryImpl) ConfigurationRegistry.INSTANCE;
 		try {
 			registry.lock();
-			PluginProject pluginProject = PluginProject.get(this.getProject());
+			final PluginProject pluginProject = PluginProject.get(getProject());
 			if (pluginProject != null) {
 				pluginProject.removeAllItems();
 				pluginProject.removeAllResources();
@@ -205,33 +187,28 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 	private BuildProblemDecorator buildProblemDecorator;
 
-	private void flagError(IResource resource, String message)
-			throws CoreException {
+	private void flagError(final IResource resource, final String message) throws CoreException {
 		flagError(resource, message, -1);
 	}
 
-	private void flagError(IResource resource, String message, int lineNumber)
-			throws CoreException {
-		IMarker marker = resource.createMarker(IMarker.PROBLEM);
+	private void flagError(final IResource resource, final String message, final int lineNumber) throws CoreException {
+		final IMarker marker = resource.createMarker(IMarker.PROBLEM);
 		if (marker.exists()) {
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-			if (lineNumber > 0) {
+			if (lineNumber > 0)
 				marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
-			}
-			this.getBuildProblemDecorator().update(resource);
+			getBuildProblemDecorator().update(resource);
 		}
 	}
 
 	private BuildProblemDecorator getBuildProblemDecorator() {
-		if (this.buildProblemDecorator == null) {
-			IDecoratorManager dm = PlatformUI.getWorkbench()
-					.getDecoratorManager();
-			this.buildProblemDecorator = (BuildProblemDecorator) dm
-					.getBaseLabelProvider(BuildProblemDecorator.ID);
+		if (buildProblemDecorator == null) {
+			final IDecoratorManager dm = PlatformUI.getWorkbench().getDecoratorManager();
+			buildProblemDecorator = (BuildProblemDecorator) dm.getBaseLabelProvider(BuildProblemDecorator.ID);
 		}
-		return this.buildProblemDecorator;
+		return buildProblemDecorator;
 	}
 
 }

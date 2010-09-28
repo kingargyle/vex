@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -37,7 +36,7 @@ import org.osgi.framework.Constants;
  */
 public class ConfigLoaderJob extends Job {
 
-	private AtomicReference<List<ConfigSource>> allConfigSources = new AtomicReference<List<ConfigSource>>(Collections.<ConfigSource> emptyList());
+	private List<ConfigSource> allConfigSources = Collections.<ConfigSource> emptyList();
 
 	public ConfigLoaderJob() {
 		super(Messages.getString("ConfigLoaderJob.loadingConfig")); //$NON-NLS-1$
@@ -52,7 +51,7 @@ public class ConfigLoaderJob extends Job {
 		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 		result.addAll(loadPlugins(monitor));
 		result.addAll(loadPluginProjects(monitor));
-		allConfigSources.set(result);
+		allConfigSources = result;
 		// TODO ConfigRegistry.getInstance().fireConfigLoaded(new ConfigEvent(this));
 		monitor.done();
 
@@ -102,6 +101,6 @@ public class ConfigLoaderJob extends Job {
 	}
 
 	public List<ConfigSource> getAllConfigSources() {
-		return allConfigSources.get();
+		return allConfigSources;
 	}
 }

@@ -65,7 +65,7 @@ public abstract class ConfigSource implements Serializable {
 	public ConfigItem addItem(String extensionPoint, String simpleIdentifier,
 			String name, IConfigElement[] configElements) throws IOException {
 
-		IConfigItemFactory factory = ConfigRegistry.getInstance()
+		IConfigItemFactory factory = ConfigurationRegistry.INSTANCE
 				.getConfigItemFactory(extensionPoint);
 		if (factory != null) {
 			ConfigItem item = factory.createItem(this, configElements);
@@ -242,7 +242,7 @@ public abstract class ConfigSource implements Serializable {
 		for (ConfigItem item : this.items) {
 			String uri = item.getResourcePath();
 			if (!this.parsedResources.containsKey(uri)) {
-				IConfigItemFactory factory = ConfigRegistry.getInstance()
+				IConfigItemFactory factory = ConfigurationRegistry.INSTANCE
 						.getConfigItemFactory(item.getExtensionPointId());
 				Object parsedResource;
 				try {

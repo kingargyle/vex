@@ -67,9 +67,9 @@ public class StylePropertyPage extends PropertyPage {
 			}
 		};
 
-		ConfigRegistry.getInstance().addConfigListener(configListener);
+		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
 
-		if (ConfigRegistry.getInstance().isConfigLoaded()) {
+		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
 
 			populateStyle();
 			populateDoctypes();
@@ -160,7 +160,7 @@ public class StylePropertyPage extends PropertyPage {
 
 		this.style.setName(this.nameText.getText());
 
-		List<ConfigItem> doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
+		List<ConfigItem> doctypeList = ConfigurationRegistry.INSTANCE.getAllConfigItems(
 				DocumentType.EXTENSION_POINT);
 		Collections.sort(doctypeList);
 
@@ -189,7 +189,7 @@ public class StylePropertyPage extends PropertyPage {
 			VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 		}
 
-		ConfigRegistry.getInstance().fireConfigChanged(new ConfigEvent(this));
+		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
 	protected void performDefaults() {
@@ -206,7 +206,7 @@ public class StylePropertyPage extends PropertyPage {
 		super.dispose();
 
 		if (this.configListener != null) {
-			ConfigRegistry.getInstance().removeConfigListener(
+			ConfigurationRegistry.INSTANCE.removeConfigListener(
 					this.configListener);
 		}
 	}
@@ -232,7 +232,7 @@ public class StylePropertyPage extends PropertyPage {
 		final Set<String> selectedDoctypes = new TreeSet<String>(this.style.getDocumentTypes());
 		doctypesTable.removeAll();
 
-		List<ConfigItem> doctypeList = ConfigRegistry.getInstance().getAllConfigItems(
+		List<ConfigItem> doctypeList = ConfigurationRegistry.INSTANCE.getAllConfigItems(
 				DocumentType.EXTENSION_POINT);
 		Collections.sort(doctypeList);
 		for (ConfigItem configItem : doctypeList) {

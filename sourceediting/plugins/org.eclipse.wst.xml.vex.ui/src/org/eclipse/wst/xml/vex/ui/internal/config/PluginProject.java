@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
 public class PluginProject extends ConfigSource {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String PLUGIN_XML = "vex-plugin.xml"; //$NON-NLS-1$
 
 	/**
@@ -57,8 +57,8 @@ public class PluginProject extends ConfigSource {
 	 * @param config
 	 *            VexConfiguration associated with this project.
 	 */
-	protected PluginProject(IProject project) {
-		this.projectPath = project.getFullPath().toString();
+	protected PluginProject(final IProject project) {
+		projectPath = project.getFullPath().toString();
 	}
 
 	/**
@@ -72,24 +72,22 @@ public class PluginProject extends ConfigSource {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static PluginProject get(IProject project) {
-		for (ConfigSource source : ConfigRegistry.getInstance().getAllConfigSources()) {
+	public static PluginProject get(final IProject project) {
+		for (final ConfigSource source : ConfigurationRegistry.INSTANCE.getAllConfigSources())
 			if (source instanceof PluginProject) {
-				PluginProject pluginProject=(PluginProject)source;
-				if (project.equals(pluginProject.getProject())) {
+				final PluginProject pluginProject = (PluginProject) source;
+				if (project.equals(pluginProject.getProject()))
 					return pluginProject;
-				}
-			}	
-		}
+			}
 		return null;
 	}
 
+	@Override
 	public URL getBaseUrl() {
 		try {
-			return this.getProject().getLocation().toFile().toURI().toURL();
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(Messages
-					.getString("PluginProject.malformedUrl"), e); //$NON-NLS-1$
+			return getProject().getLocation().toFile().toURI().toURL();
+		} catch (final MalformedURLException e) {
+			throw new RuntimeException(Messages.getString("PluginProject.malformedUrl"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -97,8 +95,7 @@ public class PluginProject extends ConfigSource {
 	 * Returns the IProject associated with this plugin project.
 	 */
 	public IProject getProject() {
-		return ResourcesPlugin.getWorkspace().getRoot().getProject(
-				this.projectPath);
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectPath);
 	}
 
 	/**
@@ -106,37 +103,31 @@ public class PluginProject extends ConfigSource {
 	 * the ConfigRegistry. If the serialized state cannot be loaded, a new
 	 * PluginProject is created and the builder is launched.
 	 */
-	public static PluginProject load(IProject project) {
+	public static PluginProject load(final IProject project) {
 		try {
-			if (!project.isOpen() || !project.hasNature(PluginProjectNature.ID)) {
-				throw new IllegalArgumentException(MessageFormat.format(Messages
-						.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
+			if (!project.isOpen() || !project.hasNature(PluginProjectNature.ID))
+				throw new IllegalArgumentException(MessageFormat.format(Messages.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
 						project.getName()));
-			}
-		} catch (CoreException e) {
-			throw new IllegalArgumentException(MessageFormat.format(Messages
-					.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
+		} catch (final CoreException e) {
+			throw new IllegalArgumentException(MessageFormat.format(Messages.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
 					project.getName()));
 		}
 
 		final PluginProject pluginProject = new PluginProject(project);
 		try {
 			pluginProject.parseConfigXml();
-		} catch (SAXException e) {
-			throw new IllegalArgumentException(MessageFormat.format(Messages
-					.getString("PluginProject.loadingError"), //$NON-NLS-1$
+		} catch (final SAXException e) {
+			throw new IllegalArgumentException(MessageFormat.format(Messages.getString("PluginProject.loadingError"), //$NON-NLS-1$
 					project.getName()));
-		} catch (IOException e) {
-			throw new IllegalArgumentException(MessageFormat.format(Messages
-					.getString("PluginProject.loadingError"), //$NON-NLS-1$
+		} catch (final IOException e) {
+			throw new IllegalArgumentException(MessageFormat.format(Messages.getString("PluginProject.loadingError"), //$NON-NLS-1$
 					project.getName()));
 		}
 
 		try {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
-		} catch (Exception ex) {
-			String message = MessageFormat.format(Messages
-					.getString("PluginProject.buildError"), //$NON-NLS-1$
+		} catch (final Exception ex) {
+			final String message = MessageFormat.format(Messages.getString("PluginProject.buildError"), //$NON-NLS-1$
 					new Object[] { project.getName() });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		}
@@ -151,44 +142,40 @@ public class PluginProject extends ConfigSource {
 		final DocumentBuilder builder;
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
+		} catch (final ParserConfigurationException e) {
 			throw new RuntimeException(e);
-		} catch (FactoryConfigurationError e) {
+		} catch (final FactoryConfigurationError e) {
 			throw new RuntimeException(e);
 		}
 
-		this.removeAllItems();
+		removeAllItems();
 
-		URL url = new URL(this.getBaseUrl(), PluginProject.PLUGIN_XML);
-		Document doc = builder.parse(url.toString());
+		final URL url = new URL(getBaseUrl(), PluginProject.PLUGIN_XML);
+		final Document doc = builder.parse(url.toString());
 
-		Element root = doc.getDocumentElement();
+		final Element root = doc.getDocumentElement();
 
-		this.setUniqueIdentifer(root.getAttribute("id")); //$NON-NLS-1$
+		setUniqueIdentifer(root.getAttribute("id")); //$NON-NLS-1$
 
-		NodeList nodeList = doc.getElementsByTagName("extension"); //$NON-NLS-1$
+		final NodeList nodeList = doc.getElementsByTagName("extension"); //$NON-NLS-1$
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			Element element = (Element) nodeList.item(i);
-			String extPoint = element.getAttribute("point"); //$NON-NLS-1$
-			String id = element.getAttribute("id"); //$NON-NLS-1$
-			String name = element.getAttribute("name"); //$NON-NLS-1$
+			final Element element = (Element) nodeList.item(i);
+			final String extPoint = element.getAttribute("point"); //$NON-NLS-1$
+			final String id = element.getAttribute("id"); //$NON-NLS-1$
+			final String name = element.getAttribute("name"); //$NON-NLS-1$
 
-			List<Node> configElementList = new ArrayList<Node>();
-			NodeList childList = element.getChildNodes();
+			final List<Node> configElementList = new ArrayList<Node>();
+			final NodeList childList = element.getChildNodes();
 			for (int j = 0; j < childList.getLength(); j++) {
-				Node child = childList.item(j);
-				if (child instanceof Element) {
+				final Node child = childList.item(j);
+				if (child instanceof Element)
 					configElementList.add(child);
-				}
 			}
 
-			IConfigElement[] configElements = new IConfigElement[configElementList
-					.size()];
-			for (int j = 0; j < configElementList.size(); j++) {
-				configElements[j] = new DomConfigurationElement(
-						(Element) configElementList.get(j));
-			}
+			final IConfigElement[] configElements = new IConfigElement[configElementList.size()];
+			for (int j = 0; j < configElementList.size(); j++)
+				configElements[j] = new DomConfigurationElement((Element) configElementList.get(j));
 
 			this.addItem(extPoint, id, name, configElements);
 		}
@@ -199,79 +186,69 @@ public class PluginProject extends ConfigSource {
 	 * Writes this configuraton to the file vex-config.xml in the project.
 	 */
 	public void writeConfigXml() throws CoreException, IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
 
-		ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
-		for (ConfigItem item : this.getAllItems()) {
-			ConfigurationElement extElement = new ConfigurationElement(
-			"extension"); //$NON-NLS-1$
+		final ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
+		for (final ConfigItem item : this.getAllItems()) {
+			final ConfigurationElement extElement = new ConfigurationElement("extension"); //$NON-NLS-1$
 			extElement.setAttribute("id", item.getSimpleId()); //$NON-NLS-1$
 			extElement.setAttribute("name", item.getName()); //$NON-NLS-1$
 			extElement.setAttribute("point", item.getExtensionPointId()); //$NON-NLS-1$
-			IConfigItemFactory factory = ConfigRegistry.getInstance()
-				.getConfigItemFactory(item.getExtensionPointId());
+			final IConfigItemFactory factory = ConfigurationRegistry.INSTANCE.getConfigItemFactory(item.getExtensionPointId());
 			extElement.setChildren(factory.createConfigurationElements(item));
-			root.addChild(extElement);	
+			root.addChild(extElement);
 		}
 		writeElement(root, out, 0);
 
 		out.close();
 
-		InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
+		final InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
 
-		IFile file = this.getProject().getFile(PLUGIN_XML);
-		if (file.exists()) {
+		final IFile file = getProject().getFile(PLUGIN_XML);
+		if (file.exists())
 			file.setContents(inputStream, true, false, null);
-		} else {
+		else
 			file.create(inputStream, true, null);
-		}
 	}
 
 	// =========================================================== PRIVATE
 
-	private String projectPath;
+	private final String projectPath;
 
-	private static void writeElement(IConfigElement element, PrintWriter out,
-			int level) {
-		StringBuffer elementIndent = new StringBuffer();
-		for (int i = 0; i < level; i++) {
+	private static void writeElement(final IConfigElement element, final PrintWriter out, final int level) {
+		final StringBuffer elementIndent = new StringBuffer();
+		for (int i = 0; i < level; i++)
 			elementIndent.append("  "); //$NON-NLS-1$
-		}
-		StringBuffer elementPrefix = new StringBuffer();
+		final StringBuffer elementPrefix = new StringBuffer();
 		elementPrefix.append("<"); //$NON-NLS-1$
 		elementPrefix.append(element.getName());
 
-		StringBuffer attributeIndent = new StringBuffer(elementIndent
-				.toString());
-		for (int i = 0; i < elementPrefix.length() + 1; i++) {
+		final StringBuffer attributeIndent = new StringBuffer(elementIndent.toString());
+		for (int i = 0; i < elementPrefix.length() + 1; i++)
 			attributeIndent.append(" "); //$NON-NLS-1$
-		}
 
 		out.print(elementIndent.toString());
 		out.print(elementPrefix.toString());
-		String[] attributeNames = element.getAttributeNames();
+		final String[] attributeNames = element.getAttributeNames();
 		for (int i = 0; i < attributeNames.length; i++) {
-			String attributeName = attributeNames[i];
+			final String attributeName = attributeNames[i];
 			if (i > 0) {
 				out.println();
 				out.print(attributeIndent);
-			} else {
+			} else
 				out.print(" "); //$NON-NLS-1$
-			}
 
 			out.print(attributeName);
 			out.print("=\""); //$NON-NLS-1$
-			out.print(DocumentWriter
-					.escape(element.getAttribute(attributeName)));
+			out.print(DocumentWriter.escape(element.getAttribute(attributeName)));
 			out.print("\""); //$NON-NLS-1$
 		}
 		out.println(">"); //$NON-NLS-1$
 
-		IConfigElement[] children = element.getChildren();
-		for (int i = 0; i < children.length; i++) {
-			writeElement(children[i], out, level + 1);
-		}
+		final IConfigElement[] children = element.getChildren();
+		for (final IConfigElement element2 : children)
+			writeElement(element2, out, level + 1);
 
 		out.print(elementIndent);
 		out.print("</"); //$NON-NLS-1$
