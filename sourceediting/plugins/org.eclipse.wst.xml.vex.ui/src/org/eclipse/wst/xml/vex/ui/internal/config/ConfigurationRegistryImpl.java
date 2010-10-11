@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
+import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * Singleton registry of configuration sources and listeners.
@@ -295,6 +296,39 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		lock.release();
 	}
 
+	// new interface
+	
+	/**
+	 * The document type configuration for the given public identifier, of null if there is no configuration for the given public identifier.
+	 * 
+	 * @param publicId the public identifier
+	 * @return the document type configuration for the given public identifier, of null if there is no configuration for the given public identifier.
+	 */
+	public DocumentType getDocumentType(final String publicId) {
+		final List<ConfigItem> configItems = getAllConfigItems(DocumentType.EXTENSION_POINT);
+		for (final ConfigItem configItem : configItems) {
+			final DocumentType doctype = (DocumentType) configItem;
+			if (doctype.getPublicId().equals(publicId))
+				return doctype;
+		}
+		return null;
+	}
+	
+	/**
+	 * Return a list of document types for which there is at least one registered style.
+	 * 
+	 * @return a list of document types for which there is at least one registered style.
+	 */
+	public DocumentType[] getDocumentTypesWithStyles() {
+		final List<DocumentType> result = new ArrayList<DocumentType>();
+		for (final ConfigItem configItem : getAllConfigItems(DocumentType.EXTENSION_POINT)) {
+			final DocumentType doctype = (DocumentType) configItem;
+			if (VexEditor.findStyleForDoctype(doctype.getPublicId()) != null)
+				result.add(doctype);
+		}
+		return result.toArray(new DocumentType[result.size()]);
+	}
+	
 	// ======================================================== PRIVATE
 
 	private final ILock lock = Job.getJobManager().newLock();

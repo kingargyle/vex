@@ -54,4 +54,10 @@ public interface ConfigurationRegistry {
 	void fireConfigChanged(final ConfigEvent e);
 	
 	void fireConfigLoaded(final ConfigEvent e);
+	
+	// new interface
+	
+	DocumentType getDocumentType(final String publicId);
+	
+	DocumentType[] getDocumentTypesWithStyles();
 }

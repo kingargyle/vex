@@ -31,37 +31,6 @@ public class DocumentType extends ConfigItem {
 	}
 
 	/**
-	 * Return a DocumentType for the given publicId. Returns null if no document
-	 * type was found that matches the public ID.
-	 * 
-	 * @param publicId
-	 *            Public ID for which to search.
-	 */
-	public static DocumentType getDocumentType(final String publicId) {
-		final List<ConfigItem> doctypes = ConfigurationRegistry.INSTANCE.getAllConfigItems(DocumentType.EXTENSION_POINT);
-		for (final ConfigItem configItem : doctypes) {
-			final DocumentType doctype = (DocumentType) configItem;
-			if (doctype.getPublicId().equals(publicId))
-				return doctype;
-		}
-		return null;
-	}
-
-	/**
-	 * Return a list of document types for which there is at least one
-	 * registered style.
-	 */
-	public static DocumentType[] getDocumentTypesWithStyles() {
-		final List<DocumentType> withStyles = new ArrayList<DocumentType>();
-		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(DocumentType.EXTENSION_POINT)) {
-			final DocumentType doctype = (DocumentType) configItem;
-			if (VexEditor.findStyleForDoctype(doctype.getPublicId()) != null)
-				withStyles.add(doctype);
-		}
-		return withStyles.toArray(new DocumentType[withStyles.size()]);
-	}
-
-	/**
 	 * Returns the name of the class that generates an outline for this document
 	 * type. This class must implement
 	 * org.eclipse.ui.views.contentoutline.IContentOutlinePage. Normally,

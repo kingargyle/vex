@@ -369,7 +369,7 @@ public class VexEditorMultiPage extends VexEditor {
 			doc.setSystemID(domDocument.getDoctype().getSystemId());
 			doc.setEncoding(structuredDocument.getEncodingMemento()
 					.getJavaCharsetName());
-			doctype = DocumentType.getDocumentType(doc.getPublicID());
+			doctype = ConfigurationRegistry.INSTANCE.getDocumentType(doc.getPublicID());
 			wsFactory.getPolicy(doc.getPublicID());
 
 			// this.doctype is set either by wsPolicyFactory or entityResolver
@@ -790,7 +790,7 @@ public class VexEditorMultiPage extends VexEditor {
 				// decl.
 				//
 				if (publicId != null) {
-					doctype = DocumentType.getDocumentType(publicId);
+					doctype = ConfigurationRegistry.INSTANCE.getDocumentType(publicId);
 				}
 
 				if (doctype == null) {

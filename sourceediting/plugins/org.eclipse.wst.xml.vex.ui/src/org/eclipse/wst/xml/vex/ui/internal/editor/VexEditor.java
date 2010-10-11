@@ -800,7 +800,7 @@ public class VexEditor extends EditorPart {
 				// decl.
 				//
 				if (publicId != null) {
-					doctype = DocumentType.getDocumentType(publicId);
+					doctype = ConfigurationRegistry.INSTANCE.getDocumentType(publicId);
 				}
 
 				if (doctype == null) {
