@@ -69,22 +69,6 @@ public class Style extends ConfigItem {
 	}
 
 	/**
-	 * Returns an array of all styles applicable to the given public Id.
-	 * 
-	 * @param publicId
-	 *            Public ID for which to find styles.
-	 */
-	public static Style[] getStylesForDoctype(final String publicId) {
-		final List<Style> styles = new ArrayList<Style>();
-		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
-			final Style style = (Style) configItem;
-			if (style.appliesTo(publicId))
-				styles.add(style);
-		}
-		return styles.toArray(new Style[styles.size()]);
-	}
-
-	/**
 	 * Returns the style sheet from which element styles are taken.
 	 */
 	public StyleSheet getStyleSheet() {

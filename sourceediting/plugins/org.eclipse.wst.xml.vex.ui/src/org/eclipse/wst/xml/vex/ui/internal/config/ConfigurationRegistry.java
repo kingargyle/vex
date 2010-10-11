@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 
 /**
@@ -25,12 +23,8 @@ public interface ConfigurationRegistry {
 
 	IConfigItemFactory getConfigItemFactory(String extensionPointId);
 
-	IConfigItemFactory[] getAllConfigItemFactories();
-
 	ConfigItem getConfigItem(String extensionPoint, String id);
 	
-	List<ConfigItem> getAllConfigItems(String extensionPointId);
-
 	void fireConfigChanged(final ConfigEvent e);
 	
 	void fireConfigLoaded(final ConfigEvent e);
@@ -47,6 +41,8 @@ public interface ConfigurationRegistry {
 	boolean isLoaded();
 	
 	DocumentType getDocumentType(final String publicId);
+	
+	DocumentType[] getDocumentTypes();
 	
 	DocumentType[] getDocumentTypesWithStyles();
 	

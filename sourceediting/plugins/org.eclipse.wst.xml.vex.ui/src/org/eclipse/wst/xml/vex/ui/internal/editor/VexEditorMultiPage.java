@@ -109,8 +109,7 @@ public class VexEditorMultiPage extends VexEditor {
 	 * Class constructor.
 	 */
 	public VexEditorMultiPage() {
-		this.debugging = VexPlugin.getInstance().isDebugging()
-				&& "true".equalsIgnoreCase(Platform.getDebugOption(VexPlugin.ID + "/debug/layout")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.debugging = VexPlugin.getInstance().isDebugging() && "true".equalsIgnoreCase(Platform.getDebugOption(VexPlugin.ID + "/debug/layout")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -129,13 +128,11 @@ public class VexEditorMultiPage extends VexEditor {
 		if (this.parentControl != null) {
 			// createPartControl was called, so we must de-register from config
 			// events
-			ConfigurationRegistry.INSTANCE.removeConfigListener(
-					this.configListener);
+			ConfigurationRegistry.INSTANCE.removeConfigListener(this.configListener);
 		}
 
 		if (getEditorInput() instanceof IFileEditorInput) {
-			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
-					this.resourceChangeListener);
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
 		}
 
 	}
@@ -147,20 +144,16 @@ public class VexEditorMultiPage extends VexEditor {
 		try {
 			this.resourceChangeListener.setSaving(true);
 			DocumentWriter writer = new DocumentWriter();
-			writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style
-					.getStyleSheet()));
+			writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style.getStyleSheet()));
 
 			if (input instanceof IFileEditorInput) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				writer.write(this.doc, baos);
 				baos.close();
-				ByteArrayInputStream bais = new ByteArrayInputStream(baos
-						.toByteArray());
-				((IFileEditorInput) input).getFile().setContents(bais, false,
-						false, monitor);
+				ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+				((IFileEditorInput) input).getFile().setContents(bais, false, false, monitor);
 			} else {
-				os = new FileOutputStream(((ILocationProvider) input).getPath(
-						input).toFile());
+				os = new FileOutputStream(((ILocationProvider) input).getPath(input).toFile());
 				writer.write(this.doc, os);
 			}
 
@@ -170,11 +163,9 @@ public class VexEditorMultiPage extends VexEditor {
 		} catch (Exception ex) {
 			monitor.setCanceled(true);
 			String title = Messages.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
-			String message = MessageFormat.format(Messages
-					.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
+			String message = MessageFormat.format(Messages.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
 					new Object[] { input.getName(), ex.getMessage() });
-			MessageDialog.openError(this.getEditorSite().getShell(), title,
-					message);
+			MessageDialog.openError(this.getEditorSite().getShell(), title, message);
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		} finally {
 			if (os != null) {
@@ -196,15 +187,12 @@ public class VexEditorMultiPage extends VexEditor {
 				this.resourceChangeListener.setSaving(true);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				DocumentWriter writer = new DocumentWriter();
-				writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style
-						.getStyleSheet()));
+				writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style.getStyleSheet()));
 				writer.write(this.doc, baos);
 				baos.close();
 
-				ByteArrayInputStream bais = new ByteArrayInputStream(baos
-						.toByteArray());
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(
-						path);
+				ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 				file.create(bais, false, null);
 
 				IFileEditorInput input = new FileEditorInput(file);
@@ -216,13 +204,10 @@ public class VexEditorMultiPage extends VexEditor {
 				this.firePropertyChange(EditorPart.PROP_TITLE);
 
 			} catch (Exception ex) {
-				String title = Messages
-						.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
-				String message = MessageFormat.format(Messages
-						.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
+				String title = Messages.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
+				String message = MessageFormat.format(Messages.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
 						new Object[] { path, ex.getMessage() });
-				MessageDialog.openError(this.getEditorSite().getShell(), title,
-						message);
+				MessageDialog.openError(this.getEditorSite().getShell(), title, message);
 				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 			} finally {
 				this.resourceChangeListener.setSaving(false);
@@ -237,29 +222,14 @@ public class VexEditorMultiPage extends VexEditor {
 	 * @param publicId
 	 *            Public ID for which to return the style.
 	 */
-	public static Style findStyleForDoctype(String publicId) {
+	public static Style getPreferredStyle(final String publicId) {
+		return ConfigurationRegistry.INSTANCE.getStyle(publicId, getPreferredStyleId(publicId));
+	}
 
-		IPreferencesService preferences = Platform.getPreferencesService();
-		String key = getStylePreferenceKey(publicId);
-		String preferredStyleId = preferences.getString(VexPlugin.ID, key,
-				null, null);
-
-		Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
-		preferredStyleId = prefs.get(key, null);
-
-		Style firstStyle = null;
-		for (ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
-			Style style = (Style) configItem;
-			if (style.appliesTo(publicId)) {
-				if (firstStyle == null) {
-					firstStyle = style;
-				}
-				if (style.getUniqueId().equals(preferredStyleId)) {
-					return style;
-				}
-			}
-		}
-		return firstStyle;
+	private static String getPreferredStyleId(final String publicId) {
+		final Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
+		final String preferredStyleId = prefs.get(getStylePreferenceKey(publicId), null);
+		return preferredStyleId;
 	}
 
 	/**
@@ -288,28 +258,23 @@ public class VexEditorMultiPage extends VexEditor {
 
 	}
 
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 
 		this.setSite(site);
 		this.setInput(input);
 
 		this.getEditorSite().setSelectionProvider(this.selectionProvider);
-		this.getEditorSite().getSelectionProvider()
-				.addSelectionChangedListener(selectionChangedListener);
+		this.getEditorSite().getSelectionProvider().addSelectionChangedListener(selectionChangedListener);
 
 		if (input instanceof IFileEditorInput) {
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(
-					this.resourceChangeListener,
-					IResourceChangeEvent.POST_CHANGE);
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
 		}
 	}
 
 	protected void loadInput() {
 
 		if (this.vexWidget != null) {
-			this.vexEditorListeners.fireEvent(
-					"documentUnloaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
+			this.vexEditorListeners.fireEvent("documentUnloaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
 		}
 
 		this.loaded = false;
@@ -321,21 +286,18 @@ public class VexEditorMultiPage extends VexEditor {
 
 			IPath inputPath = null;
 
-			IModelManager modelManager = StructuredModelManager
-					.getModelManager();
+			IModelManager modelManager = StructuredModelManager.getModelManager();
 			IStructuredDocument structuredDocument = null;
 			IStructuredModel model = null;
 
 			if (input instanceof IFileEditorInput) {
-				inputPath = ((IFileEditorInput) input).getFile()
-						.getRawLocation();
+				inputPath = ((IFileEditorInput) input).getFile().getRawLocation();
 			} else if (input instanceof ILocationProvider) {
 				// Yuck, this a crappy way for Eclipse to do this
 				// How about an exposed IJavaFileEditorInput, pleeze?
 				inputPath = ((ILocationProvider) input).getPath(input);
 			} else {
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.unknownInputClass"), //$NON-NLS-1$
+				String msg = MessageFormat.format(Messages.getString("VexEditor.unknownInputClass"), //$NON-NLS-1$
 						new Object[] { input.getClass() });
 				this.showLabel(msg);
 				return;
@@ -352,8 +314,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 			if (this.debugging) {
 				long end = System.currentTimeMillis();
-				System.out
-						.println("Parsed document in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				System.out.println("Parsed document in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			if (input instanceof IFileEditorInput) {
@@ -362,13 +323,12 @@ public class VexEditorMultiPage extends VexEditor {
 				model = modelManager.getModelForEdit(file);
 				structuredDocument = model.getStructuredDocument();
 			}
-			
+
 			IDOMDocument domDocument = ((IDOMModel) model).getDocument();
 			doc = new Document(domDocument);
 			doc.setPublicID(domDocument.getDoctype().getPublicId());
 			doc.setSystemID(domDocument.getDoctype().getSystemId());
-			doc.setEncoding(structuredDocument.getEncodingMemento()
-					.getJavaCharsetName());
+			doc.setEncoding(structuredDocument.getEncodingMemento().getJavaCharsetName());
 			doctype = ConfigurationRegistry.INSTANCE.getDocumentType(doc.getPublicID());
 			wsFactory.getPolicy(doc.getPublicID());
 
@@ -376,14 +336,12 @@ public class VexEditorMultiPage extends VexEditor {
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
 
-			Validator validator = WTPVEXValidator.create(doctype
-					.getResourceUrl());
+			Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
 			if (validator != null) {
 				this.doc.setValidator(validator);
 				if (this.debugging) {
 					long end = System.currentTimeMillis();
-					System.out
-							.println("Got validator in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+					System.out.println("Got validator in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 
@@ -403,8 +361,7 @@ public class VexEditorMultiPage extends VexEditor {
 			firePropertyChange(EditorPart.PROP_DIRTY);
 			this.wasDirty = isDirty();
 
-			this.vexEditorListeners.fireEvent(
-					"documentLoaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
+			this.vexEditorListeners.fireEvent("documentLoaded", new VexEditorMultiPageEvent(this)); //$NON-NLS-1$
 
 		} catch (SAXParseException ex) {
 
@@ -412,19 +369,16 @@ public class VexEditorMultiPage extends VexEditor {
 				// TODO doc did not have document type and the user
 				// declined to select another one. Should fail silently.
 				String msg;
-				NoRegisteredDoctypeException ex2 = (NoRegisteredDoctypeException) ex
-						.getException();
+				NoRegisteredDoctypeException ex2 = (NoRegisteredDoctypeException) ex.getException();
 				if (ex2.getPublicId() == null) {
 					msg = Messages.getString("VexEditor.noDoctype"); //$NON-NLS-1$
 				} else {
-					msg = MessageFormat.format(Messages
-							.getString("VexEditor.unknownDoctype"), //$NON-NLS-1$
+					msg = MessageFormat.format(Messages.getString("VexEditor.unknownDoctype"), //$NON-NLS-1$
 							new Object[] { ex2.getPublicId() });
 				}
 				this.showLabel(msg);
 			} else if (ex.getException() instanceof NoStyleForDoctypeException) {
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.noStyles"), //$NON-NLS-1$
+				String msg = MessageFormat.format(Messages.getString("VexEditor.noStyles"), //$NON-NLS-1$
 						new Object[] { this.doctype.getPublicId() });
 				this.showLabel(msg);
 			} else {
@@ -433,10 +387,8 @@ public class VexEditorMultiPage extends VexEditor {
 					file = input.getName();
 				}
 
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.parseError"), //$NON-NLS-1$
-						new Object[] { Integer.valueOf(ex.getLineNumber()), file,
-								ex.getLocalizedMessage() });
+				String msg = MessageFormat.format(Messages.getString("VexEditor.parseError"), //$NON-NLS-1$
+						new Object[] { Integer.valueOf(ex.getLineNumber()), file, ex.getLocalizedMessage() });
 
 				this.showLabel(msg);
 
@@ -445,8 +397,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 		} catch (Exception ex) {
 
-			String msg = MessageFormat.format(Messages
-					.getString("VexEditor.unexpectedError"), //$NON-NLS-1$
+			String msg = MessageFormat.format(Messages.getString("VexEditor.unexpectedError"), //$NON-NLS-1$
 					new Object[] { input.getName() });
 
 			VexPlugin.getInstance().log(IStatus.ERROR, msg, ex);
@@ -477,7 +428,6 @@ public class VexEditorMultiPage extends VexEditor {
 	public void createPartControl(Composite parent) {
 
 		this.parentControl = parent;
-
 
 		ConfigurationRegistry.INSTANCE.addConfigListener(this.configListener);
 		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
@@ -513,8 +463,7 @@ public class VexEditorMultiPage extends VexEditor {
 
 	public void setStatus(String text) {
 		// this.statusLabel.setText(text);
-		this.getEditorSite().getActionBars().getStatusLineManager().setMessage(
-				text);
+		this.getEditorSite().getActionBars().getStatusLineManager().setMessage(text);
 	}
 
 	/**
@@ -523,23 +472,22 @@ public class VexEditorMultiPage extends VexEditor {
 	 * @param style
 	 *            Style to use.
 	 */
-	public void setStyle(Style style) {
+	public void setStyle(final Style style) {
 		this.style = style;
-		if (this.vexWidget != null) {
-			this.vexWidget.setStyleSheet(style.getStyleSheet());
-			Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
-			String key = getStylePreferenceKey(this.doc.getPublicID());
-			prefs.put(key, style.getUniqueId());
-			try {
-				prefs.flush();
-			} catch (BackingStoreException e) {
-				VexPlugin
-						.getInstance()
-						.log(
-								IStatus.ERROR,
-								Messages
-										.getString("VexEditor.errorSavingStylePreference"), e); //$NON-NLS-1$
-			}
+		if (vexWidget != null) {
+			vexWidget.setStyleSheet(style.getStyleSheet());
+			setPreferredStyleId(doc.getPublicID(), style.getUniqueId());
+		}
+	}
+
+	private static void setPreferredStyleId(final String publicId, final String styleId) {
+		final Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
+		final String key = getStylePreferenceKey(publicId);
+		prefs.put(key, styleId);
+		try {
+			prefs.flush();
+		} catch (final BackingStoreException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, Messages.getString("VexEditor.errorSavingStylePreference"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -566,8 +514,8 @@ public class VexEditorMultiPage extends VexEditor {
 	// AND the user wants to always use the doctype for this document
 	private boolean updateDoctypeDecl;
 
-	private ListenerList<IVexEditorListener, VexEditorMultiPageEvent> vexEditorListeners =
-	    new ListenerList<IVexEditorListener, VexEditorMultiPageEvent>(IVexEditorListener.class);
+	private ListenerList<IVexEditorListener, VexEditorMultiPageEvent> vexEditorListeners = new ListenerList<IVexEditorListener, VexEditorMultiPageEvent>(
+			IVexEditorListener.class);
 
 	private SelectionProvider selectionProvider = new SelectionProvider();
 
@@ -649,8 +597,7 @@ public class VexEditorMultiPage extends VexEditor {
 		this.savedUndoDepth = this.vexWidget.getUndoDepth();
 
 		// new for scopes
-		IContextService cs = (IContextService) this.getSite().getService(
-				IContextService.class);
+		IContextService cs = (IContextService) this.getSite().getService(IContextService.class);
 		cs.activateContext("org.eclipse.wst.xml.vex.ui.VexEditorContext");
 
 		this.vexWidget.addSelectionChangedListener(this.selectionProvider);
@@ -668,8 +615,7 @@ public class VexEditorMultiPage extends VexEditor {
 		} else if (delta.getKind() == IResourceDelta.REMOVED) {
 			if ((delta.getFlags() & IResourceDelta.MOVED_TO) != 0) {
 				IPath toPath = delta.getMovedToPath();
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(
-						toPath);
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(toPath);
 				this.setInput(new FileEditorInput(file));
 			} else {
 				if (!this.isDirty()) {
@@ -688,20 +634,12 @@ public class VexEditorMultiPage extends VexEditor {
 			this.loadInput();
 		} else {
 
-			String message = MessageFormat.format(Messages
-					.getString("VexEditor.docChanged.message"), //$NON-NLS-1$
+			String message = MessageFormat.format(Messages.getString("VexEditor.docChanged.message"), //$NON-NLS-1$
 					new Object[] { this.getEditorInput().getName() });
 
-			MessageDialog dlg = new MessageDialog(
-					this.getSite().getShell(),
-					Messages.getString("VexEditor.docChanged.title"), //$NON-NLS-1$
-					null,
-					message,
-					MessageDialog.QUESTION,
-					new String[] {
-							Messages.getString("VexEditor.docChanged.discard"), //$NON-NLS-1$
-							Messages
-									.getString("VexEditor.docChanged.overwrite") }, //$NON-NLS-1$
+			MessageDialog dlg = new MessageDialog(this.getSite().getShell(), Messages.getString("VexEditor.docChanged.title"), //$NON-NLS-1$
+					null, message, MessageDialog.QUESTION, new String[] { Messages.getString("VexEditor.docChanged.discard"), //$NON-NLS-1$
+							Messages.getString("VexEditor.docChanged.overwrite") }, //$NON-NLS-1$
 					1);
 
 			int result = dlg.open();
@@ -716,14 +654,11 @@ public class VexEditorMultiPage extends VexEditor {
 
 	private void handleResourceDeleted() {
 
-		String message = MessageFormat.format(Messages
-				.getString("VexEditor.docDeleted.message"), //$NON-NLS-1$
+		String message = MessageFormat.format(Messages.getString("VexEditor.docDeleted.message"), //$NON-NLS-1$
 				new Object[] { this.getEditorInput().getName() });
 
-		MessageDialog dlg = new MessageDialog(this.getSite().getShell(),
-				Messages.getString("VexEditor.docDeleted.title"), //$NON-NLS-1$
-				null, message, MessageDialog.QUESTION, new String[] {
-						Messages.getString("VexEditor.docDeleted.discard"), //$NON-NLS-1$ 
+		MessageDialog dlg = new MessageDialog(this.getSite().getShell(), Messages.getString("VexEditor.docDeleted.title"), //$NON-NLS-1$
+				null, message, MessageDialog.QUESTION, new String[] { Messages.getString("VexEditor.docDeleted.discard"), //$NON-NLS-1$ 
 						Messages.getString("VexEditor.docDeleted.save") }, //$NON-NLS-1$
 				1);
 
@@ -750,8 +685,7 @@ public class VexEditorMultiPage extends VexEditor {
 		public void configChanged(ConfigEvent e) {
 			if (style != null) {
 				String currId = style.getUniqueId();
-				Style newStyle = (Style) ConfigurationRegistry.INSTANCE.getConfigItem(
-						Style.EXTENSION_POINT, currId);
+				Style newStyle = (Style) ConfigurationRegistry.INSTANCE.getConfigItem(Style.EXTENSION_POINT, currId);
 				if (newStyle == null) {
 					// Oops, style went bye-bye
 					// Let's just hold on to it in case it comes back later
@@ -778,8 +712,7 @@ public class VexEditorMultiPage extends VexEditor {
 	};
 
 	private EntityResolver entityResolver = new EntityResolver() {
-		public InputSource resolveEntity(String publicId, String systemId)
-				throws SAXException, IOException {
+		public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 
 			// System.out.println("### Resolving publicId " + publicId +
 			// ", systemId " + systemId);
@@ -794,8 +727,7 @@ public class VexEditorMultiPage extends VexEditor {
 				}
 
 				if (doctype == null) {
-					DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog
-							.create(getSite().getShell(), publicId);
+					DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog.create(getSite().getShell(), publicId);
 					dlg.open();
 					doctype = dlg.getDoctype();
 					updateDoctypeDecl = dlg.alwaysUseThisDoctype();
@@ -808,8 +740,7 @@ public class VexEditorMultiPage extends VexEditor {
 				URL url = doctype.getResourceUrl();
 
 				if (url == null) {
-					String message = MessageFormat.format(Messages
-							.getString("VexEditor.noUrlForDoctype"), //$NON-NLS-1$
+					String message = MessageFormat.format(Messages.getString("VexEditor.noUrlForDoctype"), //$NON-NLS-1$
 							new Object[] { publicId });
 					throw new RuntimeException(message);
 				}
@@ -825,8 +756,7 @@ public class VexEditorMultiPage extends VexEditor {
 		public IWhitespacePolicy getPolicy(String publicId) {
 
 			if (doctype == null) {
-				DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog
-						.create(getSite().getShell(), publicId);
+				DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog.create(getSite().getShell(), publicId);
 				dlg.open();
 				doctype = dlg.getDoctype();
 				updateDoctypeDecl = dlg.alwaysUseThisDoctype();
@@ -836,8 +766,7 @@ public class VexEditorMultiPage extends VexEditor {
 				}
 			}
 
-			style = VexEditorMultiPage.findStyleForDoctype(doctype
-					.getPublicId());
+			style = ConfigurationRegistry.INSTANCE.getStyle(doctype.getPublicId());
 			if (style == null) {
 				throw new NoStyleForDoctypeException();
 			}
@@ -855,8 +784,7 @@ public class VexEditorMultiPage extends VexEditor {
 				return;
 			}
 
-			IPath path = ((IFileEditorInput) getEditorInput()).getFile()
-					.getFullPath();
+			IPath path = ((IFileEditorInput) getEditorInput()).getFile().getFullPath();
 			final IResourceDelta delta = event.getDelta().findMember(path);
 			if (delta != null) {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -899,7 +827,8 @@ public class VexEditorMultiPage extends VexEditor {
 		private String publicId;
 	}
 
-	private static class NoStyleForDoctypeException extends RuntimeException {}
+	private static class NoStyleForDoctypeException extends RuntimeException {
+	}
 
 	private String getLocation() {
 		List<String> path = new ArrayList<String>();
@@ -928,13 +857,10 @@ public class VexEditorMultiPage extends VexEditor {
 			page.setPropertySourceProvider(new IPropertySourceProvider() {
 				public IPropertySource getPropertySource(Object object) {
 					if (object instanceof Element) {
-						IStructuredSelection sel = (IStructuredSelection) vexWidget
-								.getSelection();
+						IStructuredSelection sel = (IStructuredSelection) vexWidget.getSelection();
 						boolean multi = (sel != null && sel.size() > 1);
-						Validator validator = vexWidget.getDocument()
-								.getValidator();
-						return new ElementPropertySource((VEXElement) object,
-								validator, multi);
+						Validator validator = vexWidget.getDocument().getValidator();
+						return new ElementPropertySource((VEXElement) object, validator, multi);
 					} else {
 						return null;
 					}

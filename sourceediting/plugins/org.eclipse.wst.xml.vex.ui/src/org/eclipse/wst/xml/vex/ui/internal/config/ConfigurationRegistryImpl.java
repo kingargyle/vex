@@ -147,20 +147,13 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	/**
-	 * Returns an array of all config item factories.
-	 */
-	public IConfigItemFactory[] getAllConfigItemFactories() {
-		return configItemFactories.toArray(new IConfigItemFactory[configItemFactories.size()]);
-	}
-
-	/**
 	 * Returns an array of all registered ConfigItem objects implementing the
 	 * given extension point.
 	 * 
 	 * @param extensionPointId
 	 *            ID of the desired extension point.
 	 */
-	public List<ConfigItem> getAllConfigItems(final String extensionPointId) {
+	private List<ConfigItem> getAllConfigItems(final String extensionPointId) {
 		try {
 			lock();
 			final List<ConfigItem> result = new ArrayList<ConfigItem>();
@@ -312,6 +305,13 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		return null;
 	}
 
+	public DocumentType[] getDocumentTypes() {
+		final List<DocumentType> result = new ArrayList<DocumentType>();
+		for (final ConfigItem configItem : getAllConfigItems(DocumentType.EXTENSION_POINT))
+			result.add((DocumentType) configItem);
+		return result.toArray(new DocumentType[result.size()]);
+	}
+
 	/**
 	 * Return a list of document types for which there is at least one
 	 * registered style.
@@ -331,7 +331,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	public Style[] getStyles(final String publicId) {
 		final ArrayList<Style> result = new ArrayList<Style>();
-		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
+		for (final ConfigItem configItem : getAllConfigItems(Style.EXTENSION_POINT)) {
 			final Style style = (Style) configItem;
 			if (style.appliesTo(publicId))
 				result.add(style);
@@ -340,7 +340,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	public Style getStyle(final String styleId) {
-		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
+		for (final ConfigItem configItem : getAllConfigItems(Style.EXTENSION_POINT)) {
 			final Style style = (Style) configItem;
 			if (style.getUniqueId().equals(styleId))
 				return style;

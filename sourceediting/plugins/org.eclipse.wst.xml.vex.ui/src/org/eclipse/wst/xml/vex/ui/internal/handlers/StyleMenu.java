@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
@@ -36,8 +37,7 @@ public class StyleMenu extends ContributionItem {
         if (editor == null) return;
 
         String publicId= editor.getVexWidget().getDocument().getPublicID();
-        Style[] styles = Style.getStylesForDoctype(publicId);
-        for (final Style style : styles) {
+        for (final Style style : ConfigurationRegistry.INSTANCE.getStyles(publicId)) {
             MenuItem menuItem = new MenuItem(menu, SWT.RADIO, index);
             menuItem.setText(style.getName());
             menuItem.setSelection(style == editor.getStyle());

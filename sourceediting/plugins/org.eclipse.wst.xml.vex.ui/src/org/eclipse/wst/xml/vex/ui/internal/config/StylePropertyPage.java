@@ -13,8 +13,7 @@ package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -38,7 +37,8 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class StylePropertyPage extends PropertyPage {
 
-	protected Control createContents(Composite parent) {
+	@Override
+	protected Control createContents(final Composite parent) {
 
 		pane = new Composite(parent, SWT.NONE);
 
@@ -57,9 +57,8 @@ public class StylePropertyPage extends PropertyPage {
 
 				try { // force an incremental build
 					getPluginProject().writeConfigXml();
-				} catch (Exception ex) {
-					String message = MessageFormat.format(Messages
-							.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
+				} catch (final Exception ex) {
+					final String message = MessageFormat.format(Messages.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
 							new Object[] { PluginProject.PLUGIN_XML });
 					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 				}
@@ -87,7 +86,7 @@ public class StylePropertyPage extends PropertyPage {
 
 	private void createPropertySheet() {
 
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		pane.setLayout(layout);
 		GridData gd;
@@ -96,28 +95,25 @@ public class StylePropertyPage extends PropertyPage {
 
 		label = new Label(pane, SWT.NONE);
 		label.setText(Messages.getString("StylePropertyPage.name")); //$NON-NLS-1$
-		this.nameText = new Text(pane, SWT.BORDER);
+		nameText = new Text(pane, SWT.BORDER);
 		gd = new GridData();
 		gd.widthHint = NAME_WIDTH;
-		this.nameText.setLayoutData(gd);
+		nameText.setLayoutData(gd);
 
-		final String resourcePath = ((IFile) this.getElement())
-				.getProjectRelativePath().toString();
+		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
 
-		final ConfigSource config = this.getPluginProject();
+		final ConfigSource config = getPluginProject();
 
-		this.style = (Style) config.getItemForResource(resourcePath);
-		if (this.style == null) {
-			this.style = new Style(config);
-			this.style.setResourcePath(resourcePath);
-			config.addItem(this.style);
+		style = (Style) config.getItemForResource(resourcePath);
+		if (style == null) {
+			style = new Style(config);
+			style.setResourcePath(resourcePath);
+			config.addItem(style);
 		}
 
 		// Generate a simple ID for this one if necessary
-		if (this.style.getSimpleId() == null
-				|| this.style.getSimpleId().length() == 0) {
-			this.style.setSimpleId(this.style.generateSimpleId());
-		}
+		if (style.getSimpleId() == null || style.getSimpleId().length() == 0)
+			style.setSimpleId(style.generateSimpleId());
 
 		label = new Label(pane, SWT.NONE);
 		label.setText(Messages.getString("StylePropertyPage.doctypes")); //$NON-NLS-1$
@@ -135,7 +131,7 @@ public class StylePropertyPage extends PropertyPage {
 		final FillLayout fillLayout = new FillLayout();
 		tablePane.setLayout(fillLayout);
 
-		this.doctypesTable = new Table(tablePane, SWT.CHECK);
+		doctypesTable = new Table(tablePane, SWT.CHECK);
 
 	}
 
@@ -145,10 +141,11 @@ public class StylePropertyPage extends PropertyPage {
 	 * @return
 	 */
 	public PluginProject getPluginProject() {
-		IFile file = (IFile) this.getElement();
+		final IFile file = (IFile) getElement();
 		return ConfigurationRegistry.INSTANCE.getPluginProject(file.getProject());
 	}
 
+	@Override
 	public boolean performOk() {
 
 		performApply();
@@ -156,35 +153,28 @@ public class StylePropertyPage extends PropertyPage {
 		return super.performOk();
 	}
 
+	@Override
 	public void performApply() {
 
-		this.style.setName(this.nameText.getText());
-
-		List<ConfigItem> doctypeList = ConfigurationRegistry.INSTANCE.getAllConfigItems(
-				DocumentType.EXTENSION_POINT);
-		Collections.sort(doctypeList);
+		style.setName(nameText.getText());
 
 		final ArrayList<String> selectedDoctypes = new ArrayList<String>();
-		for (TableItem item : this.doctypesTable.getItems()) {
-			if (item.getChecked()) {
+		for (final TableItem item : doctypesTable.getItems())
+			if (item.getChecked())
 				selectedDoctypes.add(item.getText());
-			}
-		}
 
-		this.style.removeAllDocumentTypes();
+		style.removeAllDocumentTypes();
 
-		for (ConfigItem configItem : doctypeList) {
-			DocumentType documentType = (DocumentType)configItem;
-			if (selectedDoctypes.contains(documentType.getName())) {
-				this.style.addDocumentType(documentType.getPublicId());
-			}			
-		}
+		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
+		Arrays.sort(documentTypes);
+		for (final DocumentType documentType : documentTypes)
+			if (selectedDoctypes.contains(documentType.getName()))
+				style.addDocumentType(documentType.getPublicId());
 
 		try {
-			this.getPluginProject().writeConfigXml();
-		} catch (Exception e) {
-			String message = MessageFormat.format(Messages
-					.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
+			getPluginProject().writeConfigXml();
+		} catch (final Exception e) {
+			final String message = MessageFormat.format(Messages.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
 					new Object[] { PluginProject.PLUGIN_XML });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 		}
@@ -192,6 +182,7 @@ public class StylePropertyPage extends PropertyPage {
 		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
+	@Override
 	protected void performDefaults() {
 
 		super.performDefaults();
@@ -202,13 +193,12 @@ public class StylePropertyPage extends PropertyPage {
 
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
 
-		if (this.configListener != null) {
-			ConfigurationRegistry.INSTANCE.removeConfigListener(
-					this.configListener);
-		}
+		if (configListener != null)
+			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
 	}
 
 	// ======================================================= PRIVATE
@@ -223,29 +213,25 @@ public class StylePropertyPage extends PropertyPage {
 	private IConfigListener configListener;
 
 	private void populateStyle() {
-		this.setText(this.nameText, this.style.getName());
+		setText(nameText, style.getName());
 
 	}
 
 	private void populateDoctypes() {
-
-		final Set<String> selectedDoctypes = new TreeSet<String>(this.style.getDocumentTypes());
+		final Set<String> selectedDoctypes = new TreeSet<String>(style.getDocumentTypes());
 		doctypesTable.removeAll();
 
-		List<ConfigItem> doctypeList = ConfigurationRegistry.INSTANCE.getAllConfigItems(
-				DocumentType.EXTENSION_POINT);
-		Collections.sort(doctypeList);
-		for (ConfigItem configItem : doctypeList) {
-			DocumentType documentType=(DocumentType)configItem;
-			TableItem item1 = new TableItem(doctypesTable, SWT.NONE);
-			item1.setText(documentType.getName());
-			if (selectedDoctypes.contains(documentType.getPublicId())) {
-				item1.setChecked(true);
-			}
+		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
+		Arrays.sort(documentTypes);
+		for (final DocumentType documentType : documentTypes) {
+			final TableItem item = new TableItem(doctypesTable, SWT.NONE);
+			item.setText(documentType.getName());
+			if (selectedDoctypes.contains(documentType.getPublicId()))
+				item.setChecked(true);
 		}
 	}
 
-	private void setText(Text textBox, String s) {
+	private void setText(final Text textBox, final String s) {
 		textBox.setText(s == null ? "" : s); //$NON-NLS-1$
 	}
 
