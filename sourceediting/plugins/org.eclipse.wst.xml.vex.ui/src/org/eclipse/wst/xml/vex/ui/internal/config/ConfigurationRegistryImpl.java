@@ -96,20 +96,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	/**
-	 * Removes all loaded ConfigSource instances and resets the configLoaded
-	 * flag.
-	 */
-	public void clear() {
-		try {
-			lock();
-			configs = new HashMap<String, ConfigSource>();
-			loaded = false;
-		} finally {
-			unlock();
-		}
-	}
-
-	/**
 	 * Add a ConfigSource to the list of configurations.
 	 * 
 	 * @param config

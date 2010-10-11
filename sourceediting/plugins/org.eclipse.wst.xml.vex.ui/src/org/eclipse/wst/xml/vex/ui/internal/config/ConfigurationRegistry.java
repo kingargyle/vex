@@ -19,8 +19,6 @@ public interface ConfigurationRegistry {
 
 	ConfigurationRegistry INSTANCE = new ConfigurationRegistryImpl();
 	
-	void clear();
-
 	IConfigItemFactory getConfigItemFactory(String extensionPointId);
 
 	ConfigItem getConfigItem(String extensionPoint, String id);
