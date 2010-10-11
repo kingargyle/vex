@@ -176,28 +176,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	/**
-	 * Returns a specific configuration item given an extension point id and the
-	 * item's id. Returns null if either the extension point or the item is not
-	 * found.
-	 * 
-	 * @param extensionPoint
-	 *            ID of the desired extension point.
-	 * @param id
-	 *            ID of the desired item.
-	 */
-	public ConfigItem getConfigItem(final String extensionPoint, final String id) {
-		try {
-			lock();
-			for (final ConfigItem item : getAllConfigItems(extensionPoint))
-				if (item.getUniqueId().equals(id))
-					return item;
-			return null;
-		} finally {
-			unlock();
-		}
-	}
-
-	/**
 	 * Returns the IConfigItemFactory object for the given extension point or
 	 * null if none exists.
 	 * 

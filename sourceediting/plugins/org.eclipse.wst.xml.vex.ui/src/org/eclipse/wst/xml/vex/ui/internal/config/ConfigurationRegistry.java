@@ -21,8 +21,6 @@ public interface ConfigurationRegistry {
 	
 	IConfigItemFactory getConfigItemFactory(String extensionPointId);
 
-	ConfigItem getConfigItem(String extensionPoint, String id);
-	
 	void fireConfigChanged(final ConfigEvent e);
 	
 	void fireConfigLoaded(final ConfigEvent e);

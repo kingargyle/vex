@@ -684,8 +684,8 @@ public class VexEditorMultiPage extends VexEditor {
 
 		public void configChanged(ConfigEvent e) {
 			if (style != null) {
-				String currId = style.getUniqueId();
-				Style newStyle = (Style) ConfigurationRegistry.INSTANCE.getConfigItem(Style.EXTENSION_POINT, currId);
+				final String styleId = style.getUniqueId();
+				final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
 				if (newStyle == null) {
 					// Oops, style went bye-bye
 					// Let's just hold on to it in case it comes back later
