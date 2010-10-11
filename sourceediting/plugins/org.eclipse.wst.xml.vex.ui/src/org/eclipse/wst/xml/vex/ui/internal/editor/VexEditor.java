@@ -49,8 +49,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.commands.ICommandService;
@@ -84,11 +86,9 @@ import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigItem;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistryImpl;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
 import org.eclipse.wst.xml.vex.ui.internal.handlers.ConvertElementHandler;
 import org.eclipse.wst.xml.vex.ui.internal.handlers.RemoveTagHandler;
@@ -111,13 +111,12 @@ public class VexEditor extends EditorPart {
 	 * ID of this editor extension.
 	 */
 	public static final String ID = "org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor"; //$NON-NLS-1$
-	
+
 	/**
 	 * Class constructor.
 	 */
 	public VexEditor() {
-		this.debugging = VexPlugin.getInstance().isDebugging()
-				&& "true".equalsIgnoreCase(Platform.getDebugOption(VexPlugin.ID + "/debug/layout")); //$NON-NLS-1$ //$NON-NLS-2$
+		debugging = VexPlugin.getInstance().isDebugging() && "true".equalsIgnoreCase(Platform.getDebugOption(VexPlugin.ID + "/debug/layout")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -126,113 +125,99 @@ public class VexEditor extends EditorPart {
 	 * @param listener
 	 *            VexEditorListener to be added.
 	 */
-	public void addVexEditorListener(IVexEditorListener listener) {
-		this.vexEditorListeners.add(listener);
+	public void addVexEditorListener(final IVexEditorListener listener) {
+		vexEditorListeners.add(listener);
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
 
-		if (this.parentControl != null) {
+		if (parentControl != null)
 			// createPartControl was called, so we must de-register from config
 			// events
-			ConfigurationRegistry.INSTANCE.removeConfigListener(
-					this.configListener);
-		}
+			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
 
-		if (getEditorInput() instanceof IFileEditorInput) {
-			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
-					this.resourceChangeListener);
-		}
+		if (getEditorInput() instanceof IFileEditorInput)
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 
 	}
 
-	public void doSave(IProgressMonitor monitor) {
+	@Override
+	public void doSave(final IProgressMonitor monitor) {
 
-		IEditorInput input = this.getEditorInput();
+		final IEditorInput input = getEditorInput();
 		OutputStream os = null;
 		try {
-			this.resourceChangeListener.setSaving(true);
-			DocumentWriter writer = new DocumentWriter();
-			writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style
-					.getStyleSheet()));
+			resourceChangeListener.setSaving(true);
+			final DocumentWriter writer = new DocumentWriter();
+			writer.setWhitespacePolicy(new CssWhitespacePolicy(style.getStyleSheet()));
 
 			if (input instanceof IFileEditorInput) {
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				writer.write(this.doc, baos);
+				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				writer.write(doc, baos);
 				baos.close();
-				ByteArrayInputStream bais = new ByteArrayInputStream(baos
-						.toByteArray());
-				((IFileEditorInput) input).getFile().setContents(bais, false,
-						false, monitor);
+				final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+				((IFileEditorInput) input).getFile().setContents(bais, false, false, monitor);
 			} else {
-				os = new FileOutputStream(((ILocationProvider) input).getPath(
-						input).toFile());
-				writer.write(this.doc, os);
+				os = new FileOutputStream(((ILocationProvider) input).getPath(input).toFile());
+				writer.write(doc, os);
 			}
 
-			this.savedUndoDepth = this.vexWidget.getUndoDepth();
-			this.firePropertyChange(EditorPart.PROP_DIRTY);
+			savedUndoDepth = vexWidget.getUndoDepth();
+			firePropertyChange(IEditorPart.PROP_DIRTY);
 
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			monitor.setCanceled(true);
-			String title = Messages.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
-			String message = MessageFormat.format(Messages
-					.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
+			final String title = Messages.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
+			final String message = MessageFormat.format(Messages.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
 					new Object[] { input.getName(), ex.getMessage() });
-			MessageDialog.openError(this.getEditorSite().getShell(), title,
-					message);
+			MessageDialog.openError(getEditorSite().getShell(), title, message);
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		} finally {
-			if (os != null) {
+			if (os != null)
 				try {
 					os.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 				}
-			}
-			this.resourceChangeListener.setSaving(false);
+			resourceChangeListener.setSaving(false);
 		}
 	}
 
+	@Override
 	public void doSaveAs() {
-		SaveAsDialog dlg = new SaveAsDialog(this.getSite().getShell());
-		int result = dlg.open();
+		final SaveAsDialog dlg = new SaveAsDialog(getSite().getShell());
+		final int result = dlg.open();
 		if (result == Window.OK) {
-			IPath path = dlg.getResult();
+			final IPath path = dlg.getResult();
 			try {
-				this.resourceChangeListener.setSaving(true);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				DocumentWriter writer = new DocumentWriter();
-				writer.setWhitespacePolicy(new CssWhitespacePolicy(this.style
-						.getStyleSheet()));
-				writer.write(this.doc, baos);
+				resourceChangeListener.setSaving(true);
+				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				final DocumentWriter writer = new DocumentWriter();
+				writer.setWhitespacePolicy(new CssWhitespacePolicy(style.getStyleSheet()));
+				writer.write(doc, baos);
 				baos.close();
 
-				ByteArrayInputStream bais = new ByteArrayInputStream(baos
-						.toByteArray());
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(
-						path);
+				final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+				final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 				file.create(bais, false, null);
 
-				IFileEditorInput input = new FileEditorInput(file);
-				this.setInput(input);
-				this.savedUndoDepth = this.vexWidget.getUndoDepth();
+				final IFileEditorInput input = new FileEditorInput(file);
+				setInput(input);
+				savedUndoDepth = vexWidget.getUndoDepth();
 
-				this.firePropertyChange(EditorPart.PROP_DIRTY);
-				this.firePropertyChange(EditorPart.PROP_INPUT);
-				this.firePropertyChange(EditorPart.PROP_TITLE);
+				firePropertyChange(IEditorPart.PROP_DIRTY);
+				firePropertyChange(IEditorPart.PROP_INPUT);
+				firePropertyChange(IWorkbenchPart.PROP_TITLE);
 
-			} catch (Exception ex) {
-				String title = Messages
-						.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
-				String message = MessageFormat.format(Messages
-						.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
+			} catch (final Exception ex) {
+				final String title = Messages.getString("VexEditor.errorSaving.title"); //$NON-NLS-1$
+				final String message = MessageFormat.format(Messages.getString("VexEditor.errorSaving.message"), //$NON-NLS-1$
 						new Object[] { path, ex.getMessage() });
-				MessageDialog.openError(this.getEditorSite().getShell(), title,
-						message);
+				MessageDialog.openError(getEditorSite().getShell(), title, message);
 				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 			} finally {
-				this.resourceChangeListener.setSaving(false);
+				resourceChangeListener.setSaving(false);
 			}
 		}
 
@@ -244,36 +229,21 @@ public class VexEditor extends EditorPart {
 	 * @param publicId
 	 *            Public ID for which to return the style.
 	 */
-	public static Style findStyleForDoctype(String publicId) {
+	public static Style getPreferredStyle(final String publicId) {
+		return ConfigurationRegistry.INSTANCE.getStyle(publicId, getPreferredStyleId(publicId));
+	}
 
-		IPreferencesService preferences = Platform.getPreferencesService();
-		String key = getStylePreferenceKey(publicId);
-		String preferredStyleId = preferences.getString(VexPlugin.ID, key,
-				null, null);
-
-		Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
-		preferredStyleId = prefs.get(key, null);
-
-		Style firstStyle = null;
-		for (ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
-			Style style = (Style) configItem;
-			if (style.appliesTo(publicId)) {
-				if (firstStyle == null) {
-					firstStyle = style;
-				}
-				if (style.getUniqueId().equals(preferredStyleId)) {
-					return style;
-				}
-			}
-		}
-		return firstStyle;
+	private static String getPreferredStyleId(final String publicId) {
+		final Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
+		final String preferredStyleId = prefs.get(getStylePreferenceKey(publicId), null);
+		return preferredStyleId;
 	}
 
 	/**
 	 * Returns the DocumentType associated with this editor.
 	 */
 	public DocumentType getDocumentType() {
-		return this.doctype;
+		return doctype;
 	}
 
 	/**
@@ -287,70 +257,62 @@ public class VexEditor extends EditorPart {
 	 * Returns the VexWidget that implements this editor.
 	 */
 	public VexWidget getVexWidget() {
-		return this.vexWidget;
+		return vexWidget;
 	}
 
-	public void gotoMarker(IMarker marker) {
+	public void gotoMarker(final IMarker marker) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	@Override
+	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
 
-		this.setSite(site);
-		this.setInput(input);
+		setSite(site);
+		setInput(input);
 
-		this.getEditorSite().setSelectionProvider(this.selectionProvider);
-		this.getEditorSite().getSelectionProvider()
-				.addSelectionChangedListener(selectionChangedListener);
+		getEditorSite().setSelectionProvider(selectionProvider);
+		getEditorSite().getSelectionProvider().addSelectionChangedListener(selectionChangedListener);
 
-		if (input instanceof IFileEditorInput) {
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(
-					this.resourceChangeListener,
-					IResourceChangeEvent.POST_CHANGE);
-		}
+		if (input instanceof IFileEditorInput)
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
 	}
 
 	protected void loadInput() {
 
-		if (this.vexWidget != null) {
-			this.vexEditorListeners.fireEvent(
-					"documentUnloaded", new VexEditorEvent(this)); //$NON-NLS-1$
-		}
+		if (vexWidget != null)
+			vexEditorListeners.fireEvent("documentUnloaded", new VexEditorEvent(this)); //$NON-NLS-1$
 
-		this.loaded = false;
+		loaded = false;
 
-		IEditorInput input = this.getEditorInput();
+		final IEditorInput input = getEditorInput();
 
 		try {
-			long start = System.currentTimeMillis();
+			final long start = System.currentTimeMillis();
 
 			IFile file = null;
 
-			if (input instanceof IFileEditorInput) {
+			if (input instanceof IFileEditorInput)
 				file = ((IFileEditorInput) input).getFile();
-			} else {
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.unknownInputClass"), //$NON-NLS-1$
+			else {
+				final String msg = MessageFormat.format(Messages.getString("VexEditor.unknownInputClass"), //$NON-NLS-1$
 						new Object[] { input.getClass() });
 				showLabel(msg);
 				return;
 			}
 
-		    DOMDocumentReader reader = new DOMDocumentReader();
-			reader.setDebugging(this.debugging);
+			final DOMDocumentReader reader = new DOMDocumentReader();
+			reader.setDebugging(debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
-			this.doctype = null; // must be null to set it to a new value via
-			                     // entityResolveras by following read():
-			this.doc = reader.read(getDOMDocument(file));
+			doctype = null; // must be null to set it to a new value via
+							// entityResolveras by following read():
+			doc = reader.read(getDOMDocument(file));
 
-			if (this.debugging) {
-				long end = System.currentTimeMillis();
-				String message =   "Parsed document in " //$NON-NLS-1$
-					             + (end - start)
-					             + "ms"; //$NON-NLS-1$
+			if (debugging) {
+				final long end = System.currentTimeMillis();
+				final String message = "Parsed document in " //$NON-NLS-1$
+						+ (end - start) + "ms"; //$NON-NLS-1$
 				System.out.println(message);
 			}
 
@@ -359,128 +321,117 @@ public class VexEditor extends EditorPart {
 			// Otherwise, a PartInitException would have been thrown by now
 
 			//IValidator validator = this.doctype.getValidator(); 
-			Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
+			final Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
 			if (validator != null) {
-				this.doc.setValidator(validator);
-				if (this.debugging) {
-					long end = System.currentTimeMillis();
-					System.out
-							.println("Got validator in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				doc.setValidator(validator);
+				if (debugging) {
+					final long end = System.currentTimeMillis();
+					System.out.println("Got validator in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 
-			this.showVexWidget();
+			showVexWidget();
 
-			this.vexWidget.setDebugging(debugging);
-			this.vexWidget.setDocument(this.doc, this.style.getStyleSheet());
+			vexWidget.setDebugging(debugging);
+			vexWidget.setDocument(doc, style.getStyleSheet());
 
-			if (this.updateDoctypeDecl) {
-				this.doc.setPublicID(this.doctype.getPublicId());
-				((Document)this.doc).setSystemID(this.doctype.getSystemId());
-				this.doSave(null);
+			if (updateDoctypeDecl) {
+				doc.setPublicID(doctype.getPublicId());
+				((Document) doc).setSystemID(doctype.getSystemId());
+				doSave(null);
 			}
 
-			this.loaded = true;
-			this.savedUndoDepth = this.vexWidget.getUndoDepth();
-			firePropertyChange(EditorPart.PROP_DIRTY);
-			this.wasDirty = isDirty();
+			loaded = true;
+			savedUndoDepth = vexWidget.getUndoDepth();
+			firePropertyChange(IEditorPart.PROP_DIRTY);
+			wasDirty = isDirty();
 
-			this.vexEditorListeners.fireEvent(
-					"documentLoaded", new VexEditorEvent(this)); //$NON-NLS-1$
+			vexEditorListeners.fireEvent("documentLoaded", new VexEditorEvent(this)); //$NON-NLS-1$
 
-		} catch (SAXParseException ex) {
+		} catch (final SAXParseException ex) {
 
 			if (ex.getException() instanceof NoRegisteredDoctypeException) {
 				// TODO doc did not have document type and the user
 				// declined to select another one. Should fail silently.
 				String msg;
-				NoRegisteredDoctypeException ex2 = (NoRegisteredDoctypeException) ex
-						.getException();
-				if (ex2.getPublicId() == null) {
+				final NoRegisteredDoctypeException ex2 = (NoRegisteredDoctypeException) ex.getException();
+				if (ex2.getPublicId() == null)
 					msg = Messages.getString("VexEditor.noDoctype"); //$NON-NLS-1$
-				} else {
-					msg = MessageFormat.format(Messages
-							.getString("VexEditor.unknownDoctype"), //$NON-NLS-1$
+				else
+					msg = MessageFormat.format(Messages.getString("VexEditor.unknownDoctype"), //$NON-NLS-1$
 							new Object[] { ex2.getPublicId() });
-				}
-				this.showLabel(msg);
+				showLabel(msg);
 			} else if (ex.getException() instanceof NoStyleForDoctypeException) {
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.noStyles"), //$NON-NLS-1$
-						new Object[] { this.doctype.getPublicId() });
-				this.showLabel(msg);
+				final String msg = MessageFormat.format(Messages.getString("VexEditor.noStyles"), //$NON-NLS-1$
+						new Object[] { doctype.getPublicId() });
+				showLabel(msg);
 			} else {
 				String file = ex.getSystemId();
-				if (file == null) {
+				if (file == null)
 					file = input.getName();
-				}
 
-				String msg = MessageFormat.format(Messages
-						.getString("VexEditor.parseError"), //$NON-NLS-1$
-						new Object[] { Integer.valueOf(ex.getLineNumber()), file,
-								ex.getLocalizedMessage() });
+				final String msg = MessageFormat.format(Messages.getString("VexEditor.parseError"), //$NON-NLS-1$
+						new Object[] { Integer.valueOf(ex.getLineNumber()), file, ex.getLocalizedMessage() });
 
-				this.showLabel(msg);
+				showLabel(msg);
 
 				VexPlugin.getInstance().log(IStatus.ERROR, msg, ex);
 			}
 
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 
-			String msg = MessageFormat.format(Messages
-					.getString("VexEditor.unexpectedError"), //$NON-NLS-1$
+			final String msg = MessageFormat.format(Messages.getString("VexEditor.unexpectedError"), //$NON-NLS-1$
 					new Object[] { input.getName() });
 
 			VexPlugin.getInstance().log(IStatus.ERROR, msg, ex);
 
-			this.showLabel(msg);
+			showLabel(msg);
 		}
 	}
 
-	private IDOMDocument getDOMDocument(IFile file) throws IOException,
-			CoreException {
-		IStructuredModel model = StructuredModelManager.getModelManager().getModelForRead(file);
+	private IDOMDocument getDOMDocument(final IFile file) throws IOException, CoreException {
+		final IStructuredModel model = StructuredModelManager.getModelManager().getModelForRead(file);
 		IDOMDocument modelDocument = null;
 		try {
-		  if (model instanceof IDOMModel) {
-		    modelDocument = ((IDOMModel)model).getDocument();
-		  }
+			if (model instanceof IDOMModel)
+				modelDocument = ((IDOMModel) model).getDocument();
 		} finally {
-		  if (model != null)
-		    model.releaseFromRead();
+			if (model != null)
+				model.releaseFromRead();
 		}
 		return modelDocument;
 	}
 
+	@Override
 	public boolean isDirty() {
-		if (this.vexWidget != null) {
-			return this.savedUndoDepth != this.vexWidget.getUndoDepth();
-		} else {
+		if (vexWidget != null)
+			return savedUndoDepth != vexWidget.getUndoDepth();
+		else
 			return false;
-		}
 	}
 
 	/**
 	 * Returns true if this editor has finished loading its document.
 	 */
 	public boolean isLoaded() {
-		return this.loaded;
+		return loaded;
 	}
 
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
 
-	public void createPartControl(Composite parent) {
+	@Override
+	public void createPartControl(final Composite parent) {
 
-		this.parentControl = parent;
+		parentControl = parent;
 
-		ConfigurationRegistry.INSTANCE.addConfigListener(this.configListener);
-		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
-			this.loadInput();
-		} else {
-			this.showLabel(Messages.getString("VexEditor.loading")); //$NON-NLS-1$
-		}
+		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
+		if (ConfigurationRegistry.INSTANCE.isLoaded())
+			loadInput();
+		else
+			showLabel(Messages.getString("VexEditor.loading")); //$NON-NLS-1$
 	}
 
 	/**
@@ -489,28 +440,29 @@ public class VexEditor extends EditorPart {
 	 * @param listener
 	 *            VexEditorListener to be removed.
 	 */
-	public void removeVexEditorListener(IVexEditorListener listener) {
-		this.vexEditorListeners.remove(listener);
+	public void removeVexEditorListener(final IVexEditorListener listener) {
+		vexEditorListeners.remove(listener);
 	}
 
+	@Override
 	public void setFocus() {
-		if (this.vexWidget != null) {
-			this.vexWidget.setFocus();
+		if (vexWidget != null) {
+			vexWidget.setFocus();
 			setStatus(getLocation());
 		}
 	}
 
-	protected void setInput(IEditorInput input) {
+	@Override
+	protected void setInput(final IEditorInput input) {
 		super.setInput(input);
-		this.setPartName(input.getName());
-		this.setContentDescription(input.getName());
+		setPartName(input.getName());
+		setContentDescription(input.getName());
 		//this.setTitleToolTip(input.getToolTipText());
 	}
 
-	public void setStatus(String text) {
+	public void setStatus(final String text) {
 		// this.statusLabel.setText(text);
-		this.getEditorSite().getActionBars().getStatusLineManager().setMessage(
-				text);
+		getEditorSite().getActionBars().getStatusLineManager().setMessage(text);
 	}
 
 	/**
@@ -519,29 +471,28 @@ public class VexEditor extends EditorPart {
 	 * @param style
 	 *            Style to use.
 	 */
-	public void setStyle(Style style) {
+	public void setStyle(final Style style) {
 		this.style = style;
-		if (this.vexWidget != null) {
-			this.vexWidget.setStyleSheet(style.getStyleSheet());
-			Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
-			String key = getStylePreferenceKey(this.doc.getPublicID());
-			prefs.put(key, style.getUniqueId());
-			try {
-				prefs.flush();
-			} catch (BackingStoreException e) {
-				VexPlugin
-						.getInstance()
-						.log(
-								IStatus.ERROR,
-								Messages
-										.getString("VexEditor.errorSavingStylePreference"), e); //$NON-NLS-1$
-			}
+		if (vexWidget != null) {
+			vexWidget.setStyleSheet(style.getStyleSheet());
+			setPreferredStyleId(doc.getPublicID(), style.getUniqueId());
+		}
+	}
+
+	private static void setPreferredStyleId(final String publicId, final String styleId) {
+		final Preferences prefs = new InstanceScope().getNode(VexPlugin.ID);
+		final String key = getStylePreferenceKey(publicId);
+		prefs.put(key, styleId);
+		try {
+			prefs.flush();
+		} catch (final BackingStoreException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, Messages.getString("VexEditor.errorSavingStylePreference"), e); //$NON-NLS-1$
 		}
 	}
 
 	// ========================================================= PRIVATE
 
-	private boolean debugging;
+	private final boolean debugging;
 
 	private Composite parentControl;
 	private Label loadingLabel;
@@ -562,48 +513,47 @@ public class VexEditor extends EditorPart {
 	// AND the user wants to always use the doctype for this document
 	private boolean updateDoctypeDecl;
 
-	private ListenerList<IVexEditorListener, VexEditorEvent> vexEditorListeners =
-	    new ListenerList<IVexEditorListener, VexEditorEvent>(IVexEditorListener.class);
+	private final ListenerList<IVexEditorListener, VexEditorEvent> vexEditorListeners = new ListenerList<IVexEditorListener, VexEditorEvent>(
+			IVexEditorListener.class);
 
-	private SelectionProvider selectionProvider = new SelectionProvider();
+	private final SelectionProvider selectionProvider = new SelectionProvider();
 
 	/**
 	 * Returns the preference key used to access the style ID for documents with
 	 * the same public ID as the current document.
 	 */
-	private static String getStylePreferenceKey(String publicId) {
+	private static String getStylePreferenceKey(final String publicId) {
 		return publicId + ".style"; //$NON-NLS-1$
 	}
 
-	private void showLabel(String message) {
-		if (this.loadingLabel == null) {
-			if (this.vexWidget != null) {
-				this.vexWidget.dispose();
-				this.vexWidget = null;
+	private void showLabel(final String message) {
+		if (loadingLabel == null) {
+			if (vexWidget != null) {
+				vexWidget.dispose();
+				vexWidget = null;
 			}
-			this.loadingLabel = new Label(this.parentControl, SWT.WRAP);
+			loadingLabel = new Label(parentControl, SWT.WRAP);
 		}
-		this.loadingLabel.setText(message);
-		this.parentControl.layout(true);
+		loadingLabel.setText(message);
+		parentControl.layout(true);
 	}
 
 	private void showVexWidget() {
 
-		if (this.vexWidget != null) {
+		if (vexWidget != null)
 			return;
+
+		if (loadingLabel != null) {
+			loadingLabel.dispose();
+			loadingLabel = null;
 		}
 
-		if (this.loadingLabel != null) {
-			this.loadingLabel.dispose();
-			this.loadingLabel = null;
-		}
-
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-		this.parentControl.setLayout(layout);
+		parentControl.setLayout(layout);
 		GridData gd;
 
 		// StatusPanel statusPanel = new StatusPanel(this.parentControl);
@@ -635,161 +585,136 @@ public class VexEditor extends EditorPart {
 		gd.verticalAlignment = GridData.FILL;
 		vexWidget.setLayoutData(gd);
 
-		MenuManager menuManager = new MenuManager();
+		final MenuManager menuManager = new MenuManager();
 		getSite().registerContextMenu("org.eclipse.wst.xml.vex.ui.popup", menuManager, vexWidget);
 		vexWidget.setMenu(menuManager.createContextMenu(vexWidget));
 
-		savedUndoDepth = this.vexWidget.getUndoDepth();
+		savedUndoDepth = vexWidget.getUndoDepth();
 
 		// new for scopes
-		IContextService cs = (IContextService) this.getSite().getService(
-				IContextService.class);
+		final IContextService cs = (IContextService) getSite().getService(IContextService.class);
 		cs.activateContext("org.eclipse.wst.xml.vex.ui.VexEditorContext");
 
-		vexWidget.addSelectionChangedListener(this.selectionProvider);
+		vexWidget.addSelectionChangedListener(selectionProvider);
 
 		parentControl.layout(true);
 
 	}
 
-	private void handleResourceChanged(IResourceDelta delta) {
+	private void handleResourceChanged(final IResourceDelta delta) {
 
 		if (delta.getKind() == IResourceDelta.CHANGED) {
-			if ((delta.getFlags() & IResourceDelta.CONTENT) != 0) {
-				this.handleResourceContentChanged();
-			}
-		} else if (delta.getKind() == IResourceDelta.REMOVED) {
+			if ((delta.getFlags() & IResourceDelta.CONTENT) != 0)
+				handleResourceContentChanged();
+		} else if (delta.getKind() == IResourceDelta.REMOVED)
 			if ((delta.getFlags() & IResourceDelta.MOVED_TO) != 0) {
-				IPath toPath = delta.getMovedToPath();
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(
-						toPath);
-				this.setInput(new FileEditorInput(file));
-			} else {
-				if (!this.isDirty()) {
-					this.getEditorSite().getPage().closeEditor(this, false);
-				} else {
-					this.handleResourceDeleted();
-				}
-			}
-		}
+				final IPath toPath = delta.getMovedToPath();
+				final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(toPath);
+				setInput(new FileEditorInput(file));
+			} else if (!isDirty())
+				getEditorSite().getPage().closeEditor(this, false);
+			else
+				handleResourceDeleted();
 
 	}
 
 	private void handleResourceContentChanged() {
 
-		if (!this.isDirty()) {
-			this.loadInput();
-		} else {
+		if (!isDirty())
+			loadInput();
+		else {
 
-			String message = MessageFormat.format(Messages
-					.getString("VexEditor.docChanged.message"), //$NON-NLS-1$
-					new Object[] { this.getEditorInput().getName() });
+			final String message = MessageFormat.format(Messages.getString("VexEditor.docChanged.message"), //$NON-NLS-1$
+					new Object[] { getEditorInput().getName() });
 
-			MessageDialog dlg = new MessageDialog(
-					this.getSite().getShell(),
-					Messages.getString("VexEditor.docChanged.title"), //$NON-NLS-1$
-					null,
-					message,
-					MessageDialog.QUESTION,
-					new String[] {
-							Messages.getString("VexEditor.docChanged.discard"), //$NON-NLS-1$
-							Messages
-									.getString("VexEditor.docChanged.overwrite") }, //$NON-NLS-1$
+			final MessageDialog dlg = new MessageDialog(getSite().getShell(), Messages.getString("VexEditor.docChanged.title"), //$NON-NLS-1$
+					null, message, MessageDialog.QUESTION, new String[] { Messages.getString("VexEditor.docChanged.discard"), //$NON-NLS-1$
+							Messages.getString("VexEditor.docChanged.overwrite") }, //$NON-NLS-1$
 					1);
 
-			int result = dlg.open();
+			final int result = dlg.open();
 
-			if (result == 0) { // Discard my changes
-				this.loadInput();
-			} else { // Overwrite other changes
-				this.doSave(null);
-			}
+			if (result == 0)
+				loadInput();
+			else
+				doSave(null);
 		}
 	}
 
 	private void handleResourceDeleted() {
 
-		String message = MessageFormat.format(Messages
-				.getString("VexEditor.docDeleted.message"), //$NON-NLS-1$
-				new Object[] { this.getEditorInput().getName() });
+		final String message = MessageFormat.format(Messages.getString("VexEditor.docDeleted.message"), //$NON-NLS-1$
+				new Object[] { getEditorInput().getName() });
 
-		MessageDialog dlg = new MessageDialog(this.getSite().getShell(),
-				Messages.getString("VexEditor.docDeleted.title"), //$NON-NLS-1$
-				null, message, MessageDialog.QUESTION, new String[] {
-						Messages.getString("VexEditor.docDeleted.discard"), //$NON-NLS-1$ 
+		final MessageDialog dlg = new MessageDialog(getSite().getShell(), Messages.getString("VexEditor.docDeleted.title"), //$NON-NLS-1$
+				null, message, MessageDialog.QUESTION, new String[] { Messages.getString("VexEditor.docDeleted.discard"), //$NON-NLS-1$ 
 						Messages.getString("VexEditor.docDeleted.save") }, //$NON-NLS-1$
 				1);
 
-		int result = dlg.open();
+		final int result = dlg.open();
 
-		if (result == 0) { // Discard
+		if (result == 0)
+			getEditorSite().getPage().closeEditor(this, false);
+		else { // Save
 
-			this.getEditorSite().getPage().closeEditor(this, false);
-
-		} else { // Save
-
-			this.doSaveAs();
+			doSaveAs();
 
 			// Check if they saved or not. If not, close the editor
-			if (!this.getEditorInput().exists()) {
-				this.getEditorSite().getPage().closeEditor(this, false);
-			}
+			if (!getEditorInput().exists())
+				getEditorSite().getPage().closeEditor(this, false);
 		}
 	}
 
 	// Listen for stylesheet changes and respond appropriately
-	private IConfigListener configListener = new IConfigListener() {
+	private final IConfigListener configListener = new IConfigListener() {
+		public void configChanged(final ConfigEvent e) {
+			if (style == null)
+				return;
 
-		public void configChanged(ConfigEvent e) {
-			if (style != null) {
-				ConfigurationRegistry registry = ConfigurationRegistry.INSTANCE;
-				String currId = style.getUniqueId();
-				Style newStyle = (Style) registry.getConfigItem(
-						Style.EXTENSION_POINT, currId);
-				if (newStyle == null) {
-					// Oops, style went bye-bye
-					// Let's just hold on to it in case it comes back later
-				} else {
-					vexWidget.setStyleSheet(newStyle.getStyleSheet());
-					style = newStyle;
-				}
+			final String styleId = style.getUniqueId();
+			final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
+			if (newStyle == null) {
+				// Oops, style went bye-bye
+				// Let's just hold on to it in case it comes back later
+			} else {
+				vexWidget.setStyleSheet(newStyle.getStyleSheet());
+				style = newStyle;
 			}
 		}
 
-		public void configLoaded(ConfigEvent e) {
+		public void configLoaded(final ConfigEvent e) {
 			loadInput();
 		}
 	};
 
-	private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener() {
-		public void selectionChanged(SelectionChangedEvent event) {
+	private final ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener() {
+		public void selectionChanged(final SelectionChangedEvent event) {
 			if (isDirty() != wasDirty) {
-				firePropertyChange(EditorPart.PROP_DIRTY);
+				firePropertyChange(IEditorPart.PROP_DIRTY);
 				wasDirty = isDirty();
 			}
 			setStatus(getLocation());
-			
+
 			// update dynamic UI element labels
-			IEditorSite editorSite = VexEditor.this.getEditorSite();
-			IWorkbenchWindow window = editorSite.getWorkbenchWindow();
+			final IEditorSite editorSite = VexEditor.this.getEditorSite();
+			final IWorkbenchWindow window = editorSite.getWorkbenchWindow();
 			if (window instanceof IServiceLocator) {
-				IServiceLocator serviceLocator = (IServiceLocator) window;
-				ICommandService commandService = (ICommandService)serviceLocator.getService(ICommandService.class);
+				final IServiceLocator serviceLocator = window;
+				final ICommandService commandService = (ICommandService) serviceLocator.getService(ICommandService.class);
 				commandService.refreshElements(ConvertElementHandler.COMMAND_ID, null);
 				commandService.refreshElements(RemoveTagHandler.COMMAND_ID, null);
 			}
-			
+
 			// update context service
-			ISourceProviderService service = (ISourceProviderService) window.getService(ISourceProviderService.class);
-			DocumentContextSourceProvider contextProvider =
-				(DocumentContextSourceProvider) service.getSourceProvider(DocumentContextSourceProvider.IS_COLUMN);
+			final ISourceProviderService service = (ISourceProviderService) window.getService(ISourceProviderService.class);
+			final DocumentContextSourceProvider contextProvider = (DocumentContextSourceProvider) service
+					.getSourceProvider(DocumentContextSourceProvider.IS_COLUMN);
 			contextProvider.fireUpdate(vexWidget);
 		}
 	};
 
-	private EntityResolver entityResolver = new EntityResolver() {
-		public InputSource resolveEntity(String publicId, String systemId)
-				throws SAXException, IOException {
+	private final EntityResolver entityResolver = new EntityResolver() {
+		public InputSource resolveEntity(final String publicId, final String systemId) throws SAXException, IOException {
 
 			// System.out.println("### Resolving publicId " + publicId +
 			// ", systemId " + systemId);
@@ -799,57 +724,48 @@ public class VexEditor extends EditorPart {
 				// If doctype hasn't already been set, this must be the doctype
 				// decl.
 				//
-				if (publicId != null) {
+				if (publicId != null)
 					doctype = ConfigurationRegistry.INSTANCE.getDocumentType(publicId);
-				}
 
 				if (doctype == null) {
-					DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog
-							.create(getSite().getShell(), publicId);
+					final DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog.create(getSite().getShell(), publicId);
 					dlg.open();
 					doctype = dlg.getDoctype();
 					updateDoctypeDecl = dlg.alwaysUseThisDoctype();
 
-					if (doctype == null) {
+					if (doctype == null)
 						throw new NoRegisteredDoctypeException(publicId);
-					}
 				}
 
-				URL url = doctype.getResourceUrl();
+				final URL url = doctype.getResourceUrl();
 
 				if (url == null) {
-					String message = MessageFormat.format(Messages
-							.getString("VexEditor.noUrlForDoctype"), //$NON-NLS-1$
+					final String message = MessageFormat.format(Messages.getString("VexEditor.noUrlForDoctype"), //$NON-NLS-1$
 							new Object[] { publicId });
 					throw new RuntimeException(message);
 				}
 
 				return new InputSource(url.toString());
-			} else {
+			} else
 				return null;
-			}
 		}
 	};
 
-	private IWhitespacePolicyFactory wsFactory = new IWhitespacePolicyFactory() {
-		public IWhitespacePolicy getPolicy(String publicId) {
-
+	private final IWhitespacePolicyFactory wsFactory = new IWhitespacePolicyFactory() {
+		public IWhitespacePolicy getPolicy(final String publicId) {
 			if (doctype == null) {
-				DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog
-						.create(getSite().getShell(), publicId);
+				final DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog.create(getSite().getShell(), publicId);
 				dlg.open();
 				doctype = dlg.getDoctype();
 				updateDoctypeDecl = dlg.alwaysUseThisDoctype();
 
-				if (doctype == null) {
+				if (doctype == null)
 					throw new NoRegisteredDoctypeException(null);
-				}
 			}
 
-			style = VexEditor.findStyleForDoctype(doctype.getPublicId());
-			if (style == null) {
+			style = VexEditor.getPreferredStyle(doctype.getPublicId());
+			if (style == null)
 				throw new NoStyleForDoctypeException();
-			}
 
 			return new CssWhitespacePolicy(style.getStyleSheet());
 		}
@@ -858,25 +774,22 @@ public class VexEditor extends EditorPart {
 
 	private class ResourceChangeListener implements IResourceChangeListener {
 
-		public void resourceChanged(IResourceChangeEvent event) {
+		public void resourceChanged(final IResourceChangeEvent event) {
 
-			if (this.saving) {
+			if (saving)
 				return;
-			}
 
-			IPath path = ((IFileEditorInput) getEditorInput()).getFile()
-					.getFullPath();
+			final IPath path = ((IFileEditorInput) getEditorInput()).getFile().getFullPath();
 			final IResourceDelta delta = event.getDelta().findMember(path);
-			if (delta != null) {
+			if (delta != null)
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						handleResourceChanged(delta);
 					}
 				});
-			}
 		}
 
-		public void setSaving(boolean saving) {
+		public void setSaving(final boolean saving) {
 			this.saving = saving;
 		}
 
@@ -884,7 +797,7 @@ public class VexEditor extends EditorPart {
 		private boolean saving;
 	};
 
-	private ResourceChangeListener resourceChangeListener = new ResourceChangeListener();
+	private final ResourceChangeListener resourceChangeListener = new ResourceChangeListener();
 
 	//
 	// wsFactory communicates failures back to init() through the XML parser
@@ -897,86 +810,89 @@ public class VexEditor extends EditorPart {
 	 * which case publicId is null.
 	 */
 	private static class NoRegisteredDoctypeException extends RuntimeException {
-		public NoRegisteredDoctypeException(String publicId) {
+		private static final long serialVersionUID = 1L;
+
+		public NoRegisteredDoctypeException(final String publicId) {
 			this.publicId = publicId;
 		}
 
 		public String getPublicId() {
-			return this.publicId;
+			return publicId;
 		}
 
-		private String publicId;
+		private final String publicId;
 	}
 
 	/**
 	 * Indicates that the document was matched to a registered doctype, but that
 	 * the given doctype does not have a matching style.
 	 */
-	private static class NoStyleForDoctypeException extends RuntimeException {}
+	private static class NoStyleForDoctypeException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+	}
 
 	private String getLocation() {
-		List<String> path = new ArrayList<String>();
-		VEXElement element = this.vexWidget.getCurrentElement();
+		final List<String> path = new ArrayList<String>();
+		VEXElement element = vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
 			element = element.getParent();
 		}
 		Collections.reverse(path);
-		StringBuffer sb = new StringBuffer(path.size() * 15);
-		for (String part : path) {
+		final StringBuffer sb = new StringBuffer(path.size() * 15);
+		for (final String part : path) {
 			sb.append("/"); //$NON-NLS-1$
 			sb.append(part);
 		}
 		return sb.toString();
 	}
 
-	public Object getAdapter(Class adapter) {
+	@Override
+	public Object getAdapter(final Class adapter) {
 
-		if (adapter == IContentOutlinePage.class) {
-
+		if (adapter == IContentOutlinePage.class)
 			return new DocumentOutlinePage();
+		else if (adapter == IPropertySheetPage.class) {
 
-		} else if (adapter == IPropertySheetPage.class) {
-
-			PropertySheetPage page = new PropertySheetPage();
+			final PropertySheetPage page = new PropertySheetPage();
 			page.setPropertySourceProvider(new IPropertySourceProvider() {
-				public IPropertySource getPropertySource(Object object) {
+				public IPropertySource getPropertySource(final Object object) {
 					if (object instanceof Element) {
-						IStructuredSelection sel = (IStructuredSelection) vexWidget
-								.getSelection();
-						boolean multi = (sel != null && sel.size() > 1);
-						Validator validator = vexWidget.getDocument()
-								.getValidator();
-						return new ElementPropertySource((VEXElement) object,
-								validator, multi);
-					} else {
+						final IStructuredSelection sel = (IStructuredSelection) vexWidget.getSelection();
+						final boolean multi = sel != null && sel.size() > 1;
+						final Validator validator = vexWidget.getDocument().getValidator();
+						return new ElementPropertySource((VEXElement) object, validator, multi);
+					} else
 						return null;
-					}
 				}
 			});
 			return page;
 
-		} else if (adapter == IFindReplaceTarget.class) {
-
+		} else if (adapter == IFindReplaceTarget.class)
 			return new AbstractRegExFindReplaceTarget() {
 
+				@Override
 				protected int getSelectionStart() {
 					return getVexWidget().getSelectionStart();
 				}
 
+				@Override
 				protected int getSelectionEnd() {
 					return getVexWidget().getSelectionEnd();
 				}
 
-				protected void setSelection(int start, int end) {
+				@Override
+				protected void setSelection(final int start, final int end) {
 					getVexWidget().moveTo(start);
 					getVexWidget().moveTo(end, true);
 				}
 
+				@Override
 				protected CharSequence getDocument() {
 					return new CharSequence() {
 
-						public CharSequence subSequence(int start, int end) {
+						public CharSequence subSequence(final int start, final int end) {
 							return doc.getRawText(start, end);
 						}
 
@@ -984,14 +900,15 @@ public class VexEditor extends EditorPart {
 							return doc.getLength();
 						}
 
-						public char charAt(int index) {
+						public char charAt(final int index) {
 							return doc.getCharacterAt(index);
 						}
 					};
 				}
 
-				protected void inDocumentReplaceSelection(CharSequence text) {
-					VexWidget vexWidget = getVexWidget();
+				@Override
+				protected void inDocumentReplaceSelection(final CharSequence text) {
+					final VexWidget vexWidget = getVexWidget();
 
 					// because of Undo this action must be atomic
 					vexWidget.beginWork();
@@ -1004,10 +921,8 @@ public class VexEditor extends EditorPart {
 				}
 
 			};
-
-		} else {
+		else
 			return super.getAdapter(adapter);
-		}
 	}
 
 }

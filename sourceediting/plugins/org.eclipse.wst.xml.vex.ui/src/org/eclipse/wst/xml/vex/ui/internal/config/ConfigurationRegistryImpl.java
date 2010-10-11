@@ -197,7 +197,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 			else
 				try {
 					loaderJob.join();
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					Thread.currentThread().interrupt();
 				}
 	}
@@ -297,12 +297,16 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	// new interface
-	
+
 	/**
-	 * The document type configuration for the given public identifier, of null if there is no configuration for the given public identifier.
+	 * The document type configuration for the given public identifier, of null
+	 * if there is no configuration for the given public identifier.
 	 * 
-	 * @param publicId the public identifier
-	 * @return the document type configuration for the given public identifier, of null if there is no configuration for the given public identifier.
+	 * @param publicId
+	 *            the public identifier
+	 * @return the document type configuration for the given public identifier,
+	 *         of null if there is no configuration for the given public
+	 *         identifier.
 	 */
 	public DocumentType getDocumentType(final String publicId) {
 		final List<ConfigItem> configItems = getAllConfigItems(DocumentType.EXTENSION_POINT);
@@ -313,22 +317,54 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Return a list of document types for which there is at least one registered style.
+	 * Return a list of document types for which there is at least one
+	 * registered style.
 	 * 
-	 * @return a list of document types for which there is at least one registered style.
+	 * @return a list of document types for which there is at least one
+	 *         registered style.
 	 */
 	public DocumentType[] getDocumentTypesWithStyles() {
 		final List<DocumentType> result = new ArrayList<DocumentType>();
 		for (final ConfigItem configItem : getAllConfigItems(DocumentType.EXTENSION_POINT)) {
 			final DocumentType doctype = (DocumentType) configItem;
-			if (VexEditor.findStyleForDoctype(doctype.getPublicId()) != null)
+			if (getStyles(doctype.getPublicId()).length > 0)
 				result.add(doctype);
 		}
 		return result.toArray(new DocumentType[result.size()]);
 	}
+
+	public Style[] getStyles(final String publicId) {
+		final ArrayList<Style> result = new ArrayList<Style>();
+		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
+			final Style style = (Style) configItem;
+			if (style.appliesTo(publicId))
+				result.add(style);
+		}
+		return result.toArray(new Style[result.size()]);
+	}
+
+	public Style getStyle(final String styleId) {
+		for (final ConfigItem configItem : ConfigurationRegistry.INSTANCE.getAllConfigItems(Style.EXTENSION_POINT)) {
+			final Style style = (Style) configItem;
+			if (style.getUniqueId().equals(styleId))
+				return style;
+		}
+		return null;
+	}
 	
+	public Style getStyle(final String publicId, final String preferredStyleId) {
+		final Style[] styles = getStyles(publicId);
+		if (styles.length == 0)
+			return null;
+		if (preferredStyleId != null)
+			for (final Style style : styles)
+				if (style.getUniqueId().equals(preferredStyleId))
+					return style;
+		return styles[0];
+	}
+
 	// ======================================================== PRIVATE
 
 	private final ILock lock = Job.getJobManager().newLock();

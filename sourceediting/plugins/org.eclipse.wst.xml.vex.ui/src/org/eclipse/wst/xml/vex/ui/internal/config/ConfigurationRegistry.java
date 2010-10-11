@@ -60,4 +60,10 @@ public interface ConfigurationRegistry {
 	DocumentType getDocumentType(final String publicId);
 	
 	DocumentType[] getDocumentTypesWithStyles();
+	
+	Style[] getStyles(final String publicId);
+	
+	Style getStyle(final String styleId);
+	
+	Style getStyle(final String publicId, final String preferredStyleId);
 }

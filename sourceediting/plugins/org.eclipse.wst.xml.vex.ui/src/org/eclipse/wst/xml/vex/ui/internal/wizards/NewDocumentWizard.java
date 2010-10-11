@@ -68,7 +68,7 @@ public class NewDocumentWizard extends BasicNewResourceWizard {
 			doc.setPublicID(this.typePage.getDocumentType().getPublicId());
 			doc.setSystemID(this.typePage.getDocumentType().getSystemId());
 
-			Style style = VexEditor.findStyleForDoctype(doc.getPublicID());
+			Style style = VexEditor.getPreferredStyle(doc.getPublicID());
 			if (style == null) {
 				MessageDialog
 						.openError(
