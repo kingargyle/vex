@@ -12,33 +12,17 @@ package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 /**
  * @author Florian Thienel
  */
 public interface ConfigurationRegistry {
 
 	ConfigurationRegistry INSTANCE = new ConfigurationRegistryImpl();
-
-	void dispose();
 	
 	void clear();
 
-	boolean isLoaded();
-	
-	/**
-	 * Loads the configurations with a background job. Listeners are notified when all configurations are loaded.
-	 */
-	void loadConfigurations();
-
-	/**
-	 * Returns all ConfigSources that were loaded. 
-	 * If the loading was not yet triggered by a call to loadConfigurations, an IllegalStateException is thrown.
-	 * If the loading is not yet finished, this method waits until the loading is finished and returns the loaded ConfigSources.
-	 * 
-	 * @throws IllegalStateException if loadConfigurations was not called yet
-	 */
-	List<ConfigSource> getAllConfigSources();
-	
 	IConfigItemFactory getConfigItemFactory(String extensionPointId);
 
 	IConfigItemFactory[] getAllConfigItemFactories();
@@ -47,15 +31,20 @@ public interface ConfigurationRegistry {
 	
 	List<ConfigItem> getAllConfigItems(String extensionPointId);
 
-	void addConfigListener(IConfigListener listener);
-
-	void removeConfigListener(IConfigListener listener);
-	
 	void fireConfigChanged(final ConfigEvent e);
 	
 	void fireConfigLoaded(final ConfigEvent e);
 	
 	// new interface
+	
+	void dispose();
+	
+	/**
+	 * Loads the configurations with a background job. Listeners are notified when all configurations are loaded.
+	 */
+	void loadConfigurations();
+	
+	boolean isLoaded();
 	
 	DocumentType getDocumentType(final String publicId);
 	
@@ -66,4 +55,11 @@ public interface ConfigurationRegistry {
 	Style getStyle(final String styleId);
 	
 	Style getStyle(final String publicId, final String preferredStyleId);
+	
+	PluginProject getPluginProject(final IProject project);
+
+	void addConfigListener(IConfigListener listener);
+
+	void removeConfigListener(IConfigListener listener);
+	
 }

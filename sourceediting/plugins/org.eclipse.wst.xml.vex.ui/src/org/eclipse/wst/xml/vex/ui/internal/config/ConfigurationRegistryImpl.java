@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * Singleton registry of configuration sources and listeners.
@@ -164,22 +163,17 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	public List<ConfigItem> getAllConfigItems(final String extensionPointId) {
 		try {
 			lock();
-			final List<ConfigItem> items = new ArrayList<ConfigItem>();
+			final List<ConfigItem> result = new ArrayList<ConfigItem>();
 			for (final ConfigSource config : configs.values())
-				items.addAll(config.getValidItems(extensionPointId));
-			return items;
+				result.addAll(config.getValidItems(extensionPointId));
+			return result;
 		} finally {
 			unlock();
 		}
 	}
 
-	/**
-	 * Returns a list of all registered ConfigSource objects.
-	 * 
-	 * @return
-	 */
-	public List<ConfigSource> getAllConfigSources() {
-		checkLoaded();
+	private List<ConfigSource> getAllConfigSources() {
+		waitUntilLoaded();
 		try {
 			lock();
 			final List<ConfigSource> result = new ArrayList<ConfigSource>();
@@ -190,7 +184,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 	}
 
-	private void checkLoaded() {
+	private void waitUntilLoaded() {
 		if (!loaded)
 			if (loaderJob == null)
 				throw new IllegalStateException("The configurations are not loaded yet. Call 'loadConfigurations' first.");
@@ -353,7 +347,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 		return null;
 	}
-	
+
 	public Style getStyle(final String publicId, final String preferredStyleId) {
 		final Style[] styles = getStyles(publicId);
 		if (styles.length == 0)
@@ -363,6 +357,26 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 				if (style.getUniqueId().equals(preferredStyleId))
 					return style;
 		return styles[0];
+	}
+
+	/**
+	 * Factory method that returns the plugin project for the given IProject. If
+	 * the given project does not have the Vex plugin project nature, null is
+	 * returned. PluginProject instances are cached so they can be efficiently
+	 * returned.
+	 * 
+	 * @param project
+	 *            IProject for which to return the PluginProject.
+	 * @return the corresponding PluginProject
+	 */
+	public PluginProject getPluginProject(final IProject project) {
+		for (final ConfigSource source : getAllConfigSources())
+			if (source instanceof PluginProject) {
+				final PluginProject pluginProject = (PluginProject) source;
+				if (project.equals(pluginProject.getProject()))
+					return pluginProject;
+			}
+		return null;
 	}
 
 	// ======================================================== PRIVATE
@@ -379,10 +393,10 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 			// + ", resource is " + event.getResource());
 
 			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
-				final PluginProject pp = PluginProject.get((IProject) event.getResource());
-				if (pp != null) {
+				final PluginProject pluginProject = getPluginProject((IProject) event.getResource());
+				if (pluginProject != null) {
 					// System.out.println("  removing project from config registry");
-					removeConfigSource(pp);
+					removeConfigSource(pluginProject);
 					fireConfigChanged(new ConfigEvent(this));
 				}
 			} else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
@@ -394,7 +408,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 						// System.out.println("Project " + project.getName() +
 						// " changed, isOpen is " + project.isOpen());
 
-						final PluginProject pluginProject = PluginProject.get(project);
+						final PluginProject pluginProject = getPluginProject(project);
 
 						boolean hasPluginProjectNature = false;
 						try {

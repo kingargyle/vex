@@ -40,7 +40,7 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 		final IProject project = getProject();
 
-		final PluginProject pluginProject = PluginProject.get(project);
+		final PluginProject pluginProject = ConfigurationRegistry.INSTANCE.getPluginProject(project);
 
 		if (pluginProject == null) {
 			final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.notConfigSource"), //$NON-NLS-1$
@@ -172,7 +172,7 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 		final ConfigurationRegistryImpl registry = (ConfigurationRegistryImpl) ConfigurationRegistry.INSTANCE;
 		try {
 			registry.lock();
-			final PluginProject pluginProject = PluginProject.get(getProject());
+			final PluginProject pluginProject = ConfigurationRegistry.INSTANCE.getPluginProject(getProject());
 			if (pluginProject != null) {
 				pluginProject.removeAllItems();
 				pluginProject.removeAllResources();

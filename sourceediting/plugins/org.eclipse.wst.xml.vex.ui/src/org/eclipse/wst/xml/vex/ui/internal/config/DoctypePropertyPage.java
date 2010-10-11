@@ -184,7 +184,7 @@ public class DoctypePropertyPage extends PropertyPage {
 	 */
 	public PluginProject getPluginProject() {
 		IFile file = (IFile) this.getElement();
-		return PluginProject.get(file.getProject());
+		return ConfigurationRegistry.INSTANCE.getPluginProject(file.getProject());
 	}
 
 	public boolean performOk() {

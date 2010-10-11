@@ -61,27 +61,6 @@ public class PluginProject extends ConfigSource {
 		projectPath = project.getFullPath().toString();
 	}
 
-	/**
-	 * Factory method that returns the plugin project for the given IProject. If
-	 * the given project does not have the Vex plugin project nature, null is
-	 * returned. PluginProject instances are cached so they can be efficiently
-	 * returned.
-	 * 
-	 * @param project
-	 *            IProject for which to return the PluginProject.
-	 * @return
-	 * @throws CoreException
-	 */
-	public static PluginProject get(final IProject project) {
-		for (final ConfigSource source : ConfigurationRegistry.INSTANCE.getAllConfigSources())
-			if (source instanceof PluginProject) {
-				final PluginProject pluginProject = (PluginProject) source;
-				if (project.equals(pluginProject.getProject()))
-					return pluginProject;
-			}
-		return null;
-	}
-
 	@Override
 	public URL getBaseUrl() {
 		try {

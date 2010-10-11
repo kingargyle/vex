@@ -40,23 +40,6 @@ public class ConfigurationRegistryTest {
 		assertFalse(registry.isLoaded());
 	}
 
-	@Test(expected = IllegalStateException.class)
-	public void cannotGetConfigSourcesWhenNotYetLoaded() throws Exception {
-		registry = new ConfigurationRegistryImpl();
-		registry.getAllConfigSources().isEmpty();
-	}
-
-	@Test
-	public void loadConfigurations() throws Exception {
-		registry = new ConfigurationRegistryImpl();
-		MockConfigListener listener = new MockConfigListener();
-		registry.addConfigListener(listener);
-		registry.loadConfigurations();
-		assertFalse(listener.loaded);
-		assertFalse(registry.getAllConfigSources().isEmpty());
-		assertTrue(listener.loaded);
-	}
-
 	private static class MockConfigListener implements IConfigListener {
 		public boolean changed = false;
 		public boolean loaded = false;
