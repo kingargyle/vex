@@ -174,9 +174,11 @@ public class PluginProject extends ConfigSource {
 			extElement.setAttribute("id", item.getSimpleId()); //$NON-NLS-1$
 			extElement.setAttribute("name", item.getName()); //$NON-NLS-1$
 			extElement.setAttribute("point", item.getExtensionPointId()); //$NON-NLS-1$
-			final IConfigItemFactory factory = ConfigurationRegistry.INSTANCE.getConfigItemFactory(item.getExtensionPointId());
-			extElement.setChildren(factory.createConfigurationElements(item));
-			root.addChild(extElement);
+			final IConfigItemFactory factory = getConfigItemFactory(item.getExtensionPointId());
+			if (factory != null) {
+				extElement.setChildren(factory.createConfigurationElements(item));
+				root.addChild(extElement);
+			}
 		}
 		writeElement(root, out, 0);
 

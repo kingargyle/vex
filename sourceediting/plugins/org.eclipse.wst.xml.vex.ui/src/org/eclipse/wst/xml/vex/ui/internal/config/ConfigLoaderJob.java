@@ -69,9 +69,9 @@ public class ConfigLoaderJob extends Job {
 			final String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
 			monitor.subTask(Messages.getString("ConfigLoaderJob.loading") + name); //$NON-NLS-1$
 
-			final ConfigSource source = ConfigPlugin.load(namespace);
-			if (source != null)
-				result.add(source);
+			final ConfigPlugin configPlugin = new ConfigPlugin(namespace);
+			if (!configPlugin.isEmpty())
+				result.add(configPlugin);
 			monitor.worked(1);
 		}
 		return result;

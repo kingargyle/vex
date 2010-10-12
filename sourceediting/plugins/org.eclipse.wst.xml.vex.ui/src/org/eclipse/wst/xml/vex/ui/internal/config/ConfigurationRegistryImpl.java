@@ -60,8 +60,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	private volatile boolean loaded = false;
 
 	public ConfigurationRegistryImpl() {
-		configItemFactories.add(new DoctypeFactory());
-		configItemFactories.add(new StyleFactory());
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 	}
 
@@ -78,9 +76,9 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 				public void done(final IJobChangeEvent event) {
 					lock();
 					try {
-						configs = new HashMap<String, ConfigSource>();
+						configurationSources = new HashMap<String, ConfigSource>();
 						for (final ConfigSource configSource : loaderJob.getAllConfigSources())
-							configs.put(configSource.getUniqueIdentifer(), configSource);
+							configurationSources.put(configSource.getUniqueIdentifer(), configSource);
 						loaded = true;
 						loaderJob = null;
 					} finally {
@@ -95,56 +93,13 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 	}
 
-	/**
-	 * Add a ConfigSource to the list of configurations.
-	 * 
-	 * @param config
-	 *            ConfigSource to be added.
-	 */
-	public void addConfigSource(final ConfigSource config) {
-		try {
-			lock();
-			configs.put(config.getUniqueIdentifer(), config);
-		} finally {
-			unlock();
-		}
-	}
-
-	/**
-	 * Call the configChanged method on all registered ConfigChangeListeners.
-	 * 
-	 * @param e
-	 *            ConfigEvent to be fired.
-	 */
-	public void fireConfigChanged(final ConfigEvent e) {
-		configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
-	}
-
-	/**
-	 * Call the configLoaded method on all registered ConfigChangeListeners.
-	 * This method is called from the ConfigLoaderJob
-	 * thread.
-	 * 
-	 * @param e
-	 *            ConfigEvent to be fired.
-	 */
-	public void fireConfigLoaded(final ConfigEvent e) {
-		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
-	}
-
-	/**
-	 * Returns an array of all registered ConfigItem objects implementing the
-	 * given extension point.
-	 * 
-	 * @param extensionPointId
-	 *            ID of the desired extension point.
-	 */
 	private List<ConfigItem> getAllConfigItems(final String extensionPointId) {
+		waitUntilLoaded();
+		lock();
 		try {
-			lock();
 			final List<ConfigItem> result = new ArrayList<ConfigItem>();
-			for (final ConfigSource config : configs.values())
-				result.addAll(config.getValidItems(extensionPointId));
+			for (final ConfigSource configurationSource : configurationSources.values())
+				result.addAll(configurationSource.getValidItems(extensionPointId));
 			return result;
 		} finally {
 			unlock();
@@ -153,14 +108,38 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	private List<ConfigSource> getAllConfigSources() {
 		waitUntilLoaded();
+		lock();
 		try {
-			lock();
 			final List<ConfigSource> result = new ArrayList<ConfigSource>();
-			result.addAll(configs.values());
+			result.addAll(configurationSources.values());
 			return result;
 		} finally {
 			unlock();
 		}
+	}
+
+	private void removeConfigSource(final ConfigSource config) {
+		waitUntilLoaded();
+		lock();
+		try {
+			configurationSources.remove(config);
+		} finally {
+			unlock();
+		}
+	}
+	
+	/**
+	 * Locks the registry for modification or iteration over its config sources.
+	 */
+	public void lock() {
+		lock.acquire();
+	}
+
+	/**
+	 * Unlocks the registry.
+	 */
+	public void unlock() {
+		lock.release();
 	}
 
 	private void waitUntilLoaded() {
@@ -176,41 +155,12 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	/**
-	 * Returns the IConfigItemFactory object for the given extension point or
-	 * null if none exists.
-	 * 
-	 * @param extensionPointId
-	 *            Extension point ID for which to search.
-	 */
-	public IConfigItemFactory getConfigItemFactory(final String extensionPointId) {
-		for (final IConfigItemFactory factory : configItemFactories)
-			if (factory.getExtensionPointId().equals(extensionPointId))
-				return factory;
-		return null;
-	}
-
-	/**
 	 * Returns true if the Vex configuration has been loaded.
 	 * 
 	 * @see org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob
 	 */
 	public boolean isLoaded() {
 		return loaded;
-	}
-
-	/**
-	 * Remove a VexConfiguration from the list of configs.
-	 * 
-	 * @param config
-	 *            VexConfiguration to remove.
-	 */
-	public void removeConfigSource(final ConfigSource config) {
-		try {
-			lock();
-			configs.remove(config);
-		} finally {
-			unlock();
-		}
 	}
 
 	/**
@@ -234,17 +184,25 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	/**
-	 * Locks the registry for modification or iteration over its config sources.
+	 * Call the configChanged method on all registered ConfigChangeListeners.
+	 * 
+	 * @param e
+	 *            ConfigEvent to be fired.
 	 */
-	public void lock() {
-		lock.acquire();
+	public void fireConfigChanged(final ConfigEvent e) {
+		configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
 	}
 
 	/**
-	 * Unlocks the registry.
+	 * Call the configLoaded method on all registered ConfigChangeListeners.
+	 * This method is called from the ConfigLoaderJob
+	 * thread.
+	 * 
+	 * @param e
+	 *            ConfigEvent to be fired.
 	 */
-	public void unlock() {
-		lock.release();
+	public void fireConfigLoaded(final ConfigEvent e) {
+		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
 	}
 
 	// new interface
@@ -346,9 +304,8 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	// ======================================================== PRIVATE
 
 	private final ILock lock = Job.getJobManager().newLock();
-	private Map<String, ConfigSource> configs = new HashMap<String, ConfigSource>();
+	private Map<String, ConfigSource> configurationSources = new HashMap<String, ConfigSource>();
 	private final ListenerList<IConfigListener, ConfigEvent> configListeners = new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
-	private final List<IConfigItemFactory> configItemFactories = new ArrayList<IConfigItemFactory>();
 
 	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
 		public void resourceChanged(final IResourceChangeEvent event) {

@@ -34,14 +34,33 @@ public abstract class ConfigSource implements Serializable {
 
 	private static final long serialVersionUID = -3438659781471827569L;
 
+	private static final IConfigItemFactory[] CONFIG_ITEM_FACTORIES = new IConfigItemFactory[] { new DoctypeFactory(), new StyleFactory() };
+
+	// Globally-unique identifier of this configuration
+	// == the plugin id.
+	private String id;
+
+	// all config items in this configuration
+	private final List<ConfigItem> items = new ArrayList<ConfigItem>();
+
+	// map String URI => parsed resource
+	private final Map<String, Object> parsedResources = new HashMap<String, Object>();
+
+	protected static IConfigItemFactory getConfigItemFactory(final String extensionPointId) {
+		for (final IConfigItemFactory factory : CONFIG_ITEM_FACTORIES)
+			if (factory.getExtensionPointId().equals(extensionPointId))
+				return factory;
+		return null;
+	}
+
 	/**
 	 * Adds the given item to the configuration.
 	 * 
 	 * @param item
 	 *            ConfigItem to be added.
 	 */
-	public void addItem(ConfigItem item) {
-		this.items.add(item);
+	public void addItem(final ConfigItem item) {
+		items.add(item);
 	}
 
 	/**
@@ -62,20 +81,16 @@ public abstract class ConfigSource implements Serializable {
 	 *         recognized.
 	 * @throws IOException
 	 */
-	public ConfigItem addItem(String extensionPoint, String simpleIdentifier,
-			String name, IConfigElement[] configElements) throws IOException {
-
-		IConfigItemFactory factory = ConfigurationRegistry.INSTANCE
-				.getConfigItemFactory(extensionPoint);
-		if (factory != null) {
-			ConfigItem item = factory.createItem(this, configElements);
-			item.setSimpleId(simpleIdentifier);
-			item.setName(name);
-			this.addItem(item);
-			return item;
-		} else {
+	protected ConfigItem addItem(final String extensionPoint, final String simpleIdentifier, final String name, final IConfigElement[] configElements)
+			throws IOException {
+		final IConfigItemFactory factory = getConfigItemFactory(extensionPoint);
+		if (factory == null)
 			return null;
-		}
+		final ConfigItem item = factory.createItem(this, configElements);
+		item.setSimpleId(simpleIdentifier);
+		item.setName(name);
+		this.addItem(item);
+		return item;
 
 	}
 
@@ -85,7 +100,7 @@ public abstract class ConfigSource implements Serializable {
 	 * @param item
 	 *            ConfigItem to be removed.
 	 */
-	public void remove(ConfigItem item) {
+	public void remove(final ConfigItem item) {
 		items.remove(item);
 	}
 
@@ -93,14 +108,14 @@ public abstract class ConfigSource implements Serializable {
 	 * Remove all items from this configuration.
 	 */
 	public void removeAllItems() {
-		this.items.clear();
+		items.clear();
 	}
 
 	/**
 	 * Remove all parsed resources from this configuration.
 	 */
 	public void removeAllResources() {
-		this.parsedResources.clear();
+		parsedResources.clear();
 	}
 
 	/**
@@ -122,8 +137,8 @@ public abstract class ConfigSource implements Serializable {
 	 * @param uri
 	 *            Relative URI of the resource to remove.
 	 */
-	public void removeResource(String uri) {
-		this.parsedResources.remove(uri); // TODO Respect secondary resources
+	public void removeResource(final String uri) {
+		parsedResources.remove(uri); // TODO Respect secondary resources
 	}
 
 	/**
@@ -131,23 +146,6 @@ public abstract class ConfigSource implements Serializable {
 	 */
 	public List<ConfigItem> getAllItems() {
 		return items;
-	}
-
-	/**
-	 * Returns all ConfigItems of the given type registered with this
-	 * configuration.
-	 * 
-	 * @param type
-	 *            The type of ConfigItem to return.
-	 */
-	public Collection<ConfigItem> getAllItems(String type) {
-		List<ConfigItem> selectedItems = new ArrayList<ConfigItem>();
-		for (ConfigItem item : this.items) {
-			if (item.getExtensionPointId().equals(type)) {
-				selectedItems.add(item);
-			}
-		}
-		return selectedItems;
 	}
 
 	/**
@@ -163,13 +161,10 @@ public abstract class ConfigSource implements Serializable {
 	 * @param simpleId
 	 *            Simple ID of the item to return.
 	 */
-	public ConfigItem getItem(String simpleId) {
-		for (ConfigItem item : this.items) {
-			if (item.getSimpleId() != null
-					&& item.getSimpleId().equals(simpleId)) {
+	public ConfigItem getItem(final String simpleId) {
+		for (final ConfigItem item : items)
+			if (item.getSimpleId() != null && item.getSimpleId().equals(simpleId))
 				return item;
-			}
-		}
 		return null;
 	}
 
@@ -180,12 +175,10 @@ public abstract class ConfigSource implements Serializable {
 	 * @param resourcePath
 	 *            Path of the resource.
 	 */
-	public ConfigItem getItemForResource(String resourcePath) {
-		for (ConfigItem item : this.items) {
-			if (item.getResourcePath().equals(resourcePath)) {
+	public ConfigItem getItemForResource(final String resourcePath) {
+		for (final ConfigItem item : items)
+			if (item.getResourcePath().equals(resourcePath))
 				return item;
-			}
-		}
 		return null;
 	}
 
@@ -197,8 +190,8 @@ public abstract class ConfigSource implements Serializable {
 	 *            URI of the resource, relative to the base URL of this
 	 *            configuration.
 	 */
-	public Object getParsedResource(String uri) {
-		return this.parsedResources.get(uri);
+	public Object getParsedResource(final String uri) {
+		return parsedResources.get(uri);
 	}
 
 	/**
@@ -206,57 +199,7 @@ public abstract class ConfigSource implements Serializable {
 	 * the ID of the plugin that defines the configuration.
 	 */
 	public String getUniqueIdentifer() {
-		return this.id;
-	}
-
-	/**
-	 * Returns all ConfigItems of the given type for which isValid returns true.
-	 * 
-	 * @param type
-	 *            The type of ConfigItem to return.
-	 */
-	public Collection<ConfigItem> getValidItems(String type) {
-		List<ConfigItem> validItems = new ArrayList<ConfigItem>();
-		for (ConfigItem item : this.getAllItems(type)) {
-			if (item.isValid()) {
-				validItems.add(item);
-			}
-		}
-		return validItems;
-	}
-
-	/**
-	 * Returns true if there are no items in this configuration.
-	 */
-	public boolean isEmpty() {
-		return this.items.isEmpty();
-	}
-
-	/**
-	 * Parses all resources required by the registered items.
-	 * 
-	 * @param problemHandler
-	 *            Handler for build problems. May be null.
-	 */
-	public void parseResources(IBuildProblemHandler problemHandler) {
-		for (ConfigItem item : this.items) {
-			String uri = item.getResourcePath();
-			if (!this.parsedResources.containsKey(uri)) {
-				IConfigItemFactory factory = ConfigurationRegistry.INSTANCE
-						.getConfigItemFactory(item.getExtensionPointId());
-				Object parsedResource;
-				try {
-					parsedResource = factory.parseResource(this.getBaseUrl(),
-							uri, problemHandler);
-					this.parsedResources.put(uri, parsedResource);
-				} catch (IOException ex) {
-					String message = MessageFormat.format(Messages
-							.getString("ConfigSource.errorParsingUri"),
-							new Object[] { uri });
-					VexPlugin.getInstance().log(IStatus.ERROR, message, ex); //$NON-NLS-1$
-				}
-			}
-		}
+		return id;
 	}
 
 	/**
@@ -265,20 +208,52 @@ public abstract class ConfigSource implements Serializable {
 	 * @param id
 	 *            New identifier for this configuration.
 	 */
-	public void setUniqueIdentifer(String id) {
+	protected void setUniqueIdentifer(final String id) {
 		this.id = id;
 	}
+	
+	/**
+	 * Returns all ConfigItems of the given type for which isValid returns true.
+	 * 
+	 * @param extensionPointId
+	 *            The type of ConfigItem to return.
+	 */
+	public Collection<ConfigItem> getValidItems(final String extensionPointId) {
+		final List<ConfigItem> result = new ArrayList<ConfigItem>();
+		for (final ConfigItem item : items)
+			if (item.getExtensionPointId().equals(extensionPointId) && item.isValid())
+				result.add(item);
+		return result;
+	}
 
-	// ==================================================== PRIVATE
+	/**
+	 * Returns true if there are no items in this configuration.
+	 */
+	public boolean isEmpty() {
+		return items.isEmpty();
+	}
 
-	// Globally-unique identifier of this configuration
-	// == the plugin id.
-	private String id;
-
-	// all config items in this configuration
-	private List<ConfigItem> items = new ArrayList<ConfigItem>();
-
-	// map String URI => parsed resource
-	private Map<String, Object> parsedResources = new HashMap<String, Object>();
+	/**
+	 * Parses all resources required by the registered items.
+	 * 
+	 * @param problemHandler
+	 *            Handler for build problems. May be null.
+	 */
+	public void parseResources(final IBuildProblemHandler problemHandler) {
+		parsedResources.clear();
+		for (final ConfigItem item : items) {
+			final String uri = item.getResourcePath();
+			if (!parsedResources.containsKey(uri)) {
+				final IConfigItemFactory factory = getConfigItemFactory(item.getExtensionPointId());
+				try {
+					final Object parsedResource = factory.parseResource(getBaseUrl(), uri, problemHandler);
+					parsedResources.put(uri, parsedResource);
+				} catch (final IOException ex) {
+					final String message = MessageFormat.format(Messages.getString("ConfigSource.errorParsingUri"), new Object[] { uri });
+					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
+				}
+			}
+		}
+	}
 
 }

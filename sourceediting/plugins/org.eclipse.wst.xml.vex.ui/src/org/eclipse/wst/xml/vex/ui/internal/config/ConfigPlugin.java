@@ -25,40 +25,35 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class ConfigPlugin extends ConfigSource {
 
-	protected ConfigPlugin(String namespace) {
-		this.namespace = namespace;
+	private String bundleSymbolicName;
+	
+	protected ConfigPlugin(String bundleSymbolicName) {
+		this.bundleSymbolicName = bundleSymbolicName;
+		setUniqueIdentifer(bundleSymbolicName);
+		load();
 	}
 
-	public static ConfigPlugin load(String namespace) {
-
-		ConfigPlugin configPlugin = new ConfigPlugin(namespace);
-		configPlugin.setUniqueIdentifer(namespace);
-
-		for (IExtension ext : Platform.getExtensionRegistry().getExtensions(namespace)) {
+	private void load() {
+		removeAllItems();
+		for (IExtension extension : Platform.getExtensionRegistry().getExtensions(bundleSymbolicName)) {
 			try {
-				configPlugin.addItem(ext.getExtensionPointUniqueIdentifier(),
-						ext.getSimpleIdentifier(), ext.getLabel(),
-						ConfigurationElementWrapper.convertArray(ext
+				addItem(extension.getExtensionPointUniqueIdentifier(),
+						extension.getSimpleIdentifier(), extension.getLabel(),
+						ConfigurationElementWrapper.convertArray(extension
 								.getConfigurationElements()));
 			} catch (IOException e) {
 				String message = MessageFormat.format(Messages
 						.getString("ConfigPlugin.loadError"), //$NON-NLS-1$
-						new Object[] { ext.getSimpleIdentifier(), namespace });
+						new Object[] { extension.getSimpleIdentifier(), bundleSymbolicName });
 				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
-				return null;
+				return;
 			}
 		}
-
-		configPlugin.parseResources(null);
-
-		return configPlugin.isEmpty() ? null : configPlugin;
+		parseResources(null);
 	}
-
+	
 	public URL getBaseUrl() {
-		return Platform.getBundle(namespace).getEntry("plugin.xml"); //$NON-NLS-1$
+		return Platform.getBundle(bundleSymbolicName).getEntry("plugin.xml"); //$NON-NLS-1$
 	}
 
-	// ======================================================= PRIVATE
-
-	private String namespace;
 }

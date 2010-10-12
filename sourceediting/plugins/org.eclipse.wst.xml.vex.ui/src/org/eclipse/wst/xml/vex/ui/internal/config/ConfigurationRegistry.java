@@ -19,8 +19,6 @@ public interface ConfigurationRegistry {
 
 	ConfigurationRegistry INSTANCE = new ConfigurationRegistryImpl();
 	
-	IConfigItemFactory getConfigItemFactory(String extensionPointId);
-
 	void fireConfigChanged(final ConfigEvent e);
 	
 	void fireConfigLoaded(final ConfigEvent e);
