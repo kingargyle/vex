@@ -22,10 +22,8 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 
@@ -56,10 +54,11 @@ import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
  */
 public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
-	private volatile ConfigLoaderJob loaderJob = null;
+	private final LoadConfiguration load;
 	private volatile boolean loaded = false;
 
-	public ConfigurationRegistryImpl() {
+	public ConfigurationRegistryImpl(LoadConfiguration load) {
+		this.load = load;
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 	}
 
@@ -70,24 +69,20 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	public void loadConfigurations() {
 		lock();
 		try {
-			loaderJob = new ConfigLoaderJob();
-			loaderJob.addJobChangeListener(new JobChangeAdapter() {
-				@Override
-				public void done(final IJobChangeEvent event) {
+			load.load(new Runnable() {
+				public void run() {
 					lock();
 					try {
 						configurationSources = new HashMap<String, ConfigSource>();
-						for (final ConfigSource configSource : loaderJob.getAllConfigSources())
+						for (final ConfigSource configSource : load.getLoadedConfigSources())
 							configurationSources.put(configSource.getUniqueIdentifer(), configSource);
 						loaded = true;
-						loaderJob = null;
 					} finally {
 						unlock();
 					}
 					fireConfigLoaded(new ConfigEvent(ConfigurationRegistryImpl.this));
 				}
 			});
-			loaderJob.schedule();
 		} finally {
 			unlock();
 		}
@@ -127,7 +122,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 			unlock();
 		}
 	}
-	
+
 	/**
 	 * Locks the registry for modification or iteration over its config sources.
 	 */
@@ -143,15 +138,15 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	private void waitUntilLoaded() {
-		if (!loaded)
-			if (loaderJob == null)
-				throw new IllegalStateException("The configurations are not loaded yet. Call 'loadConfigurations' first.");
-			else
-				try {
-					loaderJob.join();
-				} catch (final InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
+		if (loaded)
+			return;
+		if (!load.isLoading())
+			throw new IllegalStateException("The configurations are not loaded yet. Call 'loadConfigurations' first.");
+		try {
+			load.join();
+		} catch (final InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	/**

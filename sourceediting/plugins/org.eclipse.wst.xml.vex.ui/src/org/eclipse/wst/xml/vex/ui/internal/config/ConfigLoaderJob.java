@@ -26,7 +26,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -34,9 +36,9 @@ import org.osgi.framework.Constants;
 /**
  * Job that loads Vex configuration objects from plug-ins and plug-in projects.
  */
-public class ConfigLoaderJob extends Job {
+public class ConfigLoaderJob extends Job implements LoadConfiguration {
 
-	private List<ConfigSource> allConfigSources = Collections.<ConfigSource> emptyList();
+	private List<ConfigSource> loadedConfigSources = Collections.<ConfigSource> emptyList();
 
 	public ConfigLoaderJob() {
 		super(Messages.getString("ConfigLoaderJob.loadingConfig")); //$NON-NLS-1$
@@ -51,8 +53,9 @@ public class ConfigLoaderJob extends Job {
 		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 		result.addAll(loadPlugins(monitor));
 		result.addAll(loadPluginProjects(monitor));
-		allConfigSources = result;
-		// TODO ConfigRegistry.getInstance().fireConfigLoaded(new ConfigEvent(this));
+		synchronized (this) {
+			loadedConfigSources = result;
+		}
 		monitor.done();
 
 		return Status.OK_STATUS;
@@ -100,7 +103,22 @@ public class ConfigLoaderJob extends Job {
 		return result;
 	}
 
-	public List<ConfigSource> getAllConfigSources() {
-		return allConfigSources;
+	public synchronized List<ConfigSource> getLoadedConfigSources() {
+		return loadedConfigSources;
+	}
+	
+	public boolean isLoading() {
+		return getState() == Job.RUNNING;
+	}
+
+	public void load(final Runnable whenDone) {
+		addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				removeJobChangeListener(this);
+				whenDone.run();
+			}
+		});
+		schedule();
 	}
 }

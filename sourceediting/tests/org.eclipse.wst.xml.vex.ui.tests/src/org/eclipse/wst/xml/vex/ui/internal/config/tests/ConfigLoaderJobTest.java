@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -46,7 +44,7 @@ public class ConfigLoaderJobTest {
 		final ConfigLoaderJob job = new ConfigLoaderJob();
 		job.schedule();
 		job.join();
-		final List<ConfigSource> allConfigSources = job.getAllConfigSources();
+		final List<ConfigSource> allConfigSources = job.getLoadedConfigSources();
 		assertContainsConfiguration(allConfigSources, "org.eclipse.wst.xml.vex.ui.tests", "testdata/test.dtd", "testdata/test.css");
 		assertContainsEachPluginOnlyOnce(allConfigSources);
 	}
@@ -57,9 +55,36 @@ public class ConfigLoaderJobTest {
 		final ConfigLoaderJob job = new ConfigLoaderJob();
 		job.schedule();
 		job.join();
-		final List<ConfigSource> allConfigSources = job.getAllConfigSources();
+		final List<ConfigSource> allConfigSources = job.getLoadedConfigSources();
 		assertContainsConfiguration(allConfigSources, name.getMethodName(), "plugintest.dtd", "plugintest.css");
 		assertContainsEachPluginOnlyOnce(allConfigSources);
+	}
+	
+	@Test
+	public void runRunnableWhenDone() throws Exception {
+		final boolean[] runnableRun = new boolean[2];
+		runnableRun[0] = false;
+		runnableRun[1] = false;
+		final ConfigLoaderJob job = new ConfigLoaderJob();
+		job.load(new Runnable() {
+			public void run() {
+				runnableRun[0] = true;
+			}
+		});
+		job.join();
+		assertTrue(runnableRun[0]);
+		assertFalse(runnableRun[1]);
+		
+		runnableRun[0] = false;
+		runnableRun[1] = false;
+		job.load(new Runnable() {
+			public void run() {
+				runnableRun[1] = true;
+			}
+		});
+		job.join();
+		assertFalse(runnableRun[0]);
+		assertTrue(runnableRun[1]);
 	}
 
 	private static IProject createVexPluginProject(final String name) throws CoreException {
