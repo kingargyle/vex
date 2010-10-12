@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Florian Thienel
  */
-public interface LoadConfiguration {
+public interface ConfigurationLoader {
 
 	void load(Runnable whenDone);
 

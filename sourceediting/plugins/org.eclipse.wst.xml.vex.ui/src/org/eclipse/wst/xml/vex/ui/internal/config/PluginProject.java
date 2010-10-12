@@ -110,6 +110,8 @@ public class PluginProject extends ConfigSource {
 					new Object[] { project.getName() });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		}
+		
+		pluginProject.parseResources(null);
 
 		return pluginProject;
 	}

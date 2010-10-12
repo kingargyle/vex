@@ -10,19 +10,24 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigSource;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationLoader;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistryImpl;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
-import org.eclipse.wst.xml.vex.ui.internal.config.LoadConfiguration;
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 /**
  * @author Florian Thienel
@@ -32,6 +37,9 @@ public class ConfigurationRegistryTest {
 
 	private ConfigurationRegistry registry;
 
+	@Rule
+	public TestName name = new TestName();
+
 	@After
 	public void disposeRegistry() {
 		if (registry != null)
@@ -40,19 +48,42 @@ public class ConfigurationRegistryTest {
 	}
 	
 	@Test
-	public void emptyOnCreate() throws Exception {
-		registry = new ConfigurationRegistryImpl(new MockLoadConfiguration());
+	public void notAutomaticallyLoaded() throws Exception {
+		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
 		assertFalse(registry.isLoaded());
 	}
 
-	private static class MockLoadConfiguration implements LoadConfiguration {
+	@Test
+	public void fireLoadedEventOnLoad() throws Exception {
+		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
+		final MockConfigListener configListener = new MockConfigListener();
+		registry.addConfigListener(configListener);
+		registry.loadConfigurations();
+		assertTrue(registry.isLoaded());
+		assertTrue(configListener.loaded);
+		assertFalse(configListener.changed);
+	}
+	
+	@Test
+	public void loadNewPluginProjectAndFireChangedEvent() throws Exception {
+		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
+		final MockConfigListener configListener = new MockConfigListener();
+		registry.addConfigListener(configListener);
+		registry.loadConfigurations();
+		configListener.reset();
+		PluginProjectTest.createVexPluginProject(name.getMethodName());
+		assertFalse(configListener.loaded);
+		assertTrue(configListener.changed);
+	}
+	
+	private static class MockConfigurationLoader implements ConfigurationLoader {
 		private List<ConfigSource> loadedConfigSources;
 
-		public MockLoadConfiguration() {
+		public MockConfigurationLoader() {
 			this(Collections.<ConfigSource> emptyList());
 		}
 		
-		public MockLoadConfiguration(List<ConfigSource> loadedConfigSources) {
+		public MockConfigurationLoader(List<ConfigSource> loadedConfigSources) {
 			this.loadedConfigSources = loadedConfigSources;
 		}
 		
@@ -89,5 +120,16 @@ public class ConfigurationRegistryTest {
 			changed = false;
 			loaded = false;
 		}
-	};
+	}
+	
+	private static class MockConfigSource extends ConfigSource {
+		@Override
+		public URL getBaseUrl() {
+			try {
+				return new URL("test:/test");
+			} catch (MalformedURLException e) {
+				throw new AssertionError(e);
+			}
+		}
+	}
 }

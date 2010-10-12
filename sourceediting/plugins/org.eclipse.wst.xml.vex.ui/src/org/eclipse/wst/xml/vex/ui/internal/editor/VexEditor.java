@@ -668,22 +668,30 @@ public class VexEditor extends EditorPart {
 	// Listen for stylesheet changes and respond appropriately
 	private final IConfigListener configListener = new IConfigListener() {
 		public void configChanged(final ConfigEvent e) {
-			if (style == null)
-				return;
-
-			final String styleId = style.getUniqueId();
-			final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
-			if (newStyle == null) {
-				// Oops, style went bye-bye
-				// Let's just hold on to it in case it comes back later
-			} else {
-				vexWidget.setStyleSheet(newStyle.getStyleSheet());
-				style = newStyle;
-			}
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					if (style == null)
+						return;
+					
+					final String styleId = style.getUniqueId();
+					final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
+					if (newStyle == null) {
+						// Oops, style went bye-bye
+						// Let's just hold on to it in case it comes back later
+					} else {
+						vexWidget.setStyleSheet(newStyle.getStyleSheet());
+						style = newStyle;
+					}
+				}
+			});
 		}
 
 		public void configLoaded(final ConfigEvent e) {
-			loadInput();
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					loadInput();
+				}
+			});
 		}
 	};
 

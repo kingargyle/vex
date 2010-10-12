@@ -54,11 +54,11 @@ import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
  */
 public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
-	private final LoadConfiguration load;
+	private final ConfigurationLoader loader;
 	private volatile boolean loaded = false;
 
-	public ConfigurationRegistryImpl(LoadConfiguration load) {
-		this.load = load;
+	public ConfigurationRegistryImpl(ConfigurationLoader loader) {
+		this.loader = loader;
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 	}
 
@@ -69,12 +69,12 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	public void loadConfigurations() {
 		lock();
 		try {
-			load.load(new Runnable() {
+			loader.load(new Runnable() {
 				public void run() {
 					lock();
 					try {
 						configurationSources = new HashMap<String, ConfigSource>();
-						for (final ConfigSource configSource : load.getLoadedConfigSources())
+						for (final ConfigSource configSource : loader.getLoadedConfigSources())
 							configurationSources.put(configSource.getUniqueIdentifer(), configSource);
 						loaded = true;
 					} finally {
@@ -140,10 +140,10 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	private void waitUntilLoaded() {
 		if (loaded)
 			return;
-		if (!load.isLoading())
+		if (!loader.isLoading())
 			throw new IllegalStateException("The configurations are not loaded yet. Call 'loadConfigurations' first.");
 		try {
-			load.join();
+			loader.join();
 		} catch (final InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
@@ -305,8 +305,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
 		public void resourceChanged(final IResourceChangeEvent event) {
 
-			// System.out.println("resourceChanged, type is " + event.getType()
-			// + ", resource is " + event.getResource());
+			// System.out.println("resourceChanged, type is " + event.getType() + ", resource is " + event.getResource());
 
 			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
 				final PluginProject pluginProject = getPluginProject((IProject) event.getResource());

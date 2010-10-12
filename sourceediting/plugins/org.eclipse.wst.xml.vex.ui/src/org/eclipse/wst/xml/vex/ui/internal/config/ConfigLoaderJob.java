@@ -36,7 +36,7 @@ import org.osgi.framework.Constants;
 /**
  * Job that loads Vex configuration objects from plug-ins and plug-in projects.
  */
-public class ConfigLoaderJob extends Job implements LoadConfiguration {
+public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 
 	private List<ConfigSource> loadedConfigSources = Collections.<ConfigSource> emptyList();
 

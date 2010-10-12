@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
@@ -113,13 +114,21 @@ public class ConfigurationView extends ViewPart {
 
 	private final IConfigListener configListener = new IConfigListener() {
 		public void configChanged(final ConfigEvent e) {
-			treeViewer.refresh();
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					treeViewer.refresh();
+				}
+			});
 		}
 
 		public void configLoaded(final ConfigEvent e) {
-			loadingLabel.dispose();
-			createTreeViewer();
-			parentControl.layout();
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					loadingLabel.dispose();
+					createTreeViewer();
+					parentControl.layout();
+				}
+			});
 		}
 	};
 }
