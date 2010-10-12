@@ -30,9 +30,7 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  * across Vex invocations due to the expense of reparsing the configuration
  * items.
  */
-public abstract class ConfigSource implements Serializable {
-
-	private static final long serialVersionUID = -3438659781471827569L;
+public abstract class ConfigSource {
 
 	private static final IConfigItemFactory[] CONFIG_ITEM_FACTORIES = new IConfigItemFactory[] { new DoctypeFactory(), new StyleFactory() };
 

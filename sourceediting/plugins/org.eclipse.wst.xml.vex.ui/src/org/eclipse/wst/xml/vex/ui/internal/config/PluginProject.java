@@ -47,9 +47,9 @@ import org.xml.sax.SAXException;
  */
 public class PluginProject extends ConfigSource {
 
-	private static final long serialVersionUID = 1L;
-
 	public static final String PLUGIN_XML = "vex-plugin.xml"; //$NON-NLS-1$
+
+	private final String projectPath;
 
 	/**
 	 * Class constructor.
@@ -194,10 +194,6 @@ public class PluginProject extends ConfigSource {
 		else
 			file.create(inputStream, true, null);
 	}
-
-	// =========================================================== PRIVATE
-
-	private final String projectPath;
 
 	private static void writeElement(final IConfigElement element, final PrintWriter out, final int level) {
 		final StringBuffer elementIndent = new StringBuffer();
