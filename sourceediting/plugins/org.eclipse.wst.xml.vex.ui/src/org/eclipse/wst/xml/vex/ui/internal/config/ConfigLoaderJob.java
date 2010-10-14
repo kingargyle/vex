@@ -93,14 +93,13 @@ public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 					pluginProject.load();
 					result.add(pluginProject);
 				} catch (CoreException e) {
-					// TODO log the exception but go on to load the other projects
-					e.printStackTrace();
+					VexPlugin.getInstance().getLog().log(e.getStatus());
 				}
 				monitor.worked(1);
 			} else {
 				final String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
 						new Object[] { project.getName() });
-				VexPlugin.getInstance().log(IStatus.ERROR, message, null);
+				VexPlugin.getInstance().log(IStatus.ERROR, message);
 			}
 
 		return result;

@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
+import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
  * Singleton registry of configuration sources and listeners.
@@ -338,7 +339,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 								addConfigSource(newPluginProject);
 								fireConfigChanged(new ConfigEvent(this));
 							} catch (CoreException e) {
-								// TODO log the exception and go on
+								VexPlugin.getInstance().getLog().log(e.getStatus());
 							}
 						} else {
 							// nothing to do

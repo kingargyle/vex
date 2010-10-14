@@ -33,7 +33,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.w3c.dom.Document;
@@ -88,7 +87,7 @@ public class PluginProject extends ConfigSource {
 			VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 		}
 	}
-		
+
 	public void load() throws CoreException {
 		checkProject();
 		parseConfigXml(null);
@@ -100,16 +99,17 @@ public class PluginProject extends ConfigSource {
 			throw new IllegalStateException(MessageFormat.format(Messages.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
 					project.getName()));
 	}
-	
-	public static boolean isOpenPluginProject(IProject project) {
+
+	public static boolean isOpenPluginProject(final IProject project) {
 		return project.isOpen() && hasPluginProjectNature(project);
 	}
-	
-	public static boolean hasPluginProjectNature(IProject project) {
+
+	public static boolean hasPluginProjectNature(final IProject project) {
 		try {
 			return project.isOpen() && project.hasNature(PluginProjectNature.ID);
-		} catch (CoreException e) {
-			throw new AssertionError(e); // TODO is it better to log this?
+		} catch (final CoreException e) {
+			VexPlugin.getInstance().getLog().log(e.getStatus());
+			return false;
 		}
 	}
 
@@ -133,9 +133,8 @@ public class PluginProject extends ConfigSource {
 
 			try {
 				this.addItem(extensionPointId, id, name, configElements);
-			} catch (IOException e) {
-				// TODO log this problem
-				createErrorStatus(e.getMessage(), e);
+			} catch (final IOException e) {
+				VexPlugin.getInstance().log(IStatus.ERROR, e.getMessage(), e);
 			}
 		}
 	}
@@ -146,25 +145,25 @@ public class PluginProject extends ConfigSource {
 		try {
 			final URL url = configXml.getLocation().toFile().toURL();
 			return builder.parse(url.toString());
-		} catch (SAXParseException e) {
+		} catch (final SAXParseException e) {
 			if (problemHandler != null) {
 				final BuildProblem problem = new BuildProblem(BuildProblem.SEVERITY_ERROR, configXml.getName(), e.getMessage(), e.getLineNumber());
 				problemHandler.foundProblem(problem);
 				return null;
 			} else {
-				// TODO log this problem
-				throw new CoreException(createErrorStatus(MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e));
+				VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+				return null;
 			}
-		} catch (SAXException e) {
-			// TODO log this problem
-			throw new CoreException(createErrorStatus(MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e));
-		} catch (IOException e) {
-			// TODO log this problem
-			throw new CoreException(createErrorStatus(MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e));
+		} catch (final SAXException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+			return null;
+		} catch (final IOException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+			return null;
 		}
 	}
-	
-	private IConfigElement[] parseConfigElements(Element extensionElement) {
+
+	private IConfigElement[] parseConfigElements(final Element extensionElement) {
 		final List<IConfigElement> result = new ArrayList<IConfigElement>();
 		final NodeList childList = extensionElement.getChildNodes();
 		for (int j = 0; j < childList.getLength(); j++) {
@@ -184,10 +183,6 @@ public class PluginProject extends ConfigSource {
 			throw new AssertionError(e);
 		}
 	}
-	
-	private static IStatus createErrorStatus(final String message, final Throwable cause) {
-		return new Status(IStatus.ERROR, VexPlugin.ID, message, cause);
-	}
 
 	/**
 	 * Writes this configuraton to the file vex-config.xml in the project.
@@ -197,7 +192,7 @@ public class PluginProject extends ConfigSource {
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
 
 		final ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
-		for (final ConfigItem item : this.getAllItems()) {
+		for (final ConfigItem item : getAllItems()) {
 			final ConfigurationElement extElement = new ConfigurationElement("extension"); //$NON-NLS-1$
 			extElement.setAttribute("id", item.getSimpleId()); //$NON-NLS-1$
 			extElement.setAttribute("name", item.getName()); //$NON-NLS-1$
