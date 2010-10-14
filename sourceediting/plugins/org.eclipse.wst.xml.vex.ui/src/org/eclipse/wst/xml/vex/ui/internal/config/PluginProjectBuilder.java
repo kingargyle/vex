@@ -118,41 +118,32 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 		project.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		getBuildProblemDecorator().update(markedResources);
 
-		final ConfigurationRegistryImpl registry = (ConfigurationRegistryImpl) ConfigurationRegistry.INSTANCE;
-
-		try {
-			registry.lock();
-
-			final IBuildProblemHandler problemHandler = new IBuildProblemHandler() {
-				public void foundProblem(final BuildProblem problem) {
-					try {
-						final IResource resource = getProject().getFile(problem.getResourcePath());
-						markError(resource, problem.getMessage(), problem.getLineNumber());
-					} catch (final CoreException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		final IBuildProblemHandler problemHandler = new IBuildProblemHandler() {
+			public void foundProblem(final BuildProblem problem) {
+				try {
+					final IResource resource = getProject().getFile(problem.getResourcePath());
+					markError(resource, problem.getMessage(), problem.getLineNumber());
+				} catch (final CoreException e) {
+					VexPlugin.getInstance().getLog().log(e.getStatus());
 				}
-			};
-
-			if (parseConfigXml) {
-				final IResource pluginXmlResource = getProject().getFile(PluginProject.PLUGIN_XML);
-					if (pluginXmlResource.exists())
-						pluginProject.parseConfigXml(problemHandler);
-					else {
-						pluginProject.removeAllItems();
-						final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
-								new Object[] { PluginProject.PLUGIN_XML });
-						this.markError(getProject(), message);
-					}
 			}
+		};
 
-			pluginProject.parseResources(problemHandler);
-		} finally {
-			registry.unlock();
+		if (parseConfigXml) {
+			final IResource pluginXmlResource = getProject().getFile(PluginProject.PLUGIN_XML);
+			if (pluginXmlResource.exists())
+				pluginProject.parseConfigXml(problemHandler);
+			else {
+				pluginProject.removeAllItems();
+				final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
+						new Object[] { PluginProject.PLUGIN_XML });
+				this.markError(getProject(), message);
+			}
 		}
 
-		registry.fireConfigChanged(new ConfigEvent(this));
+		pluginProject.parseResources(problemHandler);
+
+		((ConfigurationRegistryImpl) ConfigurationRegistry.INSTANCE).fireConfigChanged(new ConfigEvent(this));
 
 		return null;
 	}
