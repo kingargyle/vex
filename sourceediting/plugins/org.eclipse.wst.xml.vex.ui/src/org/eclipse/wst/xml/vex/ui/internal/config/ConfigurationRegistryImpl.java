@@ -24,7 +24,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 
 /**
@@ -113,11 +112,21 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 	}
 
-	private void removeConfigSource(final ConfigSource config) {
+	private void addConfigSource(final ConfigSource configSource) {
 		waitUntilLoaded();
 		lock();
 		try {
-			configurationSources.remove(config);
+			configurationSources.put(configSource.getUniqueIdentifer(), configSource);
+		} finally {
+			unlock();
+		}
+	}
+
+	private void removeConfigSource(final ConfigSource configSource) {
+		waitUntilLoaded();
+		lock();
+		try {
+			configurationSources.remove(configSource.getUniqueIdentifer());
 		} finally {
 			unlock();
 		}
@@ -304,13 +313,10 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
 		public void resourceChanged(final IResourceChangeEvent event) {
-
-			// System.out.println("resourceChanged, type is " + event.getType() + ", resource is " + event.getResource());
-
 			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
 				final PluginProject pluginProject = getPluginProject((IProject) event.getResource());
 				if (pluginProject != null) {
-					// System.out.println("  removing project from config registry");
+					// this project is about to be closed or deleted
 					removeConfigSource(pluginProject);
 					fireConfigChanged(new ConfigEvent(this));
 				}
@@ -319,41 +325,23 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 				for (final IResourceDelta delta : resources)
 					if (delta.getResource() instanceof IProject) {
 						final IProject project = (IProject) delta.getResource();
-
-						// System.out.println("Project " + project.getName() +
-						// " changed, isOpen is " + project.isOpen());
-
 						final PluginProject pluginProject = getPluginProject(project);
-
-						boolean hasPluginProjectNature = false;
-						try {
-							hasPluginProjectNature = project.hasNature(PluginProjectNature.ID);
-						} catch (final CoreException ex) {
-							// yup, sometimes checked exceptions really blow
-						}
-
 						if (!project.isOpen() && pluginProject != null) {
-
-							// System.out.println("  closing project: " +
-							// project.getName());
+							// we know this project and it has been closed
 							removeConfigSource(pluginProject);
 							fireConfigChanged(new ConfigEvent(this));
-
-						} else if (project.isOpen() && pluginProject == null && hasPluginProjectNature) {
-
-							// System.out.println("  newly opened project: " +
-							// project.getName() + ", rebuilding");
-
-							// Must be run in another thread, since the
-							// workspace is locked here
-							final Runnable runnable = new Runnable() {
-								public void run() {
-									PluginProject.load(project);
-								}
-							};
-							Display.getDefault().asyncExec(runnable);
+						} else if (PluginProject.isOpenPluginProject(project) && pluginProject == null) {
+							// this is a plug-in project we do not know yet
+							final PluginProject newPluginProject = new PluginProject(project);
+							try {
+								newPluginProject.load();
+								addConfigSource(newPluginProject);
+								fireConfigChanged(new ConfigEvent(this));
+							} catch (CoreException e) {
+								// TODO log the exception and go on
+							}
 						} else {
-							// System.out.println("  no action taken");
+							// nothing to do
 						}
 					}
 			}

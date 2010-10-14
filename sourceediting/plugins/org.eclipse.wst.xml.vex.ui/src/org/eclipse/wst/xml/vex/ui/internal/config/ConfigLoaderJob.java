@@ -86,18 +86,21 @@ public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 
 		for (final IProject project : projects)
-			try {
-				if (project.isOpen() && project.hasNature(PluginProjectNature.ID)) {
-					monitor.subTask(Messages.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
-					final ConfigSource source = PluginProject.load(project);
-					if (source != null)
-						result.add(source);
-					monitor.worked(1);
+			if (PluginProject.isOpenPluginProject(project)) {
+				monitor.subTask(Messages.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
+				final PluginProject pluginProject = new PluginProject(project);
+				try {
+					pluginProject.load();
+					result.add(pluginProject);
+				} catch (CoreException e) {
+					// TODO log the exception but go on to load the other projects
+					e.printStackTrace();
 				}
-			} catch (final CoreException e) {
+				monitor.worked(1);
+			} else {
 				final String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
 						new Object[] { project.getName() });
-				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
+				VexPlugin.getInstance().log(IStatus.ERROR, message, null);
 			}
 
 		return result;
@@ -106,7 +109,7 @@ public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 	public synchronized List<ConfigSource> getLoadedConfigSources() {
 		return loadedConfigSources;
 	}
-	
+
 	public boolean isLoading() {
 		return getState() == Job.RUNNING;
 	}

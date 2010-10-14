@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.IDecoratorManager;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
-import org.xml.sax.SAXParseException;
 
 /**
  * Parses and registers Vex configuration objects in a Vex Plug-in project.
@@ -124,38 +123,29 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 		try {
 			registry.lock();
 
-			if (parseConfigXml) {
-				final IResource pluginXmlResource = getProject().getFile(PluginProject.PLUGIN_XML);
-				try {
-					if (pluginXmlResource.exists())
-						pluginProject.parseConfigXml();
-					else {
-						pluginProject.removeAllItems();
-						final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
-								new Object[] { PluginProject.PLUGIN_XML });
-						this.flagError(getProject(), message);
-					}
-				} catch (final SAXParseException ex) {
-					this.flagError(pluginXmlResource, ex.getLocalizedMessage(), ex.getLineNumber());
-				} catch (final Exception ex) {
-					final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.parseError"), //$NON-NLS-1$
-							new Object[] { PluginProject.PLUGIN_XML });
-					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
-					this.flagError(pluginXmlResource, ex.getLocalizedMessage());
-				}
-			}
-
 			final IBuildProblemHandler problemHandler = new IBuildProblemHandler() {
 				public void foundProblem(final BuildProblem problem) {
 					try {
 						final IResource resource = getProject().getFile(problem.getResourcePath());
-						flagError(resource, problem.getMessage(), problem.getLineNumber());
+						markError(resource, problem.getMessage(), problem.getLineNumber());
 					} catch (final CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			};
+
+			if (parseConfigXml) {
+				final IResource pluginXmlResource = getProject().getFile(PluginProject.PLUGIN_XML);
+					if (pluginXmlResource.exists())
+						pluginProject.parseConfigXml(problemHandler);
+					else {
+						pluginProject.removeAllItems();
+						final String message = MessageFormat.format(Messages.getString("PluginProjectBuilder.missingFile"), //$NON-NLS-1$
+								new Object[] { PluginProject.PLUGIN_XML });
+						this.markError(getProject(), message);
+					}
+			}
 
 			pluginProject.parseResources(problemHandler);
 		} finally {
@@ -187,20 +177,20 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 
 	private BuildProblemDecorator buildProblemDecorator;
 
-	private void flagError(final IResource resource, final String message) throws CoreException {
-		flagError(resource, message, -1);
+	private void markError(final IResource resource, final String message) throws CoreException {
+		markError(resource, message, -1);
 	}
 
-	private void flagError(final IResource resource, final String message, final int lineNumber) throws CoreException {
+	private void markError(final IResource resource, final String message, final int lineNumber) throws CoreException {
 		final IMarker marker = resource.createMarker(IMarker.PROBLEM);
-		if (marker.exists()) {
-			marker.setAttribute(IMarker.MESSAGE, message);
-			marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-			if (lineNumber > 0)
-				marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
-			getBuildProblemDecorator().update(resource);
-		}
+		if (!marker.exists())
+			return;
+		marker.setAttribute(IMarker.MESSAGE, message);
+		marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+		marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		if (lineNumber > 0)
+			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
+		getBuildProblemDecorator().update(resource);
 	}
 
 	private BuildProblemDecorator getBuildProblemDecorator() {

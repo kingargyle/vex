@@ -12,7 +12,6 @@
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
