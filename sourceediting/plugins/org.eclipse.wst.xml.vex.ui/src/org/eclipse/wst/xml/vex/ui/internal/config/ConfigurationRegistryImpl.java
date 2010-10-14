@@ -198,15 +198,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
 	}
 
-	/**
-	 * Call the configLoaded method on all registered ConfigChangeListeners.
-	 * This method is called from the ConfigLoaderJob
-	 * thread.
-	 * 
-	 * @param e
-	 *            ConfigEvent to be fired.
-	 */
-	public void fireConfigLoaded(final ConfigEvent e) {
+	private void fireConfigLoaded(final ConfigEvent e) {
 		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
 	}
 

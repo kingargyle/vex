@@ -21,8 +21,6 @@ public interface ConfigurationRegistry {
 	
 	void fireConfigChanged(final ConfigEvent e);
 	
-	void fireConfigLoaded(final ConfigEvent e);
-	
 	// new interface
 	
 	void dispose();
