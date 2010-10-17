@@ -194,21 +194,13 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		configListeners.remove(listener);
 	}
 
-	/**
-	 * Call the configChanged method on all registered ConfigChangeListeners.
-	 * 
-	 * @param e
-	 *            ConfigEvent to be fired.
-	 */
-	public void fireConfigChanged(final ConfigEvent e) {
+	private void fireConfigChanged(final ConfigEvent e) {
 		configListeners.fireEvent("configChanged", e); //$NON-NLS-1$
 	}
 
 	private void fireConfigLoaded(final ConfigEvent e) {
 		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
 	}
-
-	// new interface
 
 	/**
 	 * The document type configuration for the given public identifier, of null

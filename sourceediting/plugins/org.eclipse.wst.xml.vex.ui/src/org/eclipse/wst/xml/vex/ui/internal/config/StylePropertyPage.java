@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -37,55 +38,71 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class StylePropertyPage extends PropertyPage {
 
+	private static final int NAME_WIDTH = 150;
+
+	private PluginProject pluginProject;
+
+	private Style style;
+
+	private Composite pane;
+	private Text nameText;
+	private Table doctypesTable;
+
+	private IConfigListener configListener;
+
 	@Override
 	protected Control createContents(final Composite parent) {
-
 		pane = new Composite(parent, SWT.NONE);
+
+		pluginProject = new PluginProject(((IFile) getElement()).getProject());
+		try {
+			pluginProject.load();
+		} catch (final CoreException e) {
+			VexPlugin.getInstance().getLog().log(e.getStatus());
+		}
 
 		createPropertySheet();
 
 		configListener = new IConfigListener() {
-
-			public void configChanged(final ConfigEvent e) {
+			public void configChanged(final ConfigEvent event) {
+				try {
+					pluginProject.load();
+				} catch (CoreException e) {
+					VexPlugin.getInstance().getLog().log(e.getStatus());
+				}
+				final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
+				style = (Style) pluginProject.getItemForResource(resourcePath);
 				populateDoctypes();
 			}
 
-			public void configLoaded(final ConfigEvent e) {
+			public void configLoaded(final ConfigEvent event) {
 				setMessage(getTitle());
 				populateStyle();
 				setValid(true);
 
 				try { // force an incremental build
-					getPluginProject().writeConfigXml();
-				} catch (final Exception ex) {
+					pluginProject.writeConfigXml();
+				} catch (final Exception e) {
 					final String message = MessageFormat.format(Messages.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
 							new Object[] { PluginProject.PLUGIN_XML });
-					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
+					VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 				}
-
 			}
 		};
-
 		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
 
 		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
-
 			populateStyle();
 			populateDoctypes();
-
 		} else {
-
 			setValid(false);
-
 			setMessage(Messages.getString("StylePropertyPage.loading")); //$NON-NLS-1$
-
 		}
 
 		return pane;
 	}
 
 	private void createPropertySheet() {
-
 		final GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		pane.setLayout(layout);
@@ -102,13 +119,11 @@ public class StylePropertyPage extends PropertyPage {
 
 		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
 
-		final ConfigSource config = getPluginProject();
-
-		style = (Style) config.getItemForResource(resourcePath);
+		style = (Style) pluginProject.getItemForResource(resourcePath);
 		if (style == null) {
-			style = new Style(config);
+			style = new Style(pluginProject);
 			style.setResourcePath(resourcePath);
-			config.addItem(style);
+			pluginProject.addItem(style);
 		}
 
 		// Generate a simple ID for this one if necessary
@@ -135,27 +150,36 @@ public class StylePropertyPage extends PropertyPage {
 
 	}
 
-	/**
-	 * Returns the PluginProject associated with this resource.
-	 * 
-	 * @return
-	 */
-	public PluginProject getPluginProject() {
-		final IFile file = (IFile) getElement();
-		return ConfigurationRegistry.INSTANCE.getPluginProject(file.getProject());
+	private void populateStyle() {
+		setText(nameText, style.getName());
+	}
+
+	private static void setText(final Text textBox, final String text) {
+		textBox.setText(text == null ? "" : text); //$NON-NLS-1$
+	}
+	
+	private void populateDoctypes() {
+		final Set<String> selectedDoctypes = new TreeSet<String>(style.getDocumentTypes());
+		doctypesTable.removeAll();
+
+		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
+		Arrays.sort(documentTypes);
+		for (final DocumentType documentType : documentTypes) {
+			final TableItem item = new TableItem(doctypesTable, SWT.NONE);
+			item.setText(documentType.getName());
+			if (selectedDoctypes.contains(documentType.getPublicId()))
+				item.setChecked(true);
+		}
 	}
 
 	@Override
 	public boolean performOk() {
-
 		performApply();
-
 		return super.performOk();
 	}
 
 	@Override
 	public void performApply() {
-
 		style.setName(nameText.getText());
 
 		final ArrayList<String> selectedDoctypes = new ArrayList<String>();
@@ -172,67 +196,25 @@ public class StylePropertyPage extends PropertyPage {
 				style.addDocumentType(documentType.getPublicId());
 
 		try {
-			getPluginProject().writeConfigXml();
+			pluginProject.writeConfigXml();
 		} catch (final Exception e) {
 			final String message = MessageFormat.format(Messages.getString("StylePropertyPage.writeError"), //$NON-NLS-1$
 					new Object[] { PluginProject.PLUGIN_XML });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 		}
-
-		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
 	@Override
 	protected void performDefaults() {
-
 		super.performDefaults();
-
 		populateStyle();
-
 		populateDoctypes();
-
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-
 		if (configListener != null)
 			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
 	}
-
-	// ======================================================= PRIVATE
-
-	private Style style;
-	private static final int NAME_WIDTH = 150;
-
-	private Composite pane;
-	private Text nameText;
-	private Table doctypesTable;
-
-	private IConfigListener configListener;
-
-	private void populateStyle() {
-		setText(nameText, style.getName());
-
-	}
-
-	private void populateDoctypes() {
-		final Set<String> selectedDoctypes = new TreeSet<String>(style.getDocumentTypes());
-		doctypesTable.removeAll();
-
-		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
-		Arrays.sort(documentTypes);
-		for (final DocumentType documentType : documentTypes) {
-			final TableItem item = new TableItem(doctypesTable, SWT.NONE);
-			item.setText(documentType.getName());
-			if (selectedDoctypes.contains(documentType.getPublicId()))
-				item.setChecked(true);
-		}
-	}
-
-	private void setText(final Text textBox, final String s) {
-		textBox.setText(s == null ? "" : s); //$NON-NLS-1$
-	}
-
 }

@@ -244,8 +244,6 @@ public class DoctypePropertyPage extends PropertyPage {
 					new Object[] { PluginProject.PLUGIN_XML });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		}
-
-		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
 	@Override
@@ -258,7 +256,6 @@ public class DoctypePropertyPage extends PropertyPage {
 	@Override
 	public void dispose() {
 		super.dispose();
-
 		if (configListener != null)
 			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
 	}

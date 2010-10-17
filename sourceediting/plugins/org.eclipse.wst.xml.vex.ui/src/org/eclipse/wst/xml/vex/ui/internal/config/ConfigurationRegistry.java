@@ -19,10 +19,6 @@ public interface ConfigurationRegistry {
 
 	ConfigurationRegistry INSTANCE = new ConfigurationRegistryImpl(new ConfigLoaderJob());
 	
-	void fireConfigChanged(final ConfigEvent e);
-	
-	// new interface
-	
 	void dispose();
 	
 	/**
