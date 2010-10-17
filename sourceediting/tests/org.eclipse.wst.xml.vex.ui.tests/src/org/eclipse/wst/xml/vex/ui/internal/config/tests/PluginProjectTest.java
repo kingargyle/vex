@@ -11,8 +11,8 @@
 package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -41,8 +41,13 @@ public class PluginProjectTest {
 	}
 
 	public static void createVexPluginFile(final IProject project) throws CoreException {
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		final PrintStream out = new PrintStream(baos);
+		final String fileContent = createVexPluginFileContent(project);
+		project.getFile(PluginProject.PLUGIN_XML).create(new ByteArrayInputStream(fileContent.getBytes()), true, null);
+	}
+
+	public static String createVexPluginFileContent(final IProject project) {
+		final StringWriter result = new StringWriter();
+		final PrintWriter out = new PrintWriter(result);
 		out.println("<?xml version='1.0'?>"); //$NON-NLS-1$
 		// HINT: It is important to set the id attribute, because this is used as the unique identifier for the configuration. 
 		out.println("<plugin id=\"" + project.getName() + "\">"); //$NON-NLS-1$
@@ -54,7 +59,7 @@ public class PluginProjectTest {
 		out.println("</extension>"); //$NON-NLS-1$
 		out.println("</plugin>"); //$NON-NLS-1$
 		out.close();
-		project.getFile(PluginProject.PLUGIN_XML).create(new ByteArrayInputStream(baos.toByteArray()), true, null);
+		return result.toString();
 	}
 
 	public static void addVexProjectNature(final IProject project) throws CoreException {

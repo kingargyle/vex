@@ -13,17 +13,18 @@ package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigSource;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationLoader;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistryImpl;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
+import org.eclipse.wst.xml.vex.ui.internal.config.PluginProject;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class ConfigurationRegistryTest {
 			registry.dispose();
 		registry = null;
 	}
-	
+
 	@Test
 	public void notAutomaticallyLoaded() throws Exception {
 		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
@@ -63,7 +64,7 @@ public class ConfigurationRegistryTest {
 		assertTrue(configListener.loaded);
 		assertFalse(configListener.changed);
 	}
-	
+
 	@Test
 	public void loadNewPluginProjectAndFireChangedEvent() throws Exception {
 		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
@@ -75,19 +76,32 @@ public class ConfigurationRegistryTest {
 		assertFalse(configListener.loaded);
 		assertTrue(configListener.changed);
 	}
-	
+
+	@Test
+	public void fireConfigChangedEventOnPluginModification() throws Exception {
+		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
+		registry.loadConfigurations();
+		final IProject project = PluginProjectTest.createVexPluginProject(name.getMethodName());
+		final MockConfigListener configListener = new MockConfigListener();
+		registry.addConfigListener(configListener);
+		final String fileContent = PluginProjectTest.createVexPluginFileContent(project);
+		project.getFile(PluginProject.PLUGIN_XML).setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, null);
+		assertFalse(configListener.loaded);
+		assertTrue(configListener.changed);
+	}
+
 	private static class MockConfigurationLoader implements ConfigurationLoader {
-		private List<ConfigSource> loadedConfigSources;
+		private final List<ConfigSource> loadedConfigSources;
 
 		public MockConfigurationLoader() {
 			this(Collections.<ConfigSource> emptyList());
 		}
-		
-		public MockConfigurationLoader(List<ConfigSource> loadedConfigSources) {
+
+		public MockConfigurationLoader(final List<ConfigSource> loadedConfigSources) {
 			this.loadedConfigSources = loadedConfigSources;
 		}
-		
-		public void load(Runnable whenDone) {
+
+		public void load(final Runnable whenDone) {
 			whenDone.run();
 		}
 
@@ -103,33 +117,22 @@ public class ConfigurationRegistryTest {
 			return;
 		}
 	}
-	
+
 	private static class MockConfigListener implements IConfigListener {
 		public boolean changed = false;
 		public boolean loaded = false;
-		
-		public void configChanged(ConfigEvent e) {
+
+		public void configChanged(final ConfigEvent e) {
 			changed = true;
 		}
 
-		public void configLoaded(ConfigEvent e) {
+		public void configLoaded(final ConfigEvent e) {
 			loaded = true;
 		}
-		
+
 		public void reset() {
 			changed = false;
 			loaded = false;
-		}
-	}
-	
-	private static class MockConfigSource extends ConfigSource {
-		@Override
-		public URL getBaseUrl() {
-			try {
-				return new URL("test:/test");
-			} catch (MalformedURLException e) {
-				throw new AssertionError(e);
-			}
 		}
 	}
 }
