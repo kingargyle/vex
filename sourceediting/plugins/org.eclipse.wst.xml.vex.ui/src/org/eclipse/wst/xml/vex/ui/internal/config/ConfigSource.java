@@ -49,6 +49,10 @@ public abstract class ConfigSource {
 				return factory;
 		return null;
 	}
+	
+	public ConfigSource(final String id) {
+		this.id = id;
+	}
 
 	/**
 	 * Adds the given item to the configuration.
@@ -199,16 +203,6 @@ public abstract class ConfigSource {
 		return id;
 	}
 
-	/**
-	 * Sets the unique identifier of this configuration.
-	 * 
-	 * @param id
-	 *            New identifier for this configuration.
-	 */
-	protected void setUniqueIdentifer(final String id) {
-		this.id = id;
-	}
-	
 	/**
 	 * Returns all ConfigItems of the given type for which isValid returns true.
 	 * 

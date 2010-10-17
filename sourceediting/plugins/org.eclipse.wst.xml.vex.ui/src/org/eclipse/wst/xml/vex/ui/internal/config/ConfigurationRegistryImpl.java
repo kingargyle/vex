@@ -57,7 +57,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	private final ConfigurationLoader loader;
 	private volatile boolean loaded = false;
 
-	public ConfigurationRegistryImpl(ConfigurationLoader loader) {
+	public ConfigurationRegistryImpl(final ConfigurationLoader loader) {
 		this.loader = loader;
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 	}
@@ -111,6 +111,12 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		} finally {
 			unlock();
 		}
+	}
+
+	private PluginProject addNewPluginProject(final IProject project) {
+		final PluginProject result = new PluginProject(project);
+		addConfigSource(result);
+		return result;
 	}
 
 	private void addConfigSource(final ConfigSource configSource) {
@@ -297,6 +303,15 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 			}
 		return null;
 	}
+	
+	private void reloadPluginProject(final PluginProject pluginProject) {
+		try {
+			pluginProject.load();
+		} catch (final CoreException e) {
+			VexPlugin.getInstance().getLog().log(e.getStatus());
+		}
+		fireConfigChanged(new ConfigEvent(this));
+	}
 
 	// ======================================================== PRIVATE
 
@@ -323,22 +338,16 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 							// we know this project and it has been closed
 							removeConfigSource(pluginProject);
 							fireConfigChanged(new ConfigEvent(this));
-						} else if (PluginProject.isOpenPluginProject(project) && pluginProject == null) {
-							// this is a plug-in project we do not know yet
-							final PluginProject newPluginProject = new PluginProject(project);
-							try {
-								newPluginProject.load();
-								addConfigSource(newPluginProject);
-								fireConfigChanged(new ConfigEvent(this));
-							} catch (CoreException e) {
-								VexPlugin.getInstance().getLog().log(e.getStatus());
+						} else if (PluginProject.isOpenPluginProject(project))
+							if (pluginProject == null) {
+								reloadPluginProject(addNewPluginProject(project));
+							} else {
+								reloadPluginProject(pluginProject);
 							}
-						} else {
-							// nothing to do
-						}
 					}
 			}
 		}
+
 	};
 
 }

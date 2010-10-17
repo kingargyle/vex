@@ -51,15 +51,9 @@ public class PluginProject extends ConfigSource {
 
 	private final IProject project;
 
-	/**
-	 * Class constructor.
-	 * 
-	 * @param config
-	 *            VexConfiguration associated with this project.
-	 */
-	protected PluginProject(final IProject project) {
+	public PluginProject(final IProject project) {
+		super(project.getName());
 		this.project = project;
-		setUniqueIdentifer(project.getName());
 	}
 
 	@Override

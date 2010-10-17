@@ -27,9 +27,9 @@ public class ConfigPlugin extends ConfigSource {
 
 	private String bundleSymbolicName;
 	
-	protected ConfigPlugin(String bundleSymbolicName) {
+	public ConfigPlugin(String bundleSymbolicName) {
+		super(bundleSymbolicName);
 		this.bundleSymbolicName = bundleSymbolicName;
-		setUniqueIdentifer(bundleSymbolicName);
 		load();
 	}
 
