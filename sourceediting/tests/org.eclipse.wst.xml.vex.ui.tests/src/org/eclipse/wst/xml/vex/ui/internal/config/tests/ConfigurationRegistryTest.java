@@ -12,6 +12,7 @@ package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
@@ -72,22 +73,25 @@ public class ConfigurationRegistryTest {
 		registry.addConfigListener(configListener);
 		registry.loadConfigurations();
 		configListener.reset();
-		PluginProjectTest.createVexPluginProject(name.getMethodName());
+		IProject project = PluginProjectTest.createVexPluginProject(name.getMethodName());
 		assertFalse(configListener.loaded);
 		assertTrue(configListener.changed);
+		assertNotNull(registry.getPluginProject(project));
 	}
 
 	@Test
-	public void fireConfigChangedEventOnPluginModification() throws Exception {
+	public void reloadModifiedPluginProjectAndFireConfigChangedEvent() throws Exception {
 		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
 		registry.loadConfigurations();
 		final IProject project = PluginProjectTest.createVexPluginProject(name.getMethodName());
 		final MockConfigListener configListener = new MockConfigListener();
+		project.getFile("plugintest2.css").create(new ByteArrayInputStream(new byte[0]), true, null);
+		final String fileContent = PluginProjectTest.createVexPluginFileContent(project, "plugintest.dtd", "plugintest.css", "plugintest2.css");
 		registry.addConfigListener(configListener);
-		final String fileContent = PluginProjectTest.createVexPluginFileContent(project);
 		project.getFile(PluginProject.PLUGIN_XML).setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, null);
 		assertFalse(configListener.loaded);
 		assertTrue(configListener.changed);
+		assertNotNull(registry.getPluginProject(project).getItemForResource("plugintest2.css"));
 	}
 
 	private static class MockConfigurationLoader implements ConfigurationLoader {

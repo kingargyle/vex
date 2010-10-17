@@ -46,17 +46,23 @@ public class PluginProjectTest {
 	}
 
 	public static String createVexPluginFileContent(final IProject project) {
+		return createVexPluginFileContent(project, "plugintest.dtd", "plugintest.css");
+	}
+
+	public static String createVexPluginFileContent(final IProject project, final String dtdFilename, final String... styleFilenames) {
 		final StringWriter result = new StringWriter();
 		final PrintWriter out = new PrintWriter(result);
 		out.println("<?xml version='1.0'?>"); //$NON-NLS-1$
 		// HINT: It is important to set the id attribute, because this is used as the unique identifier for the configuration. 
-		out.println("<plugin id=\"" + project.getName() + "\">"); //$NON-NLS-1$
+		out.println("<plugin id=\"" + project.getName() + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
 		out.println("<extension id=\"plugintest\" name=\"plugin test doctype\" point=\"org.eclipse.wst.xml.vex.ui.doctypes\">"); //$NON-NLS-1$
-		out.println("<doctype systemId=\"plugintest.dtd\" dtd=\"plugintest.dtd\" publicId=\"-//Vex//Plugin Test//EN\" />"); //$NON-NLS-1$
+		out.println("<doctype systemId=\"" + dtdFilename + "\" dtd=\"" + dtdFilename + "\" publicId=\"-//Vex//Plugin Test//EN\" />"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		out.println("</extension>"); //$NON-NLS-1$
-		out.println("<extension id=\"plugintest\" name=\"plugin test style\" point=\"org.eclipse.wst.xml.vex.ui.styles\">"); //$NON-NLS-1$
-		out.println("<style css=\"plugintest.css\"><doctypeRef publicId=\"-//Vex//Plugin Test//EN\" /></style>"); //$NON-NLS-1$
-		out.println("</extension>"); //$NON-NLS-1$
+		for (final String styleFilename : styleFilenames) {
+			out.println("<extension id=\"plugintest\" name=\"plugin test style\" point=\"org.eclipse.wst.xml.vex.ui.styles\">"); //$NON-NLS-1$
+			out.println("<style css=\"" + styleFilename + "\"><doctypeRef publicId=\"-//Vex//Plugin Test//EN\" /></style>"); //$NON-NLS-1$ //$NON-NLS-2$
+			out.println("</extension>"); //$NON-NLS-1$
+		}
 		out.println("</plugin>"); //$NON-NLS-1$
 		out.close();
 		return result.toString();

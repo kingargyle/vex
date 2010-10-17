@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -40,72 +41,83 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
  */
 public class DoctypePropertyPage extends PropertyPage {
 
-	protected Control createContents(final Composite parent) {
+	private static final int NAME_WIDTH = 150;
 
+	private PluginProject pluginProject;
+	
+	private DocumentType doctype;
+
+	private Composite pane;
+
+	private Text nameText;
+
+	private Text publicIdText;
+
+	private Text systemIdText;
+
+	private Table rootElementsTable;
+
+	private IConfigListener configListener;
+	
+	@Override
+	protected Control createContents(final Composite parent) {
 		pane = new Composite(parent, SWT.NONE);
 
+		pluginProject = new PluginProject(((IFile) getElement()).getProject());
+		try {
+			pluginProject.load();
+		} catch (CoreException e) {
+			VexPlugin.getInstance().getLog().log(e.getStatus());
+		}
+		
 		createPropertySheet();
 
 		configListener = new IConfigListener() {
-
-			public void configChanged(ConfigEvent e) {
-
+			public void configChanged(final ConfigEvent event) {
 				// This is fired when we open properties for a new doctype
 				// and we force it to be re-built to get a validator
 				// from which we get our list of prospective root elements.
+				try {
+					pluginProject.load();
+				} catch (CoreException e) {
+					VexPlugin.getInstance().getLog().log(e.getStatus());
+				}
 
-				String resourcePath = ((IFile) getElement())
-						.getProjectRelativePath().toString();
-
-				ConfigSource config = getPluginProject();
-
-				doctype = (DocumentType) config
-						.getItemForResource(resourcePath);
+				final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
+				doctype = (DocumentType) pluginProject.getItemForResource(resourcePath);
 
 				populateRootElements();
 			}
 
 			public void configLoaded(final ConfigEvent e) {
-
 				setMessage(getTitle());
 				populateDoctype();
 				setValid(true);
 
 				try { // force an incremental build
-					getPluginProject().writeConfigXml();
-				} catch (Exception ex) {
-					String message = MessageFormat
-							.format(
-									Messages
-											.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
-									new Object[] { PluginProject.PLUGIN_XML });
+					pluginProject.writeConfigXml();
+				} catch (final Exception ex) {
+					final String message = MessageFormat.format(Messages.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
+							new Object[] { PluginProject.PLUGIN_XML });
 					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 				}
-
 			}
 		};
-
 		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
 
 		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
-
 			populateDoctype();
 			populateRootElements();
-
 		} else {
-
 			setValid(false);
-
 			setMessage(Messages.getString("DoctypePropertyPage.loading")); //$NON-NLS-1$
-
 		}
 
 		return pane;
 	}
-
+	
 	private void createPropertySheet() {
-
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		pane.setLayout(layout);
 		GridData gd;
@@ -114,44 +126,39 @@ public class DoctypePropertyPage extends PropertyPage {
 
 		label = new Label(pane, SWT.NONE);
 		label.setText(Messages.getString("DoctypePropertyPage.name")); //$NON-NLS-1$
-		this.nameText = new Text(pane, SWT.BORDER);
+		nameText = new Text(pane, SWT.BORDER);
 		gd = new GridData();
 		gd.widthHint = NAME_WIDTH;
-		this.nameText.setLayoutData(gd);
+		nameText.setLayoutData(gd);
 
 		label = new Label(pane, SWT.NONE);
 		label.setText(Messages.getString("DoctypePropertyPage.publicId")); //$NON-NLS-1$
-		this.publicIdText = new Text(pane, SWT.BORDER);
+		publicIdText = new Text(pane, SWT.BORDER);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
-		this.publicIdText.setLayoutData(gd);
+		publicIdText.setLayoutData(gd);
 
 		label = new Label(pane, SWT.NONE);
 		label.setText(Messages.getString("DoctypePropertyPage.systemId")); //$NON-NLS-1$
-		this.systemIdText = new Text(pane, SWT.BORDER);
+		systemIdText = new Text(pane, SWT.BORDER);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
-		this.systemIdText.setLayoutData(gd);
+		systemIdText.setLayoutData(gd);
 
-		final String resourcePath = ((IFile) this.getElement())
-				.getProjectRelativePath().toString();
+		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
 
-		final ConfigSource config = this.getPluginProject();
-
-		this.doctype = (DocumentType) config.getItemForResource(resourcePath);
-		if (this.doctype == null) {
-			this.doctype = new DocumentType(config);
-			this.doctype.setResourcePath(resourcePath);
-			config.addItem(this.doctype);
+		doctype = (DocumentType) pluginProject.getItemForResource(resourcePath);
+		if (doctype == null) {
+			doctype = new DocumentType(pluginProject);
+			doctype.setResourcePath(resourcePath);
+			pluginProject.addItem(doctype);
 		}
 
 		// Generate a simple ID for this one if necessary
-		if (this.doctype.getSimpleId() == null
-				|| this.doctype.getSimpleId().length() == 0) {
-			this.doctype.setSimpleId(this.doctype.generateSimpleId());
-		}
+		if (doctype.getSimpleId() == null || doctype.getSimpleId().length() == 0)
+			doctype.setSimpleId(doctype.generateSimpleId());
 
 		// need to do GridLayout and GridData for this guy them fill with items
 
@@ -165,57 +172,75 @@ public class DoctypePropertyPage extends PropertyPage {
 		label.setLayoutData(gd);
 
 		final Composite tablePane = new Composite(pane, SWT.BORDER);
-
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 200;
 		gd.horizontalSpan = 2;
 		tablePane.setLayoutData(gd);
+		tablePane.setLayout(new FillLayout());
 
-		final FillLayout fillLayout = new FillLayout();
-		tablePane.setLayout(fillLayout);
-
-		this.rootElementsTable = new Table(tablePane, SWT.CHECK);
+		rootElementsTable = new Table(tablePane, SWT.CHECK);
+	}
+	
+	private void populateDoctype() {
+		setText(nameText, doctype.getName());
+		setText(publicIdText, doctype.getPublicId());
+		setText(systemIdText, doctype.getSystemId());
 	}
 
-	/**
-	 * Returns the PluginProject associated with this resource.
-	 * 
-	 * @return
-	 */
-	public PluginProject getPluginProject() {
-		IFile file = (IFile) this.getElement();
-		return ConfigurationRegistry.INSTANCE.getPluginProject(file.getProject());
+	private static void setText(final Text textBox, final String text) {
+		textBox.setText(text == null ? "" : text); //$NON-NLS-1$
 	}
 
+	private void populateRootElements() {
+		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
+		final Validator validator = (Validator) pluginProject.getParsedResource(resourcePath);
+		if (validator != null) {
+			final List<String> list = Arrays.asList(doctype.getRootElements());
+			final Set<String> selectedRootElements = new TreeSet<String>(list);
+
+			rootElementsTable.removeAll();
+			final List<String> l = new ArrayList<String>(validator.getValidRootElements());
+			Collections.sort(l);
+			for (int i = 0; i < l.size(); i++) {
+				final TableItem item1 = new TableItem(rootElementsTable, SWT.NONE);
+				item1.setText(l.get(i));
+
+				if (selectedRootElements.contains(l.get(i)))
+					item1.setChecked(true);
+			}
+		} else
+			try {
+				pluginProject.writeConfigXml();
+			} catch (final Exception ex) {
+				final String message = MessageFormat.format(Messages.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
+						new Object[] { PluginProject.PLUGIN_XML });
+				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
+			}
+	}
+	
+	@Override
 	public boolean performOk() {
-
 		performApply();
-
 		return super.performOk();
 	}
 
+	@Override
 	public void performApply() {
-
-		this.doctype.setName(this.nameText.getText());
-		this.doctype.setPublicId(this.publicIdText.getText());
-		this.doctype.setSystemId(this.systemIdText.getText());
+		doctype.setName(nameText.getText());
+		doctype.setPublicId(publicIdText.getText());
+		doctype.setSystemId(systemIdText.getText());
 
 		// collect root Elements from the rootElementsTable
-
 		final ArrayList<String> selectedRootElements = new ArrayList<String>();
-		for (TableItem item : this.rootElementsTable.getItems()) {
-			if (item.getChecked()) {
+		for (final TableItem item : rootElementsTable.getItems())
+			if (item.getChecked())
 				selectedRootElements.add(item.getText());
-			}
-		}
+		doctype.setRootElements(selectedRootElements.toArray(new String[selectedRootElements.size()]));
 
-		this.doctype.setRootElements(selectedRootElements.toArray(new String[]{}));
-		
 		try {
-			this.getPluginProject().writeConfigXml();
-		} catch (Exception ex) {
-			String message = MessageFormat.format(Messages
-					.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
+			pluginProject.writeConfigXml();
+		} catch (final Exception ex) {
+			final String message = MessageFormat.format(Messages.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
 					new Object[] { PluginProject.PLUGIN_XML });
 			VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 		}
@@ -223,93 +248,18 @@ public class DoctypePropertyPage extends PropertyPage {
 		ConfigurationRegistry.INSTANCE.fireConfigChanged(new ConfigEvent(this));
 	}
 
+	@Override
 	public void performDefaults() {
-
 		super.performDefaults();
-
 		populateDoctype();
-
 		populateRootElements();
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
 
-		if (this.configListener != null) {
-			ConfigurationRegistry.INSTANCE.removeConfigListener(
-					this.configListener);
-		}
-	}
-
-	// ======================================================= PRIVATE
-
-	private DocumentType doctype;
-
-	private static final int NAME_WIDTH = 150;
-
-	private Composite pane;
-
-	private Text nameText;
-
-	private Text publicIdText;
-
-	private Text systemIdText;
-
-	private Table rootElementsTable;
-
-	private IConfigListener configListener;
-
-	private void populateDoctype() {
-		this.setText(this.nameText, this.doctype.getName());
-		this.setText(this.publicIdText, this.doctype.getPublicId());
-		this.setText(this.systemIdText, this.doctype.getSystemId());
-	}
-
-	/*
-     *  
-     */
-
-	private void populateRootElements() {
-
-		final String resourcePath = ((IFile) this.getElement())
-				.getProjectRelativePath().toString();
-
-		final Validator validator = (Validator) ((ConfigSource) this
-				.getPluginProject()).getParsedResource(resourcePath);
-
-		if (validator != null) {
-
-			final List<String> list = Arrays.asList(doctype.getRootElements());
-			final Set<String> selectedRootElements = new TreeSet<String>(list);
-
-			rootElementsTable.removeAll();
-
-			final List<String> l =
-				new ArrayList<String>(validator.getValidRootElements());
-			Collections.sort(l);
-			for (int i = 0; i < l.size(); i++) {
-
-				TableItem item1 = new TableItem(rootElementsTable, SWT.NONE);
-				item1.setText((String) l.get(i));
-
-				if (selectedRootElements.contains((String) l.get(i))) {
-					item1.setChecked(true);
-				}
-			}
-		} else {
-
-			try {
-				this.getPluginProject().writeConfigXml();
-			} catch (Exception ex) {
-				String message = MessageFormat.format(Messages
-						.getString("DoctypePropertyPage.errorWritingConfig"), //$NON-NLS-1$
-						new Object[] { PluginProject.PLUGIN_XML });
-				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
-			}
-		}
-	}
-
-	private void setText(Text textBox, String s) {
-		textBox.setText(s == null ? "" : s); //$NON-NLS-1$
+		if (configListener != null)
+			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
 	}
 }
