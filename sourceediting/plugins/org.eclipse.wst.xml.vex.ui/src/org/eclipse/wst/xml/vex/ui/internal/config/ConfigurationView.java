@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
  * View showing all configuration items defined in Vex.
@@ -31,8 +32,8 @@ public class ConfigurationView extends ViewPart {
 
 		parentControl = parent;
 
-		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
-		if (ConfigurationRegistry.INSTANCE.isLoaded())
+		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(configListener);
+		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded())
 			createTreeViewer();
 		else {
 			loadingLabel = new Label(parent, SWT.NONE);
@@ -44,7 +45,7 @@ public class ConfigurationView extends ViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
+		VexPlugin.getInstance().getConfigurationRegistry().removeConfigListener(configListener);
 	}
 
 	@Override
@@ -66,23 +67,23 @@ public class ConfigurationView extends ViewPart {
 		treeViewer.setContentProvider(new MyContentProvider());
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setAutoExpandLevel(2);
-		treeViewer.setInput(ConfigurationRegistry.INSTANCE);
+		treeViewer.setInput(VexPlugin.getInstance().getConfigurationRegistry());
 	}
 
 	private static class MyContentProvider implements ITreeContentProvider {
 		public Object[] getChildren(final Object parentElement) {
 			if (parentElement instanceof ConfigurationRegistry)
-				return ConfigurationRegistry.INSTANCE.getDocumentTypes();
+				return VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypes();
 			if (parentElement instanceof DocumentType)
-				return ConfigurationRegistry.INSTANCE.getStyles(((DocumentType) parentElement).getPublicId());
+				return VexPlugin.getInstance().getConfigurationRegistry().getStyles(((DocumentType) parentElement).getPublicId());
 			return new Object[0];
 		}
 
 		public Object getParent(final Object element) {
 			if (element instanceof DocumentType)
-				return ConfigurationRegistry.INSTANCE;
+				return VexPlugin.getInstance().getConfigurationRegistry();
 			if (element instanceof Style) 
-				return ConfigurationRegistry.INSTANCE.getDocumentType(((Style) element).getDocumentTypes().iterator().next());
+				return VexPlugin.getInstance().getConfigurationRegistry().getDocumentType(((Style) element).getDocumentTypes().iterator().next());
 			return null;
 		}
 

@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -86,7 +85,6 @@ import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigEvent;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.config.IConfigListener;
 import org.eclipse.wst.xml.vex.ui.internal.config.Style;
@@ -136,7 +134,7 @@ public class VexEditor extends EditorPart {
 		if (parentControl != null)
 			// createPartControl was called, so we must de-register from config
 			// events
-			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
+			VexPlugin.getInstance().getConfigurationRegistry().removeConfigListener(configListener);
 
 		if (getEditorInput() instanceof IFileEditorInput)
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
@@ -230,7 +228,7 @@ public class VexEditor extends EditorPart {
 	 *            Public ID for which to return the style.
 	 */
 	public static Style getPreferredStyle(final String publicId) {
-		return ConfigurationRegistry.INSTANCE.getStyle(publicId, getPreferredStyleId(publicId));
+		return VexPlugin.getInstance().getConfigurationRegistry().getStyle(publicId, getPreferredStyleId(publicId));
 	}
 
 	private static String getPreferredStyleId(final String publicId) {
@@ -427,8 +425,8 @@ public class VexEditor extends EditorPart {
 
 		parentControl = parent;
 
-		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
-		if (ConfigurationRegistry.INSTANCE.isLoaded())
+		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(configListener);
+		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded())
 			loadInput();
 		else
 			showLabel(Messages.getString("VexEditor.loading")); //$NON-NLS-1$
@@ -672,9 +670,9 @@ public class VexEditor extends EditorPart {
 				public void run() {
 					if (style == null)
 						return;
-					
+
 					final String styleId = style.getUniqueId();
-					final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
+					final Style newStyle = VexPlugin.getInstance().getConfigurationRegistry().getStyle(styleId);
 					if (newStyle == null) {
 						// Oops, style went bye-bye
 						// Let's just hold on to it in case it comes back later
@@ -733,7 +731,7 @@ public class VexEditor extends EditorPart {
 				// decl.
 				//
 				if (publicId != null)
-					doctype = ConfigurationRegistry.INSTANCE.getDocumentType(publicId);
+					doctype = VexPlugin.getInstance().getConfigurationRegistry().getDocumentType(publicId);
 
 				if (doctype == null) {
 					final DocumentTypeSelectionDialog dlg = DocumentTypeSelectionDialog.create(getSite().getShell(), publicId);

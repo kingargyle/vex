@@ -27,35 +27,44 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
-/**
- * Singleton registry of configuration sources and listeners.
- * 
- * The configuration sources may be accessed by multiple threads, and are
- * protected by a lock. All methods that modify or iterate over config sources
- * do so after acquiring the lock. Callers that wish to perform multiple
- * operations as an atomic transaction must lock and unlock the registry as
- * follows.
- * 
- * <pre>
- * ConfigRegistry reg = ConfigRegistry.getInstance();
- * try {
- * 	reg.lock();
- * 	// make modifications
- * } finally {
- * 	reg.unlock();
- * }
- * </pre>
- * 
- * <p>
- * This class also maintains a list of ConfigListeners. The addConfigListener
- * and removeConfigListener methods must be called from the main UI thread. The
- * fireConfigXXX methods may be called from other threads; this class will
- * ensure the listeners are called on the UI thread.
- */
 public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	private final ConfigurationLoader loader;
 	private volatile boolean loaded = false;
+
+	private final ILock lock = Job.getJobManager().newLock();
+	private Map<String, ConfigSource> configurationSources = new HashMap<String, ConfigSource>();
+	private final ListenerList<IConfigListener, ConfigEvent> configListeners = new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
+
+	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
+		public void resourceChanged(final IResourceChangeEvent event) {
+			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
+				final PluginProject pluginProject = getPluginProject((IProject) event.getResource());
+				if (pluginProject != null) {
+					// this project is about to be closed or deleted
+					removeConfigSource(pluginProject);
+					fireConfigChanged(new ConfigEvent(this));
+				}
+			} else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
+				final IResourceDelta[] resources = event.getDelta().getAffectedChildren();
+				for (final IResourceDelta delta : resources)
+					if (delta.getResource() instanceof IProject) {
+						final IProject project = (IProject) delta.getResource();
+						final PluginProject pluginProject = getPluginProject(project);
+						if (!project.isOpen() && pluginProject != null) {
+							// we know this project and it has been closed
+							removeConfigSource(pluginProject);
+							fireConfigChanged(new ConfigEvent(this));
+						} else if (PluginProject.isOpenPluginProject(project))
+							if (pluginProject == null)
+								reloadPluginProject(addNewPluginProject(project));
+							else
+								reloadPluginProject(pluginProject);
+					}
+			}
+		}
+
+	};
 
 	public ConfigurationRegistryImpl(final ConfigurationLoader loader) {
 		this.loader = loader;
@@ -67,49 +76,49 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	}
 
 	public void loadConfigurations() {
-		lock();
+		lock.acquire();
 		try {
 			loader.load(new Runnable() {
 				public void run() {
-					lock();
+					lock.acquire();
 					try {
 						configurationSources = new HashMap<String, ConfigSource>();
 						for (final ConfigSource configSource : loader.getLoadedConfigSources())
 							configurationSources.put(configSource.getUniqueIdentifer(), configSource);
 						loaded = true;
 					} finally {
-						unlock();
+						lock.release();
 					}
 					fireConfigLoaded(new ConfigEvent(ConfigurationRegistryImpl.this));
 				}
 			});
 		} finally {
-			unlock();
+			lock.release();
 		}
 	}
 
 	private List<ConfigItem> getAllConfigItems(final String extensionPointId) {
 		waitUntilLoaded();
-		lock();
+		lock.acquire();
 		try {
 			final List<ConfigItem> result = new ArrayList<ConfigItem>();
 			for (final ConfigSource configurationSource : configurationSources.values())
 				result.addAll(configurationSource.getValidItems(extensionPointId));
 			return result;
 		} finally {
-			unlock();
+			lock.release();
 		}
 	}
 
 	private List<ConfigSource> getAllConfigSources() {
 		waitUntilLoaded();
-		lock();
+		lock.acquire();
 		try {
 			final List<ConfigSource> result = new ArrayList<ConfigSource>();
 			result.addAll(configurationSources.values());
 			return result;
 		} finally {
-			unlock();
+			lock.release();
 		}
 	}
 
@@ -121,36 +130,22 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	private void addConfigSource(final ConfigSource configSource) {
 		waitUntilLoaded();
-		lock();
+		lock.acquire();
 		try {
 			configurationSources.put(configSource.getUniqueIdentifer(), configSource);
 		} finally {
-			unlock();
+			lock.release();
 		}
 	}
 
 	private void removeConfigSource(final ConfigSource configSource) {
 		waitUntilLoaded();
-		lock();
+		lock.acquire();
 		try {
 			configurationSources.remove(configSource.getUniqueIdentifer());
 		} finally {
-			unlock();
+			lock.release();
 		}
-	}
-
-	/**
-	 * Locks the registry for modification or iteration over its config sources.
-	 */
-	public void lock() {
-		lock.acquire();
-	}
-
-	/**
-	 * Unlocks the registry.
-	 */
-	public void unlock() {
-		lock.release();
 	}
 
 	private void waitUntilLoaded() {
@@ -165,31 +160,14 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 	}
 
-	/**
-	 * Returns true if the Vex configuration has been loaded.
-	 * 
-	 * @see org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob
-	 */
 	public boolean isLoaded() {
 		return loaded;
 	}
 
-	/**
-	 * Adds a ConfigChangeListener to the notification list.
-	 * 
-	 * @param listener
-	 *            Listener to be added.
-	 */
 	public void addConfigListener(final IConfigListener listener) {
 		configListeners.add(listener);
 	}
 
-	/**
-	 * Removes a ConfigChangeListener from the notification list.
-	 * 
-	 * @param listener
-	 *            Listener to be removed.
-	 */
 	public void removeConfigListener(final IConfigListener listener) {
 		configListeners.remove(listener);
 	}
@@ -202,16 +180,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		configListeners.fireEvent("configLoaded", e); //$NON-NLS-1$
 	}
 
-	/**
-	 * The document type configuration for the given public identifier, of null
-	 * if there is no configuration for the given public identifier.
-	 * 
-	 * @param publicId
-	 *            the public identifier
-	 * @return the document type configuration for the given public identifier,
-	 *         of null if there is no configuration for the given public
-	 *         identifier.
-	 */
 	public DocumentType getDocumentType(final String publicId) {
 		final List<ConfigItem> configItems = getAllConfigItems(DocumentType.EXTENSION_POINT);
 		for (final ConfigItem configItem : configItems) {
@@ -229,13 +197,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		return result.toArray(new DocumentType[result.size()]);
 	}
 
-	/**
-	 * Return a list of document types for which there is at least one
-	 * registered style.
-	 * 
-	 * @return a list of document types for which there is at least one
-	 *         registered style.
-	 */
 	public DocumentType[] getDocumentTypesWithStyles() {
 		final List<DocumentType> result = new ArrayList<DocumentType>();
 		for (final ConfigItem configItem : getAllConfigItems(DocumentType.EXTENSION_POINT)) {
@@ -276,16 +237,6 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		return styles[0];
 	}
 
-	/**
-	 * Factory method that returns the plugin project for the given IProject. If
-	 * the given project does not have the Vex plugin project nature, null is
-	 * returned. PluginProject instances are cached so they can be efficiently
-	 * returned.
-	 * 
-	 * @param project
-	 *            IProject for which to return the PluginProject.
-	 * @return the corresponding PluginProject
-	 */
 	public PluginProject getPluginProject(final IProject project) {
 		for (final ConfigSource source : getAllConfigSources())
 			if (source instanceof PluginProject) {
@@ -295,7 +246,7 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 			}
 		return null;
 	}
-	
+
 	private void reloadPluginProject(final PluginProject pluginProject) {
 		try {
 			pluginProject.load();
@@ -304,42 +255,4 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 		}
 		fireConfigChanged(new ConfigEvent(this));
 	}
-
-	// ======================================================== PRIVATE
-
-	private final ILock lock = Job.getJobManager().newLock();
-	private Map<String, ConfigSource> configurationSources = new HashMap<String, ConfigSource>();
-	private final ListenerList<IConfigListener, ConfigEvent> configListeners = new ListenerList<IConfigListener, ConfigEvent>(IConfigListener.class);
-
-	private final IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
-		public void resourceChanged(final IResourceChangeEvent event) {
-			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
-				final PluginProject pluginProject = getPluginProject((IProject) event.getResource());
-				if (pluginProject != null) {
-					// this project is about to be closed or deleted
-					removeConfigSource(pluginProject);
-					fireConfigChanged(new ConfigEvent(this));
-				}
-			} else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-				final IResourceDelta[] resources = event.getDelta().getAffectedChildren();
-				for (final IResourceDelta delta : resources)
-					if (delta.getResource() instanceof IProject) {
-						final IProject project = (IProject) delta.getResource();
-						final PluginProject pluginProject = getPluginProject(project);
-						if (!project.isOpen() && pluginProject != null) {
-							// we know this project and it has been closed
-							removeConfigSource(pluginProject);
-							fireConfigChanged(new ConfigEvent(this));
-						} else if (PluginProject.isOpenPluginProject(project))
-							if (pluginProject == null) {
-								reloadPluginProject(addNewPluginProject(project));
-							} else {
-								reloadPluginProject(pluginProject);
-							}
-					}
-			}
-		}
-
-	};
-
 }

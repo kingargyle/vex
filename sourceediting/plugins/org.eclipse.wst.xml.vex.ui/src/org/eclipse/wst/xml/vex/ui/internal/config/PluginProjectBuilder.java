@@ -69,7 +69,7 @@ public class PluginProjectBuilder extends IncrementalProjectBuilder {
 	protected void clean(final IProgressMonitor monitor) throws CoreException {
 		getProject().deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		// trigger reload to get a clean and consistent state
-		ConfigurationRegistry.INSTANCE.loadConfigurations(); 
+		VexPlugin.getInstance().getConfigurationRegistry().loadConfigurations(); 
 	}
 
 	private static void markError(final IResource resource, final String message) throws CoreException {

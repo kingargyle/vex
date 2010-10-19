@@ -24,17 +24,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
- * A plugin or plugin project that contributes ConfigItems. This class and all
- * configuration items added to it must be serializable, since it is persisted
- * across Vex invocations due to the expense of reparsing the configuration
- * items.
+ * Base class for an installed bundle or plug-in project that contributes
+ * ConfigItems.
  */
 public abstract class ConfigSource {
 
 	private static final IConfigItemFactory[] CONFIG_ITEM_FACTORIES = new IConfigItemFactory[] { new DoctypeFactory(), new StyleFactory() };
 
-	// Globally-unique identifier of this configuration
-	// == the plugin id.
+	// Globally-unique identifier of this configuration == the plugin id.
 	private final String id;
 
 	// all config items in this configuration
@@ -55,7 +52,7 @@ public abstract class ConfigSource {
 	}
 
 	/**
-	 * Adds the given item to the configuration.
+	 * Adds the given item to this configuration.
 	 * 
 	 * @param item
 	 *            ConfigItem to be added.
@@ -66,8 +63,8 @@ public abstract class ConfigSource {
 
 	/**
 	 * Creates a configuration item and adds it to this configuration. If the
-	 * given extension point does not have a factory registered in VexPlugin, no
-	 * action is taken and null is returned.
+	 * given extension point does not have a factory registered, no* action is 
+	 * taken and null is returned.
 	 * 
 	 * @param extensionPoint
 	 *            Extension point of the item to be added.
@@ -96,7 +93,7 @@ public abstract class ConfigSource {
 	}
 
 	/**
-	 * Removes the given item from the configuration.
+	 * Removes the given item from this configuration.
 	 * 
 	 * @param item
 	 *            ConfigItem to be removed.
@@ -196,8 +193,7 @@ public abstract class ConfigSource {
 	}
 
 	/**
-	 * Returns the unique identifier of this configuration. This is the same as
-	 * the ID of the plugin that defines the configuration.
+	 * Returns the unique identifier of this configuration.
 	 */
 	public String getUniqueIdentifer() {
 		return id;

@@ -17,6 +17,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
+import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistryImpl;
 import org.eclipse.wst.xml.vex.ui.internal.swt.SwtDisplayDevice;
 import org.osgi.framework.BundleContext;
 
@@ -29,6 +30,8 @@ public class VexPlugin extends AbstractUIPlugin {
     public static final String ID = "org.eclipse.wst.xml.vex.ui"; //$NON-NLS-1$
 
     private static VexPlugin instance;
+    
+    private final ConfigurationRegistry configurationRegistry = new ConfigurationRegistryImpl(new ConfigLoaderJob());
 
     /**
      * Returns the shared instance.
@@ -66,6 +69,10 @@ public class VexPlugin extends AbstractUIPlugin {
     public void log(int severity, String message, Throwable exception) {
 		getLog().log(new Status(severity, ID, 0, message, exception));
     }
+    
+    public ConfigurationRegistry getConfigurationRegistry() {
+    	return configurationRegistry;
+    }
 
     /**
      * Override the plugin startup to intialize the resource tracker.
@@ -89,7 +96,7 @@ public class VexPlugin extends AbstractUIPlugin {
 
         DisplayDevice.setCurrent(new SwtDisplayDevice());
 
-        ConfigurationRegistry.INSTANCE.loadConfigurations();
+        configurationRegistry.loadConfigurations();
     }
 
     public void stop(BundleContext context) throws Exception {

@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 
 /**
@@ -52,7 +51,7 @@ public class DocumentTypeSelectionPage extends WizardPage {
 			this.settings = rootSettings.addNewSection("newDocument"); //$NON-NLS-1$
 		}
 
-		this.doctypes = ConfigurationRegistry.INSTANCE.getDocumentTypesWithStyles();
+		this.doctypes = VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypesWithStyles();
 		Arrays.sort(this.doctypes);
 	}
 

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wst.xml.vex.ui.internal.config.ConfigurationRegistry;
+import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 
 /**
@@ -104,7 +104,7 @@ public class DocumentTypeSelectionDialog extends MessageDialog {
 		this.alwaysUseButton.setText(Messages
 				.getString("DocumentTypeSelectionDialog.alwaysUse")); //$NON-NLS-1$
 
-		DocumentType[] doctypes = ConfigurationRegistry.INSTANCE.getDocumentTypesWithStyles();
+		DocumentType[] doctypes = VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypesWithStyles();
 		Arrays.sort(doctypes);
 		this.typeList.add(doctypes);
 

@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
- * A regular Eclipse plugin that provides Vex configuration items.
+ * An installed Eclipse bundle that provides Vex configuration items.
  */
 public class ConfigPlugin extends ConfigSource {
 

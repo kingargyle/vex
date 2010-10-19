@@ -34,7 +34,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 
 /**
- * Job that loads Vex configuration objects from plug-ins and plug-in projects.
+ * Job that loads Vex configuration objects from installed bundles and plug-in projects.
  */
 public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 

@@ -128,7 +128,7 @@ public class VexEditorMultiPage extends VexEditor {
 		if (this.parentControl != null) {
 			// createPartControl was called, so we must de-register from config
 			// events
-			ConfigurationRegistry.INSTANCE.removeConfigListener(this.configListener);
+			VexPlugin.getInstance().getConfigurationRegistry().removeConfigListener(this.configListener);
 		}
 
 		if (getEditorInput() instanceof IFileEditorInput) {
@@ -223,7 +223,7 @@ public class VexEditorMultiPage extends VexEditor {
 	 *            Public ID for which to return the style.
 	 */
 	public static Style getPreferredStyle(final String publicId) {
-		return ConfigurationRegistry.INSTANCE.getStyle(publicId, getPreferredStyleId(publicId));
+		return VexPlugin.getInstance().getConfigurationRegistry().getStyle(publicId, getPreferredStyleId(publicId));
 	}
 
 	private static String getPreferredStyleId(final String publicId) {
@@ -329,7 +329,7 @@ public class VexEditorMultiPage extends VexEditor {
 			doc.setPublicID(domDocument.getDoctype().getPublicId());
 			doc.setSystemID(domDocument.getDoctype().getSystemId());
 			doc.setEncoding(structuredDocument.getEncodingMemento().getJavaCharsetName());
-			doctype = ConfigurationRegistry.INSTANCE.getDocumentType(doc.getPublicID());
+			doctype = VexPlugin.getInstance().getConfigurationRegistry().getDocumentType(doc.getPublicID());
 			wsFactory.getPolicy(doc.getPublicID());
 
 			// this.doctype is set either by wsPolicyFactory or entityResolver
@@ -429,8 +429,8 @@ public class VexEditorMultiPage extends VexEditor {
 
 		this.parentControl = parent;
 
-		ConfigurationRegistry.INSTANCE.addConfigListener(this.configListener);
-		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
+		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(this.configListener);
+		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded()) {
 			this.loadInput();
 		} else {
 			this.showLabel(Messages.getString("VexEditor.loading")); //$NON-NLS-1$
@@ -685,7 +685,7 @@ public class VexEditorMultiPage extends VexEditor {
 		public void configChanged(ConfigEvent e) {
 			if (style != null) {
 				final String styleId = style.getUniqueId();
-				final Style newStyle = ConfigurationRegistry.INSTANCE.getStyle(styleId);
+				final Style newStyle = VexPlugin.getInstance().getConfigurationRegistry().getStyle(styleId);
 				if (newStyle == null) {
 					// Oops, style went bye-bye
 					// Let's just hold on to it in case it comes back later
@@ -723,7 +723,7 @@ public class VexEditorMultiPage extends VexEditor {
 				// decl.
 				//
 				if (publicId != null) {
-					doctype = ConfigurationRegistry.INSTANCE.getDocumentType(publicId);
+					doctype = VexPlugin.getInstance().getConfigurationRegistry().getDocumentType(publicId);
 				}
 
 				if (doctype == null) {
@@ -766,7 +766,7 @@ public class VexEditorMultiPage extends VexEditor {
 				}
 			}
 
-			style = ConfigurationRegistry.INSTANCE.getStyle(doctype.getPublicId());
+			style = VexPlugin.getInstance().getConfigurationRegistry().getStyle(doctype.getPublicId());
 			if (style == null) {
 				throw new NoStyleForDoctypeException();
 			}

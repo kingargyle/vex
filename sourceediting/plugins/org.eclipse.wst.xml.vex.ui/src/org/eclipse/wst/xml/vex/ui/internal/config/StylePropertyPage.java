@@ -89,9 +89,9 @@ public class StylePropertyPage extends PropertyPage {
 				}
 			}
 		};
-		ConfigurationRegistry.INSTANCE.addConfigListener(configListener);
+		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(configListener);
 
-		if (ConfigurationRegistry.INSTANCE.isLoaded()) {
+		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded()) {
 			populateStyle();
 			populateDoctypes();
 		} else {
@@ -162,7 +162,7 @@ public class StylePropertyPage extends PropertyPage {
 		final Set<String> selectedDoctypes = new TreeSet<String>(style.getDocumentTypes());
 		doctypesTable.removeAll();
 
-		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
+		final DocumentType[] documentTypes = VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypes();
 		Arrays.sort(documentTypes);
 		for (final DocumentType documentType : documentTypes) {
 			final TableItem item = new TableItem(doctypesTable, SWT.NONE);
@@ -189,7 +189,7 @@ public class StylePropertyPage extends PropertyPage {
 
 		style.removeAllDocumentTypes();
 
-		final DocumentType[] documentTypes = ConfigurationRegistry.INSTANCE.getDocumentTypes();
+		final DocumentType[] documentTypes = VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypes();
 		Arrays.sort(documentTypes);
 		for (final DocumentType documentType : documentTypes)
 			if (selectedDoctypes.contains(documentType.getName()))
@@ -215,6 +215,6 @@ public class StylePropertyPage extends PropertyPage {
 	public void dispose() {
 		super.dispose();
 		if (configListener != null)
-			ConfigurationRegistry.INSTANCE.removeConfigListener(configListener);
+			VexPlugin.getInstance().getConfigurationRegistry().removeConfigListener(configListener);
 	}
 }
