@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-import java.io.Serializable;
 
 /**
  * A length that may be expressed as an absolute or relative value.
  */
-public class RelativeLength implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class RelativeLength {
 
 	private float percentage;
 	private int absolute;

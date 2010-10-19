@@ -31,6 +31,8 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFra
  */
 public class DocumentFragment extends VEXDocumentFragmentImpl implements Serializable, VEXDocumentFragment {
 
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Mime type representing document fragments: "text/x-vex-document-fragment"
 	 * @model

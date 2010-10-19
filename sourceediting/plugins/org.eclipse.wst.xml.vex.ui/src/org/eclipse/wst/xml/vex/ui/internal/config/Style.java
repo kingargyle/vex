@@ -11,10 +11,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -26,7 +24,6 @@ import org.eclipse.wst.xml.vex.core.internal.layout.BoxFactory;
  */
 public class Style extends ConfigItem {
 
-	private static final long serialVersionUID = 1L;
 	public static final String EXTENSION_POINT = "org.eclipse.wst.xml.vex.ui.styles"; //$NON-NLS-1$
 
 	public Style(final ConfigSource config) {

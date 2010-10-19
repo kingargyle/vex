@@ -18,8 +18,6 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
  */
 public class DocumentType extends ConfigItem {
 
-	private static final long serialVersionUID = 1L;
-
 	public static final String EXTENSION_POINT = "org.eclipse.wst.xml.vex.ui.doctypes"; //$NON-NLS-1$
 
 	public DocumentType(final ConfigSource config) {

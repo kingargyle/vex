@@ -11,14 +11,13 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * Base class of all configurtion items such as document types and styles.
  */
-public abstract class ConfigItem implements Comparable<ConfigItem>, Serializable {
+public abstract class ConfigItem implements Comparable<ConfigItem> {
 
 	/**
 	 * Class constructor.

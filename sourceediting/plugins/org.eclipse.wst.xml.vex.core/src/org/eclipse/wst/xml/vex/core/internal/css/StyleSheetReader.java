@@ -102,9 +102,6 @@ public class StyleSheetReader {
 		// May be null!
 		private final URL url;
 
-		// Factory for creating serializable clones of SAC objects
-		SacFactory factory = new SacFactory();
-
 		public StyleSheetBuilder(List<Rule> rules, URL url) {
 			this.rules = rules;
 			this.url = url;
@@ -159,35 +156,30 @@ public class StyleSheetReader {
 		}
 
 		public void property(String name, LexicalUnit value, boolean important) {
-
-			// Create a serializable clone of the value for storage in our
-			// stylesheet.
-			final LexicalUnit clonedValue = factory.cloneLexicalUnit(value);
-
 			if (name.equals(CSS.BORDER)) {
-				this.expandBorder(clonedValue, important);
+				this.expandBorder(value, important);
 			} else if (name.equals(CSS.BORDER_BOTTOM)) {
-				this.expandBorder(clonedValue, CSS.BORDER_BOTTOM, important);
+				this.expandBorder(value, CSS.BORDER_BOTTOM, important);
 			} else if (name.equals(CSS.BORDER_LEFT)) {
-				this.expandBorder(clonedValue, CSS.BORDER_LEFT, important);
+				this.expandBorder(value, CSS.BORDER_LEFT, important);
 			} else if (name.equals(CSS.BORDER_RIGHT)) {
-				this.expandBorder(clonedValue, CSS.BORDER_RIGHT, important);
+				this.expandBorder(value, CSS.BORDER_RIGHT, important);
 			} else if (name.equals(CSS.BORDER_TOP)) {
-				this.expandBorder(clonedValue, CSS.BORDER_TOP, important);
+				this.expandBorder(value, CSS.BORDER_TOP, important);
 			} else if (name.equals(CSS.BORDER_COLOR)) {
-				this.expandBorderColor(clonedValue, important);
+				this.expandBorderColor(value, important);
 			} else if (name.equals(CSS.BORDER_STYLE)) {
-				this.expandBorderStyle(clonedValue, important);
+				this.expandBorderStyle(value, important);
 			} else if (name.equals(CSS.BORDER_WIDTH)) {
-				this.expandBorderWidth(clonedValue, important);
+				this.expandBorderWidth(value, important);
 			} else if (name.equals(CSS.FONT)) {
-				this.expandFont(clonedValue, important);
+				this.expandFont(value, important);
 			} else if (name.equals(CSS.MARGIN)) {
-				this.expandMargin(clonedValue, important);
+				this.expandMargin(value, important);
 			} else if (name.equals(CSS.PADDING)) {
-				this.expandPadding(clonedValue, important);
+				this.expandPadding(value, important);
 			} else {
-				this.addDecl(name, clonedValue, important);
+				this.addDecl(name, value, important);
 			}
 		}
 
@@ -206,7 +198,7 @@ public class StyleSheetReader {
 		public void startSelector(SelectorList selectors) {
 			this.currentRules = new ArrayList<Rule>();
 			for (int i = 0; i < selectors.getLength(); i++) {
-				final Selector selector = factory.cloneSelector(selectors.item(i));
+				final Selector selector = selectors.item(i);
 				this.currentRules.add(new Rule(selector));
 			}
 		}
