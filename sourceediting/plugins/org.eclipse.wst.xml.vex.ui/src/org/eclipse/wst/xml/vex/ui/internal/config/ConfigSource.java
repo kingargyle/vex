@@ -35,7 +35,7 @@ public abstract class ConfigSource {
 
 	// Globally-unique identifier of this configuration
 	// == the plugin id.
-	private String id;
+	private final String id;
 
 	// all config items in this configuration
 	private final List<ConfigItem> items = new ArrayList<ConfigItem>();
@@ -49,7 +49,7 @@ public abstract class ConfigSource {
 				return factory;
 		return null;
 	}
-	
+
 	public ConfigSource(final String id) {
 		this.id = id;
 	}
@@ -238,7 +238,8 @@ public abstract class ConfigSource {
 				final IConfigItemFactory factory = getConfigItemFactory(item.getExtensionPointId());
 				try {
 					final Object parsedResource = factory.parseResource(getBaseUrl(), uri, problemHandler);
-					parsedResources.put(uri, parsedResource);
+					if (parsedResource != null)
+						parsedResources.put(uri, parsedResource);
 				} catch (final IOException ex) {
 					final String message = MessageFormat.format(Messages.getString("ConfigSource.errorParsingUri"), new Object[] { uri });
 					VexPlugin.getInstance().log(IStatus.ERROR, message, ex);

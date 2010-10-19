@@ -16,25 +16,32 @@ import java.net.URL;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
-
 /**
  * Factory for DocumentType objects.
  */
 public class DoctypeFactory implements IConfigItemFactory {
 
-	public IConfigElement[] createConfigurationElements(ConfigItem item) {
-		DocumentType doctype = (DocumentType) item;
-		ConfigurationElement doctypeElement = new ConfigurationElement(
-				ELT_DOCTYPE);
+	private static final String[] EXTS = new String[] { "dtd" }; //$NON-NLS-1$
+
+	private static final String ELT_DOCTYPE = "doctype"; //$NON-NLS-1$
+	private static final String ATTR_OUTLINE_PROVIDER = "outlineProvider"; //$NON-NLS-1$
+	private static final String ATTR_DTD = "dtd"; //$NON-NLS-1$
+	private static final String ATTR_SYSTEM_ID = "systemId"; //$NON-NLS-1$
+	private static final String ATTR_PUBLIC_ID = "publicId"; //$NON-NLS-1$
+
+	private static final String ELT_ROOT_ELEMENT = "rootElement"; //$NON-NLS-1$
+	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
+
+	public IConfigElement[] createConfigurationElements(final ConfigItem item) {
+		final DocumentType doctype = (DocumentType) item;
+		final ConfigurationElement doctypeElement = new ConfigurationElement(ELT_DOCTYPE);
 		doctypeElement.setAttribute(ATTR_PUBLIC_ID, doctype.getPublicId());
 		doctypeElement.setAttribute(ATTR_SYSTEM_ID, doctype.getSystemId());
 		doctypeElement.setAttribute(ATTR_DTD, doctype.getResourcePath());
-		doctypeElement.setAttribute(ATTR_OUTLINE_PROVIDER, doctype
-				.getOutlineProvider());
+		doctypeElement.setAttribute(ATTR_OUTLINE_PROVIDER, doctype.getOutlineProvider());
 
-		for (String name : doctype.getRootElements()) {
-			ConfigurationElement rootElement = new ConfigurationElement(
-					ELT_ROOT_ELEMENT);
+		for (final String name : doctype.getRootElements()) {
+			final ConfigurationElement rootElement = new ConfigurationElement(ELT_ROOT_ELEMENT);
 			rootElement.setAttribute(ATTR_NAME, name);
 			doctypeElement.addChild(rootElement);
 		}
@@ -42,24 +49,20 @@ public class DoctypeFactory implements IConfigItemFactory {
 		return new IConfigElement[] { doctypeElement };
 	}
 
-	public ConfigItem createItem(ConfigSource config,
-			IConfigElement[] configElements) throws IOException {
-		if (configElements.length < 1) {
+	public ConfigItem createItem(final ConfigSource config, final IConfigElement[] configElements) throws IOException {
+		if (configElements.length < 1)
 			return null;
-		}
-		IConfigElement configElement = configElements[0];
-		DocumentType doctype = new DocumentType(config);
+		final IConfigElement configElement = configElements[0];
+		final DocumentType doctype = new DocumentType(config);
 		doctype.setPublicId(configElement.getAttribute(ATTR_PUBLIC_ID));
 		doctype.setSystemId(configElement.getAttribute(ATTR_SYSTEM_ID));
 		doctype.setResourcePath(configElement.getAttribute(ATTR_DTD));
-		doctype.setOutlineProvider(configElement
-				.getAttribute(ATTR_OUTLINE_PROVIDER));
+		doctype.setOutlineProvider(configElement.getAttribute(ATTR_OUTLINE_PROVIDER));
 
-		IConfigElement[] rootElementRefs = configElement.getChildren();
-		String[] rootElements = new String[rootElementRefs.length];
-		for (int i = 0; i < rootElementRefs.length; i++) {
+		final IConfigElement[] rootElementRefs = configElement.getChildren();
+		final String[] rootElements = new String[rootElementRefs.length];
+		for (int i = 0; i < rootElementRefs.length; i++)
 			rootElements[i] = rootElementRefs[i].getAttribute("name"); //$NON-NLS-1$
-		}
 		doctype.setRootElements(rootElements);
 
 		return doctype;
@@ -77,34 +80,19 @@ public class DoctypeFactory implements IConfigItemFactory {
 		return Messages.getString("DoctypeFactory.pluralName"); //$NON-NLS-1$
 	}
 
-	public Object parseResource(URL baseUrl, String resourcePath,
-			IBuildProblemHandler problemHandler) throws IOException {
+	public Object parseResource(final URL baseUrl, final String resourcePath, final IBuildProblemHandler problemHandler) throws IOException {
 		try {
 			return WTPVEXValidator.create(new URL(baseUrl, resourcePath));
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			if (problemHandler != null) {
-				BuildProblem problem = new BuildProblem();
+				final BuildProblem problem = new BuildProblem();
 				problem.setSeverity(BuildProblem.SEVERITY_ERROR);
 				problem.setResourcePath(resourcePath);
 				problem.setMessage(ex.getMessage());
 				//problem.setLineNumber(ex.getLineNumber());
 				problemHandler.foundProblem(problem);
 			}
-			throw ex;
+			return null;
 		}
 	}
-
-	// =================================================== PRIVATE
-
-	private static final String[] EXTS = new String[] { "dtd" }; //$NON-NLS-1$
-
-	private static final String ELT_DOCTYPE = "doctype"; //$NON-NLS-1$
-	private static final String ATTR_OUTLINE_PROVIDER = "outlineProvider"; //$NON-NLS-1$
-	private static final String ATTR_DTD = "dtd"; //$NON-NLS-1$
-	private static final String ATTR_SYSTEM_ID = "systemId"; //$NON-NLS-1$
-	private static final String ATTR_PUBLIC_ID = "publicId"; //$NON-NLS-1$
-
-	private static final String ELT_ROOT_ELEMENT = "rootElement"; //$NON-NLS-1$
-	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
-
 }

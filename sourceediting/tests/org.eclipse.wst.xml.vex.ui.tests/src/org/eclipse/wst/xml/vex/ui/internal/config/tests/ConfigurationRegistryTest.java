@@ -11,8 +11,8 @@
 package org.eclipse.wst.xml.vex.ui.internal.config.tests;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
@@ -94,6 +94,26 @@ public class ConfigurationRegistryTest {
 		assertNotNull(registry.getPluginProject(project).getItemForResource("plugintest2.css"));
 	}
 
+	@Test
+	public void removeDeletedPluginProjectAndFireConfigChangedEvent() throws Exception {
+		registry = new ConfigurationRegistryImpl(new MockConfigurationLoader());
+		registry.loadConfigurations();
+		final IProject project = PluginProjectTest.createVexPluginProject(name.getMethodName());
+		final MockConfigListener configListener = new MockConfigListener();
+		registry.addConfigListener(configListener);
+		project.getFile("plugintest.css").delete(true, null);
+		assertTrue(configListener.changed);
+		assertNotNull(registry.getPluginProject(project));
+		configListener.reset();
+		project.getFile("plugintest.dtd").delete(true, null);
+		assertTrue(configListener.changed);
+		assertNotNull(registry.getPluginProject(project));
+		configListener.reset();
+		project.getFile(PluginProject.PLUGIN_XML).delete(true, null);
+		assertTrue(configListener.changed);
+		assertNotNull(registry.getPluginProject(project));
+	}
+	
 	private static class MockConfigurationLoader implements ConfigurationLoader {
 		private final List<ConfigSource> loadedConfigSources;
 
