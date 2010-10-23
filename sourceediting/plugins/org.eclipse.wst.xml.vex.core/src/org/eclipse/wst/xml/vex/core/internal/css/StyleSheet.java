@@ -99,7 +99,8 @@ public class StyleSheet implements Serializable {
 			new BorderWidthProperty(CSS.BORDER_TOP_WIDTH, CSS.BORDER_TOP_STYLE,
 					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), 
 			new HeightProperty(),
-			new WidthProperty()
+			new WidthProperty(),
+			new BackgroundImageProperty()
 		};
 
 	/**
@@ -227,25 +228,22 @@ public class StyleSheet implements Serializable {
 		// first, since most of the time it'll be empty and we'll return null.
 		if (element instanceof PseudoElement) {
 			lu = decls.get(CSS.CONTENT);
-			if (lu == null) {
+			if (lu == null)
 				return null;
-			}
 
 			List<String> content = new ArrayList<String>();
 			while (lu != null) {
-				switch (lu.getLexicalUnitType())
-				{
+				switch (lu.getLexicalUnitType()) {
 				case LexicalUnit.SAC_STRING_VALUE :
 					// content: "A String"
 					content.add(lu.getStringValue());
 					break;
 				case LexicalUnit.SAC_ATTR :
 					// content: attr(attributeName)
-					String attributeValue = 
-						element.getParent().getAttribute(lu.getStringValue());
-					if (attributeValue != null) {
+					final String attributeValue = element.getParent().getAttribute(lu.getStringValue());
+					if (attributeValue != null)
 						content.add(attributeValue);
-					}
+					break;
 				}
 				lu = lu.getNextLexicalUnit();
 			}
@@ -254,7 +252,7 @@ public class StyleSheet implements Serializable {
 
 		for (final IProperty property : CSS_PROPERTIES) {
 			lu = decls.get(property.getName());
-			Object value = property.calculate(lu, parentStyles, styles);
+			Object value = property.calculate(lu, parentStyles, styles, element);
 			styles.put(property.getName(), value);
 		}
 

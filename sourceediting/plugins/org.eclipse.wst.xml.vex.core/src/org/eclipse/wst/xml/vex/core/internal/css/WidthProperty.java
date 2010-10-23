@@ -10,19 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 public class WidthProperty extends AbstractProperty {
 
-	public static final float DEFAULT_WIDTH = 50.0f;
+	public static final float DEFAULT = 50.0f;
 
 	public WidthProperty() {
 		super(CSS.WIDTH);
 	}
 
-	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles) {
+	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, VEXElement element) {
 		if (lexicalUnit != null)
-			return new Float(Math.max(DEFAULT_WIDTH, lexicalUnit.getFloatValue()));
-		return DEFAULT_WIDTH;
+			return new Float(Math.max(DEFAULT, lexicalUnit.getFloatValue()));
+		return DEFAULT;
 	}
 }

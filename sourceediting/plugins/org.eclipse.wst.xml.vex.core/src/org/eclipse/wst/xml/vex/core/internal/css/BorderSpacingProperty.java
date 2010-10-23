@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -56,7 +57,7 @@ public class BorderSpacingProperty extends AbstractProperty {
 		super(CSS.BORDER_SPACING);
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 
 		int horizontal = 0;
 		int vertical = 0;

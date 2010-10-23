@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -31,7 +32,7 @@ public class LineHeightProperty extends AbstractProperty {
 	 * Calculates the value of the property given a LexicalUnit. Returns a
 	 * RelativeLength that is relative to the current font size.
 	 */
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 
 		int ppi = DisplayDevice.getCurrent().getVerticalPPI();
 

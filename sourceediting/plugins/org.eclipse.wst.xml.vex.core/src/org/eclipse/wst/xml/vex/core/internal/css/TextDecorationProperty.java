@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -24,7 +25,7 @@ public class TextDecorationProperty extends AbstractProperty {
 		super(CSS.TEXT_DECORATION);
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 		if (isTextDecoration(lu)) {
 			return lu.getStringValue();
 		} else {

@@ -257,15 +257,28 @@ public class Styles {
 	}
 
 	public float getElementWidth() {
-		if (this.values.get(CSS.WIDTH) != null) 
-			return ((Float) this.values.get(CSS.WIDTH)).floatValue();
-		return WidthProperty.DEFAULT_WIDTH;
+		final Float value = (Float) this.values.get(CSS.WIDTH);
+		if (value == null) 
+			return WidthProperty.DEFAULT;
+		return value.floatValue();
 	}
 
 	public float getElementHeight() {
-		if (this.values.get(CSS.HEIGHT) != null) 
-			return ((Float) this.values.get(CSS.HEIGHT)).floatValue();
-		return HeightProperty.DEFAULT_HEIGHT;
+		final Float value = (Float) this.values.get(CSS.HEIGHT);
+		if (value == null) 
+			return HeightProperty.DEFAULT;
+		return value.floatValue();
+	}
+	
+	public boolean hasBackgroundImage() {
+		return this.values.get(CSS.BACKGROUND_IMAGE) != null;
+	}
+	
+	public String getBackgroundImage() {
+		final Object value = this.values.get(CSS.BACKGROUND_IMAGE);
+		if (value == null) 
+			return BackgroundImageProperty.DEFAULT;
+		return value.toString();
 	}
 	
 	/**

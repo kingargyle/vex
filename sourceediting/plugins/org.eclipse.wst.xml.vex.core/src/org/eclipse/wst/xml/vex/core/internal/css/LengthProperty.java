@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -23,7 +24,7 @@ public class LengthProperty extends AbstractProperty {
 		this.axis = axis;
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 
 		DisplayDevice device = DisplayDevice.getCurrent();
 		int ppi = this.axis == AXIS_HORIZONTAL ? device.getHorizontalPPI()

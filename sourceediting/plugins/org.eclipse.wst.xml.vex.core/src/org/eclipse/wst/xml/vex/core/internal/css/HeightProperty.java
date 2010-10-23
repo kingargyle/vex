@@ -10,19 +10,20 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 public class HeightProperty extends AbstractProperty {
 
-	public static final float DEFAULT_HEIGHT = 50.0f;
+	public static final float DEFAULT = 50.0f;
 
 	public HeightProperty() {
 		super(CSS.HEIGHT);
 	}
 
-	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles) {
+	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, VEXElement element) {
 		if (lexicalUnit != null)
-			return new Float(Math.max(DEFAULT_HEIGHT, lexicalUnit.getFloatValue()));
-		return DEFAULT_HEIGHT;
+			return new Float(Math.max(DEFAULT, lexicalUnit.getFloatValue()));
+		return DEFAULT;
 	}
 }

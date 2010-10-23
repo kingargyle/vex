@@ -197,19 +197,18 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
-		if (this.getElement().getName().equals("graphic") // TODO this is specific for the Docbook DTD
-				&& !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
-			if (this.getElement() != null) {
-				this.callDrawImage(context, this.getElement(), styles);
-			}
-		}
+		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE))
+			callDrawImage(context, getElement(), styles);
 		
 		return childList;
 	}
 
 	private void callDrawImage(LayoutContext context, VEXElement element,
 			Styles styles) {
-		final String filename = element.getAttribute("url"); // TODO this is specific for the Docbook DTD
+		if (element == null)
+			return;
+		
+		final String filename = styles.getBackgroundImage();
 		if (filename == null)
 			return;
 
@@ -225,7 +224,7 @@ public class BlockElementBox extends AbstractBlockBox {
 		final int offset = 5;
 		final Drawable drawable = new Drawable() {
 			public Rectangle getBounds() {
-				return new Rectangle(0, -height, width, height);
+				return new Rectangle(0, 0, width, height);
 			}
 
 			public void draw(final Graphics g, final int x, final int y) {

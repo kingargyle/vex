@@ -15,6 +15,7 @@ package org.eclipse.wst.xml.vex.core.internal.css;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -29,7 +30,7 @@ public class FontFamilyProperty extends AbstractProperty {
 		super(CSS.FONT_FAMILY);
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 		if (isFontFamily(lu)) {
 			return getFontFamilies(lu);
 		} else {

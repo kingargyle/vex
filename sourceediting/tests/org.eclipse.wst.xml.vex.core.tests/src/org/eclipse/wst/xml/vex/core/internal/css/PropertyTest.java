@@ -32,39 +32,39 @@ public class PropertyTest extends TestCase {
 
 		// Inheritance
 		parentStyles.put(CSS.BORDER_TOP_STYLE, CSS.DASHED);
-		assertEquals(CSS.NONE, prop.calculate(null, parentStyles, styles));
+		assertEquals(CSS.NONE, prop.calculate(null, parentStyles, styles, null));
 		assertEquals(CSS.DASHED, prop.calculate(MockLU.INHERIT, parentStyles,
-				styles)); // not inherited
+				styles, null)); // not inherited
 
 		// Regular values
 		assertEquals(CSS.NONE, prop.calculate(MockLU.createIdent(CSS.NONE),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.HIDDEN, prop.calculate(MockLU.createIdent(CSS.HIDDEN),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.DOTTED, prop.calculate(MockLU.createIdent(CSS.DOTTED),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.DASHED, prop.calculate(MockLU.createIdent(CSS.DASHED),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.SOLID, prop.calculate(MockLU.createIdent(CSS.SOLID),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.DOUBLE, prop.calculate(MockLU.createIdent(CSS.DOUBLE),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.GROOVE, prop.calculate(MockLU.createIdent(CSS.GROOVE),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.RIDGE, prop.calculate(MockLU.createIdent(CSS.RIDGE),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.INSET, prop.calculate(MockLU.createIdent(CSS.INSET),
-				parentStyles, styles));
+				parentStyles, styles, null));
 		assertEquals(CSS.OUTSET, prop.calculate(MockLU.createIdent(CSS.OUTSET),
-				parentStyles, styles));
+				parentStyles, styles, null));
 
 		// Invalid token
 		assertEquals(CSS.NONE, prop.calculate(MockLU.createIdent(CSS.BOLD),
-				parentStyles, styles));
+				parentStyles, styles, null));
 
 		// Wrong type
 		assertEquals(CSS.NONE, prop.calculate(MockLU.createString(CSS.HIDDEN),
-				parentStyles, styles));
+				parentStyles, styles, null));
 	}
 
 	/**
@@ -83,36 +83,36 @@ public class PropertyTest extends TestCase {
 
 		// Inheritance
 		parentStyles.put(CSS.BORDER_TOP_WIDTH, new Integer(27));
-		assertEquals(new Integer(3), prop.calculate(null, parentStyles, styles));
+		assertEquals(new Integer(3), prop.calculate(null, parentStyles, styles, null));
 		assertEquals(new Integer(27), prop.calculate(MockLU.INHERIT,
-				parentStyles, styles)); // not inherited
+				parentStyles, styles, null)); // not inherited
 
 		// Regular values
 		assertEquals(new Integer(20), prop.calculate(MockLU.createFloat(
-				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles));
+				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles, null));
 
 		// Invalid token
 		assertEquals(new Integer(3), prop.calculate(MockLU
-				.createIdent(CSS.BOLD), parentStyles, styles));
+				.createIdent(CSS.BOLD), parentStyles, styles, null));
 
 		// Wrong type
 		assertEquals(new Integer(3), prop.calculate(MockLU
-				.createString(CSS.HIDDEN), parentStyles, styles));
+				.createString(CSS.HIDDEN), parentStyles, styles, null));
 
 		// Corresponding style is "none" or "hidden"
 		styles.put(CSS.BORDER_TOP_STYLE, CSS.NONE);
 		assertEquals(new Integer(0), prop.calculate(MockLU.createFloat(
-				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles));
+				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles, null));
 		styles.put(CSS.BORDER_TOP_STYLE, CSS.HIDDEN);
 		assertEquals(new Integer(0), prop.calculate(MockLU.createFloat(
-				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles));
+				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles, null));
 
 		// check that we use the proper PPI
 		styles.put(CSS.BORDER_LEFT_STYLE, CSS.SOLID);
 		prop = new BorderWidthProperty(CSS.BORDER_LEFT_WIDTH,
 				CSS.BORDER_LEFT_STYLE, IProperty.AXIS_HORIZONTAL);
 		assertEquals(Integer.valueOf(10), prop.calculate(MockLU.createFloat(
-				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles));
+				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles, null));
 	}
 
 	/**

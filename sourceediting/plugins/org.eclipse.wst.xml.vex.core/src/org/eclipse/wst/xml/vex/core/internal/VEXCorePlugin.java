@@ -16,18 +16,16 @@ import org.osgi.framework.BundleContext;
 
 public class VEXCorePlugin extends AbstractUIPlugin {
 
+	public static final String ID = "org.eclipse.wst.xml.vex.core"; //$NON-NLS-1$
+
 	private static VEXCorePlugin instance;
 
 	public VEXCorePlugin() {
-        if(instance != null) {
-        	throw new IllegalStateException("This plug-in must be a singleton.");
-        }
-        instance = this;
+		if (instance != null)
+			throw new IllegalStateException("This plug-in must be a singleton."); //$NON-NLS-1$
+		instance = this;
 	}
 
-	/**
-	 * Returns the shared instance.
-	 */
 	public static VEXCorePlugin getInstance() {
 		return instance;
 	}
