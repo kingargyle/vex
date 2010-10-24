@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.core;
 
-import org.eclipse.swt.graphics.Image;
+import java.net.URL;
 
 /**
  * Interface through which Vex performs graphics operations. Implemented by
@@ -51,7 +51,7 @@ public interface Graphics {
 
 	public void drawRect(int x, int y, int width, int height);
 
-	public void drawImage(Image image, int x, int y, int width, int height); // TODO this introduces a dependency to SWT. 'Image' should be encapsulated like FontMetrics 
+	public void drawImage(Image image, int x, int y, int width, int height); 
 	
 	public void fillOval(int x, int y, int width, int height);
 
@@ -70,6 +70,8 @@ public interface Graphics {
 	public ColorResource getSystemColor(int id);
 
 	public FontMetrics getFontMetrics();
+	
+	public Image getImage(URL url);
 
 	public boolean isAntiAliased();
 

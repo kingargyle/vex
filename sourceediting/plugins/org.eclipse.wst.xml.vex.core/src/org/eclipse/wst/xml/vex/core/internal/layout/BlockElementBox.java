@@ -12,14 +12,18 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Drawable;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
+import org.eclipse.wst.xml.vex.core.internal.core.Image;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -222,13 +226,22 @@ public class BlockElementBox extends AbstractBlockBox {
 		final int width = (int) styles.getElementWidth();
 		final int height = (int) styles.getElementHeight();
 		final int offset = 5;
+
+		final URL imageUrl;
+		try {
+			imageUrl = new URL(filename);
+		} catch (MalformedURLException e) {
+			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VEXCorePlugin.ID, MessageFormat.format("Cannot load image from url: {0}", filename), e));
+			return new SpaceBox(width, height);
+		}
+		
 		final Drawable drawable = new Drawable() {
 			public Rectangle getBounds() {
 				return new Rectangle(0, 0, width, height);
 			}
 
 			public void draw(final Graphics g, final int x, final int y) {
-				final Image image = new Image(Display.getDefault(), filename); // TODO this introduces a dependency to SWT, should be encapsulated
+				Image image = g.getImage(imageUrl);
 				g.drawImage(image, g.getClipBounds().getX() + offset, g
 						.getClipBounds().getY() - height, width, height);
 			}

@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
-import org.eclipse.swt.graphics.Image;
+import java.net.URL;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
@@ -19,6 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontMetrics;
 import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
+import org.eclipse.wst.xml.vex.core.internal.core.Image;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 
 /**
@@ -28,6 +31,8 @@ public class FakeGraphics implements Graphics {
 
 	private int charWidth = 6;
 
+	private URL lastDrawnImageUrl = null;
+	
 	public FakeGraphics() {
 		DisplayDevice.setCurrent(new DisplayDevice() {
 			public int getHorizontalPPI() {
@@ -58,6 +63,14 @@ public class FakeGraphics implements Graphics {
 		}
 	};
 
+	private static class FakeImage implements Image {
+		public final URL url;
+		
+		public FakeImage(final URL url) {
+			this.url = url;
+		}
+	}
+	
 	public int charsWidth(char[] data, int offset, int length) {
 		return length * charWidth;
 	}
@@ -94,7 +107,13 @@ public class FakeGraphics implements Graphics {
 	public void drawRect(int x, int y, int width, int height) {
 	}
 	
-	public void drawImage(Image image, int x, int y, int width, int height) {
+	public void drawImage(final Image image, final int x, final int y, final int width, final int height) {
+		Assert.isTrue(image instanceof FakeImage);
+		lastDrawnImageUrl = ((FakeImage) image).url;
+	}
+	
+	public URL getLastDrawnImageUrl() {
+		return lastDrawnImageUrl;
 	}
 
 	public void fillOval(int x, int y, int width, int height) {
@@ -134,6 +153,10 @@ public class FakeGraphics implements Graphics {
 	public FontMetrics getFontMetrics() {
 		return this.fontMetrics;
 	}
+	
+	public Image getImage(URL url) {
+		return new FakeImage(url);
+	}
 
 	public boolean isAntiAliased() {
 		return false;
@@ -169,7 +192,5 @@ public class FakeGraphics implements Graphics {
 	}
 
 	public void setXORMode(boolean xorMode) {
-		// TODO Auto-generated method stub
-
 	}
 }
