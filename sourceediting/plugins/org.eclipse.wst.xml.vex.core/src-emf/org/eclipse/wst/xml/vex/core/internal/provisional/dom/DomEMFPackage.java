@@ -458,13 +458,76 @@ public interface DomEMFPackage extends EPackage {
 	int VEX_DOCUMENT = 4;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__CONTENT = VEX_NODE__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>End Offset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__END_OFFSET = VEX_NODE__END_OFFSET;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__END_POSITION = VEX_NODE__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Start Offset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__START_OFFSET = VEX_NODE__START_OFFSET;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__START_POSITION = VEX_NODE__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Text</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__TEXT = VEX_NODE__TEXT;
+
+	/**
+	 * The feature id for the '<em><b>Node Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__NODE_TYPE = VEX_NODE__NODE_TYPE;
+
+	/**
 	 * The feature id for the '<em><b>Encoding</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__ENCODING = 0;
+	int VEX_DOCUMENT__ENCODING = VEX_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Length</b></em>' attribute.
@@ -473,7 +536,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__LENGTH = 1;
+	int VEX_DOCUMENT__LENGTH = VEX_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Root Element</b></em>' reference.
@@ -482,7 +545,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__ROOT_ELEMENT = 2;
+	int VEX_DOCUMENT__ROOT_ELEMENT = VEX_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Validator</b></em>' reference.
@@ -491,7 +554,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__VALIDATOR = 3;
+	int VEX_DOCUMENT__VALIDATOR = VEX_NODE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Public ID</b></em>' attribute.
@@ -500,7 +563,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__PUBLIC_ID = 4;
+	int VEX_DOCUMENT__PUBLIC_ID = VEX_NODE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>System ID</b></em>' attribute.
@@ -509,7 +572,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__SYSTEM_ID = 5;
+	int VEX_DOCUMENT__SYSTEM_ID = VEX_NODE_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Document</b></em>' attribute.
@@ -518,7 +581,16 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT__DOCUMENT = 6;
+	int VEX_DOCUMENT__DOCUMENT = VEX_NODE_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Document URI</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VEX_DOCUMENT__DOCUMENT_URI = VEX_NODE_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>VEX Document</em>' class.
@@ -527,7 +599,7 @@ public interface DomEMFPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VEX_DOCUMENT_FEATURE_COUNT = 7;
+	int VEX_DOCUMENT_FEATURE_COUNT = VEX_NODE_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl <em>VEX Document Fragment</em>}' class.
@@ -1262,6 +1334,17 @@ public interface DomEMFPackage extends EPackage {
 	EAttribute getVEXDocument_Document();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocumentURI <em>Document URI</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Document URI</em>'.
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocumentURI()
+	 * @see #getVEXDocument()
+	 * @generated
+	 */
+	EAttribute getVEXDocument_DocumentURI();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment <em>VEX Document Fragment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1911,6 +1994,14 @@ public interface DomEMFPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VEX_DOCUMENT__DOCUMENT = eINSTANCE.getVEXDocument_Document();
+
+		/**
+		 * The meta object literal for the '<em><b>Document URI</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VEX_DOCUMENT__DOCUMENT_URI = eINSTANCE.getVEXDocument_DocumentURI();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentFragmentImpl <em>VEX Document Fragment</em>}' class.

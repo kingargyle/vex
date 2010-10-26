@@ -11,9 +11,6 @@
 package org.eclipse.wst.xml.vex.core.internal.provisional.dom.I;
 
 import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EObject;
-
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.w3c.dom.Document;
 
@@ -32,6 +29,7 @@ import org.w3c.dom.Document;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getPublicID <em>Public ID</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getSystemID <em>System ID</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocument <em>Document</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocumentURI <em>Document URI</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,7 +37,7 @@ import org.w3c.dom.Document;
  * @model
  * @generated
  */
-public interface VEXDocument extends EObject {
+public interface VEXDocument extends VEXNode {
 	/**
 	 * Returns the value of the '<em><b>Encoding</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -221,6 +219,32 @@ public interface VEXDocument extends EObject {
 	 * @generated
 	 */
 	void setDocument(Document value);
+
+	/**
+	 * Returns the value of the '<em><b>Document URI</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Document URI</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Document URI</em>' attribute.
+	 * @see #setDocumentURI(String)
+	 * @see org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage#getVEXDocument_DocumentURI()
+	 * @model
+	 * @generated
+	 */
+	String getDocumentURI();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument#getDocumentURI <em>Document URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Document URI</em>' attribute.
+	 * @see #getDocumentURI()
+	 * @generated
+	 */
+	void setDocumentURI(String value);
 
 	/**
 	 * <!-- begin-user-doc -->

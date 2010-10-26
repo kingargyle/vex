@@ -12,14 +12,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Drawable;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
@@ -212,29 +208,21 @@ public class BlockElementBox extends AbstractBlockBox {
 		if (element == null)
 			return;
 		
-		final String filename = styles.getBackgroundImage();
-		if (filename == null)
+		final URL imageUrl = context.resolveUrl(element.getBaseURI(), styles.getBackgroundImage());
+		if (imageUrl == null)
 			return;
 
-		final InlineBox markerInline = drawImage(element, styles, filename);
+		final InlineBox markerInline = drawImage(element, styles, imageUrl);
 		this.beforeMarker = ParagraphBox.create(context, this.getElement(),
 				new InlineBox[] { markerInline }, Integer.MAX_VALUE);
 	}
 
 	private static InlineBox drawImage(final VEXElement element, Styles styles,
-			final String filename) {
+			final URL imageUrl) {
 		final int width = (int) styles.getElementWidth();
 		final int height = (int) styles.getElementHeight();
 		final int offset = 5;
 
-		final URL imageUrl;
-		try {
-			imageUrl = new URL(filename);
-		} catch (MalformedURLException e) {
-			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VEXCorePlugin.ID, MessageFormat.format("Cannot load image from url: {0}", filename), e));
-			return new SpaceBox(width, height);
-		}
-		
 		final Drawable drawable = new Drawable() {
 			public Rectangle getBounds() {
 				return new Rectangle(0, 0, width, height);

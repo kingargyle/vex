@@ -715,5 +715,17 @@ public class VEXElementImpl extends Node implements VEXElement {
 	public String getNodeType() {
 		return "Element";
 	}
+	
+	@Override
+	public String getBaseURI() {
+		final String baseAttributeValue = getAttribute("xml:base");
+		if (baseAttributeValue != null)
+			return baseAttributeValue;
+		if (getParent() != null)
+			return getParent().getBaseURI();
+		if (getDocument() != null)
+			return getDocument().getBaseURI();
+		return null;
+	}
 
 } //VEXElementImpl

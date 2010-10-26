@@ -125,6 +125,7 @@ public class DomEMFSwitch<T> {
 			case DomEMFPackage.VEX_DOCUMENT: {
 				VEXDocument vexDocument = (VEXDocument)theEObject;
 				T result = caseVEXDocument(vexDocument);
+				if (result == null) result = caseVEXNode(vexDocument);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

@@ -217,4 +217,12 @@ public interface VEXNode extends EObject {
 	 */
 	void setNodeType(String value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	String getBaseURI();
+
 } // VEXNode

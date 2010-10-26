@@ -16,18 +16,21 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
-
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFFactory;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
-
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.*;
-
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXAttribute;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXComment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXProcessingInstruction;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;

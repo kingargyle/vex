@@ -128,7 +128,10 @@ public class DocumentReader {
 			xmlReader.setEntityResolver(this.getEntityResolver());
 		}
 		xmlReader.parse(is);
-		return builder.getDocument();
+		final VEXDocument result = builder.getDocument();
+		result.setDocumentURI(is.getSystemId());
+		result.setSystemID(is.getSystemId());
+		return result;
 	}
 
 	/**

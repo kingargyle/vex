@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentValidationException;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.DomEMFPackage;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
@@ -41,12 +40,13 @@ import org.w3c.dom.Document;
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getPublicID <em>Public ID</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getSystemID <em>System ID</em>}</li>
  *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getDocument <em>Document</em>}</li>
+ *   <li>{@link org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.VEXDocumentImpl#getDocumentURI <em>Document URI</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
+public class VEXDocumentImpl extends VEXNodeImpl implements VEXDocument {
 	/**
 	 * The default value of the '{@link #getEncoding() <em>Encoding</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -166,6 +166,26 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 * @ordered
 	 */
 	protected Document document = DOCUMENT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDocumentURI() <em>Document URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentURI()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DOCUMENT_URI_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDocumentURI() <em>Document URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentURI()
+	 * @generated
+	 * @ordered
+	 */
+	protected String documentURI = DOCUMENT_URI_EDEFAULT;
 
 	protected Content content;
 
@@ -380,6 +400,27 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getDocumentURI() {
+		return documentURI;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDocumentURI(String newDocumentURI) {
+		String oldDocumentURI = documentURI;
+		documentURI = newDocumentURI;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomEMFPackage.VEX_DOCUMENT__DOCUMENT_URI, oldDocumentURI, documentURI));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean canInsertFragment(int offset, VEXDocumentFragment fragment) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -564,6 +605,8 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return getSystemID();
 			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
 				return getDocument();
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT_URI:
+				return getDocumentURI();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -596,6 +639,9 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return;
 			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
 				setDocument((Document)newValue);
+				return;
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT_URI:
+				setDocumentURI((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -630,6 +676,9 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
 				setDocument(DOCUMENT_EDEFAULT);
 				return;
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT_URI:
+				setDocumentURI(DOCUMENT_URI_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -656,6 +705,8 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 				return SYSTEM_ID_EDEFAULT == null ? systemID != null : !SYSTEM_ID_EDEFAULT.equals(systemID);
 			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT:
 				return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
+			case DomEMFPackage.VEX_DOCUMENT__DOCUMENT_URI:
+				return DOCUMENT_URI_EDEFAULT == null ? documentURI != null : !DOCUMENT_URI_EDEFAULT.equals(documentURI);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -680,6 +731,8 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 		result.append(systemID);
 		result.append(", document: ");
 		result.append(document);
+		result.append(", documentURI: ");
+		result.append(documentURI);
 		result.append(')');
 		return result.toString();
 	}
@@ -692,7 +745,10 @@ public class VEXDocumentImpl extends EObjectImpl implements VEXDocument {
 	public void setDOMDocument(Document domDocument) {
 		
 	}
-	
-	
 
+	@Override
+	public String getBaseURI() {
+		return getDocumentURI();
+	}
+	
 } //VEXDocumentImpl

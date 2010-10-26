@@ -42,6 +42,12 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
  */
 public class ValidatorImpl extends EObjectImpl implements Validator {
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * The cached value of the '{@link #getValidRootElements() <em>Valid Root Elements</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

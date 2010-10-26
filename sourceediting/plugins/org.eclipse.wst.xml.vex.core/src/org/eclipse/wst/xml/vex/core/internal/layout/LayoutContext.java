@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.MessageFormat;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
@@ -155,5 +162,16 @@ public class LayoutContext {
 	public void setSelectionStart(int i) {
 		selectionStart = i;
 	}
-
+	
+	public URL resolveUrl(final String baseUri, final String urlSpecification) {
+		try {
+			if (baseUri == null)
+				return new URL(urlSpecification);
+			else
+				return new URL(new URL(baseUri), urlSpecification);
+		} catch (MalformedURLException e) {
+			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VEXCorePlugin.ID, MessageFormat.format("Cannot resolve image url: {0}", urlSpecification), e));
+			return null;
+		}
+	}
 }

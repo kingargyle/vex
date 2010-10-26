@@ -41,7 +41,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="#//DOMComment"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VEXDocument">
+  <eClassifiers xsi:type="ecore:EClass" name="VEXDocument" eSuperTypes="#//VEXNode">
     <eOperations name="canInsertFragment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eParameters name="fragment" eType="#//VEXDocumentFragment"/>
@@ -105,6 +105,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="systemID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//DOMDocument"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXDocumentFragment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
@@ -159,6 +160,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//DOMElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VEXNode">
+    <eOperations name="getBaseURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//Content"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="endPosition" eType="#//Position"/>

@@ -524,4 +524,10 @@ public class VEXAttributeImpl extends VEXNodeImpl implements VEXAttribute {
 		return "Attribute";
 	}
 
+	@Override
+	public String getBaseURI() {
+		if (getParent() != null)
+			return getParent().getBaseURI();
+		return null;
+	}
 } //VEXAttributeImpl

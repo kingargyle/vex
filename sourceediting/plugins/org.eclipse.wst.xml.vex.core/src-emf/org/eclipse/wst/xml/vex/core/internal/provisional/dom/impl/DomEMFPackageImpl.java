@@ -461,6 +461,15 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVEXDocument_DocumentURI() {
+		return (EAttribute)vexDocumentEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVEXDocumentFragment() {
 		return vexDocumentFragmentEClass;
 	}
@@ -871,6 +880,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__PUBLIC_ID);
 		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__SYSTEM_ID);
 		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__DOCUMENT);
+		createEAttribute(vexDocumentEClass, VEX_DOCUMENT__DOCUMENT_URI);
 
 		vexDocumentFragmentEClass = createEClass(VEX_DOCUMENT_FRAGMENT);
 		createEReference(vexDocumentFragmentEClass, VEX_DOCUMENT_FRAGMENT__CONTENT);
@@ -953,6 +963,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		// Add supertypes to classes
 		vexAttributeEClass.getESuperTypes().add(this.getVEXNode());
 		vexCommentEClass.getESuperTypes().add(this.getVEXNode());
+		vexDocumentEClass.getESuperTypes().add(this.getVEXNode());
 		vexElementEClass.getESuperTypes().add(this.getVEXNode());
 		vexProcessingInstructionEClass.getESuperTypes().add(this.getVEXNode());
 		validatorEClass.getESuperTypes().add(this.getSerializable());
@@ -1004,6 +1015,7 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEAttribute(getVEXDocument_PublicID(), ecorePackage.getEString(), "publicID", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXDocument_SystemID(), ecorePackage.getEString(), "systemID", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXDocument_Document(), this.getDOMDocument(), "document", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVEXDocument_DocumentURI(), ecorePackage.getEString(), "documentURI", null, 0, 1, VEXDocument.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(vexDocumentEClass, ecorePackage.getEBoolean(), "canInsertFragment", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEInt(), "offset", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -1122,6 +1134,8 @@ public class DomEMFPackageImpl extends EPackageImpl implements DomEMFPackage {
 		initEReference(getVEXNode_StartPosition(), this.getPosition(), null, "startPosition", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXNode_Text(), ecorePackage.getEString(), "text", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVEXNode_NodeType(), ecorePackage.getEString(), "nodeType", null, 0, 1, VEXNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(vexNodeEClass, ecorePackage.getEString(), "getBaseURI", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(vexProcessingInstructionEClass, VEXProcessingInstruction.class, "VEXProcessingInstruction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getVEXProcessingInstruction_Attributes(), this.getVEXAttribute(), null, "attributes", null, 0, -1, VEXProcessingInstruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
