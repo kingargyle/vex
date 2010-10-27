@@ -40,6 +40,12 @@ public class MockLU implements LexicalUnit {
 		lu.setStringValue(s);
 		return lu;
 	}
+	
+	public static LexicalUnit createAttr(final String attributeName) {
+		final MockLU result = new MockLU(LexicalUnit.SAC_ATTR);
+		result.setStringValue(attributeName);
+		return result;
+	}
 
 	public String getDimensionUnitText() {
 		return this.dimensionUnitText;

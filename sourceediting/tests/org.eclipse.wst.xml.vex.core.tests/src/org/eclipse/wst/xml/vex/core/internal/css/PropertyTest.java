@@ -16,6 +16,9 @@ import org.eclipse.wst.xml.vex.core.internal.css.BorderWidthProperty;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.IProperty;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
 import junit.framework.TestCase;
@@ -122,8 +125,29 @@ public class PropertyTest extends TestCase {
 	public void testColorProperty() throws Exception {
 	}
 
+	public void testStringBackgroundImage() throws Exception {
+		final Styles styles = new Styles();
+		final Styles parentStyles = new Styles();
+		final BackgroundImageProperty property = new BackgroundImageProperty();
+		assertEquals("http://www.eclipse.org", property.calculate(MockLU.createString("http://www.eclipse.org"), parentStyles, styles, null));
+	}
+	
+	public void testAttrBackgroundImage() throws Exception {
+		final LexicalUnit attrSrc = MockLU.createAttr("src");
+		final Styles styles = new Styles();
+		final Styles parentStyles = new Styles();
+		final VEXDocument document = new DocumentReader().read("<root><image/><image src=\"image.jpg\"/><image src=\"\"/></root>");
+		final VEXElement noAttribute = document.getRootElement().getChildElements().get(0);
+		final VEXElement setAttribute = document.getRootElement().getChildElements().get(1);
+		final VEXElement emptyAttribute = document.getRootElement().getChildElements().get(2);
+		final BackgroundImageProperty property = new BackgroundImageProperty();
+		
+		assertNull(property.calculate(attrSrc, parentStyles, styles, noAttribute));
+		assertEquals("image.jpg", property.calculate(attrSrc, parentStyles, styles, setAttribute));
+		assertEquals("", property.calculate(attrSrc, parentStyles, styles, emptyAttribute));
+	}
+	
 	private static class DummyDisplayDevice extends DisplayDevice {
-
 		public DummyDisplayDevice(int horizontalPPI, int verticalPPI) {
 			this.horizontalPPI = horizontalPPI;
 			this.verticalPPI = verticalPPI;
