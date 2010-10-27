@@ -31,58 +31,58 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
  * Test the <code>org.eclipse.wst.vex.core.internal.dom</code> package.
  */
 public class DomTest extends TestCase {
-	
+
 	public void testWTPStructuredDocumentRetrieval() throws Exception {
-		IDOMModel model = initDOM();
-		IDOMDocument domDocument = model.getDocument();
-		
+		final IDOMModel model = initDOM();
+		final IDOMDocument domDocument = model.getDocument();
+
 		assertNotNull("Structured Document NULL.", domDocument.getStructuredDocument());
 	}
 
 	private IDOMModel initDOM() {
-		IDOMModel model = new DOMModelImpl();
-		IModelManager modelManager = StructuredModelManager.getModelManager();
-		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
+		final IDOMModel model = new DOMModelImpl();
+		final IModelManager modelManager = StructuredModelManager.getModelManager();
+		final IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
 		model.setStructuredDocument(structuredDocument);
 		return model;
 	}
-	
+
 	public void testWTPStructruedDocument() throws Exception {
-		IModelManager modelManager = StructuredModelManager.getModelManager();
-		
-		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
+		final IModelManager modelManager = StructuredModelManager.getModelManager();
+
+		final IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
 		assertNotNull("Structured Document NULL.", structuredDocument);
-		
+
 	}
-	
+
 	public void testWTPDOMRetrieval() throws Exception {
-		IDOMModel model = initDOM();
-		IDOMDocument domDocument =  model.getDocument();
-		
-		Element root = new Element("article");
+		final IDOMModel model = initDOM();
+		final IDOMDocument domDocument = model.getDocument();
+
+		final Element root = new Element("article");
 		root.setElement(domDocument.createElement("article"));
 		domDocument.appendChild(root.getElement());
-		VEXDocument doc = new Document(root);
-		
-		org.w3c.dom.Element domElement = doc.getRootElement().getElement();
+		final VEXDocument doc = new Document(root);
+
+		final org.w3c.dom.Element domElement = doc.getRootElement().getElement();
 		assertEquals("Incorrect element name.", "article", domElement.getNodeName());
 	}
-	
+
 	public void testWTPDOMOwnerDocumentElement() throws Exception {
-		IDOMModel model = initDOM();
-		IDOMDocument domDocument =  model.getDocument();
-		
-		Element root = new Element("article");
-		VEXDocument doc = new Document(root);
+		final IDOMModel model = initDOM();
+		final IDOMDocument domDocument = model.getDocument();
+
+		final Element root = new Element("article");
+		final VEXDocument doc = new Document(root);
 		root.setElement(domDocument.createElement(root.getName()));
 		domDocument.appendChild(root.getElement());
 		doc.setDocument(domDocument);
-		
-		VEXElement subelement = new Element("b");
+
+		final VEXElement subelement = new Element("b");
 		root.addChild(subelement);
 		subelement.setElement(domDocument.createElement("b"));
 		root.getElement().appendChild(subelement.getElement());
-		
+
 		assertEquals("Incorrect WTP Owner Document Element", "article", subelement.getElement().getOwnerDocument().getDocumentElement().getNodeName());
 	}
 
@@ -91,8 +91,8 @@ public class DomTest extends TestCase {
 		//
 		// Document initialisation
 		//
-		Element root = new Element("article");
-		VEXDocument doc = new Document(root);
+		final Element root = new Element("article");
+		final VEXDocument doc = new Document(root);
 		List<VEXNode> content;
 
 		// root
@@ -106,7 +106,7 @@ public class DomTest extends TestCase {
 
 		content = root.getChildNodes();
 		assertEquals(0, content.size());
-		List<VEXElement> children = root.getChildElements();
+		final List<VEXElement> children = root.getChildElements();
 		assertEquals(0, children.size());
 
 		// root
@@ -116,13 +116,13 @@ public class DomTest extends TestCase {
 		try {
 			doc.insertText(0, "ac");
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		try {
 			doc.insertText(2, "ac");
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		doc.insertText(1, "ac");
@@ -138,18 +138,18 @@ public class DomTest extends TestCase {
 		//
 		// Try inserting at illegal offset
 		//
-		Element element = new Element("b");
+		final Element element = new Element("b");
 
 		try {
 			doc.insertElement(0, element);
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		try {
 			doc.insertElement(4, element);
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		// root
@@ -163,7 +163,7 @@ public class DomTest extends TestCase {
 		assertEquals(root, element.getParent());
 		assertEquals(6, doc.getLength());
 
-		Element element2 = new Element("x");
+		final Element element2 = new Element("x");
 		doc.insertElement(2, element2);
 
 		content = root.getChildNodes();
@@ -188,19 +188,19 @@ public class DomTest extends TestCase {
 		try {
 			doc.getFragment(2, 2);
 			fail();
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		try {
 			doc.getFragment(-1, 0);
 			fail();
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		try {
 			doc.getFragment(4, 5);
 			fail();
-		} catch (IllegalArgumentException ex) {
+		} catch (final IllegalArgumentException ex) {
 		}
 
 		VEXDocumentFragment frag = doc.getFragment(2, 3);
@@ -208,7 +208,7 @@ public class DomTest extends TestCase {
 		assertEquals(0, frag.getElements().size());
 		List<VEXNode> nodes = frag.getNodes();
 		assertEquals(1, nodes.size());
-		this.assertIsText(nodes.get(0), "b", 0, 1);
+		assertIsText(nodes.get(0), "b", 0, 1);
 
 		// Case 2: single element, no children
 		//        
@@ -230,16 +230,16 @@ public class DomTest extends TestCase {
 		doc.insertText(3, "b");
 
 		frag = doc.getFragment(1, 6);
-		
-		List<VEXElement> elements = frag.getElements();
+
+		final List<VEXElement> elements = frag.getElements();
 		assertEquals(1, elements.size());
-		this.assertIsElement(elements.get(0), "z", null, 1, 3);
+		assertIsElement(elements.get(0), "z", null, 1, 3);
 		nodes = frag.getNodes();
 		assertEquals(3, nodes.size());
 		assertIsText(nodes.get(0), "a", 0, 1);
 		assertIsElement(nodes.get(1), "z", null, 1, 3);
 		assertIsText(nodes.get(2), "c", 4, 5);
-		List<VEXNode> childNodes = elements.get(0).getChildNodes();
+		final List<VEXNode> childNodes = elements.get(0).getChildNodes();
 		assertEquals(1, childNodes.size());
 		assertIsText(childNodes.get(0), "b", 2, 3);
 
@@ -265,84 +265,82 @@ public class DomTest extends TestCase {
 		doc.insertElement(9, new Element("y"));
 		doc.insertText(10, "f");
 
-        // 3a
-        expect_a_bc_d_e_f_gh_i_(doc);
+		// 3a
+		expect_a_bc_d_e_f_gh_i_(doc);
 
-        // 3b: remove and re-insert fragment "c*d*e*f*g"
-        frag = doc.getFragment(4, 13);
-        doc.delete(4, 13);
-        doc.insertFragment(4, frag);
-        expect_a_bc_d_e_f_gh_i_(doc);
+		// 3b: remove and re-insert fragment "c*d*e*f*g"
+		frag = doc.getFragment(4, 13);
+		doc.delete(4, 13);
+		doc.insertFragment(4, frag);
+		expect_a_bc_d_e_f_gh_i_(doc);
 
-        // 3c: remove and re-insert fragment "*bc*d*e*f*gh*"
-        frag = doc.getFragment(2, 15);
-        doc.delete(2, 15);
-        doc.insertFragment(2, frag);
-        expect_a_bc_d_e_f_gh_i_(doc);
-    }
+		// 3c: remove and re-insert fragment "*bc*d*e*f*gh*"
+		frag = doc.getFragment(2, 15);
+		doc.delete(2, 15);
+		doc.insertFragment(2, frag);
+		expect_a_bc_d_e_f_gh_i_(doc);
+	}
 
-    private void expect_a_bc_d_e_f_gh_i_(VEXDocument doc) {
+	private void expect_a_bc_d_e_f_gh_i_(final VEXDocument doc) {
 
-        VEXElement root = doc.getRootElement();
-        assertIsElement(root, "root", null, 0, 16);
-        List<VEXNode> childNodes = root.getChildNodes();
-        assertEquals(3, childNodes.size());
-        assertIsText(childNodes.get(0), "a", 1, 2);
-        assertIsElement(childNodes.get(1), "z", doc.getRootElement(), 2, 14);
-        assertIsText(childNodes.get(2), "i", 15, 16);
+		final VEXElement root = doc.getRootElement();
+		assertIsElement(root, "root", null, 0, 16);
+		List<VEXNode> childNodes = root.getChildNodes();
+		assertEquals(3, childNodes.size());
+		assertIsText(childNodes.get(0), "a", 1, 2);
+		assertIsElement(childNodes.get(1), "z", doc.getRootElement(), 2, 14);
+		assertIsText(childNodes.get(2), "i", 15, 16);
 
-        VEXDocumentFragment frag = doc.getFragment(4, 13);
-        // | x | | y |
-        // c * d * e * f * g
-        // 0 1 2 3 4 5 6 7 8 9
-        assertEquals(9, frag.getContent().getLength());
+		VEXDocumentFragment frag = doc.getFragment(4, 13);
+		// | x | | y |
+		// c * d * e * f * g
+		// 0 1 2 3 4 5 6 7 8 9
+		assertEquals(9, frag.getContent().getLength());
 
-        List<VEXElement> elements = frag.getElements();
-        assertEquals(2, elements.size());
-        assertIsElement(elements.get(0), "x", null, 1, 3);
-        assertIsElement(elements.get(1), "y", null, 5, 7);
+		List<VEXElement> elements = frag.getElements();
+		assertEquals(2, elements.size());
+		assertIsElement(elements.get(0), "x", null, 1, 3);
+		assertIsElement(elements.get(1), "y", null, 5, 7);
 
-        List<VEXNode> nodes = frag.getNodes();
-        assertEquals(5, nodes.size());
-        assertIsText(nodes.get(0), "c", 0, 1);
-        assertIsElement(nodes.get(1), "x", null, 1, 3);
-        assertIsText(nodes.get(2), "e", 4, 5);
-        assertIsElement(nodes.get(3), "y", null, 5, 7);
-        assertIsText(nodes.get(4), "g", 8, 9);
+		List<VEXNode> nodes = frag.getNodes();
+		assertEquals(5, nodes.size());
+		assertIsText(nodes.get(0), "c", 0, 1);
+		assertIsElement(nodes.get(1), "x", null, 1, 3);
+		assertIsText(nodes.get(2), "e", 4, 5);
+		assertIsElement(nodes.get(3), "y", null, 5, 7);
+		assertIsText(nodes.get(4), "g", 8, 9);
 
-        frag = doc.getFragment(2, 15);
-        // z
-        // | |
-        // | | x | | y | |
-        // * b c * d * e * f * g h *
-        // 0 1 2 3 4 5 6 7 8 9 0 1 2 3
-        assertEquals(13, frag.getContent().getLength());
-        elements = frag.getElements();
-        VEXElement z = elements.get(0);
-        childNodes = z.getChildNodes();
+		frag = doc.getFragment(2, 15);
+		// z
+		// | |
+		// | | x | | y | |
+		// * b c * d * e * f * g h *
+		// 0 1 2 3 4 5 6 7 8 9 0 1 2 3
+		assertEquals(13, frag.getContent().getLength());
+		elements = frag.getElements();
+		final VEXElement z = elements.get(0);
+		childNodes = z.getChildNodes();
 
-        assertEquals(5, childNodes.size());
-        assertIsText(childNodes.get(0), "bc", 1, 3);
-        assertIsElement(childNodes.get(1), "x", z, 3, 5);
-        assertIsText(childNodes.get(2), "e", 6, 7);
-        assertIsElement(childNodes.get(3), "y", z, 7, 9);
-        assertIsText(childNodes.get(4), "gh", 10, 12);
+		assertEquals(5, childNodes.size());
+		assertIsText(childNodes.get(0), "bc", 1, 3);
+		assertIsElement(childNodes.get(1), "x", z, 3, 5);
+		assertIsText(childNodes.get(2), "e", 6, 7);
+		assertIsElement(childNodes.get(3), "y", z, 7, 9);
+		assertIsText(childNodes.get(4), "gh", 10, 12);
 
-        VEXElement x = (VEXElement) childNodes.get(1);
-        VEXElement y = (VEXElement) childNodes.get(3);
-        childNodes = x.getChildNodes();
+		final VEXElement x = (VEXElement) childNodes.get(1);
+		final VEXElement y = (VEXElement) childNodes.get(3);
+		childNodes = x.getChildNodes();
 
-        nodes = frag.getNodes();
-        assertEquals(1, nodes.size());
-        assertIsText(childNodes.get(0), "d", 4, 5);
-        childNodes = y.getChildNodes();
-        assertEquals(1, nodes.size());
-        assertIsText(childNodes.get(0), "f", 8, 9);
-    }
+		nodes = frag.getNodes();
+		assertEquals(1, nodes.size());
+		assertIsText(childNodes.get(0), "d", 4, 5);
+		childNodes = y.getChildNodes();
+		assertEquals(1, nodes.size());
+		assertIsText(childNodes.get(0), "f", 8, 9);
+	}
 
-	public void assertIsElement(VEXNode node, String name, VEXElement parent,
-			int startOffset, int endOffset) {
-
+	private static void assertIsElement(final VEXNode node, final String name, final VEXElement parent, final int startOffset, final int endOffset) {
 		assertTrue(node instanceof Element);
 		assertEquals(name, ((VEXElement) node).getName());
 		assertEquals(parent, ((VEXElement) node).getParent());
@@ -350,12 +348,25 @@ public class DomTest extends TestCase {
 		assertEquals(endOffset, node.getEndOffset());
 	}
 
-	public void assertIsText(VEXNode node, String text, int startOffset,
-			int endOffset) {
-
+	private static void assertIsText(final VEXNode node, final String text, final int startOffset, final int endOffset) {
 		assertTrue(node instanceof Text);
 		assertEquals(text, node.getText());
 		assertEquals(startOffset, node.getStartOffset());
 		assertEquals(endOffset, node.getEndOffset());
+	}
+
+	public void testBaseUri() throws Exception {
+		// according to http://www.w3.org/TR/DOM-Level-3-Core/core.html#baseURIs-Considerations 
+		final DocumentReader reader = new DocumentReader();
+		final VEXDocument document = reader.read("<root><node/><node xml:base=\"http://www.eclipse.org/test.xml\"/></root>");
+		assertNull(document.getBaseURI());
+		assertNull(document.getRootElement().getBaseURI());
+		assertEquals("http://www.eclipse.org/test.xml", document.getRootElement().getChildElements().get(1).getBaseURI());
+
+		document.setDocumentURI("file:/tmp/test.xml");
+		assertEquals("file:/tmp/test.xml", document.getBaseURI());
+		assertEquals("file:/tmp/test.xml", document.getRootElement().getBaseURI());
+		assertEquals("file:/tmp/test.xml", document.getRootElement().getChildElements().get(0).getBaseURI());
+		assertEquals("http://www.eclipse.org/test.xml", document.getRootElement().getChildElements().get(1).getBaseURI());
 	}
 }
