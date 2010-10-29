@@ -4,10 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     John Krasnay - initial API and implementation
- *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images 
+ *     Mohamadou Nassourou - Bug 298912 - rudimentary support for images
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
@@ -32,7 +32,7 @@ public class FakeGraphics implements Graphics {
 	private int charWidth = 6;
 
 	private URL lastDrawnImageUrl = null;
-	
+
 	public FakeGraphics() {
 		DisplayDevice.setCurrent(new DisplayDevice() {
 			public int getHorizontalPPI() {
@@ -65,12 +65,28 @@ public class FakeGraphics implements Graphics {
 
 	private static class FakeImage implements Image {
 		public final URL url;
-		
+		private int height;
+		private int width;
+
 		public FakeImage(final URL url) {
+			this(url, 0, 0);
+		}
+
+		public FakeImage(final URL url, final int height, final int width) {
 			this.url = url;
+			this.height = height;
+			this.width = width;
+		}
+
+		public int getHeight() {
+			return height;
+		}
+
+		public int getWidth() {
+			return width;
 		}
 	}
-	
+
 	public int charsWidth(char[] data, int offset, int length) {
 		return length * charWidth;
 	}
@@ -106,12 +122,12 @@ public class FakeGraphics implements Graphics {
 
 	public void drawRect(int x, int y, int width, int height) {
 	}
-	
+
 	public void drawImage(final Image image, final int x, final int y, final int width, final int height) {
 		Assert.isTrue(image instanceof FakeImage);
 		lastDrawnImageUrl = ((FakeImage) image).url;
 	}
-	
+
 	public URL getLastDrawnImageUrl() {
 		return lastDrawnImageUrl;
 	}
@@ -153,7 +169,7 @@ public class FakeGraphics implements Graphics {
 	public FontMetrics getFontMetrics() {
 		return this.fontMetrics;
 	}
-	
+
 	public Image getImage(URL url) {
 		return new FakeImage(url);
 	}
