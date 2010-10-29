@@ -72,7 +72,7 @@ public class FakeGraphics implements Graphics {
 			this(url, 0, 0);
 		}
 
-		public FakeImage(final URL url, final int height, final int width) {
+		public FakeImage(final URL url, final int width, final int height) {
 			this.url = url;
 			this.height = height;
 			this.width = width;
