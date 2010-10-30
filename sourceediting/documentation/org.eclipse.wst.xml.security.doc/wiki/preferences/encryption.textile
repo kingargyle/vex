@@ -1,5 +1,0 @@
-= Encryption Preferences =
-
-All settings on this page only affect '''Quick Encryption''' and '''Quick Decryption''', not the normal wizards. Here you can select what you want to encrypt - the whole document, a selection or a document fragment identified by an XPath expression. The encryption type is fixed to ''Enveloping'' at the moment. Select the algorithms to use and provide a keystore containing a key which match those algorithms. Chose the encryption id carefully. Quick Decryption searches for this id, so it should be unique.
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/encryption.png‎|XML Security Tools encryption preferences|center]]

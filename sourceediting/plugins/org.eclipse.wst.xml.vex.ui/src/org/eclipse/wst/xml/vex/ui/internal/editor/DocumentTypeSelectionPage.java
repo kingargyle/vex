@@ -51,7 +51,7 @@ public class DocumentTypeSelectionPage extends WizardPage {
 			this.settings = rootSettings.addNewSection("newDocument"); //$NON-NLS-1$
 		}
 
-		this.doctypes = DocumentType.getDocumentTypesWithStyles();
+		this.doctypes = VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypesWithStyles();
 		Arrays.sort(this.doctypes);
 	}
 

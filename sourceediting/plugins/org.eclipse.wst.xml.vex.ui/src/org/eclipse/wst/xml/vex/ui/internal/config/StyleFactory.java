@@ -13,9 +13,9 @@ package org.eclipse.wst.xml.vex.ui.internal.config;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
+import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CSSParseException;
 
 /**
@@ -23,55 +23,33 @@ import org.w3c.css.sac.CSSParseException;
  */
 public class StyleFactory implements IConfigItemFactory {
 
-	/**
-	 * Returns all styles for a particular doctype.
-	 * 
-	 * @param publicId
-	 *            Public ID of the desired doctype.
-	 * @return List of Style objects.
-	 */
-	public static List<Style> getStylesForDoctype(String publicId) {
-		// List result = new ArrayList();
-		// Iterator it = this.getAll().iterator();
-		// while (it.hasNext()) {
-		// Style style = (Style) it.next();
-		// if (style.getDocumentTypes().contains(publicId)) {
-		// result.add(style);
-		// }
-		// }
-		//            
-		// return result;
-		return null;
-	}
+	private static final String[] EXTS = new String[] { "css" }; //$NON-NLS-1$
 
-	public IConfigElement[] createConfigurationElements(ConfigItem item) {
-		Style style = (Style) item;
-		ConfigurationElement element = new ConfigurationElement("style"); //$NON-NLS-1$
+	public IConfigElement[] createConfigurationElements(final ConfigItem item) {
+		final Style style = (Style) item;
+		final ConfigurationElement element = new ConfigurationElement("style"); //$NON-NLS-1$
 		element.setAttribute("css", style.getResourcePath()); //$NON-NLS-1$
-		for (String publicId : style.getDocumentTypes()) {
-			ConfigurationElement child = new ConfigurationElement("doctypeRef"); //$NON-NLS-1$
+		for (final String publicId : style.getDocumentTypes()) {
+			final ConfigurationElement child = new ConfigurationElement("doctypeRef"); //$NON-NLS-1$
 			child.setAttribute("publicId", publicId); //$NON-NLS-1$
 			element.addChild(child);
 		}
 		return new IConfigElement[] { element };
 	}
 
-	public ConfigItem createItem(ConfigSource config,
-			IConfigElement[] configElements) throws IOException {
+	public ConfigItem createItem(final ConfigSource config, final IConfigElement[] configElements) throws IOException {
 
-		if (configElements.length < 1) {
+		if (configElements.length < 1)
 			return null;
-		}
-		IConfigElement configElement = configElements[0];
+		final IConfigElement configElement = configElements[0];
 
-		Style style = new Style(config);
+		final Style style = new Style(config);
 		style.setResourcePath(configElement.getAttribute("css")); //$NON-NLS-1$
 
-		IConfigElement[] doctypeRefs = configElement.getChildren();
+		final IConfigElement[] doctypeRefs = configElement.getChildren();
 
-		for (int j = 0; j < doctypeRefs.length; j++) {
-			style.addDocumentType(doctypeRefs[j].getAttribute("publicId")); //$NON-NLS-1$
-		}
+		for (final IConfigElement doctypeRef : doctypeRefs)
+			style.addDocumentType(doctypeRef.getAttribute("publicId")); //$NON-NLS-1$
 
 		return style;
 	}
@@ -88,26 +66,28 @@ public class StyleFactory implements IConfigItemFactory {
 		return Messages.getString("StyleFactory.pluralName"); //$NON-NLS-1$
 	}
 
-	public Object parseResource(URL baseUrl, String resourcePath,
-			IBuildProblemHandler problemHandler) throws IOException {
+	public Object parseResource(final URL baseUrl, final String resourcePath, final IBuildProblemHandler problemHandler) throws IOException {
 		try {
 			return new StyleSheetReader().read(new URL(baseUrl, resourcePath));
-		} catch (CSSParseException ex) {
+		} catch (final CSSParseException e) {
 			if (problemHandler != null) {
-				BuildProblem problem = new BuildProblem();
+				final BuildProblem problem = new BuildProblem();
 				problem.setSeverity(BuildProblem.SEVERITY_ERROR);
-				problem.setResourcePath(ex.getURI());
-				problem.setMessage(ex.getMessage());
-				problem.setLineNumber(ex.getLineNumber());
+				problem.setResourcePath(e.getURI());
+				problem.setMessage(e.getMessage());
+				problem.setLineNumber(e.getLineNumber());
 				problemHandler.foundProblem(problem);
 			}
-			throw ex;
-
+			return null;
+		} catch (final CSSException e) {
+			if (problemHandler != null) {
+				final BuildProblem problem = new BuildProblem();
+				problem.setSeverity(BuildProblem.SEVERITY_ERROR);
+				problem.setResourcePath(baseUrl.toString());
+				problem.setMessage(e.getMessage());
+				problemHandler.foundProblem(problem);
+			}
+			return null;
 		}
 	}
-
-	// =================================================== PRIVATE
-
-	private static final String[] EXTS = new String[] { "css" }; //$NON-NLS-1$
-
 }

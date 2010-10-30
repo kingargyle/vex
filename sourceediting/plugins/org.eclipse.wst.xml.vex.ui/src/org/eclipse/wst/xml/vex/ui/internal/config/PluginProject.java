@@ -15,8 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -33,7 +31,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
@@ -43,288 +40,209 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
- * Represents a Vex plugin project.
+ * Represents a Vex plugin project in the workspace.
  */
 public class PluginProject extends ConfigSource {
 
-	private static final long serialVersionUID = 1L;
-	
 	public static final String PLUGIN_XML = "vex-plugin.xml"; //$NON-NLS-1$
-	public static final String PROJECT_CONFIG_SER = ".vexConfig.ser"; //$NON-NLS-1$
 
-	/**
-	 * Class constructor.
-	 * 
-	 * @param config
-	 *            VexConfiguration associated with this project.
-	 */
-	protected PluginProject(IProject project) {
-		this.projectPath = project.getFullPath().toString();
+	private final IProject project;
+
+	public PluginProject(final IProject project) {
+		super(project.getName());
+		this.project = project;
 	}
 
-	/**
-	 * Remove the .vexConfig.ser state in which the project state is stored.
-	 */
-	public void cleanState() throws CoreException {
-		IFile configSer = this.getProject().getFile(PROJECT_CONFIG_SER);
-		configSer.delete(true, null);
-	}
-
-	/**
-	 * Factory method that returns the plugin project for the given IProject. If
-	 * the given project does not have the Vex plugin project nature, null is
-	 * returned. PluginProject instances are cached so they can be efficiently
-	 * returned.
-	 * 
-	 * @param project
-	 *            IProject for which to return the PluginProject.
-	 * @return
-	 * @throws CoreException
-	 */
-	public static PluginProject get(IProject project) {
-		for (ConfigSource source : ConfigRegistry.getInstance().getAllConfigSources()) {
-			if (source instanceof PluginProject) {
-				PluginProject pluginProject=(PluginProject)source;
-				if (project.equals(pluginProject.getProject())) {
-					return pluginProject;
-				}
-			}	
-		}
-		return null;
-	}
-
+	@Override
 	public URL getBaseUrl() {
 		try {
-			return this.getProject().getLocation().toFile().toURI().toURL();
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(Messages
-					.getString("PluginProject.malformedUrl"), e); //$NON-NLS-1$
+			return getProject().getLocation().toFile().toURL();
+		} catch (final MalformedURLException e) {
+			throw new AssertionError(e);
 		}
 	}
 
 	/**
-	 * Returns the IProject associated with this plugin project.
+	 * @return the IProject associated with this plugin project.
 	 */
 	public IProject getProject() {
-		return ResourcesPlugin.getWorkspace().getRoot().getProject(
-				this.projectPath);
+		return project;
 	}
 
-	/**
-	 * Loads the project from it's serialized state file and registers it with
-	 * the ConfigRegistry. If the serialized state cannot be loaded, a new
-	 * PluginProject is created and the builder is launched.
-	 */
-	public static PluginProject load(IProject project) {
-
+	public void build() {
 		try {
-			if (!project.isOpen() || !project.hasNature(PluginProjectNature.ID)) {
-				String message = MessageFormat.format(Messages
-						.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
-						new Object[] { project.getName() });
-				throw new IllegalArgumentException(message);
-			}
-		} catch (CoreException e) {
-			String message = MessageFormat.format(Messages
-					.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
+			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
+		} catch (final CoreException e) {
+			final String message = MessageFormat.format(Messages.getString("PluginProject.buildError"), //$NON-NLS-1$
 					new Object[] { project.getName() });
-			throw new IllegalArgumentException(message);
+			VexPlugin.getInstance().log(IStatus.ERROR, message, e);
 		}
+	}
 
-		IFile serFile = project.getFile(PROJECT_CONFIG_SER);
+	public void load() throws CoreException {
+		checkProject();
+		parseConfigXml(null);
+		parseResources(null);
+	}
 
-		PluginProject pluginProject = null;
-		if (serFile.exists()) {
-			try {
-				ObjectInputStream ois = new ObjectInputStream(serFile
-						.getContents());
-				pluginProject = (PluginProject) ois.readObject();
-			} catch (Exception ex) {
-				String message = MessageFormat.format(Messages
-						.getString("PluginProject.loadingError"), //$NON-NLS-1$
-						new Object[] { serFile });
-				VexPlugin.getInstance().log(IStatus.WARNING, message, ex);
-			}
+	private void checkProject() {
+		if (!isOpenPluginProject(project))
+			throw new IllegalStateException(MessageFormat.format(Messages.getString("PluginProject.notPluginProject"), //$NON-NLS-1$
+					project.getName()));
+	}
+
+	public static boolean isOpenPluginProject(final IProject project) {
+		return project.isOpen() && hasPluginProjectNature(project);
+	}
+
+	public static boolean hasPluginProjectNature(final IProject project) {
+		try {
+			return project.isOpen() && project.hasNature(PluginProjectNature.ID);
+		} catch (final CoreException e) {
+			VexPlugin.getInstance().getLog().log(e.getStatus());
+			return false;
 		}
-
-		boolean rebuild = false;
-
-		if (pluginProject == null) {
-			rebuild = true;
-			pluginProject = new PluginProject(project);
-		}
-
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-		registry.addConfigSource(pluginProject);
-		registry.fireConfigChanged(new ConfigEvent(PluginProject.class));
-
-		if (rebuild) {
-			try {
-				project.build(IncrementalProjectBuilder.FULL_BUILD, null);
-
-			} catch (Exception ex) {
-				String message = MessageFormat.format(Messages
-						.getString("PluginProject.buildError"), //$NON-NLS-1$
-						new Object[] { project.getName() });
-				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
-			}
-		}
-
-		return pluginProject;
 	}
 
 	/**
 	 * Re-parses the vex-plugin.xml file.
 	 */
-	public void parseConfigXml() throws SAXException, IOException {
+	public void parseConfigXml(final IBuildProblemHandler problemHandler) throws CoreException {
+		removeAllItems();
 
-		DocumentBuilder builder;
-		try {
-			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		} catch (FactoryConfigurationError e) {
-			throw new RuntimeException(e);
-		}
+		final Document document = parseConfigXmlDom(problemHandler);
+		if (document == null)
+			return;
 
-		this.removeAllItems();
+		final NodeList extensions = document.getElementsByTagName("extension"); //$NON-NLS-1$
+		for (int i = 0; i < extensions.getLength(); i++) {
+			final Element extensionElement = (Element) extensions.item(i);
+			final String extensionPointId = extensionElement.getAttribute("point"); //$NON-NLS-1$
+			final String id = extensionElement.getAttribute("id"); //$NON-NLS-1$
+			final String name = extensionElement.getAttribute("name"); //$NON-NLS-1$
+			final IConfigElement[] configElements = parseConfigElements(extensionElement);
 
-		URL url = new URL(this.getBaseUrl(), PluginProject.PLUGIN_XML);
-		Document doc = builder.parse(url.toString());
-
-		Element root = doc.getDocumentElement();
-
-		this.setUniqueIdentifer(root.getAttribute("id")); //$NON-NLS-1$
-
-		NodeList nodeList = doc.getElementsByTagName("extension"); //$NON-NLS-1$
-
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			Element element = (Element) nodeList.item(i);
-			String extPoint = element.getAttribute("point"); //$NON-NLS-1$
-			String id = element.getAttribute("id"); //$NON-NLS-1$
-			String name = element.getAttribute("name"); //$NON-NLS-1$
-
-			List<Node> configElementList = new ArrayList<Node>();
-			NodeList childList = element.getChildNodes();
-			for (int j = 0; j < childList.getLength(); j++) {
-				Node child = childList.item(j);
-				if (child instanceof Element) {
-					configElementList.add(child);
-				}
+			try {
+				this.addItem(extensionPointId, id, name, configElements);
+			} catch (final IOException e) {
+				VexPlugin.getInstance().log(IStatus.ERROR, e.getMessage(), e);
 			}
-
-			IConfigElement[] configElements = new IConfigElement[configElementList
-					.size()];
-			for (int j = 0; j < configElementList.size(); j++) {
-				configElements[j] = new DomConfigurationElement(
-						(Element) configElementList.get(j));
-			}
-
-			this.addItem(extPoint, id, name, configElements);
 		}
-
 	}
 
-	/**
-	 * Saves the state of this project into .vexConfig.ser.
-	 */
-	public void saveState() throws CoreException, IOException {
-		// TODO bug 320796: implement alternative serialization strategy - get rid of "Serializable" in the whole model
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(this);
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		IFile configSer = this.getProject().getFile(PROJECT_CONFIG_SER);
-		if (configSer.exists()) {
-			configSer.setContents(bais, true, false, null);
-		} else {
-			configSer.create(bais, true, null);
-			configSer.setDerived(true);
+	private Document parseConfigXmlDom(final IBuildProblemHandler problemHandler) throws CoreException {
+		final IFile configXml = project.getFile(PLUGIN_XML);
+		final DocumentBuilder builder = createDocumentBuilder();
+		try {
+			final URL url = configXml.getLocation().toFile().toURL();
+			return builder.parse(url.toString());
+		} catch (final SAXParseException e) {
+			if (problemHandler != null) {
+				final BuildProblem problem = new BuildProblem(BuildProblem.SEVERITY_ERROR, configXml.getName(), e.getMessage(), e.getLineNumber());
+				problemHandler.foundProblem(problem);
+				return null;
+			} else {
+				VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+				return null;
+			}
+		} catch (final SAXException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+			return null;
+		} catch (final IOException e) {
+			VexPlugin.getInstance().log(IStatus.ERROR, MessageFormat.format("Cannot load {0}.", configXml.getFullPath()), e);
+			return null;
 		}
+	}
 
+	private IConfigElement[] parseConfigElements(final Element extensionElement) {
+		final List<IConfigElement> result = new ArrayList<IConfigElement>();
+		final NodeList childList = extensionElement.getChildNodes();
+		for (int j = 0; j < childList.getLength(); j++) {
+			final Node child = childList.item(j);
+			if (child instanceof Element)
+				result.add(new DomConfigurationElement((Element) child));
+		}
+		return result.toArray(new IConfigElement[result.size()]);
+	}
+
+	private static DocumentBuilder createDocumentBuilder() {
+		try {
+			return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		} catch (final ParserConfigurationException e) {
+			throw new AssertionError(e);
+		} catch (final FactoryConfigurationError e) {
+			throw new AssertionError(e);
+		}
 	}
 
 	/**
 	 * Writes this configuraton to the file vex-config.xml in the project.
 	 */
 	public void writeConfigXml() throws CoreException, IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(baos, "utf-8")); //$NON-NLS-1$
 
-		ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
-		for (ConfigItem item : this.getAllItems()) {
-			ConfigurationElement extElement = new ConfigurationElement(
-			"extension"); //$NON-NLS-1$
+		final ConfigurationElement root = new ConfigurationElement("plugin"); //$NON-NLS-1$
+		for (final ConfigItem item : getAllItems()) {
+			final ConfigurationElement extElement = new ConfigurationElement("extension"); //$NON-NLS-1$
 			extElement.setAttribute("id", item.getSimpleId()); //$NON-NLS-1$
 			extElement.setAttribute("name", item.getName()); //$NON-NLS-1$
 			extElement.setAttribute("point", item.getExtensionPointId()); //$NON-NLS-1$
-			IConfigItemFactory factory = ConfigRegistry.getInstance()
-				.getConfigItemFactory(item.getExtensionPointId());
-			extElement.setChildren(factory.createConfigurationElements(item));
-			root.addChild(extElement);	
+			final IConfigItemFactory factory = getConfigItemFactory(item.getExtensionPointId());
+			if (factory != null) {
+				extElement.setChildren(factory.createConfigurationElements(item));
+				root.addChild(extElement);
+			}
 		}
 		writeElement(root, out, 0);
 
 		out.close();
 
-		InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
+		final InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
 
-		IFile file = this.getProject().getFile(PLUGIN_XML);
-		if (file.exists()) {
+		final IFile file = getProject().getFile(PLUGIN_XML);
+		if (file.exists())
 			file.setContents(inputStream, true, false, null);
-		} else {
+		else
 			file.create(inputStream, true, null);
-		}
 	}
 
-	// =========================================================== PRIVATE
-
-	private String projectPath;
-	/** Filename used when serializing in a Vex plugin project */
-	public static final String SER_FILE = ".vexConfig.ser"; //$NON-NLS-1$
-
-	private static void writeElement(IConfigElement element, PrintWriter out,
-			int level) {
-		StringBuffer elementIndent = new StringBuffer();
-		for (int i = 0; i < level; i++) {
+	private static void writeElement(final IConfigElement element, final PrintWriter out, final int level) {
+		final StringBuffer elementIndent = new StringBuffer();
+		for (int i = 0; i < level; i++)
 			elementIndent.append("  "); //$NON-NLS-1$
-		}
-		StringBuffer elementPrefix = new StringBuffer();
+		final StringBuffer elementPrefix = new StringBuffer();
 		elementPrefix.append("<"); //$NON-NLS-1$
 		elementPrefix.append(element.getName());
 
-		StringBuffer attributeIndent = new StringBuffer(elementIndent
-				.toString());
-		for (int i = 0; i < elementPrefix.length() + 1; i++) {
+		final StringBuffer attributeIndent = new StringBuffer(elementIndent.toString());
+		for (int i = 0; i < elementPrefix.length() + 1; i++)
 			attributeIndent.append(" "); //$NON-NLS-1$
-		}
 
 		out.print(elementIndent.toString());
 		out.print(elementPrefix.toString());
-		String[] attributeNames = element.getAttributeNames();
+		final String[] attributeNames = element.getAttributeNames();
 		for (int i = 0; i < attributeNames.length; i++) {
-			String attributeName = attributeNames[i];
+			final String attributeName = attributeNames[i];
 			if (i > 0) {
 				out.println();
 				out.print(attributeIndent);
-			} else {
+			} else
 				out.print(" "); //$NON-NLS-1$
-			}
 
 			out.print(attributeName);
 			out.print("=\""); //$NON-NLS-1$
-			out.print(DocumentWriter
-					.escape(element.getAttribute(attributeName)));
+			out.print(DocumentWriter.escape(element.getAttribute(attributeName)));
 			out.print("\""); //$NON-NLS-1$
 		}
 		out.println(">"); //$NON-NLS-1$
 
-		IConfigElement[] children = element.getChildren();
-		for (int i = 0; i < children.length; i++) {
-			writeElement(children[i], out, level + 1);
-		}
+		final IConfigElement[] children = element.getChildren();
+		for (final IConfigElement element2 : children)
+			writeElement(element2, out, level + 1);
 
 		out.print(elementIndent);
 		out.print("</"); //$NON-NLS-1$

@@ -41,9 +41,9 @@ public class NewPluginProjectWizard extends BasicNewProjectResourceWizard {
 		boolean success = super.performFinish();
 		if (success) {
 			try {
-				this.createVexPluginXml();
-				this.registerVexPluginNature();
-				PluginProject.load(this.getNewProject());
+				createVexPluginXml();
+				registerVexPluginNature();
+				// the new plug-in project is automatically added to the ConfigurationRegistry
 			} catch (CoreException e) {
 				VexPlugin
 						.getInstance()

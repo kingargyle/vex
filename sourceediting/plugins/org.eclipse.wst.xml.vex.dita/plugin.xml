@@ -5,7 +5,7 @@
 	<!-- Registers DITA-related content types extensions as xml content-->
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type id="org.eclipse.wst.xml.vex.ui.dita" name="%contentType.name"
-			base-type="org.eclipse.core.runtime.xml" file-extensions="dita, ditamap, ditaval">
+			base-type="org.eclipse.wst.xml.vex.ui.XmlDocument" file-extensions="dita, ditamap, bookmap, ditaval">
 		</content-type>
 		<content-type id="org.eclipse.wst.xml.vex.ui.dita.map"
 			name="%contentType.map.name" base-type="org.eclipse.wst.xml.vex.ui.dita.map"
@@ -20,6 +20,37 @@
 			file-extensions="dita">
 		</content-type>
 	</extension>
+
+ <extension
+       point="org.eclipse.wst.xml.core.catalogContributions">
+    <catalogContribution
+          id="default">
+       <public
+             publicId="-//OASIS//DTD DITA 1.1 Concept//EN"
+             uri="dita11/concept.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Composite//EN"
+             uri="dita11/ditabase.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Reference//EN"
+             uri="dita11/reference.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Task//EN"
+             uri="dita11/task.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Topic//EN"
+             uri="dita11/topic.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Map//EN"
+             uri="dita11/map.dtd">
+       </public>
+    </catalogContribution>
+ </extension>
 	
    <extension
          id="concept"

@@ -11,11 +11,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
 /**
  * A registered document type.
@@ -24,48 +20,8 @@ public class DocumentType extends ConfigItem {
 
 	public static final String EXTENSION_POINT = "org.eclipse.wst.xml.vex.ui.doctypes"; //$NON-NLS-1$
 
-	public DocumentType(ConfigSource config) {
+	public DocumentType(final ConfigSource config) {
 		super(config);
-	}
-
-	/**
-	 * Return a DocumentType for the given publicId. Returns null if no document
-	 * type was found that matches the public ID.
-	 * 
-	 * @param publicId
-	 *            Public ID for which to search.
-	 */
-	public static DocumentType getDocumentType(String publicId) {
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List<ConfigItem> doctypes = registry
-				.getAllConfigItems(DocumentType.EXTENSION_POINT);
-		for (ConfigItem configItem : doctypes) {
-			DocumentType doctype = (DocumentType) configItem;
-			if (doctype.getPublicId().equals(publicId)) {
-				return doctype;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Return a list of document types for which there is at least one
-	 * registered style.
-	 */
-	public static DocumentType[] getDocumentTypesWithStyles() {
-		// TODO quite inefficent, try caching results, clearing the cache upon
-		// config changes.
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List<DocumentType> withStyles = new ArrayList<DocumentType>();
-		List<ConfigItem> doctypes = registry
-				.getAllConfigItems(DocumentType.EXTENSION_POINT);
-		for (ConfigItem configItem : doctypes) {
-			DocumentType doctype = (DocumentType) configItem;
-			if (VexEditor.findStyleForDoctype(doctype.getPublicId()) != null) {
-				withStyles.add(doctype);
-			}
-		}
-		return withStyles.toArray(new DocumentType[withStyles.size()]);
 	}
 
 	/**
@@ -95,6 +51,7 @@ public class DocumentType extends ConfigItem {
 		return systemId;
 	}
 
+	@Override
 	public String getExtensionPointId() {
 		return EXTENSION_POINT;
 	}
@@ -106,8 +63,8 @@ public class DocumentType extends ConfigItem {
 	 * @param contentOutlinePage
 	 *            Name of a class implementing IContentOutlinePage.
 	 */
-	public void setOutlineProvider(String contentOutlinePage) {
-		this.outlineProvider = contentOutlinePage;
+	public void setOutlineProvider(final String contentOutlinePage) {
+		outlineProvider = contentOutlinePage;
 	}
 
 	/**
@@ -117,7 +74,7 @@ public class DocumentType extends ConfigItem {
 	 * @param publicId
 	 *            new public ID of the document type.
 	 */
-	public void setPublicId(String publicId) {
+	public void setPublicId(final String publicId) {
 		this.publicId = publicId;
 	}
 
@@ -128,22 +85,22 @@ public class DocumentType extends ConfigItem {
 	 * @param systemId
 	 *            new system ID for the document type.
 	 */
-	public void setSystemId(String systemId) {
+	public void setSystemId(final String systemId) {
 		this.systemId = systemId;
 	}
 
 	public Validator getValidator() {
-		return (Validator) this.getConfig().getParsedResource(
-				this.getResourcePath());
+		return (Validator) getConfig().getParsedResource(getResourcePath());
 	}
 
+	@Override
 	public boolean isValid() {
-		return super.isValid() && !isBlank(publicId) && !isBlank(systemId)
-				&& this.getValidator() != null;
+		return super.isValid() && !isBlank(publicId) && !isBlank(systemId) && getValidator() != null;
 	}
 
+	@Override
 	public String toString() {
-		return this.getName();
+		return getName();
 	}
 
 	/**
@@ -157,10 +114,9 @@ public class DocumentType extends ConfigItem {
 	/**
 	 * Sets the list of valid root elements for this document type.
 	 */
-	public void setRootElements(String[] rootElements) {
-		if (rootElements == null) {
+	public void setRootElements(final String[] rootElements) {
+		if (rootElements == null)
 			throw new IllegalArgumentException();
-		}
 		this.rootElements = rootElements;
 	}
 

@@ -12,13 +12,10 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -29,186 +26,101 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 
 /**
- * Job that loads Vex configuration objects from plugins and plugin projects.
+ * Job that loads Vex configuration objects from installed bundles and plug-in projects.
  */
-public class ConfigLoaderJob extends Job {
+public class ConfigLoaderJob extends Job implements ConfigurationLoader {
 
-	public static final String PLUGIN_CONFIG_SER_PREFIX = ".vexConfig-"; //$NON-NLS-1$
-	public static final String PLUGIN_CONFIG_SER_SUFFIX = ".ser"; //$NON-NLS-1$
+	private List<ConfigSource> loadedConfigSources = Collections.<ConfigSource> emptyList();
 
-	/**
-	 * Class constructor.
-	 */
 	public ConfigLoaderJob() {
 		super(Messages.getString("ConfigLoaderJob.loadingConfig")); //$NON-NLS-1$
 	}
 
-	protected IStatus run(IProgressMonitor monitor) {
+	@Override
+	protected IStatus run(final IProgressMonitor monitor) {
+		final int pluginCount = Platform.getExtensionRegistry().getNamespaces().length;
+		final int projectCount = ResourcesPlugin.getWorkspace().getRoot().getProjects().length;
 
-		// System.out.println("ConfigLoaderJob starts");
-
-		int pluginCount = Platform.getExtensionRegistry().getNamespaces().length;
-		int projectCount = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects().length;
-
-		monitor
-				.beginTask(
-						Messages.getString("ConfigLoaderJob.loadingConfig"), pluginCount + projectCount); //$NON-NLS-1$
-
-		this.loadPlugins(monitor);
-		this.loadPluginProjects(monitor);
-		ConfigRegistry.getInstance().fireConfigLoaded(new ConfigEvent(this));
-
+		monitor.beginTask(Messages.getString("ConfigLoaderJob.loadingConfig"), pluginCount + projectCount); //$NON-NLS-1$
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
+		result.addAll(loadPlugins(monitor));
+		result.addAll(loadPluginProjects(monitor));
+		synchronized (this) {
+			loadedConfigSources = result;
+		}
 		monitor.done();
-
-		// System.out.println("ConfigLoaderJob ends");
 
 		return Status.OK_STATUS;
 	}
 
-	// ======================================================= PRIVATE
-
-	/**
-	 * Load configurations from all registered plugins.
-	 */
-	private void loadPlugins(IProgressMonitor monitor) {
-
-		ConfigRegistry configRegistry = ConfigRegistry.getInstance();
-		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
-		for (String namespace : extRegistry.getNamespaces()) {
-			Bundle bundle = Platform.getBundle(namespace);
+	private static List<ConfigSource> loadPlugins(final IProgressMonitor monitor) {
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
+		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		for (final String namespace : extensionRegistry.getNamespaces()) {
+			final Bundle bundle = Platform.getBundle(namespace);
 			if (bundle == null)
 				continue;
 
-			String name = (String) bundle.getHeaders().get(
-					Constants.BUNDLE_NAME);
-			monitor
-					.subTask(Messages.getString("ConfigLoaderJob.loading") + name); //$NON-NLS-1$
+			final String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
+			monitor.subTask(Messages.getString("ConfigLoaderJob.loading") + name); //$NON-NLS-1$
 
-			File stateDir = Platform.getStateLocation(bundle).toFile();
-			String version = (String) bundle.getHeaders().get(
-					Constants.BUNDLE_VERSION);
-			String serFile = PLUGIN_CONFIG_SER_PREFIX + version
-					+ PLUGIN_CONFIG_SER_SUFFIX;
-			File configSerFile = new File(stateDir, serFile);
-
-			ConfigSource source = null;
-			if (configSerFile.exists()) {
-				try {
-					// long start = System.currentTimeMillis();
-					source = loadConfigSourceFromFile(configSerFile);
-					// long end = System.currentTimeMillis();
-					// System.out.println("  load from ser file took " +
-					// (end-start) + "ms");
-				} catch (IOException ex) {
-					String message = MessageFormat.format(Messages
-							.getString("ConfigLoaderJob.loadingError"), //$NON-NLS-1$
-							new Object[] { configSerFile });
-					this.log(IStatus.WARNING, message, ex);
-				}
-			}
-
-			if (source == null) {
-
-				source = ConfigPlugin.load(namespace);
-
-				if (source != null) {
-					try {
-						saveConfigSourceToFile(source, configSerFile);
-					} catch (IOException ex) {
-						String message = MessageFormat.format(Messages
-								.getString("ConfigLoaderJob.cacheError"), //$NON-NLS-1$
-								new Object[] { configSerFile });
-						this.log(IStatus.WARNING, message, ex);
-					}
-				} else {
-					if (configSerFile.exists()) {
-						configSerFile.delete(); // Used to have a config, but
-												// now we don't
-					}
-				}
-
-			}
-
-			if (source != null) {
-				configRegistry.addConfigSource(source);
-			}
-
+			final ConfigPlugin configPlugin = new ConfigPlugin(namespace);
+			if (!configPlugin.isEmpty())
+				result.add(configPlugin);
 			monitor.worked(1);
 		}
+		return result;
 	}
 
-	private static ConfigSource loadConfigSourceFromFile(File file)
-			throws IOException {
+	private static List<ConfigSource> loadPluginProjects(final IProgressMonitor monitor) {
+		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		final IProject[] projects = root.getProjects();
+		final ArrayList<ConfigSource> result = new ArrayList<ConfigSource>();
 
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			return (ConfigSource) ois.readObject();
-		} catch (ClassNotFoundException ex) {
-			throw new IOException(ex.getMessage());
-		} finally {
-			if (fis != null) {
+		for (final IProject project : projects)
+			if (PluginProject.isOpenPluginProject(project)) {
+				monitor.subTask(Messages.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
+				final PluginProject pluginProject = new PluginProject(project);
 				try {
-					fis.close();
-				} catch (IOException ex) {
+					pluginProject.load();
+					result.add(pluginProject);
+				} catch (CoreException e) {
+					VexPlugin.getInstance().getLog().log(e.getStatus());
 				}
-			}
-		}
-	}
-
-	private static void saveConfigSourceToFile(ConfigSource config, File file)
-			throws IOException {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(file);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(config);
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException ex) {
-				}
-			}
-		}
-	}
-
-	/**
-	 * Load configurations from all Vex Plugin Projects in the workspace.
-	 */
-	private void loadPluginProjects(IProgressMonitor monitor) {
-
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject[] projects = root.getProjects();
-
-		for (IProject project : projects) {
-			try {
-				if (project.isOpen()
-						&& project.hasNature(PluginProjectNature.ID)) {
-					monitor
-							.subTask(Messages
-									.getString("ConfigLoaderJob.loadingProject") + project.getName()); //$NON-NLS-1$
-					PluginProject.load(project);
-					monitor.worked(1);
-				}
-			} catch (CoreException e) {
-				String message = MessageFormat.format(Messages
-						.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
+				monitor.worked(1);
+			} else {
+				final String message = MessageFormat.format(Messages.getString("ConfigLoaderJob.natureError"), //$NON-NLS-1$
 						new Object[] { project.getName() });
-				VexPlugin.getInstance().log(IStatus.ERROR, message, e);
+				VexPlugin.getInstance().log(IStatus.ERROR, message);
 			}
-		}
+
+		return result;
 	}
 
-	private void log(int severity, String message, Throwable exception) {
-		VexPlugin.getInstance().log(severity, message, exception);
+	public synchronized List<ConfigSource> getLoadedConfigSources() {
+		return loadedConfigSources;
+	}
+
+	public boolean isLoading() {
+		return getState() == Job.RUNNING;
+	}
+
+	public void load(final Runnable whenDone) {
+		addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				removeJobChangeListener(this);
+				whenDone.run();
+			}
+		});
+		schedule();
 	}
 }

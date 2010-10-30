@@ -17,7 +17,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.css;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,10 +34,7 @@ import org.w3c.css.sac.LexicalUnit;
 /**
  * Represents a CSS style sheet.
  */
-public class StyleSheet implements Serializable {
-
-	private static final long serialVersionUID = -7309907170251446189L;
-	
+public class StyleSheet {
 	private static final Comparator<PropertyDecl> PROPERTY_CASCADE_ORDERING =
 		new Comparator<PropertyDecl>() {
 		public int compare(PropertyDecl propertyDecl1,

@@ -1,5 +1,0 @@
-= Signature Preferences =
-
-All settings on this page only affect '''Quick Signature''' and '''Quick Verification''', not the normal wizard or view. Here you can select what you want to sign - the whole document, a selection or a document fragment identified by an XPath expression. The signature types ''Enveloping'' and ''Enveloped'' are available. Select the different algorithms to use and provide a keystore containing a key which match those algorithms. Chose the signature id carefully. Quick Verification searches for this id, so it should be unique.
-
-[[Image:PLUGINS_ROOT/org.eclipse.wst.xml.security.doc/html/images/preferences/signature.png‎|XML Security Tools signature preferences|center]]

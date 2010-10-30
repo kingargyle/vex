@@ -18,14 +18,21 @@
 			<plugin>
 				<groupId>org.sonatype.tycho</groupId>
 				<artifactId>maven-osgi-test-plugin</artifactId>
-				<version>0.8.0</version>
+				<version>${tycho-version}</version>
 				<configuration>
 					<useUIHarness>true</useUIHarness>
 					<testSuite>org.eclipse.wst.xml.vex.core.tests</testSuite>
 					<testClass>org.eclipse.wst.xml.vex.core.tests.VEXCoreTestSuite</testClass>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.sdk.ide</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>	
+	</build>
 
 </project>

@@ -11,10 +11,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -28,7 +26,7 @@ public class Style extends ConfigItem {
 
 	public static final String EXTENSION_POINT = "org.eclipse.wst.xml.vex.ui.styles"; //$NON-NLS-1$
 
-	public Style(ConfigSource config) {
+	public Style(final ConfigSource config) {
 		super(config);
 	}
 
@@ -38,8 +36,8 @@ public class Style extends ConfigItem {
 	 * @param publicId
 	 *            public ID of the document type
 	 */
-	public void addDocumentType(String publicId) {
-		this.publicIds.add(publicId);
+	public void addDocumentType(final String publicId) {
+		publicIds.add(publicId);
 	}
 
 	/**
@@ -48,8 +46,8 @@ public class Style extends ConfigItem {
 	 * @param publicId
 	 *            public ID of the document type being sought
 	 */
-	public boolean appliesTo(String publicId) {
-		return this.publicIds.contains(publicId);
+	public boolean appliesTo(final String publicId) {
+		return publicIds.contains(publicId);
 	}
 
 	/**
@@ -64,35 +62,17 @@ public class Style extends ConfigItem {
 	 * style.
 	 */
 	public Set<String> getDocumentTypes() {
-		return Collections.unmodifiableSet(this.publicIds);
-	}
-
-	/**
-	 * Returns an array of all styles applicable to the given public Id.
-	 * 
-	 * @param publicId
-	 *            Public ID for which to find styles.
-	 */
-	public static Style[] getStylesForDoctype(String publicId) {
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-		List<Style> styles = new ArrayList<Style>();
-		for (ConfigItem configItem : registry.getAllConfigItems(Style.EXTENSION_POINT)) {
-			Style style = (Style) configItem;
-			if (style.appliesTo(publicId)) {
-				styles.add(style);
-			}	
-		}
-		return styles.toArray(new Style[styles.size()]);
+		return Collections.unmodifiableSet(publicIds);
 	}
 
 	/**
 	 * Returns the style sheet from which element styles are taken.
 	 */
 	public StyleSheet getStyleSheet() {
-		return (StyleSheet) this.getConfig().getParsedResource(
-				this.getResourcePath());
+		return (StyleSheet) getConfig().getParsedResource(getResourcePath());
 	}
 
+	@Override
 	public String getExtensionPointId() {
 		return EXTENSION_POINT;
 	}
@@ -101,7 +81,7 @@ public class Style extends ConfigItem {
 	 * Disassociates this style from all document types.
 	 */
 	public void removeAllDocumentTypes() {
-		this.publicIds.clear();
+		publicIds.clear();
 	}
 
 	/**
@@ -111,8 +91,8 @@ public class Style extends ConfigItem {
 	 * @param publicId
 	 *            public ID of the document type
 	 */
-	public void removeDocumentType(String publicId) {
-		this.publicIds.remove(publicId);
+	public void removeDocumentType(final String publicId) {
+		publicIds.remove(publicId);
 	}
 
 	/**
@@ -121,13 +101,13 @@ public class Style extends ConfigItem {
 	 * @param factory
 	 *            the new box factory.
 	 */
-	public void setBoxFactory(BoxFactory factory) {
+	public void setBoxFactory(final BoxFactory factory) {
 		boxFactory = factory;
 	}
 
 	// ===================================================== PRIVATE
 
 	private BoxFactory boxFactory;
-	private Set<String> publicIds = new HashSet<String>();
+	private final Set<String> publicIds = new HashSet<String>();
 
 }

@@ -5,14 +5,8 @@
    <extension
          point="org.eclipse.help.toc">
       <toc
-            file="toc.xml"
+            file="help/toc.xml"
             primary="true">
-      </toc>
-      <toc
-            file="tocconcepts.xml">
-      </toc>
-      <toc
-            file="toctasks.xml">
       </toc>
    </extension>
 

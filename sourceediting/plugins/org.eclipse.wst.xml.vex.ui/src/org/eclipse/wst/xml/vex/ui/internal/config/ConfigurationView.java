@@ -11,50 +11,47 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
  * View showing all configuration items defined in Vex.
  */
 public class ConfigurationView extends ViewPart {
 
-	public void createPartControl(Composite parent) {
+	@Override
+	public void createPartControl(final Composite parent) {
 
-		this.parentControl = parent;
+		parentControl = parent;
 
-		ConfigRegistry registry = ConfigRegistry.getInstance();
-
-		registry.addConfigListener(this.configListener);
-
-		if (registry.isConfigLoaded()) {
-			this.createTreeViewer();
-		} else {
-			this.loadingLabel = new Label(parent, SWT.NONE);
-			this.loadingLabel.setText(Messages
-					.getString("ConfigurationView.loading")); //$NON-NLS-1$
+		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(configListener);
+		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded())
+			createTreeViewer();
+		else {
+			loadingLabel = new Label(parent, SWT.NONE);
+			loadingLabel.setText(Messages.getString("ConfigurationView.loading")); //$NON-NLS-1$
 		}
 
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
-		ConfigRegistry.getInstance().removeConfigListener(this.configListener);
+		VexPlugin.getInstance().getConfigurationRegistry().removeConfigListener(configListener);
 	}
 
+	@Override
 	public void setFocus() {
-		if (this.treeViewer != null) {
-			this.treeViewer.getTree().setFocus();
-		}
+		if (treeViewer != null)
+			treeViewer.getTree().setFocus();
 	}
 
 	// ===================================================== PRIVATE
@@ -66,73 +63,73 @@ public class ConfigurationView extends ViewPart {
 	private TreeViewer treeViewer;
 
 	private void createTreeViewer() {
-		this.treeViewer = new TreeViewer(this.parentControl, SWT.SINGLE);
-		this.treeViewer.setContentProvider(new ContentProvider());
-		this.treeViewer.setLabelProvider(new MyLabelProvider());
-		this.treeViewer.setAutoExpandLevel(2);
-		this.treeViewer.setInput(ConfigRegistry.getInstance());
+		treeViewer = new TreeViewer(parentControl, SWT.SINGLE);
+		treeViewer.setContentProvider(new MyContentProvider());
+		treeViewer.setLabelProvider(new MyLabelProvider());
+		treeViewer.setAutoExpandLevel(2);
+		treeViewer.setInput(VexPlugin.getInstance().getConfigurationRegistry());
 	}
 
-	private static class ContentProvider implements ITreeContentProvider {
-
-		public Object[] getChildren(Object parentElement) {
-			if (parentElement instanceof IConfigItemFactory) {
-				IConfigItemFactory factory = (IConfigItemFactory) parentElement;
-				List<ConfigItem> items = ConfigRegistry.getInstance().getAllConfigItems(
-						factory.getExtensionPointId());
-				Collections.sort(items);
-				return items.toArray();
-			} else {
-				return null;
-			}
+	private static class MyContentProvider implements ITreeContentProvider {
+		public Object[] getChildren(final Object parentElement) {
+			if (parentElement instanceof ConfigurationRegistry)
+				return VexPlugin.getInstance().getConfigurationRegistry().getDocumentTypes();
+			if (parentElement instanceof DocumentType)
+				return VexPlugin.getInstance().getConfigurationRegistry().getStyles(((DocumentType) parentElement).getPublicId());
+			return new Object[0];
 		}
 
-		public Object getParent(Object element) {
-			if (element instanceof ConfigItem) {
-				ConfigItem item = (ConfigItem) element;
-				return ConfigRegistry.getInstance().getConfigItemFactory(
-						item.getExtensionPointId());
-			} else {
-				return ConfigRegistry.getInstance();
-			}
+		public Object getParent(final Object element) {
+			if (element instanceof DocumentType)
+				return VexPlugin.getInstance().getConfigurationRegistry();
+			if (element instanceof Style) 
+				return VexPlugin.getInstance().getConfigurationRegistry().getDocumentType(((Style) element).getDocumentTypes().iterator().next());
+			return null;
 		}
 
-		public boolean hasChildren(Object element) {
-			return element instanceof IConfigItemFactory;
+		public boolean hasChildren(final Object element) {
+			return getChildren(element).length > 0;
 		}
 
-		public Object[] getElements(Object inputElement) {
-			return ConfigRegistry.getInstance().getAllConfigItemFactories();
+		public Object[] getElements(final Object inputElement) {
+			return getChildren(inputElement);
 		}
 
 		public void dispose() {
 		}
 
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 		}
-
 	}
 
 	private static class MyLabelProvider extends LabelProvider {
-
-		public String getText(Object element) {
-			if (element instanceof IConfigItemFactory) {
-				return ((IConfigItemFactory) element).getPluralName();
-			} else {
-				return ((ConfigItem) element).getName();
-			}
+		@Override
+		public String getText(final Object element) {
+			if (element instanceof DocumentType)
+				return ((DocumentType) element).getName();
+			if (element instanceof Style)
+				return ((Style) element).getName();
+			return null;
 		}
 	}
 
-	private IConfigListener configListener = new IConfigListener() {
-		public void configChanged(ConfigEvent e) {
-			treeViewer.refresh();
+	private final IConfigListener configListener = new IConfigListener() {
+		public void configChanged(final ConfigEvent e) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					treeViewer.refresh();
+				}
+			});
 		}
 
-		public void configLoaded(ConfigEvent e) {
-			loadingLabel.dispose();
-			createTreeViewer();
-			parentControl.layout();
+		public void configLoaded(final ConfigEvent e) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					loadingLabel.dispose();
+					createTreeViewer();
+					parentControl.layout();
+				}
+			});
 		}
 	};
 }
