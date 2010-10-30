@@ -197,30 +197,32 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
-		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE))
-			callDrawImage(context, getElement(), styles);
+		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
+			ParagraphBox imageBox = createImageParagraphBox(getElement(), context);
+			if (imageBox != null)
+				childList.add(imageBox);
+		}
 		
 		return childList;
 	}
 
-	private void callDrawImage(LayoutContext context, VEXElement element,
-			Styles styles) {
-		if (element == null)
-			return;
-		
-		final URL imageUrl = context.resolveUrl(element.getBaseURI(), styles.getBackgroundImage());
-		if (imageUrl == null)
-			return;
-
-		final InlineBox markerInline = drawImage(element, styles, imageUrl);
-		this.beforeMarker = ParagraphBox.create(context, this.getElement(),
-				new InlineBox[] { markerInline }, Integer.MAX_VALUE);
+	private static ParagraphBox createImageParagraphBox(final VEXElement element, final LayoutContext context) {
+		final InlineBox inlineBox = createImageInlineBox(element, context);
+		if (inlineBox == null)
+			return null;
+		return ParagraphBox.create(context, element,
+				new InlineBox[] { inlineBox }, Integer.MAX_VALUE);
 	}
-
-	private static InlineBox drawImage(final VEXElement element, Styles styles,
-			final URL imageUrl) {
-		final int width = (int) styles.getElementWidth();
-		final int height = (int) styles.getElementHeight();
+	private static InlineBox createImageInlineBox(final VEXElement element, final LayoutContext context) {
+		if (element == null)
+			return null;
+		final URL imageUrl = context.resolveUrl(element.getBaseURI(), context.getStyleSheet().getStyles(element).getBackgroundImage());
+		if (imageUrl == null)
+			return null;
+		
+		final Image image = context.getGraphics().getImage(imageUrl);
+		final int width = image.getWidth();
+		final int height = image.getHeight();
 		final int offset = 5;
 
 		final Drawable drawable = new Drawable() {
@@ -229,7 +231,6 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 
 			public void draw(final Graphics g, final int x, final int y) {
-				Image image = g.getImage(imageUrl);
 				g.drawImage(image, g.getClipBounds().getX() + offset, g
 						.getClipBounds().getY() - height, width, height);
 			}
