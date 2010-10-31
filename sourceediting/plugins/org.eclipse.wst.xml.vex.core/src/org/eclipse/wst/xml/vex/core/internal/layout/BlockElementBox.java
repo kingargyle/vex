@@ -206,14 +206,14 @@ public class BlockElementBox extends AbstractBlockBox {
 		return childList;
 	}
 
-	private static ParagraphBox createImageParagraphBox(final VEXElement element, final LayoutContext context) {
+	private ParagraphBox createImageParagraphBox(final VEXElement element, final LayoutContext context) {
 		final InlineBox inlineBox = createImageInlineBox(element, context);
 		if (inlineBox == null)
 			return null;
 		return ParagraphBox.create(context, element,
 				new InlineBox[] { inlineBox }, Integer.MAX_VALUE);
 	}
-	private static InlineBox createImageInlineBox(final VEXElement element, final LayoutContext context) {
+	private InlineBox createImageInlineBox(final VEXElement element, final LayoutContext context) {
 		if (element == null)
 			return null;
 		final URL imageUrl = context.resolveUrl(element.getBaseURI(), context.getStyleSheet().getStyles(element).getBackgroundImage());
@@ -221,9 +221,8 @@ public class BlockElementBox extends AbstractBlockBox {
 			return null;
 		
 		final Image image = context.getGraphics().getImage(imageUrl);
-		final int width = image.getWidth();
-		final int height = image.getHeight();
-		final int offset = 5;
+		final int width = Math.min(image.getWidth(), getWidth());
+		final int height = Math.round(((1f * width) / image.getWidth()) * image.getHeight());
 
 		final Drawable drawable = new Drawable() {
 			public Rectangle getBounds() {
@@ -231,8 +230,7 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 
 			public void draw(final Graphics g, final int x, final int y) {
-				g.drawImage(image, g.getClipBounds().getX() + offset, g
-						.getClipBounds().getY() - height, width, height);
+				g.drawImage(image, x, y, width, height);
 			}
 		};
 		return new DrawableBox(drawable, element);
