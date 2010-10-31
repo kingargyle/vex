@@ -89,8 +89,8 @@ public class SwtGraphics implements Graphics {
 
 	public void drawImage(final Image image, final int x, final int y, final int width, final int height) {
 		Assert.isTrue(image instanceof SwtImage);
-		// TODO scale image to widht and height
-		gc.drawImage(((SwtImage) image).image, x + originX, y + originY);
+		org.eclipse.swt.graphics.Image swtImage = ((SwtImage) image).image;
+		gc.drawImage(swtImage, 0, 0, image.getWidth(), image.getHeight(), x + originX, y + originY, width, height);
 	}
 
 	/**
