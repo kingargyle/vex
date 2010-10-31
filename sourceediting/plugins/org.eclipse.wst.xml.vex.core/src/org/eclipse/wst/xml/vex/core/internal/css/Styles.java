@@ -135,6 +135,13 @@ public class Styles {
 	}
 
 	/**
+	 * @return true if the <code>display</code> property is not 'none'.
+	 */
+	public boolean isDisplayed() {
+		return !CSS.NONE.equals(getDisplay());
+	}
+	
+	/**
 	 * Returns the value of the <code>font</code> property.
 	 */
 	public FontSpec getFont() {
