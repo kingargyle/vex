@@ -636,16 +636,13 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 */
 	protected List<Box> createBlockBoxes(LayoutContext context, int startOffset,
 			int endOffset, int width, List<InlineBox> beforeInlines, List<InlineBox> afterInlines) {
+		final List<Box> blockBoxes = new ArrayList<Box>();
+		final List<InlineBox> pendingInlines = new ArrayList<InlineBox>();
 
-		List<Box> blockBoxes = new ArrayList<Box>();
-		List<InlineBox> pendingInlines = new ArrayList<InlineBox>();
-
-		if (beforeInlines != null) {
+		if (beforeInlines != null)
 			pendingInlines.addAll(beforeInlines);
-		}
 		
 		VEXDocument document = context.getDocument();
-
 		VEXElement element = document.findCommonElement(startOffset,
 				endOffset);
 
@@ -653,31 +650,22 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			int relOffset = startOffset - element.getStartOffset();
 			pendingInlines.add(new PlaceholderBox(context, element, relOffset));
 		} else {
-
 			BlockInlineIterator iter = new BlockInlineIterator(context,
 					element, startOffset, endOffset);
-
 			while (true) {
-
 				Object next = iter.next();
-
-				if (next == null) {
+				if (next == null)
 					break;
-				}
 
 				if (next instanceof IntRange) {
-
 					IntRange range = (IntRange) next;
-
 					InlineElementBox.InlineBoxes inlineBoxes = InlineElementBox
 							.createInlineBoxes(context, element, range
 									.getStart(), range.getEnd());
 					pendingInlines.addAll(inlineBoxes.boxes);
 					pendingInlines.add(new PlaceholderBox(context, element,
 							range.getEnd() - element.getStartOffset()));
-
 				} else {
-
 					if (!pendingInlines.isEmpty()) {
 						blockBoxes.add(ParagraphBox.create(context, element,
 								pendingInlines, width));
@@ -685,10 +673,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 					}
 
 					if (isTableChild(context, next)) {
-
 						// Consume continguous table children and create an
 						// anonymous table.
-
 						int tableStartOffset = ((Element) next)
 								.getStartOffset();
 						int tableEndOffset = -1; // dummy to hide warning
@@ -700,13 +686,11 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 						// add anonymous table
 						blockBoxes.add(new TableBox(context, this,
 								tableStartOffset, tableEndOffset));
-
 						if (next == null) {
 							break;
 						} else {
 							iter.push(next);
 						}
-
 					} else { // next is a block box element
 						Element blockElement = (Element) next;
 						blockBoxes.add(context.getBoxFactory().createBox(
@@ -716,9 +700,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			}
 		}
 
-		if (afterInlines != null) {
+		if (afterInlines != null)
 			pendingInlines.addAll(afterInlines);
-		}
  
 		if (!pendingInlines.isEmpty()) {
 			blockBoxes.add(ParagraphBox.create(context, element,

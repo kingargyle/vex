@@ -124,18 +124,16 @@ public class BlockElementBox extends AbstractBlockBox {
 	 * inline elements are wrapped in DummyBlockBox's.
 	 */
 	public List<Box> createChildren(LayoutContext context) {
-
 		long start = 0;
-		if (VEXCorePlugin.getInstance().isDebugging()) {
+		if (VEXCorePlugin.getInstance().isDebugging())
 			start = System.currentTimeMillis();
-		}
 
-		VEXElement element = this.getElement();
+		final VEXElement element = this.getElement();
 		int width = this.getWidth();
 
 		List<Box> childList = new ArrayList<Box>();
 
-		StyleSheet ss = context.getStyleSheet();
+		StyleSheet styleSheet = context.getStyleSheet();
 
 		// element and styles for generated boxes
 		VEXElement genElement;
@@ -146,7 +144,7 @@ public class BlockElementBox extends AbstractBlockBox {
 		genElement = context.getStyleSheet()
 				.getBeforeElement(this.getElement());
 		if (genElement != null) {
-			genStyles = ss.getStyles(genElement);
+			genStyles = styleSheet.getStyles(genElement);
 			if (genStyles.getDisplay().equals(CSS.INLINE)) {
 				beforeInlines = new ArrayList<InlineBox>();
 				beforeInlines.addAll(LayoutUtils.createGeneratedInlines(
@@ -157,6 +155,17 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
+		// background image
+		final Styles styles = context.getStyleSheet().getStyles(this.getElement());
+		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
+			final InlineBox imageBox = createImageInlineBox(getElement(), context);
+			if (imageBox != null) {
+				if (beforeInlines == null)
+					beforeInlines = new ArrayList<InlineBox>();
+				beforeInlines.add(imageBox);
+			}
+		}
+		
 		// :after content
 		Box afterBlock = null;
 		List<InlineBox> afterInlines = null;
@@ -173,16 +182,15 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
-		int startOffset = element.getStartOffset() + 1;
-		int endOffset = element.getEndOffset();
-		childList.addAll(createBlockBoxes(context, startOffset, endOffset,
-				width, beforeInlines, afterInlines));
+		final int startOffset = element.getStartOffset() + 1;
+		final int endOffset = element.getEndOffset();
+		List<Box> blockBoxes = createBlockBoxes(context, startOffset, endOffset,
+				width, beforeInlines, afterInlines);
+		childList.addAll(blockBoxes);
 
-		if (afterBlock != null) {
+		if (afterBlock != null)
 			childList.add(afterBlock);
-		}
 
-		final Styles styles = context.getStyleSheet().getStyles(this.getElement());
 		if (styles.getDisplay().equals(CSS.LIST_ITEM)
 				&& !styles.getListStyleType().equals(CSS.NONE)) {
 			this.createListMarker(context);
@@ -197,22 +205,10 @@ public class BlockElementBox extends AbstractBlockBox {
 			}
 		}
 
-		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
-			ParagraphBox imageBox = createImageParagraphBox(getElement(), context);
-			if (imageBox != null)
-				childList.add(imageBox);
-		}
-		
 		return childList;
 	}
 
-	private ParagraphBox createImageParagraphBox(final VEXElement element, final LayoutContext context) {
-		final InlineBox inlineBox = createImageInlineBox(element, context);
-		if (inlineBox == null)
-			return null;
-		return ParagraphBox.create(context, element,
-				new InlineBox[] { inlineBox }, Integer.MAX_VALUE);
-	}
+
 	private InlineBox createImageInlineBox(final VEXElement element, final LayoutContext context) {
 		if (element == null)
 			return null;
