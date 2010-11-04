@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.swt;
 
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.wst.xml.vex.core.internal.core.Image;
 
 /**
@@ -17,17 +18,17 @@ import org.eclipse.wst.xml.vex.core.internal.core.Image;
  */
 public class SwtImage implements Image {
 
-	public final org.eclipse.swt.graphics.Image image;
+	public final ImageData imageData;
 
-	public SwtImage(org.eclipse.swt.graphics.Image image) {
-		this.image = image;
+	public SwtImage(final ImageData imageData) {
+		this.imageData = imageData;
 	}
 
 	public int getHeight() {
-		return image.getBounds().height;
+		return imageData.height;
 	}
 
 	public int getWidth() {
-		return image.getBounds().width;
+		return imageData.width;
 	}
 }

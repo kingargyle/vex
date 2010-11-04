@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
 import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
@@ -89,8 +91,12 @@ public class SwtGraphics implements Graphics {
 
 	public void drawImage(final Image image, final int x, final int y, final int width, final int height) {
 		Assert.isTrue(image instanceof SwtImage);
-		org.eclipse.swt.graphics.Image swtImage = ((SwtImage) image).image;
-		gc.drawImage(swtImage, 0, 0, image.getWidth(), image.getHeight(), x + originX, y + originY, width, height);
+		final org.eclipse.swt.graphics.Image swtImage = new org.eclipse.swt.graphics.Image(gc.getDevice(), ((SwtImage) image).imageData);
+		try {
+			gc.drawImage(swtImage, 0, 0, image.getWidth(), image.getHeight(), x + originX, y + originY, width, height);
+		} finally {
+			swtImage.dispose();
+		}
 	}
 
 	/**
@@ -135,15 +141,25 @@ public class SwtGraphics implements Graphics {
 	}
 
 	public Image getImage(final URL url) {
-		// TODO optimize like hell: cache image instances, dispose loaded images
-		final InputStream in;
+		final ImageData[] imageData = loadImageData(url);
+		if (imageData != null && imageData.length > 0)
+			return new SwtImage(imageData[0]);
+		return new SwtImage(Display.getDefault().getSystemImage(SWT.ICON_ERROR).getImageData());
+	}
+	
+	private static ImageData[] loadImageData(final URL url) {
+		final ImageLoader imageLoader = new ImageLoader();
 		try {
-			in = url.openStream();
+			final InputStream in = url.openStream();
+			try {
+				return imageLoader.load(in);
+			} finally {
+				in.close();
+			}
 		} catch (final IOException e) {
 			VexPlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VexPlugin.ID, MessageFormat.format("Cannot load image from url: {0}", url), e));
-			return new SwtImage(Display.getDefault().getSystemImage(SWT.ICON_ERROR));
+			return null;
 		}
-		return new SwtImage(new org.eclipse.swt.graphics.Image(gc.getDevice(), in));
 	}
 
 	public boolean isAntiAliased() {
