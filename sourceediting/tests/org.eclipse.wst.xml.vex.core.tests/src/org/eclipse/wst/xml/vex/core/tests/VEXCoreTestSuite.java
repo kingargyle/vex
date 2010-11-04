@@ -12,12 +12,27 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.tests;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.wst.xml.vex.core.internal.css.*;
-import org.eclipse.wst.xml.vex.core.internal.dom.*;
-import org.eclipse.wst.xml.vex.core.internal.layout.*;
+import org.eclipse.wst.xml.vex.core.internal.css.CssTest;
+import org.eclipse.wst.xml.vex.core.internal.css.PropertyTest;
+import org.eclipse.wst.xml.vex.core.internal.css.RuleTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.BlockElementBoxTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.DOMSynchronizationTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidatorTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriterTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.DomTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.GapContentTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.SpaceNormalizerTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.TextWrapperTest;
+import org.eclipse.wst.xml.vex.core.internal.layout.ImageBoxTest;
+import org.eclipse.wst.xml.vex.core.internal.layout.TableLayoutTest;
+import org.eclipse.wst.xml.vex.core.internal.layout.TestBlockElementBox;
+import org.eclipse.wst.xml.vex.core.internal.layout.TestBlocksInInlines;
+import org.eclipse.wst.xml.vex.core.internal.layout.TestDocumentTextBox;
+import org.eclipse.wst.xml.vex.core.internal.layout.TestStaticTextBox;
 import org.eclipse.wst.xml.vex.core.internal.widget.VexWidgetTest;
 
 public class VEXCoreTestSuite extends TestSuite {
@@ -31,6 +46,7 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(PropertyTest.class);
 		addTestSuite(RuleTest.class);
 		addTestSuite(BlockElementBoxTest.class);
+		addTest(new JUnit4TestAdapter(ImageBoxTest.class));
 		addTestSuite(DocumentWriterTest.class);
 		addTestSuite(DomTest.class);
 		addTestSuite(DTDValidatorTest.class);

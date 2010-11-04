@@ -178,10 +178,8 @@ public abstract class AbstractBox implements Box {
 	 *      int, int)
 	 */
 	public void paint(LayoutContext context, int x, int y) {
-
-		if (this.skipPaint(context, x, y)) {
+		if (this.skipPaint(context, x, y))
 			return;
-		}
 
 		this.paintChildren(context, x, y);
 	}

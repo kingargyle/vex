@@ -220,16 +220,10 @@ public class BlockElementBox extends AbstractBlockBox {
 		final int width = Math.min(image.getWidth(), getWidth());
 		final int height = Math.round(((1f * width) / image.getWidth()) * image.getHeight());
 
-		final Drawable drawable = new Drawable() {
-			public Rectangle getBounds() {
-				return new Rectangle(0, 0, width, height);
-			}
-
-			public void draw(final Graphics g, final int x, final int y) {
-				g.drawImage(image, x, y, width, height);
-			}
-		};
-		return new DrawableBox(drawable, element);
+		final ImageBox result = new ImageBox(image);
+		result.setWidth(width);
+		result.setHeight(height);
+		return result;
 	}
 		
 	/**

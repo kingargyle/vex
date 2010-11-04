@@ -63,30 +63,6 @@ public class FakeGraphics implements Graphics {
 		}
 	};
 
-	private static class FakeImage implements Image {
-		public final URL url;
-		private int height;
-		private int width;
-
-		public FakeImage(final URL url) {
-			this(url, 0, 0);
-		}
-
-		public FakeImage(final URL url, final int width, final int height) {
-			this.url = url;
-			this.height = height;
-			this.width = width;
-		}
-
-		public int getHeight() {
-			return height;
-		}
-
-		public int getWidth() {
-			return width;
-		}
-	}
-
 	public int charsWidth(char[] data, int offset, int length) {
 		return length * charWidth;
 	}
@@ -139,7 +115,7 @@ public class FakeGraphics implements Graphics {
 	}
 
 	public Rectangle getClipBounds() {
-		return null;
+		return new Rectangle(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
 	public ColorResource getBackgroundColor() {
