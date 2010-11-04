@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.layout;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Drawable;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
-import org.eclipse.wst.xml.vex.core.internal.core.Image;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
@@ -158,7 +156,7 @@ public class BlockElementBox extends AbstractBlockBox {
 		// background image
 		final Styles styles = context.getStyleSheet().getStyles(this.getElement());
 		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
-			final InlineBox imageBox = createImageInlineBox(getElement(), context);
+			final InlineBox imageBox = ImageBox.create(getElement(), context, getWidth());
 			if (imageBox != null) {
 				if (beforeInlines == null)
 					beforeInlines = new ArrayList<InlineBox>();
@@ -207,25 +205,7 @@ public class BlockElementBox extends AbstractBlockBox {
 
 		return childList;
 	}
-
-
-	private InlineBox createImageInlineBox(final VEXElement element, final LayoutContext context) {
-		if (element == null)
-			return null;
-		final URL imageUrl = context.resolveUrl(element.getBaseURI(), context.getStyleSheet().getStyles(element).getBackgroundImage());
-		if (imageUrl == null)
-			return null;
-		
-		final Image image = context.getGraphics().getImage(imageUrl);
-		final int width = Math.min(image.getWidth(), getWidth());
-		final int height = Math.round(((1f * width) / image.getWidth()) * image.getHeight());
-
-		final ImageBox result = new ImageBox(image);
-		result.setWidth(width);
-		result.setHeight(height);
-		return result;
-	}
-		
+	
 	/**
 	 * Creates a marker box for this primary box and puts it in the beforeMarker
 	 * field.

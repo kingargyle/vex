@@ -19,6 +19,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontMetrics;
 import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
+import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.Text;
@@ -59,7 +60,7 @@ public class InlineElementBox extends CompositeInlineBox {
 
 		List<InlineBox> childList = new ArrayList<InlineBox>();
 
-		Styles styles = context.getStyleSheet().getStyles(element);
+		final Styles styles = context.getStyleSheet().getStyles(element);
 
 		if (startOffset <= element.getStartOffset()) {
 
@@ -82,6 +83,13 @@ public class InlineElementBox extends CompositeInlineBox {
 
 			// left marker
 			childList.add(createLeftMarker(element, styles));
+		}
+
+		// background image
+		if (styles.hasBackgroundImage() && !styles.getDisplay().equalsIgnoreCase(CSS.NONE)) {
+			final ImageBox imageBox = ImageBox.createWithHeight(getElement(), context, styles.getLineHeight());
+			if (imageBox != null)
+				childList.add(imageBox);
 		}
 
 		InlineBoxes inlines = createInlineBoxes(context, element, startOffset,
