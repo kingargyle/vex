@@ -26,8 +26,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.Styles;
  * InlineBox consisting of several children. This is the parent class of
  * InlineElementBox and LineBox, and implements the split method.
  */
-public abstract class CompositeInlineBox extends AbstractBox implements
-		InlineBox {
+public abstract class CompositeInlineBox extends AbstractInlineBox {
 
 	/**
 	 * Returns true if any of the children have content.

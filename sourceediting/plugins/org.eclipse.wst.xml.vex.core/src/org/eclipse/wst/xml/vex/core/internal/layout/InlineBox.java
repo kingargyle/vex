@@ -57,6 +57,11 @@ public interface InlineBox extends Box {
 	public int getBaseline();
 
 	/**
+	 * Aligns this inline box on the given baseline.
+	 */
+	public void alignOnBaseline(int baseline);
+	
+	/**
 	 * Returns true if this inline box must be the last box on the current line.
 	 */
 	public boolean isEOL();

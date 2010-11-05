@@ -24,7 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
  * <code>splitAt</code> methods are abstract and must be implemented by
  * subclasses.
  */
-public abstract class TextBox extends AbstractBox implements InlineBox {
+public abstract class TextBox extends AbstractInlineBox implements InlineBox {
 
 	private VEXElement element;
 	private int baseline;

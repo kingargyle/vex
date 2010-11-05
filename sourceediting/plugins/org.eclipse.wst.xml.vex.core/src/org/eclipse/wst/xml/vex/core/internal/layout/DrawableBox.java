@@ -24,7 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
  * the text baseline, therefore it should draw using mostly negative
  * y-coordinates.
  */
-public class DrawableBox extends AbstractBox implements InlineBox {
+public class DrawableBox extends AbstractInlineBox {
 
 	public static final byte NO_MARKER = 0;
 	public static final byte START_MARKER = 1;

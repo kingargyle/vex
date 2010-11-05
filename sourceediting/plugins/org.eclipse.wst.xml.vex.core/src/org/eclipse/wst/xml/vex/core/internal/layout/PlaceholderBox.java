@@ -20,7 +20,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 /**
  * A zero-width box that represents a single offset in the document.
  */
-public class PlaceholderBox extends AbstractBox implements InlineBox {
+public class PlaceholderBox extends AbstractInlineBox {
 
 	private VEXElement element;
 	private int relOffset;

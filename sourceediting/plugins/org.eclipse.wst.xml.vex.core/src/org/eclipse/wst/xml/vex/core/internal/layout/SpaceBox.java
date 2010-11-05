@@ -13,7 +13,7 @@ package org.eclipse.wst.xml.vex.core.internal.layout;
 /**
  * An empty inline box that simply takes up space.
  */
-public class SpaceBox extends AbstractBox implements InlineBox {
+public class SpaceBox extends AbstractInlineBox {
 
 	/**
 	 * Class constructor.

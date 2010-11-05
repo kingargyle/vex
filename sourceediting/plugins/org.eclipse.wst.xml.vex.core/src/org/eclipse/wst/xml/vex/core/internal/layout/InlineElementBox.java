@@ -390,7 +390,7 @@ public class InlineElementBox extends CompositeInlineBox {
 			InlineBox child = this.children[i];
 			// TODO: honour the child's vertical-align property
 			child.setX(x);
-			child.setY(this.baseline - child.getBaseline());
+			child.alignOnBaseline(baseline);
 			x += child.getWidth();
 		}
 

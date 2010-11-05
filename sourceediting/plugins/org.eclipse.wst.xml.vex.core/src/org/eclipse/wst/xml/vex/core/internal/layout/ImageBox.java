@@ -5,7 +5,7 @@ import java.net.URL;
 import org.eclipse.wst.xml.vex.core.internal.core.Image;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
-public class ImageBox extends AbstractBox implements InlineBox {
+public class ImageBox extends AbstractInlineBox {
 
 	private final Image image;
 
@@ -58,7 +58,12 @@ public class ImageBox extends AbstractBox implements InlineBox {
 	}
 	
 	public int getBaseline() {
-		return getHeight();
+		return 0;
+	}
+
+	@Override
+	public void alignOnBaseline(int baseline) {
+		setY(0);
 	}
 
 	public boolean isEOL() {
