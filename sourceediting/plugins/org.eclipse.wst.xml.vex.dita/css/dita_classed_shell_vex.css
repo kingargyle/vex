@@ -24,3 +24,11 @@
 entry {
   display: table-cell;
 }
+
+*[class~="topic\/image"] {
+	background-image: attr(href);
+}
+
+*[class~="topic\/image"][placement="break"] {
+	display: block;
+}
