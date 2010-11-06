@@ -363,7 +363,7 @@ glossentry>glossterm {
 	margin: 20px 0;
 }
 
-graphic: {
+graphic {
 	display: block;
 	background-image: attr(fileref);
 }
