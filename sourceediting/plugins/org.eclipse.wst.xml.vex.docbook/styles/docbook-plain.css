@@ -363,6 +363,11 @@ glossentry>glossterm {
 	margin: 20px 0;
 }
 
+graphic: {
+	display: block;
+	background-image: attr(fileref);
+}
+
 holder {
 	display: inline;
 }
@@ -373,6 +378,7 @@ honorific {
 
 imagedata {
 	display: inline;
+	background-image: attr(fileref);
 }
 
 imageobject {
