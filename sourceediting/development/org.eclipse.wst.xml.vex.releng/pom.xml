@@ -11,9 +11,9 @@
 	<properties>
 		<tycho-version>0.10.0</tycho-version>
 	</properties>
- 
+
 	<modules>
-	    <!-- Vex Core functionality -->
+		<!-- Vex Core functionality -->
 		<module>../../plugins/org.eclipse.wst.xml.vex</module>
 		<module>../../plugins/org.eclipse.wst.xml.vex.core</module>
 		<module>../../plugins/org.eclipse.wst.xml.vex.ui</module>
@@ -21,6 +21,7 @@
 		<module>../../plugins/org.eclipse.wst.xml.vex.docbook</module>
 		<module>../../documentation/org.eclipse.wst.xml.vex.documentation</module>
 		<module>../../features/org.eclipse.wst.xml.vex.feature</module>
+		<module>../../features/org.eclipse.wst.xml.vex_sdk.feature</module>
 		<module>../org.eclipse.wst.xml.vex.repository</module>
 		<module>../../tests/org.eclipse.wst.xml.vex.core.tests</module>
 		<module>../../tests/org.eclipse.wst.xml.vex.ui.tests</module>
@@ -41,6 +42,22 @@
 				<configuration>
 					<resolver>p2</resolver>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -63,10 +80,10 @@
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.tycho</groupId>
-					<artifactId>maven-osgi-source-plugin</artifactId>
+					<artifactId>maven-osgi-packaging-plugin</artifactId>
 					<version>${tycho-version}</version>
 					<configuration>
-						<encoding>UTF-8</encoding>
+						<archiveSite>true</archiveSite>
 					</configuration>
 				</plugin>
 			</plugins>

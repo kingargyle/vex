@@ -25,9 +25,27 @@
    <includes
          id="org.eclipse.wst.xml.vex.feature"
          version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.wst.xml.vex.ui.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-   <includes
-         id="org.eclipse.wst.xml.vex.feature.source"
-         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.wst.xml.vex.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.xml.vex.docbook.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
