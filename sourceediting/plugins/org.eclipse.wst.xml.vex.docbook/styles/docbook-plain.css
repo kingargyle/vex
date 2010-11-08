@@ -376,6 +376,10 @@ honorific {
 	display: inline;
 }
 
+inlinemediaobject>imageobject>imagedata {
+	display: inline;
+}
+
 imagedata {
 	display: block;
 	background-image: attr(fileref);
