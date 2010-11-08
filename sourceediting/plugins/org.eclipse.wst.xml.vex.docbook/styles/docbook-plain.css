@@ -403,6 +403,11 @@ informaltable {
 	display: table;
 }
 
+inlinegraphic {
+	display: inline;
+	background-image: attr(fileref);
+}
+
 inlinemediaobject {
 	display: inline;
 }
