@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.eclipse.wst.xml.vex.documentation</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<version>0.5.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Vex Documentation</name>
 
 	<parent>
 		<artifactId>org.eclipse.wst.xml.vex_parent</artifactId>
 		<groupId>org.eclipse.wst.xml.vex</groupId>
-		<version>0.5.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../development/org.eclipse.wst.xml.vex.releng/pom.xml</relativePath>
 	</parent>
 

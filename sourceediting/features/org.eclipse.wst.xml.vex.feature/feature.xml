@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.wst.xml.vex.feature"
       label="%featureName"
-      version="0.5.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.wst.xml.vex"
       image="eclipse_update_120.jpg"
