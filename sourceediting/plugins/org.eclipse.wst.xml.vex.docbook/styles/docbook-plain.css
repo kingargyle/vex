@@ -377,7 +377,7 @@ honorific {
 }
 
 imagedata {
-	display: inline;
+	display: block;
 	background-image: attr(fileref);
 }
 
