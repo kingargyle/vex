@@ -263,18 +263,12 @@ public class Styles {
 		this.font = font;
 	}
 
-	public float getElementWidth() {
-		final Float value = (Float) this.values.get(CSS.WIDTH);
-		if (value == null) 
-			return WidthProperty.DEFAULT;
-		return value.floatValue();
+	public RelativeLength getElementWidth() {
+		return (RelativeLength) this.values.get(CSS.WIDTH);
 	}
 
-	public float getElementHeight() {
-		final Float value = (Float) this.values.get(CSS.HEIGHT);
-		if (value == null) 
-			return HeightProperty.DEFAULT;
-		return value.floatValue();
+	public RelativeLength getElementHeight() {
+		return (RelativeLength) this.values.get(CSS.HEIGHT);
 	}
 	
 	public boolean hasBackgroundImage() {

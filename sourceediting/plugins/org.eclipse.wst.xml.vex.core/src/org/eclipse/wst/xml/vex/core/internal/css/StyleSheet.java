@@ -94,8 +94,8 @@ public class StyleSheet {
 					CSS.BORDER_RIGHT_STYLE, IProperty.AXIS_HORIZONTAL),
 			new BorderWidthProperty(CSS.BORDER_TOP_WIDTH, CSS.BORDER_TOP_STYLE,
 					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), 
-			new HeightProperty(),
-			new WidthProperty(),
+			new LengthProperty(CSS.HEIGHT, IProperty.AXIS_VERTICAL),
+			new LengthProperty(CSS.WIDTH, IProperty.AXIS_HORIZONTAL),
 			new BackgroundImageProperty()
 		};
 
