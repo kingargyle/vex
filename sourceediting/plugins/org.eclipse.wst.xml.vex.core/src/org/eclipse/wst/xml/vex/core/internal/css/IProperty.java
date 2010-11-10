@@ -18,11 +18,9 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public interface IProperty {
 
-	/** Constant indicating the length is along the horizontal axis. */
-	public static final byte AXIS_HORIZONTAL = 0;
-
-	/** Constant indicating the length is along the vertical axis. */
-	public static final byte AXIS_VERTICAL = 1;
+	public static enum Axis {
+		HORIZONTAL, VERTICAL
+	};
 
 	/**
 	 * Returns the name of the property.
@@ -42,7 +40,8 @@ public interface IProperty {
 	 *            depends on previously calculated styles such as font size and
 	 *            color.
 	 * @param element
-	 *            The current element for which this property is calculated. May be null.
+	 *            The current element for which this property is calculated. May
+	 *            be null.
 	 */
 	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element);
 

@@ -16,6 +16,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.BorderWidthProperty;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.IProperty;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
+import org.eclipse.wst.xml.vex.core.internal.css.IProperty.Axis;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
@@ -79,7 +80,7 @@ public class PropertyTest extends TestCase {
 		Styles parentStyles = new Styles();
 		DisplayDevice.setCurrent(new DummyDisplayDevice(50, 100));
 		IProperty prop = new BorderWidthProperty(CSS.BORDER_TOP_WIDTH,
-				CSS.BORDER_TOP_STYLE, IProperty.AXIS_VERTICAL);
+				CSS.BORDER_TOP_STYLE, IProperty.Axis.VERTICAL);
 
 		styles.put(CSS.FONT_SIZE, new Float(12));
 		styles.put(CSS.BORDER_TOP_STYLE, CSS.SOLID);
@@ -113,7 +114,7 @@ public class PropertyTest extends TestCase {
 		// check that we use the proper PPI
 		styles.put(CSS.BORDER_LEFT_STYLE, CSS.SOLID);
 		prop = new BorderWidthProperty(CSS.BORDER_LEFT_WIDTH,
-				CSS.BORDER_LEFT_STYLE, IProperty.AXIS_HORIZONTAL);
+				CSS.BORDER_LEFT_STYLE, IProperty.Axis.HORIZONTAL);
 		assertEquals(Integer.valueOf(10), prop.calculate(MockLU.createFloat(
 				LexicalUnit.SAC_INCH, 0.2f), parentStyles, styles, null));
 	}

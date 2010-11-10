@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
+import org.eclipse.wst.xml.vex.core.internal.css.IProperty.Axis;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
@@ -68,15 +69,15 @@ public class StyleSheet {
 			new ColorProperty(CSS.COLOR),
 			new ColorProperty(CSS.BACKGROUND_COLOR),
 
-			new LengthProperty(CSS.MARGIN_BOTTOM, IProperty.AXIS_VERTICAL),
-			new LengthProperty(CSS.MARGIN_LEFT, IProperty.AXIS_HORIZONTAL),
-			new LengthProperty(CSS.MARGIN_RIGHT, IProperty.AXIS_HORIZONTAL),
-			new LengthProperty(CSS.MARGIN_TOP, IProperty.AXIS_VERTICAL),
+			new LengthProperty(CSS.MARGIN_BOTTOM, IProperty.Axis.VERTICAL),
+			new LengthProperty(CSS.MARGIN_LEFT, IProperty.Axis.HORIZONTAL),
+			new LengthProperty(CSS.MARGIN_RIGHT, IProperty.Axis.HORIZONTAL),
+			new LengthProperty(CSS.MARGIN_TOP, IProperty.Axis.VERTICAL),
 
-			new LengthProperty(CSS.PADDING_BOTTOM, IProperty.AXIS_VERTICAL),
-			new LengthProperty(CSS.PADDING_LEFT, IProperty.AXIS_HORIZONTAL),
-			new LengthProperty(CSS.PADDING_RIGHT, IProperty.AXIS_HORIZONTAL),
-			new LengthProperty(CSS.PADDING_TOP, IProperty.AXIS_VERTICAL),
+			new LengthProperty(CSS.PADDING_BOTTOM, IProperty.Axis.VERTICAL),
+			new LengthProperty(CSS.PADDING_LEFT, IProperty.Axis.HORIZONTAL),
+			new LengthProperty(CSS.PADDING_RIGHT, IProperty.Axis.HORIZONTAL),
+			new LengthProperty(CSS.PADDING_TOP, IProperty.Axis.VERTICAL),
 
 			new ColorProperty(CSS.BORDER_BOTTOM_COLOR),
 			new ColorProperty(CSS.BORDER_LEFT_COLOR),
@@ -87,15 +88,15 @@ public class StyleSheet {
 			new BorderStyleProperty(CSS.BORDER_RIGHT_STYLE),
 			new BorderStyleProperty(CSS.BORDER_TOP_STYLE),
 			new BorderWidthProperty(CSS.BORDER_BOTTOM_WIDTH,
-					CSS.BORDER_BOTTOM_STYLE, IProperty.AXIS_VERTICAL),
+					CSS.BORDER_BOTTOM_STYLE, IProperty.Axis.VERTICAL),
 			new BorderWidthProperty(CSS.BORDER_LEFT_WIDTH,
-					CSS.BORDER_LEFT_STYLE, IProperty.AXIS_HORIZONTAL),
+					CSS.BORDER_LEFT_STYLE, IProperty.Axis.HORIZONTAL),
 			new BorderWidthProperty(CSS.BORDER_RIGHT_WIDTH,
-					CSS.BORDER_RIGHT_STYLE, IProperty.AXIS_HORIZONTAL),
+					CSS.BORDER_RIGHT_STYLE, IProperty.Axis.HORIZONTAL),
 			new BorderWidthProperty(CSS.BORDER_TOP_WIDTH, CSS.BORDER_TOP_STYLE,
-					IProperty.AXIS_VERTICAL), new BorderSpacingProperty(), 
-			new LengthProperty(CSS.HEIGHT, IProperty.AXIS_VERTICAL),
-			new LengthProperty(CSS.WIDTH, IProperty.AXIS_HORIZONTAL),
+					IProperty.Axis.VERTICAL), new BorderSpacingProperty(), 
+			new LengthProperty(CSS.HEIGHT, IProperty.Axis.VERTICAL),
+			new LengthProperty(CSS.WIDTH, IProperty.Axis.HORIZONTAL),
 			new BackgroundImageProperty()
 		};
 

@@ -19,7 +19,9 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class LengthProperty extends AbstractProperty {
 
-	public LengthProperty(String name, byte axis) {
+	private final Axis axis;
+	
+	public LengthProperty(String name, Axis axis) {
 		super(name);
 		this.axis = axis;
 	}
@@ -27,7 +29,7 @@ public class LengthProperty extends AbstractProperty {
 	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
 
 		DisplayDevice device = DisplayDevice.getCurrent();
-		int ppi = this.axis == AXIS_HORIZONTAL ? device.getHorizontalPPI()
+		int ppi = this.axis == Axis.HORIZONTAL ? device.getHorizontalPPI()
 				: device.getVerticalPPI();
 
 		if (isLength(lu)) {
@@ -42,8 +44,4 @@ public class LengthProperty extends AbstractProperty {
 			return RelativeLength.createAbsolute(0);
 		}
 	}
-
-	// ============================================================ PRIVATE
-
-	private int axis;
 }

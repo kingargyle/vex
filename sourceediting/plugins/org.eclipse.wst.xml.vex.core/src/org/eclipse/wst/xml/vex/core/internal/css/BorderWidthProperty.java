@@ -22,6 +22,36 @@ import org.w3c.css.sac.LexicalUnit;
  */
 public class BorderWidthProperty extends AbstractProperty {
 
+	// Name of the corresponding border style property
+	private String borderStyleName;
+
+	// Axis along which the border width is measured.
+	private Axis axis;
+
+	// named border widths
+	private static final int BORDER_WIDTH_THIN = 1;
+	private static final int BORDER_WIDTH_MEDIUM = 3;
+	private static final int BORDER_WIDTH_THICK = 5;
+
+	private static int getBorderWidth(LexicalUnit lu, float fontSize, int ppi) {
+		if (isLength(lu)) {
+			return getIntLength(lu, fontSize, ppi);
+		} else if (lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
+			String s = lu.getStringValue();
+			if (s.equals(CSS.THIN)) {
+				return BORDER_WIDTH_THIN;
+			} else if (s.equals(CSS.MEDIUM)) {
+				return BORDER_WIDTH_MEDIUM;
+			} else if (s.equals(CSS.THICK)) {
+				return BORDER_WIDTH_THICK;
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * Class constructor.
 	 * 
@@ -35,7 +65,7 @@ public class BorderWidthProperty extends AbstractProperty {
 	 *            AXIS_HORIZONTAL (for left and right borders) or AXIS_VERTICAL
 	 *            (for top and bottom borders).
 	 */
-	public BorderWidthProperty(String name, String borderStyleName, byte axis) {
+	public BorderWidthProperty(String name, String borderStyleName, Axis axis) {
 		super(name);
 		this.borderStyleName = borderStyleName;
 		this.axis = axis;
@@ -69,7 +99,7 @@ public class BorderWidthProperty extends AbstractProperty {
 			Styles styles) {
 
 		DisplayDevice device = DisplayDevice.getCurrent();
-		int ppi = this.axis == AXIS_HORIZONTAL ? device.getHorizontalPPI()
+		int ppi = this.axis == Axis.HORIZONTAL ? device.getHorizontalPPI()
 				: device.getVerticalPPI();
 
 		String borderStyle = (String) styles.get(this.borderStyleName);
@@ -85,37 +115,4 @@ public class BorderWidthProperty extends AbstractProperty {
 			return BORDER_WIDTH_MEDIUM;
 		}
 	}
-
-	// =================================================== PRIVATE
-
-	// Name of the corresponding border style property
-	private String borderStyleName;
-
-	// Axis along which the border width is measured.
-	private byte axis;
-
-	// named border widths
-	private static final int BORDER_WIDTH_THIN = 1;
-	private static final int BORDER_WIDTH_MEDIUM = 3;
-	private static final int BORDER_WIDTH_THICK = 5;
-
-	private static int getBorderWidth(LexicalUnit lu, float fontSize, int ppi) {
-		if (isLength(lu)) {
-			return getIntLength(lu, fontSize, ppi);
-		} else if (lu.getLexicalUnitType() == LexicalUnit.SAC_IDENT) {
-			String s = lu.getStringValue();
-			if (s.equals(CSS.THIN)) {
-				return BORDER_WIDTH_THIN;
-			} else if (s.equals(CSS.MEDIUM)) {
-				return BORDER_WIDTH_MEDIUM;
-			} else if (s.equals(CSS.THICK)) {
-				return BORDER_WIDTH_THICK;
-			} else {
-				return 0;
-			}
-		} else {
-			return 0;
-		}
-	}
-
 }
