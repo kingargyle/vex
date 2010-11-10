@@ -20,28 +20,30 @@ import org.w3c.css.sac.LexicalUnit;
 public class LengthProperty extends AbstractProperty {
 
 	private final Axis axis;
-	
-	public LengthProperty(String name, Axis axis) {
+
+	public LengthProperty(final String name, final Axis axis) {
 		super(name);
 		this.axis = axis;
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
-
-		DisplayDevice device = DisplayDevice.getCurrent();
-		int ppi = this.axis == Axis.HORIZONTAL ? device.getHorizontalPPI()
-				: device.getVerticalPPI();
+	public Object calculate(final LexicalUnit lu, final Styles parentStyles, final Styles styles, final VEXElement element) {
+		final int ppi = getPpi();
 
 		if (isLength(lu)) {
-			int length = getIntLength(lu, styles.getFontSize(), ppi);
+			final int length = getIntLength(lu, styles.getFontSize(), ppi);
 			return RelativeLength.createAbsolute(length);
-		} else if (isPercentage(lu)) {
+		} else if (isPercentage(lu))
 			return RelativeLength.createRelative(lu.getFloatValue() / 100);
-		} else if (isInherit(lu) && parentStyles != null) {
-			return parentStyles.get(this.getName());
-		} else {
+		else if (isInherit(lu) && parentStyles != null)
+			return parentStyles.get(getName());
+		else
 			// not specified, "auto", or other unknown value
 			return RelativeLength.createAbsolute(0);
-		}
+	}
+
+	private int getPpi() {
+		final DisplayDevice device = DisplayDevice.getCurrent();
+		final int ppi = axis == Axis.HORIZONTAL ? device.getHorizontalPPI() : device.getVerticalPPI();
+		return ppi;
 	}
 }

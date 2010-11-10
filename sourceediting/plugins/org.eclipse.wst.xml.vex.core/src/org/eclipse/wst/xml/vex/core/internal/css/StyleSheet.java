@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
-import org.eclipse.wst.xml.vex.core.internal.css.IProperty.Axis;
 import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.w3c.css.sac.LexicalUnit;
 
