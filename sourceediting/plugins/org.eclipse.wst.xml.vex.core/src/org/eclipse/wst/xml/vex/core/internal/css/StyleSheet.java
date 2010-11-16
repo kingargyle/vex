@@ -248,7 +248,7 @@ public class StyleSheet {
 
 		for (final IProperty property : CSS_PROPERTIES) {
 			lu = decls.get(property.getName());
-			Object value = property.calculate(lu, parentStyles, styles, element);
+			final Object value = property.calculate(lu, parentStyles, styles, element);
 			styles.put(property.getName(), value);
 		}
 
@@ -278,7 +278,7 @@ public class StyleSheet {
 
 		return styles;
 	}
-
+	
 	/**
 	 * Returns the rules comprising this stylesheet.
 	 */

@@ -41,7 +41,7 @@ public class StyleSheetReader {
 
 	}
 
-	protected static Parser createParser() {
+	public static Parser createParser() {
 		// return new org.apache.batik.css.parser.Parser();
 		return new org.w3c.flute.parser.Parser();
 	}
