@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,7 @@ public class StylePropertyPage extends PropertyPage {
 				} catch (CoreException e) {
 					VexPlugin.getInstance().getLog().log(e.getStatus());
 				}
-				final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
-				style = (Style) pluginProject.getItemForResource(resourcePath);
+				style = (Style) pluginProject.getItemForResource((IFile) getElement());
 				populateDoctypes();
 			}
 
@@ -117,12 +116,10 @@ public class StylePropertyPage extends PropertyPage {
 		gd.widthHint = NAME_WIDTH;
 		nameText.setLayoutData(gd);
 
-		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
-
-		style = (Style) pluginProject.getItemForResource(resourcePath);
+		style = (Style) pluginProject.getItemForResource((IFile) getElement());
 		if (style == null) {
 			style = new Style(pluginProject);
-			style.setResourcePath(resourcePath);
+			style.setResourcePath(((IFile) getElement()).getLocationURI().toString());
 			pluginProject.addItem(style);
 		}
 

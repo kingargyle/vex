@@ -18,6 +18,8 @@ import static org.junit.Assert.fail;
 import java.util.HashSet;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigLoaderJob;
 import org.eclipse.wst.xml.vex.ui.internal.config.ConfigSource;
 import org.junit.Rule;
@@ -39,18 +41,18 @@ public class ConfigLoaderJobTest {
 		job.schedule();
 		job.join();
 		final List<ConfigSource> allConfigSources = job.getLoadedConfigSources();
-		assertContainsConfiguration(allConfigSources, "org.eclipse.wst.xml.vex.ui.tests", "testdata/test.dtd", "testdata/test.css");
+		assertContainsConfiguration(allConfigSources, "org.eclipse.wst.xml.vex.ui.tests", "test-doctype", "test-style");
 		assertContainsEachPluginOnlyOnce(allConfigSources);
 	}
 
 	@Test
 	public void loadWorkspacePluginConfiguration() throws Exception {
-		PluginProjectTest.createVexPluginProject(name.getMethodName());
+		IProject pluginProject = PluginProjectTest.createVexPluginProject(name.getMethodName());
 		final ConfigLoaderJob job = new ConfigLoaderJob();
 		job.schedule();
 		job.join();
 		final List<ConfigSource> allConfigSources = job.getLoadedConfigSources();
-		assertContainsConfiguration(allConfigSources, name.getMethodName(), "plugintest.dtd", "plugintest.css");
+		assertContainsConfiguration(allConfigSources, name.getMethodName(), pluginProject.getFile("plugintest.dtd"), pluginProject.getFile("plugintest.css"));
 		assertContainsEachPluginOnlyOnce(allConfigSources);
 	}
 	
@@ -81,10 +83,21 @@ public class ConfigLoaderJobTest {
 		assertTrue(runnableRun[1]);
 	}
 
-	private static void assertContainsConfiguration(final List<ConfigSource> configSources, final String uniqueIdentifier, final String... configuredResources) {
+	private static void assertContainsConfiguration(final List<ConfigSource> configSources, final String uniqueIdentifier, final String... simpleIds) {
 		for (final ConfigSource configSource : configSources) {
 			if (uniqueIdentifier.equals(configSource.getUniqueIdentifer())) {
-				for (final String configuredResource : configuredResources)
+				for (final String simpleId : simpleIds)
+					assertNotNull(simpleId + " is not configured", configSource.getItem(simpleId));
+				return;
+			}
+		}
+		fail("Cannot find configuration " + uniqueIdentifier);
+	}
+	
+	private static void assertContainsConfiguration(final List<ConfigSource> configSources, final String uniqueIdentifier, final IResource... configuredResources) {
+		for (final ConfigSource configSource : configSources) {
+			if (uniqueIdentifier.equals(configSource.getUniqueIdentifer())) {
+				for (final IResource configuredResource : configuredResources)
 					assertNotNull(configuredResource + " is not configured", configSource.getItemForResource(configuredResource));
 				return;
 			}

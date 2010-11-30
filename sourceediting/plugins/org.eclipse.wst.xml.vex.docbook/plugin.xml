@@ -24,7 +24,6 @@
          name="%doctype.docbook4_5"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
-            dtd="4.5/docbookx.dtd"
             outlineProvider="org.eclipse.wst.xml.vex.docbook.DocBookOutlineProvider"
             publicId="-//OASIS//DTD DocBook XML V4.5//EN"
             systemId="http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 
 /**
@@ -30,7 +33,7 @@ import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 public abstract class ConfigSource {
 
 	private static final IConfigItemFactory[] CONFIG_ITEM_FACTORIES = new IConfigItemFactory[] { new DoctypeFactory(), new StyleFactory() };
-
+	
 	// Globally-unique identifier of this configuration == the plugin id.
 	private final String id;
 
@@ -46,7 +49,7 @@ public abstract class ConfigSource {
 				return factory;
 		return null;
 	}
-
+	
 	public ConfigSource(final String id) {
 		this.id = id;
 	}
@@ -170,12 +173,12 @@ public abstract class ConfigSource {
 	 * Returns the item for the resource with the given path relative to the
 	 * plugin or project. May return null if no such item exists.
 	 * 
-	 * @param resourcePath
+	 * @param resource
 	 *            Path of the resource.
 	 */
-	public ConfigItem getItemForResource(final String resourcePath) {
+	public ConfigItem getItemForResource(final IResource resource) {
 		for (final ConfigItem item : items)
-			if (item.getResourcePath().equals(resourcePath))
+			if (item.getResourcePath().equals(resource.getLocationURI().toString()))
 				return item;
 		return null;
 	}
@@ -242,6 +245,11 @@ public abstract class ConfigSource {
 				}
 			}
 		}
+	}
+	
+	public String resolve(final String publicId, final String systemId) {
+		URIResolver uriResolver = URIResolverPlugin.createResolver();
+		return uriResolver.resolve(getBaseUrl().toString(), publicId, systemId);
 	}
 
 }

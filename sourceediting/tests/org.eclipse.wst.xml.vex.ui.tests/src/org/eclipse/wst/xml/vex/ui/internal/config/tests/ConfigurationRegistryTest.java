@@ -91,7 +91,7 @@ public class ConfigurationRegistryTest {
 		project.getFile(PluginProject.PLUGIN_XML).setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, null);
 		assertFalse(configListener.loaded);
 		assertTrue(configListener.changed);
-		assertNotNull(registry.getPluginProject(project).getItemForResource("plugintest2.css"));
+		assertNotNull(registry.getPluginProject(project).getItemForResource(project.getFile("plugintest2.css")));
 	}
 
 	@Test

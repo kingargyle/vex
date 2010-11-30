@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -83,8 +83,7 @@ public class DoctypePropertyPage extends PropertyPage {
 					VexPlugin.getInstance().getLog().log(e.getStatus());
 				}
 
-				final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
-				doctype = (DocumentType) pluginProject.getItemForResource(resourcePath);
+				doctype = (DocumentType) pluginProject.getItemForResource((IFile) getElement());
 
 				populateRootElements();
 			}
@@ -147,12 +146,10 @@ public class DoctypePropertyPage extends PropertyPage {
 		gd.horizontalAlignment = GridData.FILL;
 		systemIdText.setLayoutData(gd);
 
-		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
-
-		doctype = (DocumentType) pluginProject.getItemForResource(resourcePath);
+		doctype = (DocumentType) pluginProject.getItemForResource((IFile) getElement());
 		if (doctype == null) {
 			doctype = new DocumentType(pluginProject);
-			doctype.setResourcePath(resourcePath);
+			doctype.setResourcePath(((IFile) getElement()).getLocationURI().toString());
 			pluginProject.addItem(doctype);
 		}
 
@@ -192,7 +189,7 @@ public class DoctypePropertyPage extends PropertyPage {
 	}
 
 	private void populateRootElements() {
-		final String resourcePath = ((IFile) getElement()).getProjectRelativePath().toString();
+		final String resourcePath = ((IFile) getElement()).getLocationURI().toString();
 		final Validator validator = (Validator) pluginProject.getParsedResource(resourcePath);
 		if (validator != null) {
 			final List<String> list = Arrays.asList(doctype.getRootElements());

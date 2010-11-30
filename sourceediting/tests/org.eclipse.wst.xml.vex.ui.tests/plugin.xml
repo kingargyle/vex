@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type id="org.eclipse.wst.xml.vex.ui.tests" name="%contentType.name"
+			base-type="org.eclipse.wst.xml.vex.ui.XmlDocument" file-extensions="xml">
+		</content-type>
+	</extension>
+ <extension
+       point="org.eclipse.wst.xml.core.catalogContributions">
+    <catalogContribution
+          id="default">
+       <public
+             publicId="-//Vex//DTD Test//EN"
+             uri="testdata/test.dtd">
+       </public>
+    </catalogContribution>
+ </extension>
    <extension
-         id="test"
+         id="test-doctype"
          name="test doctype"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="test.dtd"
-            dtd="testdata/test.dtd"
             publicId="-//Vex//DTD Test//EN">
       </doctype>
    </extension>
    <extension
-         id="test"
+         id="test-style"
          name="test style"
          point="org.eclipse.wst.xml.vex.ui.styles">
       <style

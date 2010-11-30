@@ -58,7 +58,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="concept.dtd"
-            dtd="dita11/concept.dtd"
             publicId="-//OASIS//DTD DITA 1.1 Concept//EN">
          <rootElement
                name="concept">
@@ -71,7 +70,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="ditabase.dtd"
-            dtd="dita11/ditabase.dtd"
             publicId="-//OASIS//DTD DITA Composite//EN">
       </doctype>
    </extension>
@@ -81,7 +79,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="reference.dtd"
-            dtd="dita11/reference.dtd"
             publicId="-//OASIS//DTD DITA Reference//EN">
       </doctype>
    </extension>
@@ -91,7 +88,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="task.dtd"
-            dtd="dita11/task.dtd"
             publicId="-//OASIS//DTD DITA Task//EN">
       </doctype>
    </extension>
@@ -101,7 +97,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="topic.dtd"
-            dtd="dita11/topic.dtd"
             publicId="-//OASIS//DTD DITA Topic//EN">
       </doctype>
    </extension>
@@ -111,7 +106,6 @@
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="map.dtd"
-            dtd="dita11/map.dtd"
             publicId="-//OASIS//DTD DITA Map//EN">
       </doctype>
    </extension>

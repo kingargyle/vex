@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 John Krasnay and others.
+ * Copyright (c) 2004, 2010 John Krasnay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class StyleFactory implements IConfigItemFactory {
 		final IConfigElement configElement = configElements[0];
 
 		final Style style = new Style(config);
-		style.setResourcePath(configElement.getAttribute("css")); //$NON-NLS-1$
+		style.setResourcePath(config.resolve(null, configElement.getAttribute("css"))); //$NON-NLS-1$
 
 		final IConfigElement[] doctypeRefs = configElement.getChildren();
 
