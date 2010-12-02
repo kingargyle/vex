@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.junit;bundle-version="3.8.1",
  org.eclipse.jface.text;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.wst.xml.vex.ui.internal.editor.tests;x-internal:=true,
+Export-Package: org.eclipse.wst.xml.vex.ui.internal.config.tests;x-internal:=true,
+ org.eclipse.wst.xml.vex.ui.internal.editor.tests;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.internal.tests;x-internal:=true,
  org.eclipse.wst.xml.vex.ui.tests
 Bundle-Localization: plugin
+Bundle-ClassPath: .
