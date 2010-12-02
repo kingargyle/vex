@@ -535,7 +535,6 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            objectClass="org.eclipse.core.resources.IFile"
             name="%DoctypePropertyPage.name"
             class="org.eclipse.wst.xml.vex.ui.internal.config.DoctypePropertyPage"
             nameFilter="*.dtd"
@@ -544,17 +543,26 @@
                name="projectNature"
                value="org.eclipse.wst.xml.vex.ui.pluginNature">
          </filter>
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof>
+         </enabledWhen>
       </page>
       <page
             class="org.eclipse.wst.xml.vex.ui.internal.config.StylePropertyPage"
             id="org.eclipse.wst.xml.vex.ui.config.StylePropertyPage"
             name="%StylePropertyPage.name"
-            nameFilter="*.css"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.css">
          <filter
                name="projectNature"
                value="org.eclipse.wst.xml.vex.ui.pluginNature">
          </filter>
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof>
+         </enabledWhen>
       </page>
    </extension>
    <extension
