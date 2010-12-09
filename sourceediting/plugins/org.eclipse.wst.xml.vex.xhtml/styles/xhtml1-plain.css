@@ -1,0 +1,446 @@
+a {
+  border-bottom: 1px solid;
+  color: blue;
+}
+
+abbr {
+  /* TODO */
+}
+
+acronym {
+  /* TODO */
+}
+
+address {
+  /* TODO */
+}
+
+area {
+  /* TODO */
+}
+
+b { 
+  font-weight: bold;
+}
+
+base {
+  /* TODO */
+}
+
+base:before {
+  content: "Base: ";
+}
+
+bdo {
+  /* TODO */
+}
+
+big {
+  font-size: 120%;
+}
+
+blockquote {
+  display: block;
+  margin: 20px 40px;
+}
+
+br {
+  display: block;
+}
+
+body {
+  display: block;
+  font: 16px "Times New Roman", serif;
+}
+
+button {
+  background-color: #ccc;
+  border: 1px solid black;
+  padding: 3px;
+}
+
+caption {
+  /* TODO block? */
+  font-style: italic;
+}
+
+cite {
+  /* TODO */
+}
+
+code {
+  font: 12px "Courier New", monospace;
+}
+
+col {
+  /* TODO */
+}
+
+colgroup {
+  /* TODO */
+}
+
+dd {
+  display: block;
+  margin-left: 40px;
+}
+
+del {
+  /* TODO */
+}
+
+dfn {
+  /* TODO */
+}
+
+div {
+  display: block;
+}
+
+dl {
+  display: block;
+  margin-bottom: 20px;
+}
+
+dt {
+  display: block;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+em {
+  font-style: italic;
+}
+
+fieldset {
+  /* TODO */
+}
+
+form {
+  /* TODO */
+}
+  
+h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  margin: .67em 0;
+}
+
+h2 {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: .83em 0;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+h4 {
+  display: block;
+  font-weight: bold;
+  margin: 1.33em 0;
+}
+
+h5 {
+  display: block;
+  font-size: 0.83em;
+  font-weight: bold;
+  margin: 1.67em 0;
+}
+
+h6 {
+  display: block;
+  font-size: 0.67em;
+  font-weight: bold;
+  margin: 2.33em 0;
+}
+
+head {
+  border: 1px solid;
+  color: #999;
+  display: block;
+  font: 14px "Arial", sans-serif;
+  margin-bottom: 10px;
+  padding: 4px;
+}
+
+hr {
+  border-top: 1px solid black;
+  display: block;
+  margin: 10px 0;
+}
+
+html {
+  background-color: white;
+  color: black;
+  display: block;
+  margin: 20px;
+}
+
+i {
+  font-style: italic;
+}
+
+img {
+}
+
+img:before {
+  background-color: #ccc;
+  content: "(img)";
+  padding: 3px;
+}
+
+input {
+  border: 1px solid black;
+  padding: 3px;
+}
+
+input:before {
+  content: "(input)";
+}
+
+ins {
+  /* TODO */
+}
+
+kbd {
+  /* TODO */
+}
+
+label {
+  /* TODO */
+}
+
+legend {
+  /* TODO */
+}
+
+li {
+  display: list-item;
+}
+
+link {
+  display: block;
+}
+
+link:before {
+  content: '(link)';
+}
+
+map {
+  /* TODO */
+}
+
+meta {
+  display: block;
+}
+
+meta:before {
+  content: '(meta)';
+}
+
+noscript {
+  /* TODO */
+}
+
+object {
+  /* TODO */
+}
+
+ol {
+  display: block;
+  list-style-type: decimal;
+  margin: 10px 40px;
+}
+
+ol ol {
+  list-style-type: lower-alpha;
+}
+
+ol ol ol {
+  list-style-type: lower-roman;
+}
+
+optgroup {
+  /* TODO */
+}
+
+option {
+  display: block;
+}
+
+p {
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+param {
+  /* TODO */
+}
+
+pre {
+  display: block;
+  border: 1px solid #888;
+  font: 12px "Courier New", monospace;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 3px;
+  white-space: pre;
+}
+
+q {
+  /* TODO */
+}
+
+samp {
+  /* TODO */
+}
+
+script {
+  background-color: #ffff66;
+  font: 12px "Courier New", monospace;
+  display: block;
+  padding: 3px;
+  white-space: pre;
+}
+
+select {
+  border: 1px solid black;
+  display: block;
+  padding: 3px;
+}
+
+select:before {
+  background-color: #ccc;
+  display: block;
+  padding: 2px;
+}
+
+small {
+  font-size: 80%;
+}
+
+span {
+  display: inline;
+}
+
+strong {
+  font-weight: bold;
+}
+
+style {
+  background-color: #ccccff;
+  color: #888;
+  display: block;
+  font: 12px "Courier New", monospace;
+  padding: 3px;
+  white-space: pre;
+}
+
+sub {
+  /* TODO */
+}
+
+sup {
+  /* TODO */
+}
+
+/* TODO review tables once they're supported by VexWidget */
+
+table {
+  background-color: #ccc;
+  display: block;
+}
+
+table:before {
+  content: "table";
+  display: block;
+  font: 10px sans-serif;
+  padding: 2px;
+}
+
+tbody {
+  display: block;
+}
+
+td {
+  display: block;
+}
+
+td, th {
+  background-color: white;
+  border-bottom: 1px dotted #ccc;
+  padding: 2px;
+}
+
+td:before {
+  background-color: #ccc;
+  content: "td";
+  font: 10px sans-serif;
+  padding: 2px;
+}
+
+textarea {
+  display: block;
+  white-space: pre;
+}
+
+tfoot {
+  display: block;
+}
+
+th {
+  display: block;
+}
+
+th:before {
+  background-color: #ccc;
+  content: "th";
+  font: 10px sans-serif;
+  margin-right: 2px;
+  padding: 2px;
+}
+
+title {
+  display: block;
+}
+
+tr {
+  display: block;
+  margin: 6px;
+}
+
+tr:before {
+  background-color: #888;
+  color: white;
+  content: "tr";
+  display: block;
+  font: 10px bold sans-serif;
+  padding: 2px;
+}
+
+title:before {
+  content: 'Title: ';
+}
+
+tt {
+  font: 12px "Courier New", sans-serif;
+}
+
+ul {
+  display: block;
+  list-item-style: disc;
+  margin: 10px 40px;
+}
+
+var {
+  /* TODO */
+}
+

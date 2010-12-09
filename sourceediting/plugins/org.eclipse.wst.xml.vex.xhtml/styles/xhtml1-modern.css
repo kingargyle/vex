@@ -1,0 +1,14 @@
+
+@import url(xhtml1-plain.css);
+
+* {
+  font: 12px Verdana;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #399;
+}
+
+li {
+  margin: 6px 0;
+}

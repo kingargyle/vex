@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type id="org.eclipse.wst.xml.vex.ui.xhtml" name="%contentType.name"
+			base-type="org.eclipse.wst.xml.vex.ui.XmlDocument" file-extensions="xml, xhtml">
+		</content-type>
+	</extension>
+
+	<extension point="org.eclipse.wst.xml.vex.ui.doctypes"
+			   id="xhtml_1_0_strict" 
+			   name="XHTML 1.0 Strict">
+		<doctype 
+			publicId="-//W3C//DTD XHTML 1.0 Strict//EN"
+			systemId="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+			outlineProvider="org.eclipse.wst.xml.vex.xhtml.XhtmlOutlineProvider" >
+			<rootElement name="html">
+			</rootElement>
+		</doctype>
+	</extension>
+	<extension id="xhtml_1_0_plain" name="XHTML Plain"
+		point="org.eclipse.wst.xml.vex.ui.styles">
+		<style css="styles/xhtml1-plain.css">
+			<doctypeRef publicId="-//W3C//DTD XHTML 1.0 Strict//EN">
+			</doctypeRef>
+		</style>
+	</extension>
+	<extension id="xhtml_1_0_sans" name="XHTML Sans"
+		point="org.eclipse.wst.xml.vex.ui.styles">
+		<style css="styles/xhtml1-sans.css">
+			<doctypeRef publicId="-//W3C//DTD XHTML 1.0 Strict//EN">
+			</doctypeRef>
+		</style>
+	</extension>
+	<extension id="xhtml_1_0_modern" name="XHTML Modern"
+		point="org.eclipse.wst.xml.vex.ui.styles">
+		<style css="styles/xhtml1-modern.css">
+			<doctypeRef publicId="-//W3C//DTD XHTML 1.0 Strict//EN">
+			</doctypeRef>
+		</style>
+	</extension>
+	
+</plugin>
