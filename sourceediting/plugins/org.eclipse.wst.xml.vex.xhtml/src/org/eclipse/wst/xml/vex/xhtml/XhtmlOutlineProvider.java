@@ -29,21 +29,17 @@ import org.eclipse.wst.xml.vex.ui.internal.outline.IOutlineProvider;
  */
 public class XhtmlOutlineProvider implements IOutlineProvider {
 
-	@Override
 	public void init(final VexEditor editor) {
 	}
 
-	@Override
 	public ITreeContentProvider getContentProvider() {
 		return contentProvider;
 	}
 
-	@Override
 	public IBaseLabelProvider getLabelProvider() {
 		return labelProvider;
 	}
 
-	@Override
 	public VEXElement getOutlineElement(final VEXElement child) {
 		VEXElement element = child;
 		while (element.getParent() != null) {
@@ -63,20 +59,16 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 
 	private final ITreeContentProvider contentProvider = new ITreeContentProvider() {
 
-		@Override
 		public void dispose() {
 		}
 
-		@Override
 		public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 		}
 
-		@Override
 		public Object[] getChildren(final Object parentElement) {
 			return getOutlineChildren((VEXElement) parentElement);
 		}
 
-		@Override
 		public Object getParent(final Object element) {
 			final VEXElement parent = ((VEXElement) element).getParent();
 			if (parent == null)
@@ -85,12 +77,10 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 				return getOutlineElement(parent);
 		}
 
-		@Override
 		public boolean hasChildren(final Object element) {
 			return getOutlineChildren((VEXElement) element).length > 0;
 		}
 
-		@Override
 		public Object[] getElements(final Object inputElement) {
 			final VEXDocument document = (VEXDocument) inputElement;
 			return new Object[] { document.getRootElement() };
