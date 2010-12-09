@@ -19,6 +19,7 @@
 		<module>../../plugins/org.eclipse.wst.xml.vex.ui</module>
 		<module>../../plugins/org.eclipse.wst.xml.vex.dita</module>
 		<module>../../plugins/org.eclipse.wst.xml.vex.docbook</module>
+		<module>../../plugins/org.eclipse.wst.xml.vex.xhtml</module>
 		<module>../../documentation/org.eclipse.wst.xml.vex.documentation</module>
 		<module>../../features/org.eclipse.wst.xml.vex.feature</module>
 		<module>../../features/org.eclipse.wst.xml.vex_sdk.feature</module>
