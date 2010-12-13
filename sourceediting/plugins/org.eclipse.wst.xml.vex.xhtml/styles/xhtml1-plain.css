@@ -188,12 +188,14 @@ i {
 }
 
 img {
+  background-image: attr(src);
+  height: attr(height);
+  width: attr(width);
 }
 
-img:before {
-  background-color: #ccc;
-  content: "(img)";
-  padding: 3px;
+img:after {
+  display: block;
+  content: attr(title);
 }
 
 input {
