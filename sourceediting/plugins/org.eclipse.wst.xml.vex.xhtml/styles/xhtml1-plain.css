@@ -358,35 +358,22 @@ sup {
 
 table {
   background-color: #ccc;
-  display: block;
-}
-
-table:before {
-  content: "table";
-  display: block;
-  font: 10px sans-serif;
-  padding: 2px;
+  display: table;
 }
 
 tbody {
-  display: block;
-}
-
-td {
-  display: block;
+  display: table-row-group;
 }
 
 td, th {
+  display: table-cell;
   background-color: white;
-  border-bottom: 1px dotted #ccc;
+  border: thin solid black;
   padding: 2px;
 }
 
-td:before {
-  background-color: #ccc;
-  content: "td";
-  font: 10px sans-serif;
-  padding: 2px;
+th {
+  font-weight: bold;
 }
 
 textarea {
@@ -395,37 +382,19 @@ textarea {
 }
 
 tfoot {
-  display: block;
+  display: table-footer-group;
 }
 
-th {
-  display: block;
+thead {
+  display: table-header-group;
 }
 
-th:before {
-  background-color: #ccc;
-  content: "th";
-  font: 10px sans-serif;
-  margin-right: 2px;
-  padding: 2px;
+tr {
+  display: table-row;
 }
 
 title {
   display: block;
-}
-
-tr {
-  display: block;
-  margin: 6px;
-}
-
-tr:before {
-  background-color: #888;
-  color: white;
-  content: "tr";
-  display: block;
-  font: 10px bold sans-serif;
-  padding: 2px;
 }
 
 title:before {
