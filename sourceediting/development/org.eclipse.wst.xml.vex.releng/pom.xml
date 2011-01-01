@@ -7,6 +7,14 @@
 	<artifactId>org.eclipse.wst.xml.vex_parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>snapshots</id>
+			<url>http://snapshots.repository.codehaus.org/</url>
+			<releases><enabled>false</enabled></releases>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<properties>
 		<tycho-version>0.10.0</tycho-version>
@@ -72,14 +80,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4.1</version>
-					<configuration>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.sonatype.tycho</groupId>
 					<artifactId>maven-osgi-packaging-plugin</artifactId>
 					<version>${tycho-version}</version>
@@ -87,7 +87,20 @@
 						<archiveSite>true</archiveSite>
 					</configuration>
 				</plugin>
-			</plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+	            <plugin>
+	               <groupId>org.apache.maven.plugins</groupId>
+	               <artifactId>maven-pmd-plugin</artifactId>
+	               <version>2.5</version>
+	            </plugin>
+        	</plugins>
 		</pluginManagement>
 	</build>
 	<repositories>
