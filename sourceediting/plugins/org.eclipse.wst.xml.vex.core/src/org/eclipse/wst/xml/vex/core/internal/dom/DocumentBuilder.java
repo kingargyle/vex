@@ -112,6 +112,9 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void endDocument() {
+		if (rootElement == null)
+			return;
+		
 		doc = new Document(content, rootElement);
 		doc.setPublicID(dtdPublicID);
 		doc.setSystemID(dtdSystemID);

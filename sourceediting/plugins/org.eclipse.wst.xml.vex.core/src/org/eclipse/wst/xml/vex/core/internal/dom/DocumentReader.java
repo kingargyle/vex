@@ -129,7 +129,8 @@ public class DocumentReader {
 		}
 		xmlReader.parse(is);
 		final VEXDocument result = builder.getDocument();
-		result.setDocumentURI(is.getSystemId());
+		if (result != null)
+			result.setDocumentURI(is.getSystemId());
 		return result;
 	}
 

@@ -314,6 +314,11 @@ public class VexEditor extends EditorPart {
 				System.out.println(message);
 			}
 
+			if (doc == null) {
+				showLabel(MessageFormat.format(Messages.getString("VexEditor.noContent"), file));
+				return;
+			}
+			
 			// this.doctype is set either by wsPolicyFactory or entityResolver
 			// this.style is set by wsPolicyFactory
 			// Otherwise, a PartInitException would have been thrown by now
