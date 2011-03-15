@@ -11,7 +11,6 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * Represents a :before or :after pseudo-element.
@@ -29,7 +28,7 @@ public class PseudoElement extends Element {
 	 * @param name
 	 *            Name of this pseudo-element, e.g. PseudoElement.BEFORE.
 	 */
-	public PseudoElement(VEXElement parent, String name) {
+	public PseudoElement(Element parent, String name) {
 		super(name);
 		this.setParent(parent);
 	}

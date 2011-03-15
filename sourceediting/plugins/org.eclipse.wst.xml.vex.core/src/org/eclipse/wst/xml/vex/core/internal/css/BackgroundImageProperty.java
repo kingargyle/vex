@@ -15,7 +15,7 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -29,7 +29,7 @@ public class BackgroundImageProperty extends AbstractProperty {
 		super(CSS.BACKGROUND_IMAGE);
 	}
 
-	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, VEXElement element) {
+	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, Element element) {
 		if (lexicalUnit == null)
 			return DEFAULT;
 		switch (lexicalUnit.getLexicalUnitType()) {

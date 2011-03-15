@@ -20,8 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
@@ -35,11 +33,11 @@ import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.ElementContentComparator;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.ElementPathRecordingResult;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.StringElementContentComparator;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ValidatorImpl;
+import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 
-public class WTPVEXValidator extends ValidatorImpl implements Validator {
+@SuppressWarnings("restriction")
+public class WTPVEXValidator implements Validator {
 
 	private static final long serialVersionUID = -7632029717211069257L;
 
@@ -75,7 +73,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return new WTPVEXValidator(url);
 	}
 
-	@Override
 	public AttributeDefinition getAttributeDefinition(final String elementName, final String attributeName) {
 		final CMElementDeclaration cmElement = getElementDeclaration(elementName);
 		final CMAttributeDeclaration cmAttribute = (CMAttributeDeclaration) cmElement.getAttributes().getNamedItem(attributeName);
@@ -93,10 +90,9 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return new AttributeDefinition(attributeName, Type.CDATA, /* default value */"", /* values */new String[0], /* required */false, /* fixed */true);
 	}
 
-	@Override
-	public EList<AttributeDefinition> getAttributeDefinitions(final String element) {
+	public List<AttributeDefinition> getAttributeDefinitions(final String element) {
 		final CMElementDeclaration cmelement = getElementDeclaration(element);
-		final EList<AttributeDefinition> attributeList = new BasicEList<AttributeDefinition>(cmelement.getAttributes().getLength());
+		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmelement.getAttributes().getLength());
 		final Iterator<?> iter = cmelement.getAttributes().iterator();
 		while (iter.hasNext()) {
 			final CMAttributeDeclaration attribute = (CMAttributeDeclaration) iter.next();
@@ -112,6 +108,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 	}
 
 	private AttributeDefinition createAttributeDefinition(final CMAttributeDeclaration attribute) {
+		@SuppressWarnings("deprecation")
 		final String defaultValue = attribute.getDefaultValue();
 		String[] values = null;
 		AttributeDefinition.Type type = null;
@@ -129,7 +126,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return vexAttr;
 	}
 
-	@Override
 	public Set<String> getValidItems(final String element) {
 		final CMElementDeclaration elementDec = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
 		final Set<String> results = new HashSet<String>();
@@ -173,7 +169,6 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return list;
 	}
 
-	@Override
 	public Set<String> getValidRootElements() {
 		final Set<String> results = new HashSet<String>();
 		final Iterator<?> iter = getSchema().getElements().iterator();
@@ -185,8 +180,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return results;
 	}
 
-	@Override
-	public boolean isValidSequence(final String element, final EList<String> nodes, final boolean partial) {
+	public boolean isValidSequence(final String element, final List<String> nodes, final boolean partial) {
 		final CMNode parent = getSchema().getElements().getNamedItem(element);
 		if (!(parent instanceof CMElementDeclaration))
 			return true;
@@ -202,7 +196,7 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return validationResult.isValid;
 	}
 
-	private static int getElementCount(final EList<String> nodes) {
+	private static int getElementCount(final List<String> nodes) {
 		int count = 0;
 		for (final String node : nodes)
 			if (ELEMENT_CONTENT_COMPARATOR.isElement(node))
@@ -210,9 +204,8 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 		return count;
 	}
 
-	@Override
-	public boolean isValidSequence(final String element, final EList<String> seq1, final EList<String> seq2, final EList<String> seq3, final boolean partial) {
-		final EList<String> joinedSequence = new BasicEList<String>();
+	public boolean isValidSequence(final String element, final List<String> seq1, final List<String> seq2, final List<String> seq3, final boolean partial) {
+		final List<String> joinedSequence = new ArrayList<String>();
 		if (seq1 != null)
 			joinedSequence.addAll(seq1);
 		if (seq2 != null)
@@ -221,5 +214,4 @@ public class WTPVEXValidator extends ValidatorImpl implements Validator {
 			joinedSequence.addAll(seq3);
 		return isValidSequence(element, joinedSequence, partial);
 	}
-
 }

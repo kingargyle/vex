@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.ui.internal.config;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 
 /**
  * A registered document type.

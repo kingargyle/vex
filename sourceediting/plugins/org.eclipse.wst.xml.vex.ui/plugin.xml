@@ -28,17 +28,6 @@
                contentTypeId="org.eclipse.wst.xml.vex.ui.XmlDocument">
          </contentTypeBinding>
       </editor>
-      <editor
-            class="org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart"
-            contributorClass="org.eclipse.wst.xml.vex.ui.internal.editor.VexActionBarContributor"
-            icon="$nl$/vex16.gif"
-            id="org.eclipse.wst.xml.vex.ui.VexEditorMultiPage"
-            name="%VexEditor.multipage.name"
-            symbolicFontName="org.eclipse.wst.sse.ui.textfont">
-         <contentTypeBinding
-               contentTypeId="org.eclipse.wst.xml.vex.ui.XmlDocument">
-         </contentTypeBinding>
-      </editor>
    </extension>
 
     

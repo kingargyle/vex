@@ -12,8 +12,8 @@ package org.eclipse.wst.xml.vex.core.internal.widget;
 
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 
 /**
  * Implementation of WhitespacePolicy using a CSS stylesheet.
@@ -30,11 +30,11 @@ public class CssWhitespacePolicy implements IWhitespacePolicy {
 		this.styleSheet = styleSheet;
 	}
 
-	public boolean isBlock(VEXElement element) {
+	public boolean isBlock(Element element) {
 		return this.styleSheet.getStyles(element).isBlock();
 	}
 
-	public boolean isPre(VEXElement element) {
+	public boolean isPre(Element element) {
 		return CSS.PRE.equals(this.styleSheet.getStyles(element)
 				.getWhiteSpace());
 	}

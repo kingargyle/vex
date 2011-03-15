@@ -19,9 +19,9 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 
@@ -37,7 +37,7 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 		this.contentProvider = new ContentProvider();
 		this.labelProvider = new LabelProvider() {
 			public String getText(Object o) {
-				VEXElement e = (VEXElement) o;
+				Element e = (Element) o;
 				String s = e.getText();
 				if (s.length() > 30) {
 					s = s.substring(0, 30) + "..."; //$NON-NLS-1$
@@ -56,8 +56,8 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 		return this.labelProvider;
 	}
 
-	public VEXElement getOutlineElement(VEXElement child) {
-		VEXElement element = child;
+	public Element getOutlineElement(Element child) {
+		Element element = child;
 		while (element != null) {
 			
 			// block element?
@@ -66,7 +66,7 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 			}
 			
 			// root?
-			VEXElement parent = element.getParent();
+			Element parent = element.getParent();
 			if (parent == null) {
 				return element;
 			}
@@ -84,9 +84,9 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 	private class ContentProvider implements ITreeContentProvider {
 
 		public Object[] getChildren(Object parentElement) {
-			List<VEXElement> blockChildren = new ArrayList<VEXElement>();
-			List<VEXElement> children = ((VEXElement) parentElement).getChildElements();
-			for (VEXElement child : children) {
+			List<Element> blockChildren = new ArrayList<Element>();
+			List<Element> children = ((Element) parentElement).getChildElements();
+			for (Element child : children) {
 				if (whitespacePolicy.isBlock(child)) {
 					blockChildren.add(child);
 				}
@@ -95,15 +95,15 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 		}
 
 		public Object getParent(Object element) {
-			return ((VEXElement) element).getParent();
+			return ((Element) element).getParent();
 		}
 
 		public boolean hasChildren(Object o) {
-			return this.hasBlockChild((VEXElement) o);
+			return this.hasBlockChild((Element) o);
 		}
 
 		public Object[] getElements(Object inputElement) {
-			return new Object[] { ((VEXDocument) inputElement).getRootElement() };
+			return new Object[] { ((Document) inputElement).getRootElement() };
 			// return this.getChildren(inputElement);
 		}
 
@@ -117,8 +117,8 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 
 		// ====================================================== PRIVATE
 
-		private boolean hasBlockChild(VEXElement element) {
-			for (VEXElement child : element.getChildElements()) {
+		private boolean hasBlockChild(Element element) {
+			for (Element child : element.getChildElements()) {
 				if (whitespacePolicy.isBlock(child)) {
 					return true;
 				}

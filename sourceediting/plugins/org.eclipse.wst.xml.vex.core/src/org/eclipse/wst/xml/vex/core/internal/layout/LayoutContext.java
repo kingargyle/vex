@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 /**
  * Encapsulation of all the resources needed to create a box tree. Most
@@ -30,7 +30,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 public class LayoutContext {
 
 	private BoxFactory boxFactory;
-	private VEXDocument document;
+	private Document document;
 	private Graphics graphics;
 	private StyleSheet styleSheet;
 	private int selectionStart;
@@ -53,7 +53,7 @@ public class LayoutContext {
 	/**
 	 * Returns the document being layed out.
 	 */
-	public VEXDocument getDocument() {
+	public Document getDocument() {
 		return document;
 	}
 
@@ -88,7 +88,7 @@ public class LayoutContext {
 	 *            Element to test. May be null, in which case this method
 	 *            returns false.
 	 */
-	public boolean isElementSelected(VEXElement element) {
+	public boolean isElementSelected(Element element) {
 		return element != null
 				&& element.getStartOffset() >= this.getSelectionStart()
 				&& element.getEndOffset() + 1 <= this.getSelectionEnd();
@@ -111,7 +111,7 @@ public class LayoutContext {
 	/**
 	 * Sets the document being layed out.
 	 */
-	public void setDocument(VEXDocument document) {
+	public void setDocument(Document document) {
 		this.document = document;
 	}
 

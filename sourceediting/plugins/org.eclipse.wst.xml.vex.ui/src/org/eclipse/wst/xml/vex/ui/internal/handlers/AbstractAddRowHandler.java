@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -99,13 +98,13 @@ public abstract class AbstractAddRowHandler extends AbstractVexWidgetHandler {
         
         for (RowCells rowCells : rowCellsToInsert) {
             if (rowCells.row instanceof Element) {
-                widget.insertElement((Element) ((VEXElement) rowCells.row).clone());
+                widget.insertElement((Element) ((Element) rowCells.row).clone());
             }
 
             //cells that are to be inserted.
             for (Object cell : rowCells.cells) {
             	if (cell instanceof Element) {
-                    widget.insertElement((Element) ((VEXElement) cell).clone());
+                    widget.insertElement((Element) ((Element) cell).clone());
                     widget.moveBy(+1);
                 } else {
                     widget.insertText(" ");

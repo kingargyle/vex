@@ -11,7 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.css;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -28,7 +28,7 @@ public class FontSizeProperty extends AbstractProperty {
 		super(CSS.FONT_SIZE);
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, Element element) {
 		return new Float(this.calculateInternal(lu, parentStyles, styles));
 	}
 

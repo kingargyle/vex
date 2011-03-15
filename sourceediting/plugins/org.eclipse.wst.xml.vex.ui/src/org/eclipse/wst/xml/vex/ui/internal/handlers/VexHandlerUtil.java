@@ -22,20 +22,17 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
+import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 import org.eclipse.wst.xml.vex.core.internal.layout.BlockBox;
 import org.eclipse.wst.xml.vex.core.internal.layout.Box;
 import org.eclipse.wst.xml.vex.core.internal.layout.ElementOrRangeCallback;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutUtils;
 import org.eclipse.wst.xml.vex.core.internal.layout.TableRowBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.widget.IBoxFilter;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditorMultiPage;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -50,14 +47,8 @@ public final class VexHandlerUtil {
         assertNotNull(activeEditor);
 
         VexWidget widget = null;
-        if (activeEditor instanceof VexEditor) {
+        if (activeEditor instanceof VexEditor) 
             widget = ((VexEditor) activeEditor).getVexWidget();
-        } else if (activeEditor instanceof VEXMultiPageEditorPart) {
-            VEXMultiPageEditorPart part = (VEXMultiPageEditorPart) activeEditor;
-            VexEditorMultiPage editor = part.getVexEditor();
-            assertNotNull(editor);
-            widget = editor.getVexWidget();
-        }
         assertNotNull(widget);
         return widget;
     }
@@ -72,12 +63,8 @@ public final class VexHandlerUtil {
         IEditorPart activeEditor = window.getActivePage().getActiveEditor();
         if (activeEditor == null) return null;
 
-        if (activeEditor instanceof VexEditor) {
+        if (activeEditor instanceof VexEditor)
             return (VexEditor) activeEditor;
-        } else if (activeEditor instanceof VEXMultiPageEditorPart) {
-            VEXMultiPageEditorPart part = (VEXMultiPageEditorPart) activeEditor;
-            return part.getVexEditor();
-        }
         return null;
     }
 
@@ -189,7 +176,7 @@ public final class VexHandlerUtil {
      */
     public static int getCurrentColumnIndex(IVexWidget vexWidget) {
 
-        VEXElement row = getCurrentTableRow(vexWidget);
+        Element row = getCurrentTableRow(vexWidget);
 
         if (row == null) {
             return -1;
@@ -209,7 +196,7 @@ public final class VexHandlerUtil {
                         i++;
                     }
 
-                    public void onRange(VEXElement parent, int startOffset,
+                    public void onRange(Element parent, int startOffset,
                             int endOffset) {
                         i++;
                     }
@@ -225,10 +212,10 @@ public final class VexHandlerUtil {
      * @param vexWidget
      *            IVexWidget to use.
      */
-    public static VEXElement getCurrentTableRow(IVexWidget vexWidget) {
+    public static Element getCurrentTableRow(IVexWidget vexWidget) {
 
         StyleSheet ss = vexWidget.getStyleSheet();
-        VEXElement element = vexWidget.getCurrentElement();
+        Element element = vexWidget.getCurrentElement();
 
         while (element != null) {
             if (ss.getStyles(element).getDisplay().equals(CSS.TABLE_ROW)) {
@@ -267,9 +254,9 @@ public final class VexHandlerUtil {
         }
 
         int previousSiblingStart = -1;
-        VEXElement parent = vexWidget.getDocument().getElementAt(startOffset);
-        List<VEXNode> children = parent.getChildNodes();
-        for (VEXNode child : children) {
+        Element parent = vexWidget.getDocument().getElementAt(startOffset);
+        List<Node> children = parent.getChildNodes();
+        for (Node child : children) {
         	if (startOffset == child.getStartOffset()) {
                 break;
             }
@@ -379,7 +366,7 @@ public final class VexHandlerUtil {
                                 cellIndex++;
                             }
 
-                            public void onRange(VEXElement parent,
+                            public void onRange(Element parent,
                                     int startOffset, int endOffset) {
                                 callback.onCell(row, new IntRange(startOffset,
                                         endOffset), rowIndex[0], cellIndex);
@@ -392,7 +379,7 @@ public final class VexHandlerUtil {
                 rowIndex[0]++;
             }
 
-            public void onRange(VEXElement parent, final int startOffset,
+            public void onRange(Element parent, final int startOffset,
                     final int endOffset) {
 
                 final IntRange row = new IntRange(startOffset, endOffset);
@@ -409,7 +396,7 @@ public final class VexHandlerUtil {
                                 cellIndex++;
                             }
 
-                            public void onRange(VEXElement parent,
+                            public void onRange(Element parent,
                                     int startOffset, int endOffset) {
                                 callback.onCell(row, new IntRange(startOffset,
                                         endOffset), rowIndex[0], cellIndex);
@@ -493,13 +480,13 @@ public final class VexHandlerUtil {
             ElementOrRangeCallback callback) {
 
         final StyleSheet ss = vexWidget.getStyleSheet();
-        final VEXDocument doc = vexWidget.getDocument();
+        final Document doc = vexWidget.getDocument();
         final int offset = vexWidget.getCaretOffset();
 
         // This may or may not be a table
         // In any case, it's the element that contains the top-level table
         // children
-        VEXElement table = doc.getElementAt(offset);
+        Element table = doc.getElementAt(offset);
 
         while (table != null && !LayoutUtils.isTableChild(ss, table)) {
             table = table.getParent();
@@ -526,7 +513,7 @@ public final class VexHandlerUtil {
                         tableChildren.add(child);
                     }
 
-                    public void onRange(VEXElement parent, int startOffset,
+                    public void onRange(Element parent, int startOffset,
                             int endOffset) {
                         if (!found[0]) {
                             tableChildren.clear();

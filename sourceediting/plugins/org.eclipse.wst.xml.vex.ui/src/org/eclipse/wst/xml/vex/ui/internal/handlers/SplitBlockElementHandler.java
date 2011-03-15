@@ -18,10 +18,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.widget.IVexWidget;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
@@ -35,7 +34,7 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
 
     @Override
     public void execute(VexWidget widget) throws ExecutionException {
-        VEXElement element = widget.getCurrentElement();
+        Element element = widget.getCurrentElement();
         Styles styles = widget.getStyleSheet().getStyles(element);
         while (!styles.isBlock()) {
             element = element.getParent();
@@ -51,7 +50,7 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
      * @param element Element to be split.
      */
     protected void splitElement(final IVexWidget vexWidget,
-                                    final VEXElement element) {
+                                    final Element element) {
 
         vexWidget.doWork(new Runnable() {
             public void run() {
@@ -66,7 +65,7 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
                 if (styles.getWhiteSpace().equals(CSS.PRE)) {
                     // can't call vexWidget.insertText() or we'll get an
                     // infinite loop
-                    VEXDocument doc = vexWidget.getDocument();
+                    Document doc = vexWidget.getDocument();
                     int offset = vexWidget.getCaretOffset();
                     doc.insertText(offset, "\n");
                     vexWidget.moveTo(offset + 1);
@@ -77,9 +76,9 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
                     // and put them in a list of fragments to be reconstructed
                     // when
                     // we clone the element.
-                    List<VEXElement> children = new ArrayList<VEXElement>();
-                    List<VEXDocumentFragment> frags = new ArrayList<VEXDocumentFragment>();
-                    VEXElement child = vexWidget.getCurrentElement();
+                    List<Element> children = new ArrayList<Element>();
+                    List<DocumentFragment> frags = new ArrayList<DocumentFragment>();
+                    Element child = vexWidget.getCurrentElement();
                     while (true) {
                         children.add(child);
                         vexWidget.moveTo(child.getEndOffset(), true);
@@ -94,7 +93,7 @@ public class SplitBlockElementHandler extends AbstractVexWidgetHandler {
 
                     for (int i = children.size() - 1; i >= 0; i--) {
                         child = children.get(i);
-                        VEXDocumentFragment frag = frags.get(i);
+                        DocumentFragment frag = frags.get(i);
                         vexWidget.insertElement((Element) child.clone());
                         int offset = vexWidget.getCaretOffset();
                         if (frag != null) {

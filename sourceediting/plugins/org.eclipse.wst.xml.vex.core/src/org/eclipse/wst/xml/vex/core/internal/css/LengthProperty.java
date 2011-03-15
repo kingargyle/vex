@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.xml.vex.core.internal.VEXCorePlugin;
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.LexicalUnit;
@@ -35,7 +35,7 @@ public class LengthProperty extends AbstractProperty {
 		this.axis = axis;
 	}
 
-	public Object calculate(final LexicalUnit lu, final Styles parentStyles, final Styles styles, final VEXElement element) {
+	public Object calculate(final LexicalUnit lu, final Styles parentStyles, final Styles styles, final Element element) {
 		final int ppi = getPpi();
 		if (isAttr(lu))
 			return calculate(parseAttribute(lu, element), parentStyles, styles, element);
@@ -56,7 +56,7 @@ public class LengthProperty extends AbstractProperty {
 		return lexicalUnit != null && lexicalUnit.getLexicalUnitType() == LexicalUnit.SAC_ATTR;
 	}
 	
-	private static LexicalUnit parseAttribute(final LexicalUnit lexicalUnit, VEXElement element) {
+	private static LexicalUnit parseAttribute(final LexicalUnit lexicalUnit, Element element) {
 		final String attributeName = lexicalUnit.getStringValue();
 		String attribute = element.getAttribute(attributeName);
 		if (attribute == null || "".equals(attribute.trim()))

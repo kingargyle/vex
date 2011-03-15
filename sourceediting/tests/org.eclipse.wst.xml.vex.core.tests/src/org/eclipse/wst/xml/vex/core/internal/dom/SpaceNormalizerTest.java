@@ -41,11 +41,6 @@ import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.tests.VEXCoreTestPlugin;
 import org.osgi.framework.Bundle;
@@ -173,18 +168,18 @@ public class SpaceNormalizerTest extends TestCase {
 
 		final StyleSheet ss = getStyleSheet();
 
-		final VEXDocument doc = createDocument(input, ss);
-		VEXElement element;
+		final Document doc = createDocument(input, ss);
+		Element element;
 
 		element = doc.getRootElement();
 		assertContent(element, new String[] { "<block>", "<block>", "<block>", "<block>" });
 
-		final List<VEXElement> children = element.getChildElements();
+		final List<Element> children = element.getChildElements();
 
 		// --- Block 0 ---
 
 		assertContent(children.get(0), new String[] { "foo ", "<inline>", " baz" });
-		List<VEXElement> c2 = children.get(0).getChildElements();
+		List<Element> c2 = children.get(0).getChildElements();
 		assertContent(c2.get(0), new String[] { "foo bar" });
 
 		// --- Block 1 ---
@@ -212,12 +207,12 @@ public class SpaceNormalizerTest extends TestCase {
 
 		final String input = "<doc>\n " + "<pre>\n foo\n</pre>\n " + "\n </doc>";
 
-		final VEXDocument doc = createDocument(input, getStyleSheet());
+		final Document doc = createDocument(input, getStyleSheet());
 
-		final VEXElement element = doc.getRootElement();
+		final Element element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		final VEXElement pre = element.getChildElements().get(0);
+		final Element pre = element.getChildElements().get(0);
 		assertContent(pre, new String[] { "\n foo\n" });
 	}
 
@@ -226,11 +221,11 @@ public class SpaceNormalizerTest extends TestCase {
 
 		final String input = "<doc>\n " + "<pre>\n foo\n <inline>\n foo\n bar\n </inline></pre>\n " + "\n </doc>";
 
-		final VEXDocument doc = createDocument(input, getStyleSheet());
+		final Document doc = createDocument(input, getStyleSheet());
 
-		final VEXElement element = doc.getRootElement();
-		final VEXElement pre = element.getChildElements().get(0);
-		final VEXElement inline = pre.getChildElements().get(0);
+		final Element element = doc.getRootElement();
+		final Element pre = element.getChildElements().get(0);
+		final Element inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n foo\n bar\n " });
 	}
 
@@ -239,15 +234,15 @@ public class SpaceNormalizerTest extends TestCase {
 
 		final String input = "<doc>\n  " + "<pre>\n\t foo\n\t <inline>\n\t foo\n\t bar\n\t </inline>\n\t baz\n\t </pre>\n " + "\n </doc>";
 
-		final VEXDocument doc = createDocument(input, getStyleSheet());
+		final Document doc = createDocument(input, getStyleSheet());
 
-		final VEXElement element = doc.getRootElement();
+		final Element element = doc.getRootElement();
 		assertContent(element, new String[] { "<pre>" });
 
-		final VEXElement pre = element.getChildElements().get(0);
+		final Element pre = element.getChildElements().get(0);
 		assertContent(pre, new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
 
-		final VEXElement inline = pre.getChildElements().get(0);
+		final Element inline = pre.getChildElements().get(0);
 		assertContent(inline, new String[] { "\n\t foo\n\t bar\n\t " });
 	}
 
@@ -267,14 +262,14 @@ public class SpaceNormalizerTest extends TestCase {
 	 * string in content is enclosed in angle brackets, it's assume to refer to
 	 * the name of an element; otherwise, it represents text content.
 	 */
-	private void assertContent(final VEXElement element, final String[] strings) {
-		final List<VEXNode> content = element.getChildNodes();
+	private void assertContent(final Element element, final String[] strings) {
+		final List<Node> content = element.getChildNodes();
 		assertEquals(strings.length, content.size());
 		for (int i = 0; i < strings.length; i++)
 			if (strings[i].startsWith("<")) {
 				final String name = strings[i].substring(1, strings[i].length() - 1);
 				assertTrue(content.get(i) instanceof Element);
-				assertEquals(name, ((VEXElement) content.get(i)).getName());
+				assertEquals(name, ((Element) content.get(i)).getName());
 			} else {
 				assertTrue(content.get(i) instanceof Text);
 				final String contentText = content.get(i).getText();
@@ -282,7 +277,7 @@ public class SpaceNormalizerTest extends TestCase {
 			}
 	}
 
-	private VEXDocument createDocument(final String s, final StyleSheet ss) throws ParserConfigurationException, SAXException, IOException {
+	private Document createDocument(final String s, final StyleSheet ss) throws ParserConfigurationException, SAXException, IOException {
 
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		final XMLReader xmlReader = factory.newSAXParser().getXMLReader();

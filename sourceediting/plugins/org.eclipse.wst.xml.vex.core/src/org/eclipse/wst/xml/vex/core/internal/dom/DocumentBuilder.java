@@ -13,17 +13,6 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.LinkedList;
 
-import org.eclipse.wst.sse.core.StructuredModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
-import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
-import org.eclipse.wst.xml.core.internal.provisional.contenttype.ContentTypeIdForXML;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -62,12 +51,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	// Stack of StackElement objects
 	private LinkedList<StackEntry> stack = new LinkedList<StackEntry>();
 
-	private VEXElement rootElement;
+	private RootElement rootElement;
 
 	private String dtdPublicID;
 	private String dtdSystemID;
 	private Document doc;
-	private org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument domDocument;
 	private Locator locator;
 
 	/**
@@ -89,7 +77,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	/**
 	 * Returns the newly built <code>Document</code> object.
 	 */
-	public VEXDocument getDocument() {
+	public Document getDocument() {
 		return this.doc;
 	}
 
@@ -119,10 +107,6 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		doc.setPublicID(dtdPublicID);
 		doc.setSystemID(dtdSystemID);
 		rootElement.setDocument(doc);
-		
-		org.w3c.dom.Node node = rootElement.getElement();
-		domDocument.appendChild(node);
-		doc.setDocument(domDocument);
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName) {
@@ -163,16 +147,6 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void startDocument() {
-		initDOM();
-	}
-
-	private void initDOM() {
-		IDOMModel model = null;
-		model = new DOMModelImpl();
-		IModelManager modelManager = StructuredModelManager.getModelManager();
-		IStructuredDocument structuredDocument = modelManager.createStructuredDocumentFor(ContentTypeIdForXML.ContentTypeID_XML);
-		model.setStructuredDocument(structuredDocument);
-		domDocument =  model.getDocument();
 	}
 
 	public void startElement(String namespaceURI, String localName,
@@ -181,26 +155,18 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	throws SAXException {
 
 		try {
-			VEXElement element;
-			if (domDocument == null) {
-				initDOM();
-			}
+			Element element;
 			if (stack.isEmpty()) {
 				rootElement = new RootElement(qName);
-				org.w3c.dom.Element domElement = domDocument.createElement(qName);
 				element = this.rootElement;
-				rootElement.setElement(domElement);
-				domDocument.appendChild(domElement);
 				if (this.policyFactory != null) {
 					this.policy = this.policyFactory
 							.getPolicy(this.dtdPublicID);
 				}
 			} else {
 				element = new Element(qName);
-				org.w3c.dom.Element domElement = domDocument.createElement(qName);
-				element.setElement(domElement);
 
-				VEXElement parent = stack.getLast().element;
+				Element parent = stack.getLast().element;
 				parent.addChild(element);
 			}
 
@@ -209,8 +175,6 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 				element.setAttribute(attrs.getQName(i), attrs.getValue(i));
 			}
 
-//			org.w3c.dom.Text textNode = domDocument.createTextNode(cleanUpText(this.isBlock(element)).toString());
-//			element.getElement().appendChild(textNode);
 			this.appendChars(this.isBlock(element));
 
 			stack.add(new StackEntry(element, content.getLength(), this
@@ -312,11 +276,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		return sb;
 	}
 
-	private boolean isBlock(VEXElement element) {
+	private boolean isBlock(Element element) {
 		return this.policy != null && this.policy.isBlock(element);
 	}
 
-	private boolean isPre(VEXElement element) {
+	private boolean isPre(Element element) {
 		return this.policy != null && this.policy.isPre(element);
 	}
 
@@ -374,11 +338,11 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	private static class StackEntry {
-		public VEXElement element;
+		public Element element;
 		public int offset;
 		public boolean pre;
 
-		public StackEntry(VEXElement element, int offset, boolean pre) {
+		public StackEntry(Element element, int offset, boolean pre) {
 			this.element = element;
 			this.offset = offset;
 			this.pre = pre;

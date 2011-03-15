@@ -20,8 +20,8 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.outline.IOutlineProvider;
 
@@ -41,9 +41,8 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         return this.labelProvider;
     }
 
-    public VEXElement getOutlineElement(final VEXElement child) {
-    	
-    	VEXElement element = child;
+    public Element getOutlineElement(final Element child) {
+    	Element element = child;
     	while (( element.getParent() != null) 
     			&& !isTitledElement(element) ) {
     		element = element.getParent();    		
@@ -61,11 +60,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         }
 
         public Object[] getChildren(final Object parentElement) {
-            return getOutlineChildren((VEXElement) parentElement);
+            return getOutlineChildren((Element) parentElement);
         }
 
         public Object getParent(final Object element) {
-            final VEXElement parent = ((VEXElement) element).getParent();
+            final Element parent = ((Element) element).getParent();
             if (parent == null) {
                 return element;
             } else {
@@ -74,11 +73,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
         }
 
         public boolean hasChildren(final Object element) {
-            return getOutlineChildren((VEXElement) element).length > 0;
+            return getOutlineChildren((Element) element).length > 0;
         }
 
         public Object[] getElements(final Object inputElement) {
-            final VEXDocument document = (VEXDocument) inputElement;
+            final Document document = (Document) inputElement;
             return new Object[] { document.getRootElement() };
         }
         
@@ -91,25 +90,25 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @param element
      * @return
      */
-    private VEXElement[] getOutlineChildren(final VEXElement element) {
-    	final List<VEXElement> children = new ArrayList<VEXElement>();
-        for (VEXElement child : element.getChildElements()) {
+    private Element[] getOutlineChildren(final Element element) {
+    	final List<Element> children = new ArrayList<Element>();
+        for (Element child : element.getChildElements()) {
         	if (titledElements.contains(child.getName())) {
                 children.add(child);
             }
 		}
-        return children.toArray(new VEXElement[children.size()]);
+        return children.toArray(new Element[children.size()]);
     }
 
     
     private final ILabelProvider labelProvider = new LabelProvider() {
         public String getText(final Object o) {
-            final VEXElement e = (VEXElement) o;
-            VEXElement titleChild = findChild(e, "title");
+            final Element e = (Element) o;
+            Element titleChild = findChild(e, "title");
             if (titleChild != null) {
                 return titleChild.getText();
             } else {
-                VEXElement infoChild = findChild(e, e.getName() + "info");
+                Element infoChild = findChild(e, e.getName() + "info");
                 if (infoChild != null) {
                     titleChild = findChild(infoChild, "title");
                     if (titleChild != null) {
@@ -133,11 +132,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * @param element
      * @return
      */
-    private boolean isTitledElement( final VEXElement e ) {
+    private boolean isTitledElement( final Element e ) {
     	
     	if( titledElements.contains(e.getName() )
      			|| e.getParent() == null ) {
-    		final List<VEXElement> children = e.getChildElements();
+    		final List<Element> children = e.getChildElements();
     		if( (children.size() > 0 && children.get(0).getName().equals("title"))
     		 || (children.size() > 1 && children.get(1).getName().equals("title"))  		
     		  ) {
@@ -152,8 +151,8 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      * null if none found. We should move this to XPath when we gain that
      * facility.
      */
-    private VEXElement findChild(VEXElement parent, String childName) {
-    	for (VEXElement child : parent.getChildElements()) {
+    private Element findChild(Element parent, String childName) {
+    	for (Element child : parent.getChildElements()) {
     		if (child.getName().equals(childName)) {
                 return child;
             }

@@ -23,7 +23,6 @@ import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 
 public class TableLayoutTest extends TestCase {
 
@@ -41,7 +40,7 @@ public class TableLayoutTest extends TestCase {
     }
 
     private LayoutContext context;
-    private VEXDocument document;
+    private Document document;
     private RootBox rootBox;
     private int caretPosition;
 

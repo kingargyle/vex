@@ -15,8 +15,8 @@ import java.util.Map;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.menus.UIElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
 
 /**
@@ -48,11 +48,11 @@ public class RemoveTagHandler extends AbstractVexWidgetHandler implements
     public void execute(final VexWidget widget) throws ExecutionException {
         widget.doWork(new Runnable() {
             public void run() {
-                VEXElement element = widget.getDocument().getElementAt(
+                Element element = widget.getDocument().getElementAt(
                         widget.getCaretOffset());
                 widget.moveTo(element.getStartOffset() + 1, false);
                 widget.moveTo(element.getEndOffset(), true);
-                VEXDocumentFragment frag = widget.getSelectedFragment();
+                DocumentFragment frag = widget.getSelectedFragment();
                 widget.deleteSelection();
                 widget.moveBy(-1, false);
                 widget.moveBy(2, true);

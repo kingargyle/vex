@@ -20,10 +20,8 @@ import org.eclipse.wst.xml.vex.core.internal.css.CssTest;
 import org.eclipse.wst.xml.vex.core.internal.css.PropertyTest;
 import org.eclipse.wst.xml.vex.core.internal.css.RuleTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.BlockElementBoxTest;
-import org.eclipse.wst.xml.vex.core.internal.dom.DOMSynchronizationTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidatorTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriterTest;
-import org.eclipse.wst.xml.vex.core.internal.dom.DomTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.GapContentTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.SpaceNormalizerTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.TextWrapperTest;
@@ -48,7 +46,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(BlockElementBoxTest.class);
 		addTest(new JUnit4TestAdapter(ImageBoxTest.class));
 		addTestSuite(DocumentWriterTest.class);
-		addTestSuite(DomTest.class);
 		addTestSuite(DTDValidatorTest.class);
 		addTestSuite(GapContentTest.class);
 		addTestSuite(SpaceNormalizerTest.class);
@@ -57,7 +54,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(TestBlocksInInlines.class);
 		addTestSuite(TestDocumentTextBox.class);
 		addTestSuite(TestStaticTextBox.class);
-		addTestSuite(DOMSynchronizationTest.class);
 		addTestSuite(TableLayoutTest.class);
 		addTestSuite(ListenerListTest.class);
 		addTestSuite(VexWidgetTest.class);

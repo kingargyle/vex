@@ -13,14 +13,13 @@ package org.eclipse.wst.xml.vex.xhtml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.outline.IOutlineProvider;
 
@@ -40,8 +39,8 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 		return labelProvider;
 	}
 
-	public VEXElement getOutlineElement(final VEXElement child) {
-		VEXElement element = child;
+	public Element getOutlineElement(final Element child) {
+		Element element = child;
 		while (element.getParent() != null) {
 
 			// TODO: compare to all structural element names
@@ -66,11 +65,11 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 		}
 
 		public Object[] getChildren(final Object parentElement) {
-			return getOutlineChildren((VEXElement) parentElement);
+			return getOutlineChildren((Element) parentElement);
 		}
 
 		public Object getParent(final Object element) {
-			final VEXElement parent = ((VEXElement) element).getParent();
+			final Element parent = ((Element) element).getParent();
 			if (parent == null)
 				return element;
 			else
@@ -78,11 +77,11 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 		}
 
 		public boolean hasChildren(final Object element) {
-			return getOutlineChildren((VEXElement) element).length > 0;
+			return getOutlineChildren((Element) element).length > 0;
 		}
 
 		public Object[] getElements(final Object inputElement) {
-			final VEXDocument document = (VEXDocument) inputElement;
+			final Document document = (Document) inputElement;
 			return new Object[] { document.getRootElement() };
 		}
 
@@ -95,21 +94,21 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 	 * @param element
 	 * @return
 	 */
-	private VEXElement[] getOutlineChildren(final VEXElement element) {
+	private Element[] getOutlineChildren(final Element element) {
 		final List children = new ArrayList();
 		if (element.getParent() == null) {
-			final VEXElement body = findChild(element, "body");
+			final Element body = findChild(element, "body");
 			if (body != null) {
-				final EList<VEXElement> childElements = body.getChildElements();
+				final List<Element> childElements = body.getChildElements();
 
 				// First, find the lowest numbered h tag available
 				String lowH = "h6";
-				for (final VEXElement child : childElements)
+				for (final Element child : childElements)
 					if (isHTag(child) && child.getName().compareTo(lowH) < 0)
 						lowH = child.getName();
 
 				// Now, get all body children at that level
-				for (final VEXElement child : childElements)
+				for (final Element child : childElements)
 					if (child.getName().equals(lowH))
 						children.add(child);
 			}
@@ -118,9 +117,9 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 			// between this element and the next element at the same level
 			final int level = Integer.parseInt(element.getName().substring(1));
 			final String childName = "h" + (level + 1);
-			final List<VEXElement> childElements = element.getParent().getChildElements();
+			final List<Element> childElements = element.getParent().getChildElements();
 			boolean foundSelf = false;
-			for (final VEXElement child : childElements)
+			for (final Element child : childElements)
 				if (child == element)
 					foundSelf = true;
 				else if (!foundSelf)
@@ -131,19 +130,19 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 					// terminate at next sibling at same level
 					break;
 		}
-		return (VEXElement[]) children.toArray(new VEXElement[children.size()]);
+		return (Element[]) children.toArray(new Element[children.size()]);
 	}
 
 	private final ILabelProvider labelProvider = new LabelProvider() {
 		@Override
 		public String getText(final Object o) {
 			String text;
-			final VEXElement element = (VEXElement) o;
+			final Element element = (Element) o;
 			if (element.getParent() == null) {
 				text = "html";
-				final VEXElement head = findChild(element, "head");
+				final Element head = findChild(element, "head");
 				if (head != null) {
-					final VEXElement title = findChild(head, "title");
+					final Element title = findChild(head, "title");
 					if (title != null)
 						text = title.getText();
 				}
@@ -153,14 +152,14 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 		}
 	};
 
-	private VEXElement findChild(final VEXElement parent, final String childName) {
-		for (final VEXElement child : parent.getChildElements())
+	private Element findChild(final Element parent, final String childName) {
+		for (final Element child : parent.getChildElements())
 			if (child.getName().equals(childName))
 				return child;
 		return null;
 	}
 
-	private boolean isHTag(final VEXElement element) {
+	private boolean isHTag(final Element element) {
 		final String name = element.getName();
 		return name.equals("h1") || name.equals("h2") || name.equals("h3") || name.equals("h4") || name.equals("h5") || name.equals("h6");
 	}

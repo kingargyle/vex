@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.wst.xml.vex.core.internal.core.FontSpec;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -114,7 +114,7 @@ public class StyleSheet {
 	 * This must be transient to prevent it from being serialized, as
 	 * WeakHashMaps are not serializable.
 	 */
-	private transient Map<VEXElement, WeakReference<Styles>> styleMap;
+	private transient Map<Element, WeakReference<Styles>> styleMap;
 
 	/**
 	 * Class constructor.
@@ -132,7 +132,7 @@ public class StyleSheet {
 	 * @param element
 	 *            IVEXElement for which styles are to be flushed.
 	 */
-	public void flushStyles(VEXElement element) {
+	public void flushStyles(Element element) {
 		this.getStyleMap().remove(element);
 	}
 
@@ -143,7 +143,7 @@ public class StyleSheet {
 	 * @param element
 	 *            Parent element of the pseudo-element.
 	 */
-	public VEXElement getAfterElement(VEXElement element) {
+	public Element getAfterElement(Element element) {
 		PseudoElement pe = new PseudoElement(element, PseudoElement.AFTER);
 		Styles styles = this.getStyles(pe);
 		if (styles == null) {
@@ -160,7 +160,7 @@ public class StyleSheet {
 	 * @param element
 	 *            Parent element of the pseudo-element.
 	 */
-	public VEXElement getBeforeElement(VEXElement element) {
+	public Element getBeforeElement(Element element) {
 		PseudoElement pe = new PseudoElement(element, PseudoElement.BEFORE);
 		Styles styles = this.getStyles(pe);
 		if (styles == null) {
@@ -175,9 +175,9 @@ public class StyleSheet {
 	 * reasonable performance.
 	 * 
 	 * @param element
-	 *            IVEXElement for which to calculate the styles.
+	 *            Element for which to calculate the styles.
 	 */
-	public Styles getStyles(VEXElement element) {
+	public Styles getStyles(Element element) {
 
 		Styles styles;
 		WeakReference<Styles> ref = getStyleMap().get(element);
@@ -208,7 +208,7 @@ public class StyleSheet {
 		return styles;
 	}
 
-	private Styles calculateStyles(VEXElement element) {
+	private Styles calculateStyles(Element element) {
 
 		Styles styles = new Styles();
 		Styles parentStyles = null;
@@ -289,7 +289,7 @@ public class StyleSheet {
 	/**
 	 * Returns all the declarations that apply to the given element.
 	 */
-	private Map<String, LexicalUnit> getApplicableDeclarations(final VEXElement element) {
+	private Map<String, LexicalUnit> getApplicableDeclarations(final Element element) {
 		final List<PropertyDecl> rawDeclarationsForElement = findAllDeclarationsFor(element);
 
 		// Sort in cascade order. We can then just stuff them into a
@@ -311,7 +311,7 @@ public class StyleSheet {
 		return values;
 	}
 	
-	private List<PropertyDecl> findAllDeclarationsFor(final VEXElement element) {
+	private List<PropertyDecl> findAllDeclarationsFor(final Element element) {
 		final List<PropertyDecl> rawDeclarations = new ArrayList<PropertyDecl>();
 		for (final Rule rule : rules) {
 			if (rule.matches(element)) {
@@ -324,9 +324,9 @@ public class StyleSheet {
 		return rawDeclarations;
 	}
 
-	private Map<VEXElement, WeakReference<Styles>> getStyleMap() {
+	private Map<Element, WeakReference<Styles>> getStyleMap() {
 		if (styleMap == null) {
-			styleMap = new WeakHashMap<VEXElement, WeakReference<Styles>>();
+			styleMap = new WeakHashMap<Element, WeakReference<Styles>>();
 		}
 		return styleMap;
 	}

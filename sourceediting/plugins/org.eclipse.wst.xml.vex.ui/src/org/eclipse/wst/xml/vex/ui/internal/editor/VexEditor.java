@@ -76,11 +76,9 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
+import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
@@ -502,7 +500,7 @@ public class VexEditor extends EditorPart {
 
 	private boolean loaded;
 	private DocumentType doctype;
-	private VEXDocument doc;
+	private Document doc;
 	private Style style;
 
 	private VexWidget vexWidget;
@@ -845,7 +843,7 @@ public class VexEditor extends EditorPart {
 
 	private String getLocation() {
 		final List<String> path = new ArrayList<String>();
-		VEXElement element = vexWidget.getCurrentElement();
+		Element element = vexWidget.getCurrentElement();
 		while (element != null) {
 			path.add(element.getName());
 			element = element.getParent();
@@ -873,7 +871,7 @@ public class VexEditor extends EditorPart {
 						final IStructuredSelection sel = (IStructuredSelection) vexWidget.getSelection();
 						final boolean multi = sel != null && sel.size() > 1;
 						final Validator validator = vexWidget.getDocument().getValidator();
-						return new ElementPropertySource((VEXElement) object, validator, multi);
+						return new ElementPropertySource((Element) object, validator, multi);
 					} else
 						return null;
 				}

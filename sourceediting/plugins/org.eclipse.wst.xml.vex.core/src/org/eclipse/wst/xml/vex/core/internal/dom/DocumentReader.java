@@ -21,8 +21,6 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -62,7 +60,7 @@ public class DocumentReader {
 	 * @param url
 	 *            URL from which to load the document.
 	 */
-	public VEXDocument read(URL url) throws IOException,
+	public Document read(URL url) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		return read(new InputSource(url.toString()));
@@ -75,7 +73,7 @@ public class DocumentReader {
 	 * @param s
 	 *            String containing the document to be read.
 	 */
-	public VEXDocument read(String s) throws IOException,
+	public Document read(String s) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		Reader reader = new CharArrayReader(s.toCharArray());
@@ -88,7 +86,7 @@ public class DocumentReader {
 	 * @param is
 	 *            SAX InputSource from which to load the document.
 	 */
-	public VEXDocument read(InputSource is) throws IOException,
+	public Document read(InputSource is) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -128,7 +126,7 @@ public class DocumentReader {
 			xmlReader.setEntityResolver(this.getEntityResolver());
 		}
 		xmlReader.parse(is);
-		final VEXDocument result = builder.getDocument();
+		final Document result = builder.getDocument();
 		if (result != null)
 			result.setDocumentURI(is.getSystemId());
 		return result;
