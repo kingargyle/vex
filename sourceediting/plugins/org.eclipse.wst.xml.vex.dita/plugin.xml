@@ -21,6 +21,7 @@
 		</content-type>
 	</extension>
 
+ <!-- DITA 1.1 DTD catalog contributions-->
  <extension
        point="org.eclipse.wst.xml.core.catalogContributions">
     <catalogContribution
