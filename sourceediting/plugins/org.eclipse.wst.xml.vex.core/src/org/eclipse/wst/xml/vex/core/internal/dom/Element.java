@@ -33,7 +33,8 @@ public class Element extends Node implements Cloneable {
 	private String name;
 	private Element parent = null;
 	private List<Node> childNodes = new ArrayList<Node>();
-	private Map<String,String> attributes = new HashMap<String,String>();
+	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+
 	// private String namespaceURI = null;
 	// private String namespacePrefix = null;
 
@@ -52,20 +53,63 @@ public class Element extends Node implements Cloneable {
 
 	public Object clone() {
 		try {
-			final Element element = new Element(this.getName());
+			Element element = new Element(this.getName());
+
 			//add the attributes to the element instance to be cloned
-			for (Map.Entry<String, String> attr : this.attributes.entrySet()) {
-				element.setAttribute(attr.getKey(), attr.getValue());
-			}
+			for (Map.Entry<String, Attribute> attr : this.attributes.entrySet())
+				element.setAttribute(attr.getKey(), attr.getValue().getValue());
 			return element;
-		} catch (DocumentValidationException e) {
-			e.printStackTrace();
+		} catch (DocumentValidationException ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}
 
 	public String getAttribute(String name) {
-		return (String) attributes.get(name);
+		Attribute attribute = attributes.get(name);
+		if (attribute == null)
+			return null;
+		return attribute.getValue();
+	}
+
+	public void removeAttribute(String name) throws DocumentValidationException {
+		final String oldValue = this.getAttribute(name);
+		final String newValue = null;
+		if (oldValue != null)
+			this.attributes.remove(name);
+
+		final Document document = getDocument();
+		if (document == null) // document may be null, e.g. when we're cloning an element to produce a document fragment
+			return;
+
+		final IUndoableEdit edit = document.isUndoEnabled() ? new AttributeChangeEdit(name, oldValue, newValue) : null;
+		document.fireAttributeChanged(new DocumentEvent(document, this, name, oldValue, newValue, edit));
+	}
+
+	public void setAttribute(String name, String value) throws DocumentValidationException {
+		final Attribute oldAttribute = attributes.get(name);
+		final String oldValue = oldAttribute != null ? oldAttribute.getValue() : null;
+		
+		if (value == null && oldValue == null)
+			return;
+		
+		if (value == null) {
+			this.removeAttribute(name);
+		} else {
+			if (value.equals(oldValue)) {
+				return;
+			} else {
+				final Attribute newAttribute = new Attribute(this, name, value);
+				this.attributes.put(name, newAttribute);
+
+				final Document document = getDocument();
+				if (document == null) // doc may be null, e.g. when we're cloning an element to produce a document fragment
+					return;
+
+				final IUndoableEdit edit = document.isUndoEnabled() ? new AttributeChangeEdit(name, oldValue, value) : null;
+				document.fireAttributeChanged(new DocumentEvent(document, this, name, oldValue, value, edit));
+			}
+		}
 	}
 
 	public List<String> getAttributeNames() {
@@ -137,55 +181,6 @@ public class Element extends Node implements Cloneable {
 
 	public boolean isEmpty() {
 		return this.getStartOffset() + 1 == this.getEndOffset();
-	}
-
-	public void removeAttribute(String name) throws DocumentValidationException {
-
-		String oldValue = this.getAttribute(name);
-		String newValue = null;
-		if (oldValue != null) {
-			this.attributes.remove(name);
-		}
-		Document doc = (Document)this.getDocument();
-		if (doc != null) { // doc may be null, e.g. when we're cloning an
-			// element
-			// to produce a document fragment
-
-			IUndoableEdit edit = doc.isUndoEnabled() ? new AttributeChangeEdit(
-					name, oldValue, newValue) : null;
-
-			doc.fireAttributeChanged(new DocumentEvent(doc, this, name,
-					oldValue, newValue, edit));
-		}
-	}
-
-	public void setAttribute(String name, String value)
-			throws DocumentValidationException {
-
-		String oldValue = getAttribute(name);
-
-		if (value == null && oldValue == null) {
-			return;
-		} else if (value == null) {
-			this.removeAttribute(name);
-		} else if (value.equals(oldValue)) {
-			return;
-		} else {
-			this.attributes.put(name, value);
-			Document doc = (Document)this.getDocument();
-			if (doc != null) { // doc may be null, e.g. when we're cloning an
-				// element
-				// to produce a document fragment
-
-				IUndoableEdit edit = doc.isUndoEnabled() ? new AttributeChangeEdit(
-						name, oldValue, value)
-						: null;
-
-				doc.fireAttributeChanged(new DocumentEvent(doc, this, name,
-						oldValue, value, edit));
-			}
-		}
-
 	}
 
 	public String toString() {
