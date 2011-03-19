@@ -60,9 +60,7 @@ public abstract class Node {
 		endPosition = content.createPosition(endOffset);
 	}
 
-	public String getNodeType() {
-		return null;
-	}
+	public abstract String getNodeType();
 	
 	public abstract String getBaseURI();
 }

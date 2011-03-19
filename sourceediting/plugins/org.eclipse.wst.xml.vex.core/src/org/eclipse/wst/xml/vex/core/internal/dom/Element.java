@@ -24,7 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
- * <code>Element</code> represents a tag in an XML document. Methods are
+ * Represents a tag in an XML document. Methods are
  * available for managing the element's attributes and children.
  */
 public class Element extends Node implements Cloneable {
@@ -38,43 +38,28 @@ public class Element extends Node implements Cloneable {
 	// private String namespacePrefix = null;
 
 	/**
-	 * Class constructor.
-	 * 
 	 * @param name
 	 *            element name
 	 */
 	public Element(String name) {
 		this.name = name;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXElement#addChild(org.eclipse
-	 * .wst.xml.vex.core.internal.dom.Element)
-	 */
+
 	public void addChild(Element child) {
 		childNodes.add(child);
 		child.setParent(this);
-		//getElement().appendChild(child.getElement());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 */
 	public Object clone() {
 		try {
-			Element element = new Element(this.getName());
+			final Element element = new Element(this.getName());
 			//add the attributes to the element instance to be cloned
 			for (Map.Entry<String, String> attr : this.attributes.entrySet()) {
 				element.setAttribute(attr.getKey(), attr.getValue());
 			}
 			return element;
-
-		} catch (DocumentValidationException ex) {
-			ex.printStackTrace();
+		} catch (DocumentValidationException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -99,17 +84,16 @@ public class Element extends Node implements Cloneable {
 		while (iter.hasNext()) {
 			Node node = iter.next();
 			if (node.getNodeType().equals("Element")) {
-				elements.add((Element)node);
+				elements.add((Element) node);
 			}
 		}
 		return elements;
 	}
 
 	public List<Node> getChildNodes() {
-		return Document.createNodeList(getContent(), getStartOffset() + 1,
-				getEndOffset(), childNodes);
+		return Document.createNodeList(getContent(), getStartOffset() + 1, getEndOffset(), childNodes);
 	}
- 
+
 	public Document getDocument() {
 		Element root = this;
 		while (root.getParent() != null) {
@@ -131,8 +115,8 @@ public class Element extends Node implements Cloneable {
 	}
 
 	public String getText() {
-		String s = super.getText();
-		StringBuffer sb = new StringBuffer(s.length());
+		final String s = super.getText();
+		final StringBuilder sb = new StringBuilder(s.length());
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if (c != 0) {
@@ -250,7 +234,7 @@ public class Element extends Node implements Cloneable {
 		}
 
 		public void undo() throws CannotUndoException {
-			Document doc = (Document)getDocument();
+			Document doc = (Document) getDocument();
 			try {
 				doc.setUndoEnabled(false);
 				setAttribute(name, oldValue);
@@ -262,7 +246,7 @@ public class Element extends Node implements Cloneable {
 		}
 
 		public void redo() throws CannotRedoException {
-			Document doc = (Document)getDocument();
+			Document doc = (Document) getDocument();
 			try {
 				doc.setUndoEnabled(false);
 				setAttribute(name, newValue);
@@ -290,24 +274,24 @@ public class Element extends Node implements Cloneable {
 
 	public void setNamespace(String prefix, String namespaceURI) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setNamespacePrefix(String prefix) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setNamespaceURI(String namespaceURI) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public String getNodeType() {
 		return "Element";
 	}
-	
+
 	/**
 	 * Sets the content of the node
 	 * 
@@ -320,7 +304,7 @@ public class Element extends Node implements Cloneable {
 	 */
 	public void setContent(Content content, int startOffset, int endOffset) {
 		super.setContent(content, startOffset, endOffset);
-	}	
+	}
 
 	@Override
 	public String getBaseURI() {

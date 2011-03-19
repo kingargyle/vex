@@ -69,11 +69,6 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 		this.policyFactory = policyFactory;
 	}
 	
-//	public DocumentBuilder(IWhitespacePolicyFactory policyFactory, IDOMDocument domDocument) {
-//		this.policyFactory = policyFactory;
-//		this.domDocument = domDocument;
-//	}
-
 	/**
 	 * Returns the newly built <code>Document</code> object.
 	 */
@@ -86,7 +81,7 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 
-		// Convert nuls to spaces, since we use nulls for element delimiters
+		// Convert nulls to spaces, since we use nulls for element delimiters
 		char[] chars = new char[length];
 		System.arraycopy(ch, start, chars, 0, length);
 		for (int i = 0; i < chars.length; i++) {
@@ -110,24 +105,18 @@ public class DocumentBuilder implements ContentHandler, LexicalHandler {
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName) {
-
 		this.appendChars(true);
 
-		StackEntry entry = this.stack.removeLast();
+		final StackEntry entry = this.stack.removeLast();
 
 		// we must insert the trailing sentinel first, else the insertion
 		// pushes the end position of the element to after the sentinel
 		this.content.insertString(content.getLength(), "\0");
 		entry.element.setContent(this.content, entry.offset, content
 				.getLength() - 1);
-//		int length = entry.element.getEndOffset() - entry.element.getStartOffset();
-//		String text = content.getString(entry.element.getStartOffset(), length);
-//		org.w3c.dom.Text textNode = entry.element.getElement().getOwnerDocument().createTextNode(text);
-//		entry.element.getElement().appendChild(textNode);
 
-		if (this.isBlock(entry.element)) {
+		if (this.isBlock(entry.element))
 			this.trimLeading = true;
-		}
 	}
 
 	public void endPrefixMapping(java.lang.String prefix) {
