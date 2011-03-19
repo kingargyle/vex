@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+import org.eclipse.core.runtime.QualifiedName;
+
 /**
  * An immutable representation of an attribute within the start tag of an element.
  *  
@@ -19,39 +21,43 @@ public class Attribute {
 	
 	private final Element parent;
 	
-	private final String localName;
+	private final QualifiedName name;
 	
 	private final String value;
 	
 	public Attribute(final Element parent, final String localName, final String value) {
-		this.parent = parent;
-		this.localName = localName;
-		this.value = value;
+		this(parent, new QualifiedName(null, localName), value);
 	}
 
+	public Attribute(final Element parent, final QualifiedName name, final String value) {
+		this.parent = parent;
+		this.name = name;
+		this.value = value;
+	}
+	
 	public Element getParent() {
 		return parent;
 	}
 	
 	public String getLocalName() {
-		return localName;
+		return name.getLocalName();
 	}
 	
 	public String getValue() {
 		return value;
 	}
-	
+
 	/**
-	 * @return namespaceName:localName
+	 * @return a pair of the namespace URI and the local name
 	 */
-	public String getExpandedName() {
-		return localName;
+	public QualifiedName getQualifiedName() {
+		return name;
 	}
 	
 	/**
-	 * @return prefix:localName
+	 * @return prefix:localName, or localName if prefix is null
 	 */
-	public String getQualifiedName() {
-		return localName;
+	public String getPrefixedName() {
+		return getLocalName();
 	}
 }

@@ -19,6 +19,7 @@ import junit.framework.TestSuite;
 import org.eclipse.wst.xml.vex.core.internal.css.CssTest;
 import org.eclipse.wst.xml.vex.core.internal.css.PropertyTest;
 import org.eclipse.wst.xml.vex.core.internal.css.RuleTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.AttributeTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.BlockElementBoxTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidatorTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriterTest;
@@ -40,6 +41,7 @@ public class VEXCoreTestSuite extends TestSuite {
 
 	public VEXCoreTestSuite() {
 		super("Vex Core Tests");
+		addTest(new JUnit4TestAdapter(AttributeTest.class));
 		addTestSuite(CssTest.class);
 		addTestSuite(PropertyTest.class);
 		addTestSuite(RuleTest.class);
