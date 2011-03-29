@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
@@ -30,10 +31,12 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 public class Element extends Node implements Cloneable {
 
 	private static final String XML_BASE_ATTRIBUTE = "xml:base";
+	
 	private String name;
 	private Element parent = null;
 	private List<Node> childNodes = new ArrayList<Node>();
 	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+	private Map<String, String> namespaceDeclarations = new HashMap<String, String>();
 
 	// private String namespaceURI = null;
 	// private String namespacePrefix = null;
@@ -257,29 +260,46 @@ public class Element extends Node implements Cloneable {
 		this.parent = parent;
 	}
 
-	public String getNamespacePrefix() {
-		// TODO Auto-generated method stub
+	public String getNamespaceURI(final String namespacePrefix) {
+		if (namespaceDeclarations.containsKey(namespacePrefix))
+			return namespaceDeclarations.get(namespacePrefix);
+		if (parent != null)
+			return parent.getNamespaceURI(namespacePrefix);
 		return null;
 	}
+	
+	public String getDefaultNamespaceURI() {
+		return getNamespaceURI(null);
+	}
 
-	public String getNamespaceURI() {
-		// TODO Auto-generated method stub
+	public String getNamespacePrefix(final String namespaceURI) {
+		for (Entry<String, String> entry: namespaceDeclarations.entrySet())
+			if (namespaceURI.equals(entry.getValue()))
+				return entry.getKey();
+		if (parent != null) {
+			final String parentPrefix = parent.getNamespacePrefix(namespaceURI);
+			if (!namespaceDeclarations.containsKey(parentPrefix))
+				return parentPrefix;
+		}
 		return null;
 	}
-
-	public void setNamespace(String prefix, String namespaceURI) {
-		// TODO Auto-generated method stub
-
+	
+	public void declareNamespace(final String namespacePrefix, final String namespaceURI) {
+		if (namespaceURI == null || "".equals(namespaceURI.trim()))
+			return;
+		namespaceDeclarations.put(namespacePrefix, namespaceURI);
 	}
-
-	public void setNamespacePrefix(String prefix) {
-		// TODO Auto-generated method stub
-
+	
+	public void removeNamespace(String namespacePrefix) {
+		namespaceDeclarations.remove(namespacePrefix);
 	}
-
-	public void setNamespaceURI(String namespaceURI) {
-		// TODO Auto-generated method stub
-
+	
+	public void declareDefaultNamespace(final String namespaceURI) {
+		declareNamespace(null, namespaceURI);
+	}
+	
+	public void removeDefaultNamespace() {
+		removeNamespace(null);
 	}
 
 	@Override
