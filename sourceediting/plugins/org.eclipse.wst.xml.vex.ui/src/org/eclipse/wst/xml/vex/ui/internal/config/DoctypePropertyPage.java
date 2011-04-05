@@ -104,6 +104,17 @@ public class DoctypePropertyPage extends PropertyPage {
 		};
 		VexPlugin.getInstance().getConfigurationRegistry().addConfigListener(configListener);
 
+		doctype = (DocumentType) pluginProject.getItemForResource((IFile) getElement());
+		if (doctype == null) {
+			doctype = new DocumentType(pluginProject);
+			doctype.setResourcePath(((IFile) getElement()).getLocationURI().toString());
+			pluginProject.addItem(doctype);
+		}
+
+		// Generate a simple ID for this one if necessary
+		if (doctype.getSimpleId() == null || doctype.getSimpleId().length() == 0)
+			doctype.setSimpleId(doctype.generateSimpleId());
+
 		if (VexPlugin.getInstance().getConfigurationRegistry().isLoaded()) {
 			populateDoctype();
 			populateRootElements();
@@ -145,17 +156,6 @@ public class DoctypePropertyPage extends PropertyPage {
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
 		systemIdText.setLayoutData(gd);
-
-		doctype = (DocumentType) pluginProject.getItemForResource((IFile) getElement());
-		if (doctype == null) {
-			doctype = new DocumentType(pluginProject);
-			doctype.setResourcePath(((IFile) getElement()).getLocationURI().toString());
-			pluginProject.addItem(doctype);
-		}
-
-		// Generate a simple ID for this one if necessary
-		if (doctype.getSimpleId() == null || doctype.getSimpleId().length() == 0)
-			doctype.setSimpleId(doctype.generateSimpleId());
 
 		// need to do GridLayout and GridData for this guy them fill with items
 

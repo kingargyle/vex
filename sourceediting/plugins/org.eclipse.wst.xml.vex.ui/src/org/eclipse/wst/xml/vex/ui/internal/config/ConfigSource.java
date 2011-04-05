@@ -62,6 +62,7 @@ public abstract class ConfigSource {
 	 */
 	public void addItem(final ConfigItem item) {
 		items.add(item);
+		parseResources(null);
 	}
 
 	/**
