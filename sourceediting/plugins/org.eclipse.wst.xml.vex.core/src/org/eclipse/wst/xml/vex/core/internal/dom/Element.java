@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
@@ -32,21 +33,19 @@ public class Element extends Node implements Cloneable {
 
 	private static final String XML_BASE_ATTRIBUTE = "xml:base";
 	
-	private String name;
+	private final QualifiedName name;
+	
 	private Element parent = null;
 	private List<Node> childNodes = new ArrayList<Node>();
 	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 	private Map<String, String> namespaceDeclarations = new HashMap<String, String>();
 
-	// private String namespaceURI = null;
-	// private String namespacePrefix = null;
-
-	/**
-	 * @param name
-	 *            element name
-	 */
-	public Element(String name) {
-		this.name = name;
+	public Element(final String localName) {
+		this(new QualifiedName(null, localName));
+	}
+	
+	public Element(final QualifiedName qualifiedName) {
+		this.name = qualifiedName;
 	}
 
 	public void addChild(Element child) {
@@ -154,7 +153,26 @@ public class Element extends Node implements Cloneable {
 	}
 
 	public String getName() {
-		return this.name;
+		return getLocalName();
+	}
+	
+	public String getLocalName() {
+		return name.getLocalName();
+	}
+	
+	public QualifiedName getQualifiedName() {
+		return name;
+	}
+	
+	public String getPrefix() {
+		return getNamespacePrefix(name.getQualifier());
+	}
+	
+	public String getPrefixedName() {
+		String prefix = getPrefix();
+		if (prefix == null)
+			return getLocalName();
+		return prefix + ":" + getLocalName();
 	}
 
 	public Element getParent() {
@@ -190,7 +208,7 @@ public class Element extends Node implements Cloneable {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<");
-		sb.append(this.getName());
+		sb.append(this.getPrefixedName().toString());
 		List<String> attrs = this.getAttributeNames();
 
 		for (int i = 0; i < attrs.size(); i++) {

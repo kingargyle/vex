@@ -110,7 +110,7 @@ public class BlockElementBox extends AbstractBlockBox {
 	}
 
 	public String toString() {
-		return "BlockElementBox: <" + this.getElement().getName() + ">" + "[x="
+		return "BlockElementBox: <" + this.getElement().getPrefixedName() + ">" + "[x="
 				+ this.getX() + ",y=" + this.getY() + ",width="
 				+ this.getWidth() + ",height=" + this.getHeight() + "]";
 	}

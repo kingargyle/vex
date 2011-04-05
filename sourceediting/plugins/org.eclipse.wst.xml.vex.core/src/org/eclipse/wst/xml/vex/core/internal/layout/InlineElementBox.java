@@ -229,7 +229,7 @@ public class InlineElementBox extends CompositeInlineBox {
 		StringBuffer sb = new StringBuffer();
 		if (this.getStartOffset() == this.getElement().getStartOffset() + 1) {
 			sb.append("<");
-			sb.append(this.getElement().getName());
+			sb.append(this.getElement().getPrefixedName());
 			sb.append(">");
 		}
 		Box[] children = this.getChildren();
@@ -238,7 +238,7 @@ public class InlineElementBox extends CompositeInlineBox {
 		}
 		if (this.getEndOffset() == this.getElement().getEndOffset()) {
 			sb.append("</");
-			sb.append(this.getElement().getName());
+			sb.append(this.getElement().getPrefixedName());
 			sb.append(">");
 		}
 		return sb.toString();

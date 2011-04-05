@@ -120,7 +120,6 @@ public class Rule {
 			return false;
 		}
 
-		String elementName = element.getName();
 		int selectorType = selector.getSelectorType();
 
 		switch (selectorType) {
@@ -141,7 +140,7 @@ public class Rule {
 				if (element instanceof PseudoElement) {
 					AttributeCondition ac = (AttributeCondition) cs
 							.getCondition();
-					return ac.getValue().equals(element.getName())
+					return ac.getValue().equals(element.getLocalName())
 							&& matches(cs.getSimpleSelector(), element
 									.getParent());
 				} else {
@@ -153,6 +152,7 @@ public class Rule {
 			}
 
 		case Selector.SAC_ELEMENT_NODE_SELECTOR:
+			String elementName = element.getLocalName();
 			String selectorName = ((ElementSelector) selector).getLocalName();
 			if (selectorName == null) {
 				// We land here if we have a wildcard selector (*) or

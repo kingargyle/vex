@@ -113,4 +113,48 @@ public class NamespaceTest {
 		element.declareDefaultNamespace("http://namespace/uri");
 		assertEquals("http://namespace/uri", element.getDefaultNamespaceURI());
 	}
+	
+	@Test
+	public void elementLocalName() throws Exception {
+		final Element elementWithoutNamespace = new Element("localName");
+		assertEquals("localName", elementWithoutNamespace.getLocalName());
+		final Element elementWithNamespace = new Element(new QualifiedName("http://namespace/uri", "localName"));
+		assertEquals("localName", elementWithNamespace.getLocalName());
+	}
+	
+	@Test
+	public void elementQualifiedName() throws Exception {
+		final Element elementWithoutNamespace = new Element("localName");
+		assertEquals("localName", elementWithoutNamespace.getQualifiedName().toString());
+		final Element elementWithNamespace = new Element(new QualifiedName("http://namespace/uri", "localName"));
+		assertEquals("http://namespace/uri:localName", elementWithNamespace.getQualifiedName().toString());
+	}
+	
+	@Test
+	public void elementPrefix() throws Exception {
+		final Element elementWithoutNamespace = new Element("element");
+		assertNull(elementWithoutNamespace.getPrefix());
+
+		final Element elementWithNamespace = new Element(new QualifiedName("http://namespace/uri", "element"));
+		elementWithNamespace.declareNamespace("nsPrefix", "http://namespace/uri");
+		assertEquals("nsPrefix", elementWithNamespace.getPrefix());
+		
+		final Element elementWithDefaultNamespace = new Element(new QualifiedName("http://namespace/uri", "element"));
+		elementWithDefaultNamespace.declareDefaultNamespace("http://namespace/uri");
+		assertNull(elementWithDefaultNamespace.getPrefix());
+	}
+	
+	@Test
+	public void elementPrefixedName() throws Exception {
+		final Element elementWithoutNamespace = new Element("element");
+		assertEquals("element", elementWithoutNamespace.getPrefixedName());
+
+		final Element elementWithNamespace = new Element(new QualifiedName("http://namespace/uri", "element"));
+		elementWithNamespace.declareNamespace("nsPrefix", "http://namespace/uri");
+		assertEquals("nsPrefix:element", elementWithNamespace.getPrefixedName());
+		
+		final Element elementWithDefaultNamespace = new Element(new QualifiedName("http://namespace/uri", "element"));
+		elementWithDefaultNamespace.declareDefaultNamespace("http://namespace/uri");
+		assertEquals("element", elementWithDefaultNamespace.getPrefixedName());
+	}
 }

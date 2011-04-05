@@ -42,13 +42,13 @@ public class PseudoElement extends Element {
 		}
 		PseudoElement other = (PseudoElement) o;
 		return this.getParent() == other.getParent()
-				&& this.getName().equals(other.getName());
+				&& this.getQualifiedName().equals(other.getQualifiedName());
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return this.getParent().hashCode() + this.getName().hashCode();
+		return this.getParent().hashCode() + this.getQualifiedName().hashCode();
 	}
 }

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
+import org.eclipse.core.runtime.QualifiedName;
+
 /**
  * The root element of a document. Keeps track of the document to which it is
  * associated. Any element can find the document to which it is associated by
@@ -21,14 +23,12 @@ public class RootElement extends Element {
 
 	private Document document;
 
-	/**
-	 * Class constructor
-	 * 
-	 * @param name
-	 *            Name of the element.
-	 */
-	public RootElement(String name) {
-		super(name);
+	public RootElement(final String localName) {
+		super(localName);
+	}
+	
+	public RootElement(final QualifiedName qualifiedName) {
+		super(qualifiedName);
 	}
 	
 	public Document getDocument() {
