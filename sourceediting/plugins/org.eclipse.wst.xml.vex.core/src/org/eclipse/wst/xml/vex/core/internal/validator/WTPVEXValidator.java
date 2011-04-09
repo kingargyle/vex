@@ -15,6 +15,7 @@ package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -75,6 +76,14 @@ public class WTPVEXValidator implements Validator {
 
 	public AttributeDefinition getAttributeDefinition(final String elementName, final String attributeName) {
 		final CMElementDeclaration cmElement = getElementDeclaration(elementName);
+		/*
+		 * #342320: If we do not find the element, it is acutally not valid.
+		 * But we are benevolent here since we do not want to loose data at this
+		 * point.
+		 */
+		if (cmElement == null)
+			return createUnknownAttributeDefinition(attributeName);
+		
 		final CMAttributeDeclaration cmAttribute = (CMAttributeDeclaration) cmElement.getAttributes().getNamedItem(attributeName);
 		if (cmAttribute != null)
 			return createAttributeDefinition(cmAttribute);
@@ -91,9 +100,17 @@ public class WTPVEXValidator implements Validator {
 	}
 
 	public List<AttributeDefinition> getAttributeDefinitions(final String element) {
-		final CMElementDeclaration cmelement = getElementDeclaration(element);
-		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmelement.getAttributes().getLength());
-		final Iterator<?> iter = cmelement.getAttributes().iterator();
+		final CMElementDeclaration cmElement = getElementDeclaration(element);
+		/*
+		 * #342320: If we do not find the element, it is acutally not valid.
+		 * But we are benevolent here since we do not want to loose data at this
+		 * point.
+		 */
+		if (cmElement == null)
+			return Collections.emptyList();
+		
+		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmElement.getAttributes().getLength());
+		final Iterator<?> iter = cmElement.getAttributes().iterator();
 		while (iter.hasNext()) {
 			final CMAttributeDeclaration attribute = (CMAttributeDeclaration) iter.next();
 			final AttributeDefinition vexAttr = createAttributeDefinition(attribute);
@@ -128,6 +145,13 @@ public class WTPVEXValidator implements Validator {
 
 	public Set<String> getValidItems(final String element) {
 		final CMElementDeclaration elementDec = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
+		/*
+		 * #342320: If we do not find the element, it is acutally not valid.
+		 * But we are benevolent here since we do not want to loose data at this
+		 * point.
+		 */
+		if (elementDec == null)
+			return Collections.emptySet();
 		final Set<String> results = new HashSet<String>();
 		for (final CMNode node : getAvailableContent(element, elementDec))
 			if (node instanceof CMElementDeclaration) {
