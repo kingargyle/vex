@@ -20,7 +20,6 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 /**
  * An anonymous box that contains the table row groups for a table. This box is
@@ -50,7 +49,7 @@ public class TableBodyBox extends AbstractBlockBox {
 								TableBodyBox.this, child));
 					}
 
-					public void onRange(VEXElement parent, int startOffset,
+					public void onRange(Element parent, int startOffset,
 							int endOffset) {
 						children.add(new TableRowGroupBox(context,
 								TableBodyBox.this, startOffset, endOffset));

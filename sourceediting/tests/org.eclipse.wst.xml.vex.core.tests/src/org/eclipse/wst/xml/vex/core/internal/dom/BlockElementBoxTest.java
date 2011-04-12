@@ -24,7 +24,6 @@ import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.FakeGraphics;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
 
 import junit.framework.TestCase;
 
@@ -52,7 +51,7 @@ public class BlockElementBoxTest extends TestCase {
 		String docString = "<root><small/><medium/><large/></root>";
 		DocumentReader docReader = new DocumentReader();
 		docReader.setDebugging(true);
-		VEXDocument doc = docReader.read(docString);
+		Document doc = docReader.read(docString);
 		context.setDocument(doc);
 		
 		RootBox parentBox = new RootBox(context, doc.getRootElement(), 500);

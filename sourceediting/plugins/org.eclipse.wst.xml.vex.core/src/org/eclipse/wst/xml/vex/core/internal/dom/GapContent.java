@@ -14,11 +14,6 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.ContentImpl;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.PositionImpl;
-
 /**
  * Implementation of the <code>Content</code> interface that manages changes
  * efficiently. Implements a buffer that keeps its free space (the "gap") at the
@@ -27,7 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.provisional.dom.impl.PositionImpl;
  * Deletions that end of the gap are also very efficent. Furthermore, changes
  * near the gap require relatively few characters to be moved.
  */
-public class GapContent extends ContentImpl implements Content {
+public class GapContent implements Content {
 
 	private char[] content;
 	private int gapStart;
@@ -41,7 +36,6 @@ public class GapContent extends ContentImpl implements Content {
 	 *            initial capacity of the content.
 	 */
 	public GapContent(int initialCapacity) {
-
 		assertPositive(initialCapacity);
 
 		this.content = new char[initialCapacity];
@@ -174,9 +168,10 @@ public class GapContent extends ContentImpl implements Content {
 	/**
 	 * Implementation of the Position interface.
 	 */
-	private static class GapContentPosition extends PositionImpl implements Position {
+	private static class GapContentPosition implements Position {
 
-
+		private int offset;
+		
 		public GapContentPosition(int offset) {
 			this.offset = offset;
 		}

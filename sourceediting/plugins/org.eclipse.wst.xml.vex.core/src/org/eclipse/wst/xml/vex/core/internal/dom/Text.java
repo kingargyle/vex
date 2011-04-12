@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Content;
-
 /**
  * <code>Text</code> represents a run of text in a document. Text objects are
  * not used in the internal document structure; they are only returned as needed
@@ -37,4 +35,9 @@ public class Text extends Node {
 	public String getNodeType() {
 		return "Text";
 	}	
+	
+	@Override
+	public String getBaseURI() {
+		return null;
+	}
 }

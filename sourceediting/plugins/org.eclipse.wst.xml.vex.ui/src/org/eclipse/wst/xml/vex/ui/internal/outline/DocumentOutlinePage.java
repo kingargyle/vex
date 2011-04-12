@@ -32,13 +32,11 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.ui.internal.VexPlugin;
 import org.eclipse.wst.xml.vex.ui.internal.config.DocumentType;
 import org.eclipse.wst.xml.vex.ui.internal.editor.IVexEditorListener;
 import org.eclipse.wst.xml.vex.ui.internal.editor.Messages;
 import org.eclipse.wst.xml.vex.ui.internal.editor.SelectionProvider;
-import org.eclipse.wst.xml.vex.ui.internal.editor.VEXMultiPageEditorPart;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditor;
 import org.eclipse.wst.xml.vex.ui.internal.editor.VexEditorEvent;
 import org.eclipse.wst.xml.vex.ui.internal.swt.VexWidget;
@@ -76,11 +74,8 @@ public class DocumentOutlinePage extends Page implements IContentOutlinePage {
 	public void init(IPageSite pageSite) {
 		super.init(pageSite);
 		IEditorPart editor = pageSite.getPage().getActiveEditor();
-		if (editor instanceof VexEditor) {
+		if (editor instanceof VexEditor)
 		    this.vexEditor = (VexEditor) editor;
-		} else if (editor instanceof VEXMultiPageEditorPart) {
-		    this.vexEditor = ((VEXMultiPageEditorPart) editor).getVexEditor();
-		}
 		this.vexEditor.addVexEditorListener(this.vexEditorListener);
 		this.vexEditor.getEditorSite().getSelectionProvider()
 				.addSelectionChangedListener(this.selectionListener);
@@ -223,8 +218,8 @@ public class DocumentOutlinePage extends Page implements IContentOutlinePage {
 
 				VexWidget vexWidget = (VexWidget) event.getSource();
 				if (vexWidget.isFocusControl() && getTreeViewer() != null) {
-					VEXElement element = vexWidget.getCurrentElement();
-					VEXElement outlineElement = outlineProvider
+					Element element = vexWidget.getCurrentElement();
+					Element outlineElement = outlineProvider
 							.getOutlineElement(element);
 					getTreeViewer().refresh(outlineElement);
 					getTreeViewer().setSelection(

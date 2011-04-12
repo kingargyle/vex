@@ -12,8 +12,6 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.EventObject;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
@@ -22,8 +20,10 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  */
 public class DocumentEvent extends EventObject {
 
-	private VEXDocument document;
-	private VEXElement parentElement;
+	private static final long serialVersionUID = -9028980559838712720L;
+	
+	private Document document;
+	private Element parentElement;
 	private int offset;
 	private int length;
 	private String attributeName;
@@ -45,7 +45,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(VEXDocument document, VEXElement e1, int offset,
+	public DocumentEvent(Document document, Element e1, int offset,
 			int length, IUndoableEdit undoableEdit) {
 
 		super(document);
@@ -72,7 +72,7 @@ public class DocumentEvent extends EventObject {
 	 * @param undoableEdit
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
-	public DocumentEvent(VEXDocument document, VEXElement parentElement,
+	public DocumentEvent(Document document, Element parentElement,
 			String attributeName, String oldAttributeValue,
 			String newAttributeValue, IUndoableEdit undoableEdit) {
 
@@ -105,7 +105,7 @@ public class DocumentEvent extends EventObject {
 	 * Returns the element containing the change.
 	 * @model
 	 */
-	public VEXElement getParentElement() {
+	public Element getParentElement() {
 		return this.parentElement;
 	}
 
@@ -139,7 +139,7 @@ public class DocumentEvent extends EventObject {
 	 * @return the document for which this event was generated
 	 * @model
 	 */
-	public VEXDocument getDocument() {
+	public Document getDocument() {
 		return document;
 	}
 

@@ -18,7 +18,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.Insets;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 /**
  * Base implementation of the <code>Box</code> interface, implementing some
@@ -75,7 +75,7 @@ public abstract class AbstractBox implements Box {
 	 * 
 	 * @see org.eclipse.wst.xml.vex.core.internal.layout.Box#getElement()
 	 */
-	public VEXElement getElement() {
+	public Element getElement() {
 		return null;
 	}
 
@@ -114,7 +114,7 @@ public abstract class AbstractBox implements Box {
 	 * returns all zeros.
 	 */
 	public Insets getInsets(LayoutContext context, int containerWidth) {
-		VEXElement element = this.getElement();
+		Element element = this.getElement();
 		if (element == null) {
 			return Insets.ZERO_INSETS;
 		} else {
@@ -291,7 +291,7 @@ public abstract class AbstractBox implements Box {
 	 *            otherwise, just the background is filled. This is handy when
 	 *            removing the borders when drawing the selection frame.
 	 */
-	protected void drawBox(LayoutContext context, VEXElement element, int x,
+	protected void drawBox(LayoutContext context, Element element, int x,
 			int y, int containerWidth, boolean drawBorders) {
 
 		if (element == null) {

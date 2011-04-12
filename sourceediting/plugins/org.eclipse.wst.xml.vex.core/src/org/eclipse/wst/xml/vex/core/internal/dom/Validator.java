@@ -9,7 +9,7 @@
  *     John Krasnay - initial API and implementation
  *     Igor Jacy Lino Campista - Java 5 warnings fixed (bug 311325)
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
+package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.io.Serializable;
 import java.util.Set;

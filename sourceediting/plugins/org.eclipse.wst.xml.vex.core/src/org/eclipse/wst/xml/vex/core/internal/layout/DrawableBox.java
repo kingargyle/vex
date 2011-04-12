@@ -17,7 +17,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.core.Rectangle;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 /**
  * An inline box that draws a Drawable object. The drawable is drawn relative to
@@ -31,7 +31,7 @@ public class DrawableBox extends AbstractInlineBox {
 	public static final byte END_MARKER = 2;
 
 	private Drawable drawable;
-	private VEXElement element;
+	private Element element;
 	private byte marker;
 
 	/**
@@ -42,7 +42,7 @@ public class DrawableBox extends AbstractInlineBox {
 	 * @param element2
 	 *            Element whose styles determine the color of the drawable.
 	 */
-	public DrawableBox(Drawable drawable, VEXElement element2) {
+	public DrawableBox(Drawable drawable, Element element2) {
 		this(drawable, element2, NO_MARKER);
 	}
 
@@ -58,7 +58,7 @@ public class DrawableBox extends AbstractInlineBox {
 	 *            which marker should be drawn. Must be one of NO_MARKER,
 	 *            START_MARKER, or END_MARKER.
 	 */
-	public DrawableBox(Drawable drawable, VEXElement element2, byte marker) {
+	public DrawableBox(Drawable drawable, Element element2, byte marker) {
 		this.drawable = drawable;
 		this.element = element2;
 		this.marker = marker;
@@ -77,7 +77,7 @@ public class DrawableBox extends AbstractInlineBox {
 	/**
 	 * Returns the element that controls the styling for this text element.
 	 */
-	public VEXElement getElement() {
+	public Element getElement() {
 		return this.element;
 	}
 

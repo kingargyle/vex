@@ -8,9 +8,7 @@
  * Contributors:
  *     John Krasnay - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wst.xml.vex.core.internal.provisional.dom;
-
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+package org.eclipse.wst.xml.vex.core.internal.dom;
 
 /**
  * Determines whitespace policy for document elements. For example, a CSS
@@ -25,7 +23,7 @@ public interface IWhitespacePolicy {
 	 * @param element
 	 *            Element to test.
 	 */
-	boolean isBlock(VEXElement element);
+	boolean isBlock(Element element);
 
 	/**
 	 * Returns true if the given element is pre-formatted, that is, all of its
@@ -34,5 +32,5 @@ public interface IWhitespacePolicy {
 	 * @param element
 	 *            Element to test.
 	 */
-	boolean isPre(VEXElement element);
+	boolean isPre(Element element);
 }

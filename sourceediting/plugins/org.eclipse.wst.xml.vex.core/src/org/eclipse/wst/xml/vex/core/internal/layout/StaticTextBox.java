@@ -14,7 +14,7 @@ import org.eclipse.wst.xml.vex.core.internal.core.ColorResource;
 import org.eclipse.wst.xml.vex.core.internal.core.FontResource;
 import org.eclipse.wst.xml.vex.core.internal.core.Graphics;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 /**
  * A TextBox representing a static string. Represents text which is not editable
@@ -39,7 +39,7 @@ public class StaticTextBox extends TextBox {
 	 * @param text
 	 *            Static text to display
 	 */
-	public StaticTextBox(LayoutContext context, VEXElement element, String text) {
+	public StaticTextBox(LayoutContext context, Element element, String text) {
 		this(context, element, text, NO_MARKER);
 		if (text.length() == 0) {
 			throw new IllegalArgumentException(
@@ -64,7 +64,7 @@ public class StaticTextBox extends TextBox {
 	 *            represents the start sentinel or the end sentinel of the
 	 *            element
 	 */
-	public StaticTextBox(LayoutContext context, VEXElement element, String text,
+	public StaticTextBox(LayoutContext context, Element element, String text,
 			byte marker) {
 		super(element);
 		this.text = text;

@@ -22,8 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidatorTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
+import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
 public class VexWidgetTest extends TestCase {
@@ -35,10 +34,10 @@ public class VexWidgetTest extends TestCase {
 		widget = new VexWidgetImpl(new MockHostComponent());
 	}
 	
-	private VEXDocument createDocument(final String rootElementName) {
+	private Document createDocument(final String rootElementName) {
 		final URL url = DTDValidatorTest.class.getResource("test1.dtd");
 		final Validator validator = WTPVEXValidator.create(url);
-		final VEXDocument document = new Document(new RootElement(rootElementName));
+		final Document document = new Document(new RootElement(rootElementName));
 		document.setValidator(validator);
 		return document;
 	}

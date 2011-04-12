@@ -5,13 +5,13 @@ import java.net.URL;
 import org.eclipse.wst.xml.vex.core.internal.core.Image;
 import org.eclipse.wst.xml.vex.core.internal.core.Point;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 public class ImageBox extends AbstractInlineBox {
 
 	private final Image image;
 
-	public static ImageBox create(final VEXElement element, final LayoutContext context, final int maxWidth) {
+	public static ImageBox create(final Element element, final LayoutContext context, final int maxWidth) {
 		if (element == null)
 			return null;
 		final Styles styles = context.getStyleSheet().getStyles(element);
@@ -46,7 +46,7 @@ public class ImageBox extends AbstractInlineBox {
 		return Math.round(1f * scaled / current * opposite);
 	}
 
-	public static ImageBox createWithHeight(final VEXElement element, final LayoutContext context, final int maxHeight) {
+	public static ImageBox createWithHeight(final Element element, final LayoutContext context, final int maxHeight) {
 		if (element == null)
 			return null;
 		final URL imageUrl = context.resolveUrl(element.getBaseURI(), context.getStyleSheet().getStyles(element).getBackgroundImage());

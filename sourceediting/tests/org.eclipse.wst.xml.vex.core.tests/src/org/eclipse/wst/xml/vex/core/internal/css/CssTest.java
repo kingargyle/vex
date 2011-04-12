@@ -21,8 +21,6 @@ import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
 
 import junit.framework.TestCase;
 
@@ -187,8 +185,8 @@ public class CssTest extends TestCase {
 	 */
 	public void testDefaultInheritance() throws Exception {
 		RootElement simple = new RootElement("simple");
-		VEXElement defaults = new Element("defaults");
-		VEXDocument doc = new Document(simple);
+		Element defaults = new Element("defaults");
+		Document doc = new Document(simple);
 		doc.insertElement(1, defaults);
 
 		StyleSheet ss = parseStyleSheetResource("test2.css");
@@ -449,7 +447,7 @@ public class CssTest extends TestCase {
 	public void testForcedInheritance() throws Exception {
 		RootElement simple = new RootElement("simple");
 		Element inherit = new Element("inherit");
-		VEXDocument doc = new Document(simple);
+		Document doc = new Document(simple);
 		doc.insertElement(1, inherit);
 
 		StyleSheet ss = parseStyleSheetResource("test2.css");
@@ -491,7 +489,7 @@ public class CssTest extends TestCase {
 
 	public void testImportant() throws Exception {
 		StyleSheet ss = parseStyleSheetResource("testImportant.css");
-		VEXElement a = new Element("a");
+		Element a = new Element("a");
 		Styles styles = ss.getStyles(a);
 
 		Color black = new Color(0, 0, 0);
@@ -508,7 +506,7 @@ public class CssTest extends TestCase {
 	public void testMarginInheritance() throws Exception {
 		StyleSheet ss = parseStyleSheetResource("test2.css");
 		Element root = new Element("margin1");
-		VEXElement child = new Element("defaults");
+		Element child = new Element("defaults");
 		child.setParent(root);
 		Styles styles = ss.getStyles(child);
 

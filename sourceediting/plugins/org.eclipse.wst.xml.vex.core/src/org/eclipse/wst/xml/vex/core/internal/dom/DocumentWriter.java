@@ -19,11 +19,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
 /**
@@ -138,7 +133,7 @@ public class DocumentWriter {
 		this.wrapColumn = wrapColumn;
 	}
 
-	public void write(VEXDocument doc, OutputStream os) throws IOException {
+	public void write(Document doc, OutputStream os) throws IOException {
 
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		PrintWriter pw = new PrintWriter(osw);
@@ -167,7 +162,7 @@ public class DocumentWriter {
 
 	// ====================================================== PRIVATE
 
-	private void writeNode(VEXNode node, PrintWriter pw, String indent) {
+	private void writeNode(Node node, PrintWriter pw, String indent) {
 
 		if (node instanceof Text) {
 			TextWrapper wrapper = new TextWrapper();
@@ -182,7 +177,7 @@ public class DocumentWriter {
 
 		} else {
 
-			VEXElement element = (VEXElement) node;
+			Element element = (Element) node;
 
 			if (this.whitespacePolicy != null
 					&& this.whitespacePolicy.isPre(element)) {
@@ -193,7 +188,7 @@ public class DocumentWriter {
 			}
 
 			boolean hasBlockChild = false;
-			List<VEXElement> children = element.getChildElements();
+			List<Element> children = element.getChildElements();
 			for (int i = 0; i < children.size(); i++) {
 				if (this.whitespacePolicy != null
 						&& this.whitespacePolicy.isBlock(children.get(i))) {
@@ -225,7 +220,7 @@ public class DocumentWriter {
 				pw.println(">");
 
 				String childIndent = indent + this.indent;
-				List<VEXNode> content = element.getChildNodes();
+				List<Node> content = element.getChildNodes();
 				for (int i = 0; i < content.size(); i++) {
 					this.writeNode(content.get(i), pw, childIndent);
 				}
@@ -247,20 +242,20 @@ public class DocumentWriter {
 		}
 	}
 
-	private void writeNodeNoWrap(VEXNode node, PrintWriter pw) {
+	private void writeNodeNoWrap(Node node, PrintWriter pw) {
 
 		if (node instanceof Text) {
 			pw.print(escape(node.getText()));
 		} else {
 
-			VEXElement element = (VEXElement) node;
+			Element element = (Element) node;
 
 			pw.print("<");
 			pw.print(element.getName());
 			pw.print(this.getAttributeString(element));
 			pw.print(">");
 
-			List<VEXNode> content = element.getChildNodes();
+			List<Node> content = element.getChildNodes();
 			for (int i = 0; i < content.size(); i++) {
 				this.writeNodeNoWrap(content.get(i), pw);
 			}
@@ -281,12 +276,12 @@ public class DocumentWriter {
 		return sb.toString();
 	}
 
-	private void addNode(VEXNode node, TextWrapper wrapper) {
+	private void addNode(Node node, TextWrapper wrapper) {
 		if (node instanceof Text) {
 			wrapper.add(escape(node.getText()));
 		} else {
-			VEXElement element = (VEXElement) node;
-			List<VEXNode> content = element.getChildNodes();
+			Element element = (Element) node;
+			List<Node> content = element.getChildNodes();
 			List<String> attrs = element.getAttributeNames();
 			Collections.sort(attrs);
 
@@ -329,7 +324,7 @@ public class DocumentWriter {
 		}
 	}
 
-	private String getAttributeString(VEXElement element) {
+	private String getAttributeString(Element element) {
 
 		Validator validator = element.getDocument().getValidator();
 
@@ -350,7 +345,7 @@ public class DocumentWriter {
 	}
 
 	private static boolean attrHasDefaultValue(Validator validator,
-			VEXElement element, String attribute) {
+			Element element, String attribute) {
 		if (validator != null) {
 			AttributeDefinition ad = validator.getAttributeDefinition(element
 					.getName(), attribute);

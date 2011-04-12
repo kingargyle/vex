@@ -19,7 +19,6 @@ import java.io.ObjectOutputStream;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentFragment;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocumentFragment;
 
 /**
  * Transfer object that handles Vex DocumentFragments.
@@ -49,7 +48,7 @@ public class DocumentFragmentTransfer extends ByteArrayTransfer {
 			return;
 
 		if (isSupportedType(transferData)) {
-			VEXDocumentFragment frag = (VEXDocumentFragment) object;
+			DocumentFragment frag = (DocumentFragment) object;
 			try {
 				// write data to a byte array and then ask super to convert to
 				// pMedium

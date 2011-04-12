@@ -21,8 +21,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXNode;
+import org.eclipse.wst.xml.vex.core.internal.dom.Node;
 
 /**
  * Tools for layout and rendering of CSS-styled boxes
@@ -38,7 +37,7 @@ public class LayoutUtils {
 	 *            Element representing the generated content.
 	 */
 	public static List<InlineBox> createGeneratedInlines(LayoutContext context,
-			VEXElement pseudoElement) {
+			Element pseudoElement) {
 		String text = getGeneratedContent(context, pseudoElement);
 		List<InlineBox> list = new ArrayList<InlineBox>();
 		if (text.length() > 0) {
@@ -79,7 +78,7 @@ public class LayoutUtils {
 	 *            returned.
 	 */
 	private static String getGeneratedContent(LayoutContext context,
-			VEXElement pseudoElement) {
+			Element pseudoElement) {
 		Styles styles = context.getStyleSheet().getStyles(pseudoElement);
 		List<String> content = styles.getContent();
 		StringBuffer sb = new StringBuffer();
@@ -113,21 +112,21 @@ public class LayoutUtils {
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
 			                                         Set<String> displayStyles,
-			                                         VEXElement element,
+			                                         Element element,
 			                                         int startOffset,
 			                                         int endOffset,
 			                                         ElementOrRangeCallback callback) {
 
-		List<VEXNode> nonMatching = new ArrayList<VEXNode>();
+		List<Node> nonMatching = new ArrayList<Node>();
 
-		List<VEXNode> nodes = element.getChildNodes();
+		List<Node> nodes = element.getChildNodes();
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).getEndOffset() <= startOffset) {
 				continue;
 			} else if (nodes.get(i).getStartOffset() >= endOffset) {
 				break;
 			} else {
-				VEXNode node = nodes.get(i);
+				Node node = nodes.get(i);
 
 				if (node instanceof Element) {
 					Element childElement = (Element) node;
@@ -135,8 +134,8 @@ public class LayoutUtils {
 							.getDisplay();
 					if (displayStyles.contains(display)) {
 						if (!nonMatching.isEmpty()) {
-							VEXNode firstNode = (VEXNode) nonMatching.get(0);
-							VEXNode lastNode = (VEXNode) nonMatching.get(nonMatching
+							Node firstNode = (Node) nonMatching.get(0);
+							Node lastNode = (Node) nonMatching.get(nonMatching
 									.size() - 1);
 							if (lastNode instanceof Element) {
 								callback.onRange(element, firstNode
@@ -160,8 +159,8 @@ public class LayoutUtils {
 		}
 
 		if (!nonMatching.isEmpty()) {
-			VEXNode firstNode = (VEXNode) nonMatching.get(0);
-			VEXNode lastNode = (VEXNode) nonMatching.get(nonMatching.size() - 1);
+			Node firstNode = (Node) nonMatching.get(0);
+			Node lastNode = (Node) nonMatching.get(nonMatching.size() - 1);
 			if (lastNode instanceof Element) {
 				callback.onRange(element, firstNode.getStartOffset(), lastNode
 						.getEndOffset() + 1);
@@ -190,7 +189,7 @@ public class LayoutUtils {
 	 */
 	public static void iterateChildrenByDisplayStyle(StyleSheet styleSheet,
 			                                         Set<String> displayStyles,
-			                                         VEXElement table,
+			                                         Element table,
 			                                         ElementOrRangeCallback callback) {
 		iterateChildrenByDisplayStyle(styleSheet, displayStyles, table,
 				table.getStartOffset() + 1, table.getEndOffset(), callback);
@@ -205,13 +204,13 @@ public class LayoutUtils {
 	 * @param element
 	 *            Element to test.
 	 */
-	public static boolean isTableChild(StyleSheet styleSheet, VEXElement element) {
+	public static boolean isTableChild(StyleSheet styleSheet, Element element) {
 		String display = styleSheet.getStyles(element).getDisplay();
 		return TABLE_CHILD_STYLES.contains(display);
 	}
 
 	public static void iterateTableRows(final StyleSheet styleSheet,
-			final VEXElement element, int startOffset, int endOffset,
+			final Element element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
 
 		iterateChildrenByDisplayStyle(styleSheet, NON_ROW_STYLES, element,
@@ -231,7 +230,7 @@ public class LayoutUtils {
 						}
 					}
 
-					public void onRange(VEXElement parent, int startOffset,
+					public void onRange(Element parent, int startOffset,
 							int endOffset) {
 						// iterate over rows in range
 						iterateChildrenByDisplayStyle(styleSheet, ROW_STYLES,
@@ -242,14 +241,14 @@ public class LayoutUtils {
 	}
 
 	public static void iterateTableCells(StyleSheet styleSheet,
-			VEXElement element, int startOffset, int endOffset,
+			Element element, int startOffset, int endOffset,
 			final ElementOrRangeCallback callback) {
 		iterateChildrenByDisplayStyle(styleSheet, CELL_STYLES, element,
 				startOffset, endOffset, callback);
 	}
 
 	public static void iterateTableCells(StyleSheet styleSheet,
-			VEXElement row, final ElementOrRangeCallback callback) {
+			Element row, final ElementOrRangeCallback callback) {
 		iterateChildrenByDisplayStyle(styleSheet, CELL_STYLES, row, row
 				.getStartOffset(), row.getEndOffset(), callback);
 	}

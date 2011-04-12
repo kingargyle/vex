@@ -12,7 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.layout;
 
 import org.eclipse.wst.xml.vex.core.internal.core.Caret;
 import org.eclipse.wst.xml.vex.core.internal.core.Insets;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 
 /**
  * Represents a rectangular area in the layout. The height and width of the box
@@ -50,7 +50,7 @@ public interface Box {
 	 * is no such box. The box may directly represent the Element, or simply use
 	 * it for formatting information.
 	 */
-	public VEXElement getElement();
+	public Element getElement();
 
 	/**
 	 * Returns the offset of the end of the content that the box covers.

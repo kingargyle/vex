@@ -17,15 +17,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
@@ -92,7 +90,7 @@ public class DTDValidatorTest extends TestCase {
 	public void testSectionElement() {
 		// <section> <title> a b </title> <para> </para> </section>
 		// 1 2 3 4 5 6 7
-		final VEXDocument doc = new Document(new RootElement("section"));
+		final Document doc = new Document(new RootElement("section"));
 		doc.setValidator(validator);
 		doc.insertElement(1, new Element("title"));
 		doc.insertText(2, "ab");
@@ -108,12 +106,12 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	public void testOneKindOfChild() {
-		final VEXDocument doc = new Document(new RootElement("one-kind-of-child"));
+		final Document doc = new Document(new RootElement("one-kind-of-child"));
 		doc.setValidator(validator);
 		assertValidItemsAt(doc, 1, "section");
 	}
 
-	private static void assertValidItemsAt(final VEXDocument doc, final int offset, final String... expectedItems) {
+	private static void assertValidItemsAt(final Document doc, final int offset, final String... expectedItems) {
 		final Set<String> expected = new HashSet<String>(expectedItems.length);
 		for (final String expectedItem : expectedItems)
 			expected.add(expectedItem);
@@ -178,12 +176,12 @@ public class DTDValidatorTest extends TestCase {
 	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
 			final String... sequence) {
 		for (int i = 0; i < sequence.length; i++) {
-			final EList<String> prefix = createPrefix(i, sequence);
+			final List<String> prefix = createPrefix(i, sequence);
 
-			final EList<String> toInsert = new BasicEList<String>(1);
+			final List<String> toInsert = new ArrayList<String>(1);
 			toInsert.add(sequence[i]);
 
-			final EList<String> suffix = createSuffix(i, sequence);
+			final List<String> suffix = createSuffix(i, sequence);
 
 			if (validateFully)
 				assertEquals(expected, validator.isValidSequence(element, prefix, toInsert, suffix, false));
@@ -192,15 +190,15 @@ public class DTDValidatorTest extends TestCase {
 		}
 	}
 
-	private static EList<String> createPrefix(final int index, final String... sequence) {
-		final EList<String> prefix = new BasicEList<String>();
+	private static List<String> createPrefix(final int index, final String... sequence) {
+		final List<String> prefix = new ArrayList<String>();
 		for (int i = 0; i < index; i++)
 			prefix.add(sequence[i]);
 		return prefix;
 	}
 
-	private static EList<String> createSuffix(final int index, final String... sequence) {
-		final EList<String> suffix = new BasicEList<String>();
+	private static List<String> createSuffix(final int index, final String... sequence) {
+		final List<String> suffix = new ArrayList<String>();
 		for (int i = index + 1; i < sequence.length; i++)
 			suffix.add(sequence[i]);
 		return suffix;

@@ -15,9 +15,9 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 
 import org.eclipse.wst.xml.vex.core.internal.core.DisplayDevice;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.LexicalUnit;
 import org.w3c.css.sac.Parser;
@@ -113,10 +113,10 @@ public class PropertyTest extends TestCase {
 		final LexicalUnit attrSrc = MockLU.createAttr("src");
 		final Styles styles = new Styles();
 		final Styles parentStyles = new Styles();
-		final VEXDocument document = new DocumentReader().read("<root><image/><image src=\"image.jpg\"/><image src=\"\"/></root>");
-		final VEXElement noAttribute = document.getRootElement().getChildElements().get(0);
-		final VEXElement setAttribute = document.getRootElement().getChildElements().get(1);
-		final VEXElement emptyAttribute = document.getRootElement().getChildElements().get(2);
+		final Document document = new DocumentReader().read("<root><image/><image src=\"image.jpg\"/><image src=\"\"/></root>");
+		final Element noAttribute = document.getRootElement().getChildElements().get(0);
+		final Element setAttribute = document.getRootElement().getChildElements().get(1);
+		final Element emptyAttribute = document.getRootElement().getChildElements().get(2);
 		final BackgroundImageProperty property = new BackgroundImageProperty();
 
 		assertNull(property.calculate(attrSrc, parentStyles, styles, noAttribute));

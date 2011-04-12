@@ -27,10 +27,10 @@ import junit.framework.TestSuite;
 
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicy;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.IWhitespacePolicyFactory;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicyFactory;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -105,7 +105,7 @@ public class LayoutTestSuite extends TestCase {
                 return new CssWhitespacePolicy(ss);
             }
         });
-        VEXDocument doc = docReader.read(this.doc);
+        Document doc = docReader.read(this.doc);
         context.setDocument(doc);
 
         RootBox rootBox = new RootBox(context, doc.getRootElement(),

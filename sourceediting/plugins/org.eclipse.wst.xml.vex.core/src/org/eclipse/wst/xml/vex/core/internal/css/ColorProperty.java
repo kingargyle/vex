@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.wst.xml.vex.core.internal.core.Color;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -67,7 +67,7 @@ public class ColorProperty extends AbstractProperty {
 		super(name);
 	}
 
-	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, VEXElement element) {
+	public Object calculate(LexicalUnit lu, Styles parentStyles, Styles styles, Element element) {
 
 		boolean inherit = isInherit(lu) || this.getName().equals(CSS.COLOR);
 

@@ -26,10 +26,9 @@ import org.eclipse.wst.xml.vex.core.internal.core.IntRange;
 import org.eclipse.wst.xml.vex.core.internal.css.CSS;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.Styles;
+import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.Position;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXDocument;
-import org.eclipse.wst.xml.vex.core.internal.provisional.dom.I.VEXElement;
+import org.eclipse.wst.xml.vex.core.internal.dom.Position;
 
 /**
  * Base class of block boxes that can contain other block boxes. This class
@@ -58,7 +57,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 *            Element associated with this box. anonymous box.
 	 */
 	public AbstractBlockBox(LayoutContext context, BlockBox parent,
-			VEXElement element) {
+			Element element) {
 
 		this.parent = parent;
 		this.element = element;
@@ -88,7 +87,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		this.marginTop = 0;
 		this.marginBottom = 0;
 
-		VEXDocument doc = context.getDocument();
+		Document doc = context.getDocument();
 		this.startPosition = doc.createPosition(startOffset);
 		this.endPosition = doc.createPosition(endOffset);
 	}
@@ -96,9 +95,9 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	/**
 	 * Walks the box tree and returns the nearest enclosing element.
 	 */
-	protected VEXElement findContainingElement() {
+	protected Element findContainingElement() {
 		BlockBox box = this;
-		VEXElement element = box.getElement();
+		Element element = box.getElement();
 		while (element == null) {
 			box = box.getParent();
 			element = box.getElement();
@@ -177,12 +176,12 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		return result.toArray(new BlockBox[result.size()]);
 	}
 
-	public VEXElement getElement() {
+	public Element getElement() {
 		return element;
 	}
 
 	public int getEndOffset() {
-		VEXElement element = this.getElement();
+		Element element = this.getElement();
 		if (element != null) {
 			return element.getEndOffset();
 		} else if (this.getEndPosition() != null) {
@@ -203,7 +202,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 */
 	protected int getEstimatedHeight(LayoutContext context) {
 
-		VEXElement element = this.findContainingElement();
+		Element element = this.findContainingElement();
 		Styles styles = context.getStyleSheet().getStyles(element);
 		int charCount = this.getEndOffset() - this.getStartOffset();
 
@@ -379,7 +378,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	}
 
 	public int getStartOffset() {
-		VEXElement element = this.getElement();
+		Element element = this.getElement();
 		if (element != null) {
 			return element.getStartOffset() + 1;
 		} else if (this.getStartPosition() != null) {
@@ -503,8 +502,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	protected void paintSelectionFrame(LayoutContext context, int x, int y,
 			boolean selected) {
 
-		VEXElement element = this.getElement();
-		VEXElement parent = element == null ? null : element.getParent();
+		Element element = this.getElement();
+		Element parent = element == null ? null : element.getParent();
 
 		boolean paintFrame = context.isElementSelected(element)
 				&& !context.isElementSelected(parent);
@@ -642,8 +641,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		if (beforeInlines != null)
 			pendingInlines.addAll(beforeInlines);
 		
-		VEXDocument document = context.getDocument();
-		VEXElement element = document.findCommonElement(startOffset,
+		Document document = context.getDocument();
+		Element element = document.findCommonElement(startOffset,
 				endOffset);
 
 		if (startOffset == endOffset) {
@@ -714,7 +713,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 
 	private static class BlockInlineIterator {
 
-		public BlockInlineIterator(LayoutContext context, VEXElement element,
+		public BlockInlineIterator(LayoutContext context, Element element,
 				int startOffset, int endOffset) {
 			this.context = context;
 			this.element = element;
@@ -732,7 +731,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			} else if (startOffset == endOffset) {
 				return null;
 			} else {
-				VEXElement blockElement = findNextBlockElement(this.context,
+				Element blockElement = findNextBlockElement(this.context,
 						this.element, startOffset, endOffset);
 				if (blockElement == null) {
 					if (startOffset < endOffset) {
@@ -760,7 +759,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		}
 
 		private LayoutContext context;
-		private VEXElement element;
+		private Element element;
 		private int startOffset;
 		private int endOffset;
 		private LinkedList<Object> pushStack = new LinkedList<Object>();
@@ -850,7 +849,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	/**
 	 * Element with which we are associated. For anonymous boxes, this is null.
 	 */
-	private VEXElement element;
+	private Element element;
 
 	/*
 	 * We cache the top and bottom margins, since they may be affected by our
@@ -882,12 +881,12 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	 * @param endOffset
 	 *            The offset at which to end the search.
 	 */
-	private static VEXElement findNextBlockElement(LayoutContext context,
-			VEXElement element, int startOffset, int endOffset) {
+	private static Element findNextBlockElement(LayoutContext context,
+			Element element, int startOffset, int endOffset) {
 
-		List<VEXElement> children = element.getChildElements();
+		List<Element> children = element.getChildElements();
 		for (int i = 0; i < children.size(); i++) {
-			VEXElement child = children.get(i);
+			Element child = children.get(i);
 
             // inside range?
 			if (child.getEndOffset() < startOffset) continue;
@@ -897,7 +896,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 			if (!isInline(context, child, element)) return child;
 
 			// recursion
-			VEXElement fromChild =
+			Element fromChild =
 				findNextBlockElement(context, child, startOffset, endOffset);
 			if (fromChild != null) {
 				return fromChild;
@@ -908,8 +907,8 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	}
 	
 	private static boolean isInline(LayoutContext context,
-			                        VEXElement child,
-			                        VEXElement parent) {
+			                        Element child,
+			                        Element parent) {
 
 		String style = displayStyleOf(child, context);
 		String parentStyle = displayStyleOf(parent, context);
@@ -965,7 +964,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		return false;
 	}
 	
-	private static String displayStyleOf(VEXElement element,
+	private static String displayStyleOf(Element element,
 			                             LayoutContext context) {
 		return context.getStyleSheet().getStyles(element).getDisplay();
 	}
@@ -989,7 +988,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 	private boolean isTableChild(LayoutContext context, Object rangeOrElement) {
 		if (rangeOrElement != null && rangeOrElement instanceof Element) {
 			return LayoutUtils.isTableChild(context.getStyleSheet(),
-					(VEXElement) rangeOrElement);
+					(Element) rangeOrElement);
 		} else {
 			return false;
 		}
