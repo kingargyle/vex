@@ -21,86 +21,41 @@
 		</content-type>
 	</extension>
 
- 
+ <!-- DITA 1.1 DTD catalog contributions-->
  <extension
        point="org.eclipse.wst.xml.core.catalogContributions">
     <catalogContribution
           id="default">
-          
-       <!-- DITA DTD catalog contributions-->
-       <public
-             publicId="-//OASIS//DTD DITA Concept//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/concept.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA Reference//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/reference.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA Task//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/task.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA Topic//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/topic.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA Map//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/map.dtd">
-       </public>
-          
-       <!-- DITA 1.1 DTD catalog contributions-->
        <public
              publicId="-//OASIS//DTD DITA 1.1 Concept//EN"
              uri="dita11/concept.dtd">
        </public>
        <public
-             publicId="-//OASIS//DTD DITA 1.1 Reference//EN"
+             publicId="-//OASIS//DTD DITA Composite//EN"
+             uri="dita11/ditabase.dtd">
+       </public>
+       <public
+             publicId="-//OASIS//DTD DITA Reference//EN"
              uri="dita11/reference.dtd">
        </public>
        <public
-             publicId="-//OASIS//DTD DITA 1.1 Task//EN"
+             publicId="-//OASIS//DTD DITA Task//EN"
              uri="dita11/task.dtd">
        </public>
        <public
-             publicId="-//OASIS//DTD DITA 1.1 Topic//EN"
+             publicId="-//OASIS//DTD DITA Topic//EN"
              uri="dita11/topic.dtd">
        </public>
        <public
-             publicId="-//OASIS//DTD DITA 1.1 Map//EN"
+             publicId="-//OASIS//DTD DITA Map//EN"
              uri="dita11/map.dtd">
        </public>
-       
-       <!-- DITA 1.2 DTD catalog contributions-->
-       <public
-             publicId="-//OASIS//DTD DITA 1.2 Concept//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/concept.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA 1.2 Reference//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/reference.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA 1.2 Task//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/task.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA 1.2 Topic//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/topic.dtd">
-       </public>
-       <public
-             publicId="-//OASIS//DTD DITA 1.2 Map//EN"
-             uri="dita12/dtd1.2/technicalContent/dtd/map.dtd">
-       </public>       
-       
     </catalogContribution>
  </extension>
- 
-
-   <!-- DITA 1.1 doctype vex declaration-->
+	
    <extension
-         id="concept11"
-         name="%doctype.dita11.concept"
+         id="concept"
+         name="%doctype.concept"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="concept.dtd"
@@ -111,128 +66,56 @@
       </doctype>
    </extension>
    <extension
-         id="reference11"
-         name="%doctype.dita11.reference"
+         id="composite"
+         name="%doctype.composite"
+         point="org.eclipse.wst.xml.vex.ui.doctypes">
+      <doctype
+            systemId="ditabase.dtd"
+            publicId="-//OASIS//DTD DITA Composite//EN">
+      </doctype>
+   </extension>
+   <extension
+         id="reference"
+         name="%doctype.reference"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="reference.dtd"
-            publicId="-//OASIS//DTD DITA 1.1 Reference//EN">
-            <rootElement
-               name="reference">
-         </rootElement>
+            publicId="-//OASIS//DTD DITA Reference//EN">
       </doctype>
    </extension>
    <extension
-         id="task11"
-         name="%doctype.dita11.task"
+         id="task"
+         name="%doctype.task"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="task.dtd"
-            publicId="-//OASIS//DTD DITA 1.1 Task//EN">
-            <rootElement
-               name="task">
-         </rootElement>
+            publicId="-//OASIS//DTD DITA Task//EN">
       </doctype>
    </extension>
    <extension
-         id="topic11"
-         name="%doctype.dita11.topic"
+         id="topic"
+         name="%doctype.topic"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="topic.dtd"
-            publicId="-//OASIS//DTD DITA 1.1 Topic//EN">
-            <rootElement
-               name="topic">
-         </rootElement>
+            publicId="-//OASIS//DTD DITA Topic//EN">
       </doctype>
    </extension>
    <extension
-         id="map11"
-         name="%doctype.dita11.map"
+         id="map"
+         name="%doctype.map"
          point="org.eclipse.wst.xml.vex.ui.doctypes">
       <doctype
             systemId="map.dtd"
-            publicId="-//OASIS//DTD DITA 1.1 Map//EN">
-            <rootElement
-               name="map">
-         </rootElement>
+            publicId="-//OASIS//DTD DITA Map//EN">
       </doctype>
    </extension>
-   
-   
-   <!-- DITA 1.2 doctype vex declaration-->
-   <extension
-         id="concept12"
-         name="%doctype.dita12.concept"
-         point="org.eclipse.wst.xml.vex.ui.doctypes">
-      <doctype
-            systemId="concept.dtd"
-            publicId="-//OASIS//DTD DITA 1.2 Concept//EN">
-         <rootElement
-               name="concept">
-         </rootElement>
-      </doctype>
-   </extension>
-   <extension
-         id="reference12"
-         name="%doctype.dita12.reference"
-         point="org.eclipse.wst.xml.vex.ui.doctypes">
-      <doctype
-            systemId="reference.dtd"
-            publicId="-//OASIS//DTD DITA 1.2 Reference//EN">
-            <rootElement
-               name="reference">
-         </rootElement>
-      </doctype>
-   </extension>
-   <extension
-         id="task12"
-         name="%doctype.dita12.task"
-         point="org.eclipse.wst.xml.vex.ui.doctypes">
-      <doctype
-            systemId="task.dtd"
-            publicId="-//OASIS//DTD DITA 1.2 Task//EN">
-            <rootElement
-               name="task">
-         </rootElement>
-      </doctype>
-   </extension>
-   <extension
-         id="topic12"
-         name="%doctype.dita12.topic"
-         point="org.eclipse.wst.xml.vex.ui.doctypes">
-      <doctype
-            systemId="topic.dtd"
-            publicId="-//OASIS//DTD DITA 1.2 Topic//EN">
-            <rootElement
-               name="topic">
-         </rootElement>
-      </doctype>
-   </extension>
-   <extension
-         id="map12"
-         name="%doctype.dita12.map"
-         point="org.eclipse.wst.xml.vex.ui.doctypes">
-      <doctype
-            systemId="map.dtd"
-            publicId="-//OASIS//DTD DITA 1.2 Map//EN">
-            <rootElement
-               name="map">
-         </rootElement>
-      </doctype>
-   </extension>
-   
-   
-   
-   <!-- Style class for Reference, Task, Topic and Concept-->
    <extension
          id="classed"
          name="%style.classed"
          point="org.eclipse.wst.xml.vex.ui.styles">
       <style
             css="css/dita_classed_shell_vex.css">
-            
-         <!-- General DITA doctype CSS style bindings-->
          <doctypeRef
                publicId="-//OASIS//DTD DITA Reference//EN">
          </doctypeRef>
@@ -243,60 +126,22 @@
                publicId="-//OASIS//DTD DITA Topic//EN">
          </doctypeRef>
          <doctypeRef
-               publicId="-//OASIS//DTD DITA Concept//EN">
-         </doctypeRef>
-         
-         <!-- DITA 1.1 doctype CSS style bindings-->
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.1 Reference//EN">
-         </doctypeRef>
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.1 Task//EN">
-         </doctypeRef>
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.1 Topic//EN">
+               publicId="-//OASIS//DTD DITA Composite//EN">
          </doctypeRef>
          <doctypeRef
                publicId="-//OASIS//DTD DITA 1.1 Concept//EN">
          </doctypeRef>
-         
-		 <!-- DITA 1.2 doctype CSS style bindings-->
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.2 Reference//EN">
-         </doctypeRef>
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.2 Task//EN">
-         </doctypeRef>
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.2 Topic//EN">
-         </doctypeRef>
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.2 Concept//EN">
-         </doctypeRef>
       </style>
    </extension>
    
-   <!-- Style class for Map-->
    <extension
          id="mapStyle"
          name="%style.mapStyle"
          point="org.eclipse.wst.xml.vex.ui.styles">
       <style
             css="css/map_shell.css">
-         
-         <!-- General DITA doctype CSS style bindings-->
          <doctypeRef
                publicId="-//OASIS//DTD DITA Map//EN">
-         </doctypeRef>
-         
-         <!-- DITA 1.1 doctype CSS style bindings-->
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.1 Map//EN">
-         </doctypeRef>
-         
-         <!-- DITA 1.2 doctype CSS style bindings-->
-         <doctypeRef
-               publicId="-//OASIS//DTD DITA 1.2 Map//EN">
          </doctypeRef>
       </style>
    </extension>
