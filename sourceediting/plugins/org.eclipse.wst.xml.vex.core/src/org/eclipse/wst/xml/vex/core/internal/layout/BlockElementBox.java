@@ -198,7 +198,7 @@ public class BlockElementBox extends AbstractBlockBox {
 			long end = System.currentTimeMillis();
 			if (end - start > 10) {
 				System.out.println("BEB.layout for "
-						+ this.getElement().getName() + " took "
+						+ this.getElement().getPrefixedName() + " took "
 						+ (end - start) + "ms");
 			}
 		}
@@ -329,7 +329,7 @@ public class BlockElementBox extends AbstractBlockBox {
 			if (children.get(i) == element) {
 				return item;
 			}
-			if (children.get(i).getName().equals(element.getName())) {
+			if (children.get(i).getQualifiedName().equals(element.getQualifiedName())) {
 				item++;
 			}
 		}

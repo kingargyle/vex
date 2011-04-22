@@ -22,7 +22,7 @@ public class MockBoxFactory extends CssBoxFactory {
 	private static final long serialVersionUID = 1L;
 
 	public Box createBox(final LayoutContext context, final Element element, final BlockElementBox parent, final int width) {
-		if (element.getName().equals("space")) {
+		if (element.getPrefixedName().equals("space")) {
 			int w = 0;
 			int h = 0;
 			try {

@@ -346,7 +346,7 @@ public class ContentAssist extends PopupDialog {
         AbstractVexAction[] actions = new AbstractVexAction[names.length];
         int caretOffset = widget.getCaretOffset();
         Element element = widget.getDocument().getElementAt(caretOffset);
-        String sourceName = element.getName();
+        String sourceName = element.getPrefixedName();
         for (int i = 0; i < names.length; i++) {
             String message = Messages.getString(
                     "command.convertElement.dynamicCommandName"); //$NON-NLS-1$

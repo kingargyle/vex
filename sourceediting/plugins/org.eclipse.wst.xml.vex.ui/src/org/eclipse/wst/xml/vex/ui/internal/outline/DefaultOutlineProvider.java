@@ -42,7 +42,7 @@ public class DefaultOutlineProvider implements IOutlineProvider {
 				if (s.length() > 30) {
 					s = s.substring(0, 30) + "..."; //$NON-NLS-1$
 				}
-				return e.getName() + ": " + s; //$NON-NLS-1$
+				return e.getPrefixedName() + ": " + s; //$NON-NLS-1$
 			}
 		};
 

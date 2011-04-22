@@ -93,7 +93,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
     private Element[] getOutlineChildren(final Element element) {
     	final List<Element> children = new ArrayList<Element>();
         for (Element child : element.getChildElements()) {
-        	if (titledElements.contains(child.getName())) {
+        	if (titledElements.contains(child.getLocalName())) {
                 children.add(child);
             }
 		}
@@ -108,7 +108,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
             if (titleChild != null) {
                 return titleChild.getText();
             } else {
-                Element infoChild = findChild(e, e.getName() + "info");
+                Element infoChild = findChild(e, e.getLocalName() + "info");
                 if (infoChild != null) {
                     titleChild = findChild(infoChild, "title");
                     if (titleChild != null) {
@@ -116,7 +116,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
                     }
                 }
             }
-            return e.getName();
+            return e.getLocalName();
         }
     };
 
@@ -134,11 +134,11 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      */
     private boolean isTitledElement( final Element e ) {
     	
-    	if( titledElements.contains(e.getName() )
+    	if( titledElements.contains(e.getLocalName() )
      			|| e.getParent() == null ) {
     		final List<Element> children = e.getChildElements();
-    		if( (children.size() > 0 && children.get(0).getName().equals("title"))
-    		 || (children.size() > 1 && children.get(1).getName().equals("title"))  		
+    		if( (children.size() > 0 && children.get(0).getLocalName().equals("title"))
+    		 || (children.size() > 1 && children.get(1).getLocalName().equals("title"))  		
     		  ) {
     		    	return true;
     		    }
@@ -153,7 +153,7 @@ public class DocBookOutlineProvider implements IOutlineProvider {
      */
     private Element findChild(Element parent, String childName) {
     	for (Element child : parent.getChildElements()) {
-    		if (child.getName().equals(childName)) {
+    		if (child.getLocalName().equals(childName)) {
                 return child;
             }
 		}

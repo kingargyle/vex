@@ -76,9 +76,7 @@ public class DocumentWriterTest extends TestCase {
 	}
 
 	private void assertEquals(final Element expected, final Element actual) throws Exception {
-
-		System.out.println("Checking " + actual.getName());
-		assertEquals(expected.getName(), actual.getName());
+		assertEquals(expected.getQualifiedName(), actual.getQualifiedName());
 
 		final List<QualifiedName> expectedAttrs = expected.getAttributeNames();
 		final List<QualifiedName> actualAttrs = actual.getAttributeNames();

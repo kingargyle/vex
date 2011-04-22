@@ -189,10 +189,6 @@ public class Element extends Node implements Cloneable {
 		}
 	}
 
-	public String getName() {
-		return getLocalName();
-	}
-	
 	public String getLocalName() {
 		return name.getLocalName();
 	}

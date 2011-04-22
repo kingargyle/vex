@@ -45,7 +45,7 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 
 			// TODO: compare to all structural element names
 
-			final String name = element.getName();
+			final String name = element.getLocalName();
 			if (name.equals("h1") || name.equals("h2") || name.equals("h3") || name.equals("h4") || name.equals("h5") || name.equals("h6"))
 				return element;
 
@@ -104,18 +104,18 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 				// First, find the lowest numbered h tag available
 				String lowH = "h6";
 				for (final Element child : childElements)
-					if (isHTag(child) && child.getName().compareTo(lowH) < 0)
-						lowH = child.getName();
+					if (isHTag(child) && child.getLocalName().compareTo(lowH) < 0)
+						lowH = child.getLocalName();
 
 				// Now, get all body children at that level
 				for (final Element child : childElements)
-					if (child.getName().equals(lowH))
+					if (child.getLocalName().equals(lowH))
 						children.add(child);
 			}
 		} else if (isHTag(element)) {
 			// get siblings with the next lower number
 			// between this element and the next element at the same level
-			final int level = Integer.parseInt(element.getName().substring(1));
+			final int level = Integer.parseInt(element.getLocalName().substring(1));
 			final String childName = "h" + (level + 1);
 			final List<Element> childElements = element.getParent().getChildElements();
 			boolean foundSelf = false;
@@ -124,9 +124,9 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 					foundSelf = true;
 				else if (!foundSelf)
 					continue;
-				else if (child.getName().equals(childName))
+				else if (child.getLocalName().equals(childName))
 					children.add(child);
-				else if (child.getName().equals(element.getName()))
+				else if (child.getLocalName().equals(element.getLocalName()))
 					// terminate at next sibling at same level
 					break;
 		}
@@ -154,13 +154,13 @@ public class XhtmlOutlineProvider implements IOutlineProvider {
 
 	private Element findChild(final Element parent, final String childName) {
 		for (final Element child : parent.getChildElements())
-			if (child.getName().equals(childName))
+			if (child.getLocalName().equals(childName))
 				return child;
 		return null;
 	}
 
 	private boolean isHTag(final Element element) {
-		final String name = element.getName();
+		final String name = element.getLocalName();
 		return name.equals("h1") || name.equals("h2") || name.equals("h3") || name.equals("h4") || name.equals("h5") || name.equals("h6");
 	}
 

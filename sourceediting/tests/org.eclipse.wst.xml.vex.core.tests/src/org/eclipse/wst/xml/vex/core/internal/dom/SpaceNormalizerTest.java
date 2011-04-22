@@ -172,33 +172,33 @@ public class SpaceNormalizerTest extends TestCase {
 		Element element;
 
 		element = doc.getRootElement();
-		assertContent(element, new String[] { "<block>", "<block>", "<block>", "<block>" });
+		assertContent(element, "<block>", "<block>", "<block>", "<block>");
 
 		final List<Element> children = element.getChildElements();
 
 		// --- Block 0 ---
 
-		assertContent(children.get(0), new String[] { "foo ", "<inline>", " baz" });
+		assertContent(children.get(0), "foo ", "<inline>", " baz");
 		List<Element> c2 = children.get(0).getChildElements();
-		assertContent(c2.get(0), new String[] { "foo bar" });
+		assertContent(c2.get(0), "foo bar");
 
 		// --- Block 1 ---
 
-		assertContent(children.get(1), new String[] { "foo", "<block>", "baz" });
+		assertContent(children.get(1), "foo", "<block>", "baz");
 		c2 = children.get(1).getChildElements();
-		assertContent(c2.get(0), new String[] { "bar" });
+		assertContent(c2.get(0), "bar");
 
 		// --- Block 2 ---
 
-		assertContent(children.get(2), new String[] { "foo", "<inline>", "baz" });
+		assertContent(children.get(2), "foo", "<inline>", "baz");
 		c2 = children.get(2).getChildElements();
-		assertContent(c2.get(0), new String[] { "foo bar" });
+		assertContent(c2.get(0), "foo bar");
 
 		// --- Block 3 ---
 
-		assertContent(children.get(3), new String[] { "foo", "<block>", "baz" });
+		assertContent(children.get(3), "foo", "<block>", "baz");
 		c2 = children.get(3).getChildElements();
-		assertContent(c2.get(0), new String[] { "bar" });
+		assertContent(c2.get(0), "bar");
 
 	}
 
@@ -210,10 +210,10 @@ public class SpaceNormalizerTest extends TestCase {
 		final Document doc = createDocument(input, getStyleSheet());
 
 		final Element element = doc.getRootElement();
-		assertContent(element, new String[] { "<pre>" });
+		assertContent(element, "<pre>");
 
 		final Element pre = element.getChildElements().get(0);
-		assertContent(pre, new String[] { "\n foo\n" });
+		assertContent(pre, "\n foo\n");
 	}
 
 	public void testPreNormalize2() throws Exception {
@@ -226,7 +226,7 @@ public class SpaceNormalizerTest extends TestCase {
 		final Element element = doc.getRootElement();
 		final Element pre = element.getChildElements().get(0);
 		final Element inline = pre.getChildElements().get(0);
-		assertContent(inline, new String[] { "\n foo\n bar\n " });
+		assertContent(inline, "\n foo\n bar\n ");
 	}
 
 	public void testPreElementNormalize() throws ParserConfigurationException, SAXException, IOException {
@@ -237,13 +237,13 @@ public class SpaceNormalizerTest extends TestCase {
 		final Document doc = createDocument(input, getStyleSheet());
 
 		final Element element = doc.getRootElement();
-		assertContent(element, new String[] { "<pre>" });
+		assertContent(element, "<pre>");
 
 		final Element pre = element.getChildElements().get(0);
-		assertContent(pre, new String[] { "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t " });
+		assertContent(pre, "\n\t foo\n\t ", "<inline>", "\n\t baz\n\t ");
 
 		final Element inline = pre.getChildElements().get(0);
-		assertContent(inline, new String[] { "\n\t foo\n\t bar\n\t " });
+		assertContent(inline, "\n\t foo\n\t bar\n\t ");
 	}
 
 	private StyleSheet getStyleSheet() throws IOException {
@@ -262,14 +262,14 @@ public class SpaceNormalizerTest extends TestCase {
 	 * string in content is enclosed in angle brackets, it's assume to refer to
 	 * the name of an element; otherwise, it represents text content.
 	 */
-	private void assertContent(final Element element, final String[] strings) {
+	private void assertContent(final Element element, final String... strings) {
 		final List<Node> content = element.getChildNodes();
 		assertEquals(strings.length, content.size());
 		for (int i = 0; i < strings.length; i++)
 			if (strings[i].startsWith("<")) {
 				final String name = strings[i].substring(1, strings[i].length() - 1);
 				assertTrue(content.get(i) instanceof Element);
-				assertEquals(name, ((Element) content.get(i)).getName());
+				assertEquals(name, ((Element) content.get(i)).getPrefixedName());
 			} else {
 				assertTrue(content.get(i) instanceof Text);
 				final String contentText = content.get(i).getText();

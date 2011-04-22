@@ -132,7 +132,7 @@ public class LayoutTestSuite extends TestCase {
 
         if (boxSpec.element != null) {
             assertNotNull(box.getElement());
-            assertEquals(boxSpec.element, box.getElement().getName());
+            assertEquals(boxSpec.element, box.getElement().getPrefixedName());
         }
 
         if (boxSpec.text != null && box instanceof TextBox) {

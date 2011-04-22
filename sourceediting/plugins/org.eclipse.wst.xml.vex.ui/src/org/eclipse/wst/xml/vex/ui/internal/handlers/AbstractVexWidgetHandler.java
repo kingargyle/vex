@@ -61,7 +61,7 @@ public abstract class AbstractVexWidgetHandler extends AbstractHandler
         VexWidget widget = VexHandlerUtil.computeWidget(window);
         if (widget == null) return;
 
-        String name = widget.getCurrentElement().getName();
+        String name = widget.getCurrentElement().getPrefixedName();
         String dynamicLabelId =
             parameters.containsKey(IServiceScopes.PARTSITE_SCOPE)
             ? partsiteScopeDynamicLabelId

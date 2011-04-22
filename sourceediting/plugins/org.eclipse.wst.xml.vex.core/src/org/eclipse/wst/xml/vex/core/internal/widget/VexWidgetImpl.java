@@ -1137,7 +1137,7 @@ public class VexWidgetImpl implements IVexWidget {
 				// let's move just outside
 				this.moveTo(getCaretOffset() + 1);
 
-				insertElement(new Element(element.getName()));
+				insertElement(new Element(element.getQualifiedName()));
 				// TODO: clone attributes
 
 				if (!atEnd) {
@@ -1290,7 +1290,7 @@ public class VexWidgetImpl implements IVexWidget {
 			return false;
 		final Element e1 = getDocument().getElementAt(offset - 1);
 		final Element e2 = getDocument().getElementAt(offset + 1);
-		return e1 != e2 && e1.getParent() == e2.getParent() && e1.getName().equals(e2.getName());
+		return e1 != e2 && e1.getParent() == e2.getParent() && e1.getQualifiedName().equals(e2.getQualifiedName());
 	}
 
 	/**

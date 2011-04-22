@@ -845,11 +845,11 @@ public class VexEditor extends EditorPart {
 		final List<String> path = new ArrayList<String>();
 		Element element = vexWidget.getCurrentElement();
 		while (element != null) {
-			path.add(element.getName());
+			path.add(element.getPrefixedName());
 			element = element.getParent();
 		}
 		Collections.reverse(path);
-		final StringBuffer sb = new StringBuffer(path.size() * 15);
+		final StringBuilder sb = new StringBuilder(path.size() * 15);
 		for (final String part : path) {
 			sb.append("/"); //$NON-NLS-1$
 			sb.append(part);

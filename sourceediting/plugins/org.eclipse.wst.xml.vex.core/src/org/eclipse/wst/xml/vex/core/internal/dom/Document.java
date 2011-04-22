@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
@@ -141,7 +142,7 @@ public class Document {
 
 		Iterator<Node> iter = e1.getChildNodes().iterator();
 		if (e1 instanceof Element)
-			iter = (e1).getChildIterator();
+			iter = e1.getChildIterator();
 		while (iter.hasNext()) {
 			final Node child = iter.next();
 			if (startOffset <= child.getStartOffset() && child.getEndOffset() < endOffset)
@@ -268,11 +269,9 @@ public class Document {
 	 * int)
 	 */
 	public List<Node> getNodes(final int startOffset, final int endOffset) {
-
 		final Element element = getElementAt(startOffset);
 		if (element != getElementAt(endOffset))
-			throw new IllegalArgumentException("Offsets are unbalanced: " + startOffset + " is in " + element.getName() + ", " + endOffset + " is in "
-					+ getElementAt(endOffset).getName());
+			throw new IllegalArgumentException(NLS.bind("Offsets are unbalanced: {0} is in {1}, {2} is in {3}.", new Object[] {startOffset, element.getPrefixedName(), endOffset,getElementAt(endOffset).getPrefixedName()}));
 
 		final List<Node> list = new ArrayList<Node>();
 		final List<Node> nodes = element.getChildNodes();
@@ -375,7 +374,7 @@ public class Document {
 	public void insertElement(final int offset, final Element element) throws DocumentValidationException {
 
 		if (offset < 1 || offset >= getLength())
-			throw new IllegalArgumentException("Error inserting element <" + element.getName() + ">: offset is " + offset + ", but it must be between 1 and "
+			throw new IllegalArgumentException("Error inserting element <" + element.getPrefixedName() + ">: offset is " + offset + ", but it must be between 1 and "
 					+ (getLength() - 1));
 
 		final Validator validator = getValidator();
@@ -386,7 +385,7 @@ public class Document {
 			final List<QualifiedName> seq3 = getNodeNames(offset, parent.getEndOffset());
 
 			if (!validator.isValidSequence(parent.getQualifiedName(), seq1, seq2, seq3, true))
-				throw new DocumentValidationException("Cannot insert element " + element.getName() + " at offset " + offset);
+				throw new DocumentValidationException("Cannot insert element " + element.getPrefixedName() + " at offset " + offset);
 		}
 
 		// find the parent, and the index into its children at which
@@ -772,8 +771,7 @@ public class Document {
 	 *            parent for the cloned Element
 	 */
 	private Element cloneElement(final Element original, final Content content, final int shift, final Element parent) {
-
-		final Element clone = new Element(original.getName());
+		final Element clone = new Element(original.getQualifiedName());
 		clone.setContent(content, original.getStartOffset() + shift, original.getEndOffset() + shift);
 		for (final Attribute attribute : original.getAttributes())
 			try {

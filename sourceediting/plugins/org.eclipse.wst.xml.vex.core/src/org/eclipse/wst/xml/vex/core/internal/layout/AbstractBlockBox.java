@@ -528,7 +528,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		ColorResource oldColor = g.setColor(background);
 		g.setLineStyle(Graphics.LINE_SOLID);
 		g.setLineWidth(1);
-		int tabWidth = g.stringWidth(this.getElement().getName())
+		int tabWidth = g.stringWidth(this.getElement().getPrefixedName())
 				+ fm.getLeading();
 		int tabHeight = fm.getHeight();
 		int tabX = x + this.getWidth() - tabWidth;
@@ -536,7 +536,7 @@ public abstract class AbstractBlockBox extends AbstractBox implements BlockBox {
 		g.drawRect(x, y, this.getWidth(), this.getHeight());
 		g.fillRect(tabX, tabY, tabWidth, tabHeight);
 		g.setColor(foreground);
-		g.drawString(this.getElement().getName(), tabX + fm.getLeading() / 2,
+		g.drawString(this.getElement().getPrefixedName(), tabX + fm.getLeading() / 2,
 				tabY);
 
 		g.setColor(oldColor);
