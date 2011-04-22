@@ -24,24 +24,28 @@ import org.w3c.css.sac.LexicalUnit;
 public class BackgroundImageProperty extends AbstractProperty {
 
 	public static final String DEFAULT = null;
-	
+
 	public BackgroundImageProperty() {
 		super(CSS.BACKGROUND_IMAGE);
 	}
 
-	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, Element element) {
+	public Object calculate(final LexicalUnit lexicalUnit, final Styles parentStyles, final Styles styles, final Element element) {
 		if (lexicalUnit == null)
 			return DEFAULT;
 		switch (lexicalUnit.getLexicalUnitType()) {
 		case LexicalUnit.SAC_STRING_VALUE:
 			return lexicalUnit.getStringValue();
 		case LexicalUnit.SAC_ATTR:
-			final String attributeValue = element.getAttribute(lexicalUnit.getStringValue());
+			final String attributeValue = element.getAttributeValue(lexicalUnit.getStringValue());
 			if (attributeValue != null)
 				return attributeValue;
 			return DEFAULT;
 		default:
-			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.WARNING, VEXCorePlugin.ID, MessageFormat.format("Unsupported lexical unit type in ''background-image: {0}'' (type: {1})", lexicalUnit.toString(), lexicalUnit.getLexicalUnitType())));
+			VEXCorePlugin
+					.getInstance()
+					.getLog()
+					.log(new Status(IStatus.WARNING, VEXCorePlugin.ID, MessageFormat.format(
+							"Unsupported lexical unit type in ''background-image: {0}'' (type: {1})", lexicalUnit.toString(), lexicalUnit.getLexicalUnitType())));
 			return DEFAULT;
 		}
 	}

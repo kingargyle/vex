@@ -14,10 +14,11 @@ import org.eclipse.core.runtime.QualifiedName;
 
 /**
  * An immutable representation of an attribute within the start tag of an element.
+ * The attribute is Comparable by its qualified name.
  *  
  * @author Florian Thienel
  */
-public class Attribute {
+public class Attribute implements Comparable<Attribute> {
 	
 	private final Element parent;
 	
@@ -59,5 +60,15 @@ public class Attribute {
 	 */
 	public String getPrefixedName() {
 		return getLocalName();
+	}
+
+	/**
+	 * Compares two attributes by their name.
+	 * 
+	 * @param otherAttribute the other attribute
+	 * @see Comparable
+	 */
+	public int compareTo(Attribute otherAttribute) {
+		return name.toString().compareTo(otherAttribute.name.toString());
 	}
 }

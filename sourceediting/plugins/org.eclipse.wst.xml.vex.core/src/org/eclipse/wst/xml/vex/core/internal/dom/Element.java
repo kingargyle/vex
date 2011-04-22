@@ -12,8 +12,8 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.wst.xml.vex.core.internal.core.QualifiedNameComparator;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotRedoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.CannotUndoException;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
@@ -31,13 +32,13 @@ import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
  */
 public class Element extends Node implements Cloneable {
 
-	private static final String XML_BASE_ATTRIBUTE = "xml:base";
+	private static final QualifiedName XML_BASE_ATTRIBUTE = new QualifiedName(Namespace.XML_NAMESPACE_URI, "base");
 	
 	private final QualifiedName name;
 	
 	private Element parent = null;
 	private List<Node> childNodes = new ArrayList<Node>();
-	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+	private Map<QualifiedName, Attribute> attributes = new HashMap<QualifiedName, Attribute>();
 	private Map<String, String> namespaceDeclarations = new HashMap<String, String>();
 
 	public Element(final String localName) {
@@ -55,10 +56,9 @@ public class Element extends Node implements Cloneable {
 
 	public Object clone() {
 		try {
-			Element element = new Element(this.getName());
-
+			final Element element = new Element(getQualifiedName());
 			//add the attributes to the element instance to be cloned
-			for (Map.Entry<String, Attribute> attr : this.attributes.entrySet())
+			for (Map.Entry<QualifiedName, Attribute> attr : this.attributes.entrySet())
 				element.setAttribute(attr.getKey(), attr.getValue().getValue());
 			return element;
 		} catch (DocumentValidationException ex) {
@@ -67,15 +67,34 @@ public class Element extends Node implements Cloneable {
 		}
 	}
 
-	public String getAttribute(String name) {
-		Attribute attribute = attributes.get(name);
-		if (attribute == null)
+	public Attribute getAttribute(String localName) {
+		return getAttribute(qualify(localName));
+	}
+	
+	public Attribute getAttribute(QualifiedName name) {
+		return attributes.get(name);
+	}
+	
+	public String getAttributeValue(String localName) {
+		return getAttributeValue(qualify(localName));
+	}
+
+	public String getAttributeValue(QualifiedName name) {
+		final Attribute attribute = getAttribute(name);
+		if (attribute == null || "".equals(attribute.getValue().trim()))
 			return null;
 		return attribute.getValue();
 	}
-
-	public void removeAttribute(String name) throws DocumentValidationException {
-		final String oldValue = this.getAttribute(name);
+	
+	public void removeAttribute(String localName) throws DocumentValidationException {
+		removeAttribute(qualify(localName));
+	}
+	
+	public void removeAttribute(QualifiedName name) throws DocumentValidationException {
+		final Attribute attribute = this.getAttribute(name);
+		if (attribute == null)
+			return;
+		final String oldValue = attribute.getValue();
 		final String newValue = null;
 		if (oldValue != null)
 			this.attributes.remove(name);
@@ -89,6 +108,14 @@ public class Element extends Node implements Cloneable {
 	}
 
 	public void setAttribute(String name, String value) throws DocumentValidationException {
+		setAttribute(qualify(name), value);
+	}
+	
+	private QualifiedName qualify(String localName) {
+		return new QualifiedName(name.getQualifier(), localName);
+	}
+	
+	public void setAttribute(QualifiedName name, String value) throws DocumentValidationException {
 		final Attribute oldAttribute = attributes.get(name);
 		final String oldValue = oldAttribute != null ? oldAttribute.getValue() : null;
 		
@@ -114,9 +141,19 @@ public class Element extends Node implements Cloneable {
 		}
 	}
 
-	public List<String> getAttributeNames() {
-		final Collection<String> names = this.attributes.keySet();
-		return Arrays.<String> asList(names.toArray(new String[names.size()]));
+	public Collection<Attribute> getAttributes() {
+		final ArrayList<Attribute> result = new ArrayList<Attribute>(attributes.values());
+		Collections.sort(result);
+		return Collections.unmodifiableCollection(result);
+	}
+	
+	public List<QualifiedName> getAttributeNames() {
+		ArrayList<QualifiedName> result = new ArrayList<QualifiedName>();
+		for (Attribute attribute : attributes.values()) {
+			result.add(attribute.getQualifiedName());
+		}
+		Collections.sort(result, new QualifiedNameComparator());
+		return result;
 	}
 
 	public Iterator<Node> getChildIterator() {
@@ -209,16 +246,12 @@ public class Element extends Node implements Cloneable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<");
 		sb.append(this.getPrefixedName().toString());
-		List<String> attrs = this.getAttributeNames();
-
-		for (int i = 0; i < attrs.size(); i++) {
-			if (i > 0) {
-				sb.append(",");
-			}
+		
+		for (Attribute attribute : getAttributes()) {
 			sb.append(" ");
-			sb.append(attrs.get(i));
+			sb.append(attribute.getPrefixedName());
 			sb.append("=\"");
-			sb.append(this.getAttribute(attrs.get(i)));
+			sb.append(attribute.getValue());
 			sb.append("\"");
 		}
 
@@ -235,11 +268,11 @@ public class Element extends Node implements Cloneable {
 
 	private class AttributeChangeEdit implements IUndoableEdit {
 
-		private String name;
+		private QualifiedName name;
 		private String oldValue;
 		private String newValue;
 
-		public AttributeChangeEdit(String name, String oldValue, String newValue) {
+		public AttributeChangeEdit(QualifiedName name, String oldValue, String newValue) {
 			this.name = name;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
@@ -341,9 +374,9 @@ public class Element extends Node implements Cloneable {
 
 	@Override
 	public String getBaseURI() {
-		final String baseAttributeValue = getAttribute(XML_BASE_ATTRIBUTE);
-		if (baseAttributeValue != null)
-			return baseAttributeValue;
+		final Attribute baseAttribute = getAttribute(XML_BASE_ATTRIBUTE);
+		if (baseAttribute != null)
+			return baseAttribute.getValue();
 		if (getParent() != null)
 			return getParent().getBaseURI();
 		if (getDocument() != null)

@@ -218,37 +218,37 @@ public class StyleSheet {
 
 		Map<String, LexicalUnit> decls = getApplicableDeclarations(element);
 
-		LexicalUnit lu;
+		LexicalUnit lexicalUnit;
 
 		// If we're finding a pseudo-element, look at the 'content' property
 		// first, since most of the time it'll be empty and we'll return null.
 		if (element instanceof PseudoElement) {
-			lu = decls.get(CSS.CONTENT);
-			if (lu == null)
+			lexicalUnit = decls.get(CSS.CONTENT);
+			if (lexicalUnit == null)
 				return null;
 
 			List<String> content = new ArrayList<String>();
-			while (lu != null) {
-				switch (lu.getLexicalUnitType()) {
+			while (lexicalUnit != null) {
+				switch (lexicalUnit.getLexicalUnitType()) {
 				case LexicalUnit.SAC_STRING_VALUE :
 					// content: "A String"
-					content.add(lu.getStringValue());
+					content.add(lexicalUnit.getStringValue());
 					break;
 				case LexicalUnit.SAC_ATTR :
 					// content: attr(attributeName)
-					final String attributeValue = element.getParent().getAttribute(lu.getStringValue());
+					final String attributeValue = element.getParent().getAttributeValue(lexicalUnit.getStringValue());
 					if (attributeValue != null)
 						content.add(attributeValue);
 					break;
 				}
-				lu = lu.getNextLexicalUnit();
+				lexicalUnit = lexicalUnit.getNextLexicalUnit();
 			}
 			styles.setContent(content);
 		}
 
 		for (final IProperty property : CSS_PROPERTIES) {
-			lu = decls.get(property.getName());
-			final Object value = property.calculate(lu, parentStyles, styles, element);
+			lexicalUnit = decls.get(property.getName());
+			final Object value = property.calculate(lexicalUnit, parentStyles, styles, element);
 			styles.put(property.getName(), value);
 		}
 

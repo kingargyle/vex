@@ -121,7 +121,7 @@ public class PropertyTest extends TestCase {
 
 		assertNull(property.calculate(attrSrc, parentStyles, styles, noAttribute));
 		assertEquals("image.jpg", property.calculate(attrSrc, parentStyles, styles, setAttribute));
-		assertEquals("", property.calculate(attrSrc, parentStyles, styles, emptyAttribute));
+		assertNull(property.calculate(attrSrc, parentStyles, styles, emptyAttribute));
 	}
 
 	public void testParsePropertyValue() throws Exception {

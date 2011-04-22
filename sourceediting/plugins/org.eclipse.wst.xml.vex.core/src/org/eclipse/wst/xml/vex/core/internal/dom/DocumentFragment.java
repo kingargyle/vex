@@ -16,7 +16,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import org.eclipse.core.runtime.QualifiedName;
 
 /**
  * Represents a fragment of an XML document.
@@ -24,9 +27,10 @@ import java.util.List;
 public class DocumentFragment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Mime type representing document fragments: "text/x-vex-document-fragment"
+	 * 
 	 * @model
 	 */
 	public static final String MIME_TYPE = "application/x-vex-document-fragment";
@@ -42,64 +46,78 @@ public class DocumentFragment implements Serializable {
 	 * @param elements
 	 *            Elements that make up this fragment.
 	 */
-	public DocumentFragment(Content content, List<Element> elements) {
+	public DocumentFragment(final Content content, final List<Element> elements) {
 		this.content = content;
 		this.elements = elements;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getContent()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getContent
+	 * ()
 	 */
 	public Content getContent() {
-		return this.content;
+		return content;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getLength()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getLength
+	 * ()
 	 */
 	public int getLength() {
-		return this.content.getLength();
+		return content.getLength();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getElements()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getElements
+	 * ()
 	 */
 	public List<Element> getElements() {
 		return elements;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodeNames()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodeNames
+	 * ()
 	 */
-	public List<String> getNodeNames() {
-		List<Node> nodes = getNodes();
-		List<String> names = new ArrayList<String>(nodes.size());
-		for (int i = 0; i < nodes.size(); i++) {
-			if (nodes.get(i) instanceof Text) {
+	public List<QualifiedName> getNodeNames() {
+		final List<Node> nodes = getNodes();
+		final List<QualifiedName> names = new ArrayList<QualifiedName>(nodes.size());
+		for (Node node : nodes)
+			if (node instanceof Text)
 				names.add(Validator.PCDATA);
-			} else {
-				names.add(((Element) nodes.get(i)).getName());
-			}
-		}
+			else
+				names.add(((Element) node).getQualifiedName());
 
 		return names;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodes()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.wst.xml.vex.core.internal.dom.IVEXDocumentFragment#getNodes()
 	 */
 	public List<Node> getNodes() {
-		return Document.createNodeList(getContent(), 0, getContent()
-				.getLength(), getNodes(getElements()));
+		return Document.createNodeList(getContent(), 0, getContent().getLength(), getNodes(getElements()));
 	}
-	
-	private List<Node> getNodes(List<Element> elements) {
-		List<Node> nodes = new ArrayList<Node>();
-		for (Node node : elements) {
-			if (node.getNodeType().equals("Element")) {
+
+	private List<Node> getNodes(final List<Element> elements) {
+		final List<Node> nodes = new ArrayList<Node>();
+		for (final Node node : elements)
+			if (node.getNodeType().equals("Element"))
 				nodes.add(node);
-			}	
-		}
 		return nodes;
 	}
 
@@ -107,74 +125,76 @@ public class DocumentFragment implements Serializable {
 	 * Custom Serialization Methods
 	 */
 
-	private void writeObject(ObjectOutputStream out) throws IOException {
+	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.writeUTF(content.getString(0, content.getLength()));
 		out.writeInt(elements.size());
-		for (int i = 0; i < elements.size(); i++) {
-			this.writeElement(elements.get(i), out);
-		}
+		for (int i = 0; i < elements.size(); i++)
+			writeElement(elements.get(i), out);
 	}
- 
-	private void writeElement(Element element, ObjectOutputStream out)
-			throws IOException {
 
-		out.writeObject(element.getName());
+	private void writeElement(final Element element, final ObjectOutputStream out) throws IOException {
+
+		out.writeObject(element.getQualifiedName());
 		out.writeInt(element.getStartOffset());
 		out.writeInt(element.getEndOffset());
-		List<String> attrNames = element.getAttributeNames();
-		out.writeInt(attrNames.size());
-		for (int i = 0; i < attrNames.size(); i++) {
-			out.writeObject(attrNames.get(i));
-			out.writeObject(element.getAttribute(attrNames.get(i)));
+		final Collection<Attribute> attributes = element.getAttributes();
+		out.writeInt(attributes.size());
+		for (final Attribute attribute : attributes) {
+			out.writeObject(attribute.getQualifiedName());
+			out.writeObject(attribute.getValue());
 		}
-		List<Element> children = element.getChildElements();
+		final List<Element> children = element.getChildElements();
 		out.writeInt(children.size());
-		for (int i = 0; i < children.size(); i++) {
-			this.writeElement(children.get(i), out);
-		}
+		for (int i = 0; i < children.size(); i++)
+			writeElement(children.get(i), out);
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-
-		String s = in.readUTF();
-		this.content = new GapContent(s.length());
+	private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+		final String s = in.readUTF();
+		content = new GapContent(s.length());
 		content.insertString(0, s);
-		int n = in.readInt();
+		final int n = in.readInt();
 		elements = new ArrayList<Element>(n);
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++)
 			elements.add(readElement(in));
-		}
 	}
 
-	private Element readElement(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
+	private Element readElement(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+		final QualifiedName elementName = createQualifiedName(in.readObject());
+		final int startOffset = in.readInt();
+		final int endOffset = in.readInt();
+		final Element element = new Element(elementName);
+		element.setContent(content, startOffset, endOffset);
 
-		String name = (String) in.readObject();
-		int startOffset = in.readInt();
-		int endOffset = in.readInt();
-		Element element = new Element(name);
-		element.setContent(this.content, startOffset, endOffset);
-
-		int attrCount = in.readInt();
+		final int attrCount = in.readInt();
 		for (int i = 0; i < attrCount; i++) {
-			String key = (String) in.readObject();
-			String value = (String) in.readObject();
+			final QualifiedName attributeName = createQualifiedName(in.readObject());
+			final String value = (String) in.readObject();
 			try {
-				element.setAttribute(key, value);
-			} catch (DocumentValidationException e) {
+				element.setAttribute(attributeName, value);
+			} catch (final DocumentValidationException e) {
 				// Should never happen; there ain't no document
 				e.printStackTrace();
 			}
 		}
 
-		int childCount = in.readInt();
+		final int childCount = in.readInt();
 		for (int i = 0; i < childCount; i++) {
-			Element child = this.readElement(in);
+			final Element child = readElement(in);
 			child.setParent(element);
 			element.insertChild(i, child);
 		}
 
 		return element;
+	}
+
+	private static QualifiedName createQualifiedName(final Object object) {
+		final String serializedQualifiedName = object.toString();
+		final int localNameStartIndex = serializedQualifiedName.lastIndexOf(':') + 1;
+		if (localNameStartIndex == 0)
+			return new QualifiedName(null, serializedQualifiedName);
+		final String qualifier = serializedQualifiedName.substring(0, localNameStartIndex - 1);
+		final String localName = serializedQualifiedName.substring(localNameStartIndex);
+		return new QualifiedName(qualifier, localName);
 	}
 }

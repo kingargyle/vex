@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,6 +23,7 @@ import java.util.TreeSet;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -196,14 +198,20 @@ public class DoctypePropertyPage extends PropertyPage {
 			final Set<String> selectedRootElements = new TreeSet<String>(list);
 
 			rootElementsTable.removeAll();
-			final List<String> l = new ArrayList<String>(validator.getValidRootElements());
-			Collections.sort(l);
-			for (int i = 0; i < l.size(); i++) {
-				final TableItem item1 = new TableItem(rootElementsTable, SWT.NONE);
-				item1.setText(l.get(i));
+			final List<QualifiedName> rootElements = new ArrayList<QualifiedName>(validator.getValidRootElements());
+			Collections.sort(rootElements, new Comparator<QualifiedName>() {
+				public int compare(QualifiedName name1, QualifiedName name2) {
+					return name1.getLocalName().compareTo(name2.getLocalName());
+				}
+			});
+			for (QualifiedName rootElementName : rootElements) {
+				final TableItem item = new TableItem(rootElementsTable, SWT.NONE);
+				
+				setRootElementItemText(item, rootElementName);
+				item.setData(rootElementName);
 
-				if (selectedRootElements.contains(l.get(i)))
-					item1.setChecked(true);
+				if (selectedRootElements.contains(rootElementName.getLocalName()))
+					item.setChecked(true);
 			}
 		} else
 			try {
@@ -213,6 +221,13 @@ public class DoctypePropertyPage extends PropertyPage {
 						new Object[] { PluginProject.PLUGIN_XML });
 				VexPlugin.getInstance().log(IStatus.ERROR, message, ex);
 			}
+	}
+
+	private void setRootElementItemText(final TableItem item, final QualifiedName rootElementName) {
+		if (rootElementName.getQualifier() == null)
+			item.setText(rootElementName.getLocalName());
+		else
+			item.setText(rootElementName.getLocalName() + " (" + rootElementName.getQualifier() + ")");
 	}
 	
 	@Override
@@ -231,7 +246,7 @@ public class DoctypePropertyPage extends PropertyPage {
 		final ArrayList<String> selectedRootElements = new ArrayList<String>();
 		for (final TableItem item : rootElementsTable.getItems())
 			if (item.getChecked())
-				selectedRootElements.add(item.getText());
+				selectedRootElements.add(((QualifiedName) item.getData()).getLocalName());
 		doctype.setRootElements(selectedRootElements.toArray(new String[selectedRootElements.size()]));
 
 		try {

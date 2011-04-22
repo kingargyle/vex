@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
@@ -46,8 +46,8 @@ public class DocumentWriter {
 	 * Class constructor.
 	 */
 	public DocumentWriter() {
-		this.indent = "  ";
-		this.wrapColumn = 72;
+		indent = "  ";
+		wrapColumn = 72;
 	}
 
 /**
@@ -57,24 +57,23 @@ public class DocumentWriter {
      * @param s the string to be escaped.
      * @return the escaped string
      */
-	public static String escape(String s) {
-		StringBuffer sb = new StringBuffer(s.length());
+	public static String escape(final String s) {
+		final StringBuffer sb = new StringBuffer(s.length());
 
 		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c == '<') {
+			final char c = s.charAt(i);
+			if (c == '<')
 				sb.append("&lt;");
-			} else if (c == '>') {
+			else if (c == '>')
 				sb.append("&gt;");
-			} else if (c == '&') {
+			else if (c == '&')
 				sb.append("&amp;");
-			} else if (c == '"') {
+			else if (c == '"')
 				sb.append("&quot;");
-			} else if (c == '\'') {
+			else if (c == '\'')
 				sb.append("&apos;");
-			} else {
+			else
 				sb.append(c);
-			}
 		}
 		return sb.toString();
 	}
@@ -83,7 +82,7 @@ public class DocumentWriter {
 	 * Returns the indent string. By default this is two spaces.
 	 */
 	public String getIndent() {
-		return this.indent;
+		return indent;
 	}
 
 	/**
@@ -98,7 +97,7 @@ public class DocumentWriter {
 	 * 72.
 	 */
 	public int getWrapColumn() {
-		return this.wrapColumn;
+		return wrapColumn;
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class DocumentWriter {
 	 * @param indent
 	 *            new value for the indent string.
 	 */
-	public void setIndent(String indent) {
+	public void setIndent(final String indent) {
 		this.indent = indent;
 	}
 
@@ -119,7 +118,7 @@ public class DocumentWriter {
 	 * @param whitespacePolicy
 	 *            The whitespacePolicy to set.
 	 */
-	public void setWhitespacePolicy(IWhitespacePolicy whitespacePolicy) {
+	public void setWhitespacePolicy(final IWhitespacePolicy whitespacePolicy) {
 		this.whitespacePolicy = whitespacePolicy;
 	}
 
@@ -129,58 +128,56 @@ public class DocumentWriter {
 	 * @param wrapColumn
 	 *            new value for the wrap column.
 	 */
-	public void setWrapColumn(int wrapColumn) {
+	public void setWrapColumn(final int wrapColumn) {
 		this.wrapColumn = wrapColumn;
 	}
 
-	public void write(Document doc, OutputStream os) throws IOException {
+	public void write(final Document doc, final OutputStream os) throws IOException {
 
-		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-		PrintWriter pw = new PrintWriter(osw);
+		final OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+		final PrintWriter pw = new PrintWriter(osw);
 		pw.println("<?xml version='1.0'?>");
-		
-		if (((Document)doc).getSystemID() != null) {
-			StringBuffer sb = new StringBuffer();
+
+		if ((doc).getSystemID() != null) {
+			final StringBuffer sb = new StringBuffer();
 			sb.append("<!DOCTYPE ");
-			sb.append(doc.getRootElement().getName());
+			sb.append(doc.getRootElement().getPrefixedName());
 			if (doc.getPublicID() != null) {
 				sb.append(" PUBLIC");
 				sb.append(" \"");
 				sb.append(doc.getPublicID());
 				sb.append("\"");
-			} else {
+			} else
 				sb.append(" SYSTEM");
-			}
 			sb.append(" \"");
-			sb.append(((Document)doc).getSystemID());
+			sb.append((doc).getSystemID());
 			sb.append("\">");
 			pw.println(sb.toString());
 		}
-		this.writeNode(doc.getRootElement(), pw, "");
+		writeNode(doc.getRootElement(), pw, "");
 		pw.flush();
 	}
 
 	// ====================================================== PRIVATE
 
-	private void writeNode(Node node, PrintWriter pw, String indent) {
+	private void writeNode(final Node node, final PrintWriter pw, final String indent) {
 
 		if (node instanceof Text) {
-			TextWrapper wrapper = new TextWrapper();
+			final TextWrapper wrapper = new TextWrapper();
 			wrapper.add(escape(node.getText()));
 
-			String[] lines = wrapper.wrap(this.wrapColumn - indent.length());
+			final String[] lines = wrapper.wrap(wrapColumn - indent.length());
 
-			for (int i = 0; i < lines.length; i++) {
+			for (final String line : lines) {
 				pw.print(indent);
-				pw.println(lines[i]);
+				pw.println(line);
 			}
 
 		} else {
 
-			Element element = (Element) node;
+			final Element element = (Element) node;
 
-			if (this.whitespacePolicy != null
-					&& this.whitespacePolicy.isPre(element)) {
+			if (whitespacePolicy != null && whitespacePolicy.isPre(element)) {
 				pw.print(indent);
 				writeNodeNoWrap(node, pw);
 				pw.println();
@@ -188,171 +185,144 @@ public class DocumentWriter {
 			}
 
 			boolean hasBlockChild = false;
-			List<Element> children = element.getChildElements();
-			for (int i = 0; i < children.size(); i++) {
-				if (this.whitespacePolicy != null
-						&& this.whitespacePolicy.isBlock(children.get(i))) {
+			final List<Element> children = element.getChildElements();
+			for (int i = 0; i < children.size(); i++)
+				if (whitespacePolicy != null && whitespacePolicy.isBlock(children.get(i))) {
 					hasBlockChild = true;
 					break;
 				}
-			}
 
 			if (hasBlockChild) {
 				pw.print(indent);
 				pw.print("<");
-				pw.print(element.getName());
+				pw.print(element.getPrefixedName());
 
-				TextWrapper wrapper = new TextWrapper();
-				wrapper.addNoSplit(this.getAttributeString(element));
-				int outdent = indent.length() + 1 + element.getName().length();
-				String[] lines = wrapper.wrap(this.wrapColumn - outdent);
-				char[] bigIndent = new char[outdent];
+				final TextWrapper wrapper = new TextWrapper();
+				wrapper.addNoSplit(getAttributeString(element));
+				final int outdent = indent.length() + 1 + element.getPrefixedName().length();
+				final String[] lines = wrapper.wrap(wrapColumn - outdent);
+				final char[] bigIndent = new char[outdent];
 				Arrays.fill(bigIndent, ' ');
 				for (int i = 0; i < lines.length; i++) {
-					if (i > 0) {
+					if (i > 0)
 						pw.print(bigIndent);
-					}
 					pw.print(lines[i]);
-					if (i < lines.length - 1) {
+					if (i < lines.length - 1)
 						pw.println();
-					}
 				}
 				pw.println(">");
 
-				String childIndent = indent + this.indent;
-				List<Node> content = element.getChildNodes();
-				for (int i = 0; i < content.size(); i++) {
-					this.writeNode(content.get(i), pw, childIndent);
-				}
+				final String childIndent = indent + this.indent;
+				final List<Node> content = element.getChildNodes();
+				for (int i = 0; i < content.size(); i++)
+					writeNode(content.get(i), pw, childIndent);
 				pw.print(indent);
 				pw.print("</");
-				pw.print(element.getName());
+				pw.print(element.getPrefixedName());
 				pw.println(">");
 			} else {
-				TextWrapper wrapper = new TextWrapper();
-				this.addNode(element, wrapper);
-				String[] lines = wrapper
-						.wrap(this.wrapColumn - indent.length());
-				for (int i = 0; i < lines.length; i++) {
+				final TextWrapper wrapper = new TextWrapper();
+				addNode(element, wrapper);
+				final String[] lines = wrapper.wrap(wrapColumn - indent.length());
+				for (final String line : lines) {
 					pw.print(indent);
-					pw.println(lines[i]);
+					pw.println(line);
 				}
 			}
 
 		}
 	}
 
-	private void writeNodeNoWrap(Node node, PrintWriter pw) {
+	private void writeNodeNoWrap(final Node node, final PrintWriter pw) {
 
-		if (node instanceof Text) {
+		if (node instanceof Text)
 			pw.print(escape(node.getText()));
-		} else {
+		else {
 
-			Element element = (Element) node;
+			final Element element = (Element) node;
 
 			pw.print("<");
-			pw.print(element.getName());
-			pw.print(this.getAttributeString(element));
+			pw.print(element.getPrefixedName());
+			pw.print(getAttributeString(element));
 			pw.print(">");
 
-			List<Node> content = element.getChildNodes();
-			for (int i = 0; i < content.size(); i++) {
-				this.writeNodeNoWrap(content.get(i), pw);
-			}
+			for (Node child : element.getChildNodes())
+				writeNodeNoWrap(child, pw);
 
 			pw.print("</");
-			pw.print(element.getName());
+			pw.print(element.getPrefixedName());
 			pw.print(">");
 		}
 	}
 
-	private String attrToString(String name, String value) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(" ");
-		sb.append(name);
-		sb.append("=\"");
-		sb.append(escape(value));
-		sb.append("\"");
-		return sb.toString();
+	private String attrToString(final Attribute attribute) {
+		final StringBuffer result = new StringBuffer();
+		result.append(" ");
+		result.append(attribute.getPrefixedName());
+		result.append("=\"");
+		result.append(escape(attribute.getValue()));
+		result.append("\"");
+		return result.toString();
 	}
 
-	private void addNode(Node node, TextWrapper wrapper) {
-		if (node instanceof Text) {
+	private void addNode(final Node node, final TextWrapper wrapper) {
+		if (node instanceof Text)
 			wrapper.add(escape(node.getText()));
-		} else {
-			Element element = (Element) node;
-			List<Node> content = element.getChildNodes();
-			List<String> attrs = element.getAttributeNames();
-			Collections.sort(attrs);
+		else {
+			final Element element = (Element) node;
+			final List<Node> content = element.getChildNodes();
+			final Collection<Attribute> attributes = element.getAttributes();
 
-			if (attrs.isEmpty()) {
-				if (content.isEmpty()) {
-					wrapper.add("<" + element.getName() + " />");
-				} else {
-					wrapper.add("<" + element.getName() + ">");
-				}
+			if (attributes.isEmpty()) {
+				if (content.isEmpty())
+					wrapper.add("<" + element.getPrefixedName() + "/>");
+				else
+					wrapper.add("<" + element.getPrefixedName() + ">");
 			} else {
-				Validator validator = element.getDocument().getValidator();
-				StringBuffer sb = new StringBuffer();
-				for (int i = 0; i < attrs.size(); i++) {
-					sb.setLength(0);
-					if (i == 0) {
-						sb.append("<" + element.getName());
-					}
-					if (!attrHasDefaultValue(validator, element, attrs.get(i))) {
-						sb.append(attrToString(attrs.get(i), element
-								.getAttribute(attrs.get(i))));
-					}
-					if (i == attrs.size() - 1) {
-						if (content.isEmpty()) {
-							sb.append("/>");
-						} else {
-							sb.append(">");
-						}
-					}
-					wrapper.addNoSplit(sb.toString());
+				final Validator validator = element.getDocument().getValidator();
+				final StringBuffer stringBuffer = new StringBuffer();
+				stringBuffer.append("<" + element.getPrefixedName());
+				for (final Attribute attribute : attributes) {
+					if (!attrHasDefaultValue(validator, attribute))
+						stringBuffer.append(attrToString(attribute));
 				}
+				if (content.isEmpty())
+					stringBuffer.append("/>");
+				else
+					stringBuffer.append(">");
+				wrapper.addNoSplit(stringBuffer.toString());
 			}
 
-			for (int i = 0; i < content.size(); i++) {
+			for (int i = 0; i < content.size(); i++)
 				addNode(content.get(i), wrapper);
-			}
 
-			if (!content.isEmpty()) {
-				wrapper.add("</" + element.getName() + ">");
-			}
+			if (!content.isEmpty())
+				wrapper.add("</" + element.getPrefixedName() + ">");
 		}
 	}
 
-	private String getAttributeString(Element element) {
+	private String getAttributeString(final Element element) {
+		final Validator validator = element.getDocument().getValidator();
 
-		Validator validator = element.getDocument().getValidator();
-
-		List<String> attrs = element.getAttributeNames();
-		Collections.sort(attrs);
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < attrs.size(); i++) {
-			if (attrHasDefaultValue(validator, element, attrs.get(i))) {
-				continue;
+		final StringBuffer result = new StringBuffer();
+		for (final Attribute attribute : element.getAttributes())
+			if (!attrHasDefaultValue(validator, attribute)) {
+				result.append(" ");
+				result.append(attribute.getPrefixedName());
+				result.append("=\"");
+				result.append(escape(attribute.getValue()));
+				result.append("\"");
 			}
-			sb.append(" ");
-			sb.append(attrs.get(i));
-			sb.append("=\"");
-			sb.append(escape(element.getAttribute(attrs.get(i))));
-			sb.append("\"");
-		}
-		return sb.toString();
+		return result.toString();
 	}
 
-	private static boolean attrHasDefaultValue(Validator validator,
-			Element element, String attribute) {
+	private static boolean attrHasDefaultValue(final Validator validator, final Attribute attribute) {
 		if (validator != null) {
-			AttributeDefinition ad = validator.getAttributeDefinition(element
-					.getName(), attribute);
-			if (ad != null) {
-				String value = element.getAttribute(attribute);
-				String defaultValue = ad.getDefaultValue();
-				return value != null && value.equals(defaultValue);
+			final AttributeDefinition attributeDefinition = validator.getAttributeDefinition(attribute);
+			if (attributeDefinition != null) {
+				final String currentValue = attribute.getValue();
+				final String defaultValue = attributeDefinition.getDefaultValue();
+				return currentValue.equals(defaultValue);
 			}
 		}
 		return false;

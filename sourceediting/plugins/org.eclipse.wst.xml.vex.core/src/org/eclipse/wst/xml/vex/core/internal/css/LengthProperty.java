@@ -51,23 +51,22 @@ public class LengthProperty extends AbstractProperty {
 			return RelativeLength.createAbsolute(0);
 	}
 
-	
 	private static boolean isAttr(final LexicalUnit lexicalUnit) {
 		return lexicalUnit != null && lexicalUnit.getLexicalUnitType() == LexicalUnit.SAC_ATTR;
 	}
-	
-	private static LexicalUnit parseAttribute(final LexicalUnit lexicalUnit, Element element) {
+
+	private static LexicalUnit parseAttribute(final LexicalUnit lexicalUnit, final Element element) {
 		final String attributeName = lexicalUnit.getStringValue();
-		String attribute = element.getAttribute(attributeName);
-		if (attribute == null || "".equals(attribute.trim()))
+		final String attributeValue = element.getAttributeValue(attributeName);
+		if (attributeValue == null)
 			return null;
 		final Parser parser = StyleSheetReader.createParser();
 		try {
-			return parser.parsePropertyValue(new InputSource(new StringReader(attribute)));
-		} catch (CSSException e) {
+			return parser.parsePropertyValue(new InputSource(new StringReader(attributeValue)));
+		} catch (final CSSException e) {
 			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VEXCorePlugin.ID, e.getMessage(), e));
 			return null;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			VEXCorePlugin.getInstance().getLog().log(new Status(IStatus.ERROR, VEXCorePlugin.ID, e.getMessage(), e));
 			return null;
 		}

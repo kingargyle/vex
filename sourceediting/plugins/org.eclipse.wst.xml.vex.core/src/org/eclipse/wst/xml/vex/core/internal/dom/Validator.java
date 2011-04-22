@@ -12,9 +12,10 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.io.Serializable;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 
 /**
@@ -25,11 +26,11 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 public interface Validator extends Serializable {
 
 	/**
-	 * String indicating that character data is allowed at the given point in
+	 * QualifiedName indicating that character data is allowed at the given point in
 	 * the document.
 	 * @model
 	 */
-	public static final String PCDATA = "#PCDATA";
+	public static final QualifiedName PCDATA = new QualifiedName(null, "#PCDATA");
 
 	/**
 	 * Returns the AttributeDefinition for a particular attribute.
@@ -40,8 +41,7 @@ public interface Validator extends Serializable {
 	 *            Name of the attribute.
 	 * @model
 	 */
-	public AttributeDefinition getAttributeDefinition(String element,
-			String attribute);
+	public AttributeDefinition getAttributeDefinition(Attribute attribute);
 
 	/**
 	 * Returns the attribute definitions that apply to the given element.
@@ -50,17 +50,17 @@ public interface Validator extends Serializable {
 	 *            Name of the element to check.
 	 * @model
 	 */
-	public List<AttributeDefinition> getAttributeDefinitions(String element);
+	public List<AttributeDefinition> getAttributeDefinitions(QualifiedName element);
 
 	/**
-	 * Returns a set of Strings representing valid root elements for the given
+	 * Returns a set of QualifiedNames representing valid root elements for the given
 	 * document type.
 	 * @model 
 	 */
-	public Set<String> getValidRootElements();
+	public Set<QualifiedName> getValidRootElements();
 
 	/**
-	 * Returns a set of Strings representing items that are valid at point in
+	 * Returns a set of QualifiedNames representing items that are valid at point in
 	 * the child nodes of a given element. Each string is either an element name
 	 * or Validator.PCDATA.
 	 * 
@@ -68,7 +68,7 @@ public interface Validator extends Serializable {
 	 *            Name of the parent element.
 	 * @model 
 	 */
-	public Set<String> getValidItems(String element);
+	public Set<QualifiedName> getValidItems(QualifiedName element);
 
 	/**
 	 * Returns true if the given sequence is valid for the given element.
@@ -83,7 +83,7 @@ public interface Validator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, List<String> nodes,
+	public boolean isValidSequence(QualifiedName element, List<QualifiedName> nodes,
 			boolean partial);
 
 	/**
@@ -105,7 +105,7 @@ public interface Validator extends Serializable {
 	 *            If true, an valid but incomplete sequence is acceptable.
 	 * @model
 	 */
-	public boolean isValidSequence(String element, List<String> seq1,
-			List<String> seq2, List<String> seq3, boolean partial);
+	public boolean isValidSequence(QualifiedName element, List<QualifiedName> seq1,
+			List<QualifiedName> seq2, List<QualifiedName> seq3, boolean partial);
 
 }

@@ -18,12 +18,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
@@ -43,7 +45,8 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	public void testAttributeDefinition() throws Exception {
-		final AttributeDefinition.Type adType = validator.getAttributeDefinitions("section").get(0).getType();
+		QualifiedName sectionName = new QualifiedName(null, "section");
+		final AttributeDefinition.Type adType = validator.getAttributeDefinitions(sectionName).get(0).getType();
 
 		// Test serialization while we're at it
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -54,7 +57,7 @@ public class DTDValidatorTest extends TestCase {
 		final ObjectInputStream ois = new ObjectInputStream(bais);
 		validator = (Validator) ois.readObject();
 
-		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions("section").get(0).getType();
+		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions(sectionName).get(0).getType();
 
 		assertSame(adType, adType2);
 
@@ -112,12 +115,12 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	private static void assertValidItemsAt(final Document doc, final int offset, final String... expectedItems) {
-		final Set<String> expected = new HashSet<String>(expectedItems.length);
+		final Set<QualifiedName> expected = new HashSet<QualifiedName>(expectedItems.length);
 		for (final String expectedItem : expectedItems)
-			expected.add(expectedItem);
+			expected.add(new QualifiedName(null, expectedItem));
 
-		final String elementName = doc.getElementAt(offset).getName();
-		final Set<String> validItems = doc.getValidator().getValidItems(elementName);
+		final QualifiedName elementName = doc.getElementAt(offset).getQualifiedName();
+		final Set<QualifiedName> validItems = doc.getValidator().getValidItems(elementName);
 		assertEquals(expected, validItems);
 	}
 
@@ -175,32 +178,30 @@ public class DTDValidatorTest extends TestCase {
 
 	private void assertValidSequence(final boolean expected, final String element, final boolean validateFully, final boolean validatePartially,
 			final String... sequence) {
+		final QualifiedName elementName = new QualifiedName(null, element);
 		for (int i = 0; i < sequence.length; i++) {
-			final List<String> prefix = createPrefix(i, sequence);
-
-			final List<String> toInsert = new ArrayList<String>(1);
-			toInsert.add(sequence[i]);
-
-			final List<String> suffix = createSuffix(i, sequence);
+			final List<QualifiedName> prefix = createPrefix(i, sequence);
+			final List<QualifiedName> toInsert = Collections.singletonList(new QualifiedName(null, sequence[i]));
+			final List<QualifiedName> suffix = createSuffix(i, sequence);
 
 			if (validateFully)
-				assertEquals(expected, validator.isValidSequence(element, prefix, toInsert, suffix, false));
+				assertEquals(expected, validator.isValidSequence(elementName, prefix, toInsert, suffix, false));
 			if (validatePartially)
-				assertEquals(expected, validator.isValidSequence(element, prefix, toInsert, suffix, true));
+				assertEquals(expected, validator.isValidSequence(elementName, prefix, toInsert, suffix, true));
 		}
 	}
 
-	private static List<String> createPrefix(final int index, final String... sequence) {
-		final List<String> prefix = new ArrayList<String>();
+	private static List<QualifiedName> createPrefix(final int index, final String... sequence) {
+		final List<QualifiedName> prefix = new ArrayList<QualifiedName>();
 		for (int i = 0; i < index; i++)
-			prefix.add(sequence[i]);
+			prefix.add(new QualifiedName(null, sequence[i]));
 		return prefix;
 	}
 
-	private static List<String> createSuffix(final int index, final String... sequence) {
-		final List<String> suffix = new ArrayList<String>();
+	private static List<QualifiedName> createSuffix(final int index, final String... sequence) {
+		final List<QualifiedName> suffix = new ArrayList<QualifiedName>();
 		for (int i = index + 1; i < sequence.length; i++)
-			suffix.add(sequence[i]);
+			suffix.add(new QualifiedName(null, sequence[i]));
 		return suffix;
 	}
 }

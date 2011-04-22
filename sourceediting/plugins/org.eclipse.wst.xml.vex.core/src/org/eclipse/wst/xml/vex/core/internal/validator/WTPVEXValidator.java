@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
@@ -34,6 +35,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.ElementContentComparator;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.ElementPathRecordingResult;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.StringElementContentComparator;
+import org.eclipse.wst.xml.vex.core.internal.dom.Attribute;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 
@@ -74,7 +76,9 @@ public class WTPVEXValidator implements Validator {
 		return new WTPVEXValidator(url);
 	}
 
-	public AttributeDefinition getAttributeDefinition(final String elementName, final String attributeName) {
+	public AttributeDefinition getAttributeDefinition(final Attribute attribute) {
+		final QualifiedName elementName = attribute.getParent().getQualifiedName();
+		final String attributeName = attribute.getLocalName();
 		final CMElementDeclaration cmElement = getElementDeclaration(elementName);
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
@@ -99,18 +103,17 @@ public class WTPVEXValidator implements Validator {
 		return new AttributeDefinition(attributeName, Type.CDATA, /* default value */"", /* values */new String[0], /* required */false, /* fixed */true);
 	}
 
-	public List<AttributeDefinition> getAttributeDefinitions(final String element) {
-		final CMElementDeclaration cmElement = getElementDeclaration(element);
+	public List<AttributeDefinition> getAttributeDefinitions(final QualifiedName elementName) {
+		final CMElementDeclaration cmelement = getElementDeclaration(elementName);
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
 		 * But we are benevolent here since we do not want to loose data at this
 		 * point.
 		 */
-		if (cmElement == null)
+		if (cmelement == null)
 			return Collections.emptyList();
-		
-		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmElement.getAttributes().getLength());
-		final Iterator<?> iter = cmElement.getAttributes().iterator();
+		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmelement.getAttributes().getLength());
+		final Iterator<?> iter = cmelement.getAttributes().iterator();
 		while (iter.hasNext()) {
 			final CMAttributeDeclaration attribute = (CMAttributeDeclaration) iter.next();
 			final AttributeDefinition vexAttr = createAttributeDefinition(attribute);
@@ -120,8 +123,8 @@ public class WTPVEXValidator implements Validator {
 		return attributeList;
 	}
 
-	private CMElementDeclaration getElementDeclaration(final String element) {
-		return (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
+	private CMElementDeclaration getElementDeclaration(final QualifiedName elementName) {
+		return (CMElementDeclaration) getSchema().getElements().getNamedItem(elementName.getLocalName());
 	}
 
 	private AttributeDefinition createAttributeDefinition(final CMAttributeDeclaration attribute) {
@@ -143,32 +146,36 @@ public class WTPVEXValidator implements Validator {
 		return vexAttr;
 	}
 
-	public Set<String> getValidItems(final String element) {
-		final CMElementDeclaration elementDec = (CMElementDeclaration) getSchema().getElements().getNamedItem(element);
+	public Set<QualifiedName> getValidItems(final QualifiedName element) {
+		final CMElementDeclaration elementDeclaration = getElementDeclaration(element);
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
 		 * But we are benevolent here since we do not want to loose data at this
 		 * point.
 		 */
-		if (elementDec == null)
+		if (elementDeclaration == null)
 			return Collections.emptySet();
-		final Set<String> results = new HashSet<String>();
-		for (final CMNode node : getAvailableContent(element, elementDec))
+		final Set<QualifiedName> result = new HashSet<QualifiedName>();
+		for (final CMNode node : getAvailableContent(elementDeclaration))
 			if (node instanceof CMElementDeclaration) {
-				final CMElementDeclaration elem = (CMElementDeclaration) node;
-				results.add(elem.getElementName());
+				final CMElementDeclaration childDeclaration = (CMElementDeclaration) node;
+				result.add(createQualifiedElementName(childDeclaration));
 			}
-		return results;
+		return result;
+	}
+
+	private static QualifiedName createQualifiedElementName(final CMElementDeclaration elementDeclaration) {
+		return new QualifiedName(null, elementDeclaration.getElementName());
 	}
 
 	/**
 	 * Returns a list of all CMNode 'meta data' that may be potentially added to
 	 * the element.
 	 */
-	protected List<CMNode> getAvailableContent(final String element, final CMElementDeclaration ed) {
+	private List<CMNode> getAvailableContent(final CMElementDeclaration elementDeclaration) {
 		final List<CMNode> list = new ArrayList<CMNode>();
-		if (ed.getContentType() == CMElementDeclaration.ELEMENT || ed.getContentType() == CMElementDeclaration.MIXED) {
-			final CMContent content = ed.getContent();
+		if (elementDeclaration.getContentType() == CMElementDeclaration.ELEMENT || elementDeclaration.getContentType() == CMElementDeclaration.MIXED) {
+			final CMContent content = elementDeclaration.getContent();
 			if (content instanceof CMElementDeclaration)
 				list.add(content);
 			else if (content instanceof CMGroup) {
@@ -193,25 +200,28 @@ public class WTPVEXValidator implements Validator {
 		return list;
 	}
 
-	public Set<String> getValidRootElements() {
-		final Set<String> results = new HashSet<String>();
+	public Set<QualifiedName> getValidRootElements() {
+		final HashSet<QualifiedName> result = new HashSet<QualifiedName>();
 		final Iterator<?> iter = getSchema().getElements().iterator();
 		while (iter.hasNext()) {
 			final CMElementDeclaration element = (CMElementDeclaration) iter.next();
-			results.add(element.getElementName());
+			result.add(createQualifiedElementName(element));
 		}
 
-		return results;
+		return result;
 	}
 
-	public boolean isValidSequence(final String element, final List<String> nodes, final boolean partial) {
-		final CMNode parent = getSchema().getElements().getNamedItem(element);
+	public boolean isValidSequence(final QualifiedName element, final List<QualifiedName> nodes, final boolean partial) {
+		final CMNode parent = getSchema().getElements().getNamedItem(element.getLocalName());
 		if (!(parent instanceof CMElementDeclaration))
 			return true;
 
 		final CMElementDeclaration elementDeclaration = (CMElementDeclaration) parent;
 		final ElementPathRecordingResult validationResult = new ElementPathRecordingResult();
-		validator.validate(elementDeclaration, nodes, ELEMENT_CONTENT_COMPARATOR, validationResult);
+		final List<String> nodeNames = new ArrayList<String>();
+		for (QualifiedName node : nodes)
+			nodeNames.add(node.getLocalName()); // TODO learn how the WTP content model handles namespaces
+		validator.validate(elementDeclaration, nodeNames, ELEMENT_CONTENT_COMPARATOR, validationResult);
 
 		final int elementCount = getElementCount(nodes);
 		if (partial && elementCount > 0)
@@ -220,16 +230,16 @@ public class WTPVEXValidator implements Validator {
 		return validationResult.isValid;
 	}
 
-	private static int getElementCount(final List<String> nodes) {
+	private static int getElementCount(final List<QualifiedName> nodes) {
 		int count = 0;
-		for (final String node : nodes)
-			if (ELEMENT_CONTENT_COMPARATOR.isElement(node))
+		for (final QualifiedName node : nodes)
+			if (ELEMENT_CONTENT_COMPARATOR.isElement(node.getLocalName()))
 				count++;
 		return count;
 	}
 
-	public boolean isValidSequence(final String element, final List<String> seq1, final List<String> seq2, final List<String> seq3, final boolean partial) {
-		final List<String> joinedSequence = new ArrayList<String>();
+	public boolean isValidSequence(final QualifiedName element, final List<QualifiedName> seq1, final List<QualifiedName> seq2, final List<QualifiedName> seq3, final boolean partial) {
+		final List<QualifiedName> joinedSequence = new ArrayList<QualifiedName>();
 		if (seq1 != null)
 			joinedSequence.addAll(seq1);
 		if (seq2 != null)

@@ -12,6 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import java.util.EventObject;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.undo.IUndoableEdit;
 
 /**
@@ -26,7 +27,7 @@ public class DocumentEvent extends EventObject {
 	private Element parentElement;
 	private int offset;
 	private int length;
-	private String attributeName;
+	private QualifiedName attributeName;
 	private String oldAttributeValue;
 	private String newAttributeValue;
 	private IUndoableEdit undoableEdit;
@@ -73,7 +74,7 @@ public class DocumentEvent extends EventObject {
 	 *            IUndoableEdit that can be used to undo the change.
 	 */
 	public DocumentEvent(Document document, Element parentElement,
-			String attributeName, String oldAttributeValue,
+			QualifiedName attributeName, String oldAttributeValue,
 			String newAttributeValue, IUndoableEdit undoableEdit) {
 
 		super(document);
@@ -131,7 +132,7 @@ public class DocumentEvent extends EventObject {
 	 * @return the name of the attribute that was changed.
 	 * @model
 	 */
-	public String getAttributeName() {
+	public QualifiedName getAttributeName() {
 		return attributeName;
 	}
 

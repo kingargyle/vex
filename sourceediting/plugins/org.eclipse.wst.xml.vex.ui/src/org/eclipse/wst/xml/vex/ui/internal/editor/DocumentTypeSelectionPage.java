@@ -14,6 +14,7 @@ package org.eclipse.wst.xml.vex.ui.internal.editor;
 import java.util.Arrays;
 import java.util.Set;
 
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -44,8 +45,7 @@ public class DocumentTypeSelectionPage extends WizardPage {
 		super(Messages.getString("DocumentTypeSelectionPage.pageName")); //$NON-NLS-1$
 		this.setPageComplete(false);
 
-		IDialogSettings rootSettings = VexPlugin.getInstance()
-				.getDialogSettings();
+		IDialogSettings rootSettings = VexPlugin.getInstance().getDialogSettings();
 		this.settings = rootSettings.getSection("newDocument"); //$NON-NLS-1$
 		if (this.settings == null) {
 			this.settings = rootSettings.addNewSection("newDocument"); //$NON-NLS-1$
@@ -74,8 +74,7 @@ public class DocumentTypeSelectionPage extends WizardPage {
 		this.typeCombo.addSelectionListener(typeComboSelectionListener);
 
 		label = new Label(pane, SWT.NONE);
-		label.setText(Messages
-				.getString("DocumentTypeSelectionPage.rootElement")); //$NON-NLS-1$
+		label.setText(Messages.getString("DocumentTypeSelectionPage.rootElement")); //$NON-NLS-1$
 		this.setControl(pane);
 
 		this.elementCombo = new Combo(pane, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -101,12 +100,11 @@ public class DocumentTypeSelectionPage extends WizardPage {
 			this.typeCombo.select(initSelection);
 			// calling select() does not fire the selection listener,
 			// so we update it manually
-			this.updateElementCombo();
+			this.updateRootElementCombo();
 		}
 
 		this.setTitle(Messages.getString("DocumentTypeSelectionPage.title")); //$NON-NLS-1$
-		this.setDescription(Messages
-				.getString("DocumentTypeSelectionPage.desc")); //$NON-NLS-1$
+		this.setDescription(Messages.getString("DocumentTypeSelectionPage.desc")); //$NON-NLS-1$
 	}
 
 	/**
@@ -152,37 +150,22 @@ public class DocumentTypeSelectionPage extends WizardPage {
 	 * Update the elementCombo to reflect elements in the currently selected
 	 * type.
 	 */
-	private void updateElementCombo() {
-		int index = this.typeCombo.getSelectionIndex();
-		DocumentType dt = this.doctypes[index];
+	private void updateRootElementCombo() {
+		final DocumentType documentType = getDocumentType();
+		final String[] rootElements = getRootElements(documentType);
+		Arrays.sort(rootElements);
+		
 		this.elementCombo.removeAll();
+		this.elementCombo.setItems(rootElements);
 
-		String[] roots = getDocumentType().getRootElements();
-		String selectedRoot = null;
-
-		if (roots.length == 0) {
-			Validator validator = dt.getValidator();
-			if (validator != null) {
-				Set<String> set = validator.getValidRootElements();
-				roots = set.toArray(new String[set.size()]);
-			}
-		} else {
-			selectedRoot = roots[0];
-		}
-
-		Arrays.sort(roots);
-		this.elementCombo.setItems(roots);
-
-		if (selectedRoot == null) {
-			// Restore the last used root element
-			String key = SETTINGS_ROOT_ELEMENT_PREFIX + dt.getPublicId();
-			selectedRoot = this.settings.get(key);
-		}
+		// Restore the last used root element
+		final String key = SETTINGS_ROOT_ELEMENT_PREFIX + documentType.getPublicId();
+		final String selectedRoot = this.settings.get(key);
 
 		this.setPageComplete(false);
 		if (selectedRoot != null) {
-			for (int i = 0; i < roots.length; i++) {
-				if (roots[i].equals(selectedRoot)) {
+			for (int i = 0; i < rootElements.length; i++) {
+				if (rootElements[i].equals(selectedRoot)) {
 					this.elementCombo.select(i);
 					this.setPageComplete(true);
 					break;
@@ -191,13 +174,33 @@ public class DocumentTypeSelectionPage extends WizardPage {
 		}
 	}
 
+	private static String[] getRootElements(final DocumentType documentType) {
+		final String[] selectedRootElements = documentType.getRootElements();
+		if (selectedRootElements != null)
+			return selectedRootElements;
+		return getPossibleRootElements(documentType);
+	}
+	
+	private static String[] getPossibleRootElements(final DocumentType documentType) {
+		final Validator validator = documentType.getValidator();
+		if (validator == null)
+			return new String[0];
+		
+		final Set<QualifiedName> validRootElements = validator.getValidRootElements();
+		final String[] result = new String[validRootElements.size()];
+		int i = 0;
+		for (QualifiedName validRootElementName : validRootElements)
+			result[i++] = validRootElementName.getLocalName();
+		return result;
+	}
+
 	/**
 	 * Sets the root element combo box when the document type combo box is
 	 * selected.
 	 */
 	private SelectionListener typeComboSelectionListener = new SelectionListener() {
 		public void widgetSelected(SelectionEvent e) {
-			updateElementCombo();
+			updateRootElementCombo();
 		}
 
 		public void widgetDefaultSelected(SelectionEvent e) {
