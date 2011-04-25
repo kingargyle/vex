@@ -157,4 +157,19 @@ public class NamespaceTest {
 		elementWithDefaultNamespace.declareDefaultNamespace("http://namespace/uri");
 		assertEquals("element", elementWithDefaultNamespace.getPrefixedName());
 	}
+	
+	@Test
+	public void attributePrefixedName() throws Exception {
+		final Element element = new Element(new QualifiedName("http://namespace/uri/1", "element"));
+		element.declareDefaultNamespace("http://namespace/uri/default");
+		element.declareNamespace("ns1", "http://namespace/uri/1");
+		element.declareNamespace("ns2", "http://namespace/uri/2");
+		element.setAttribute("attribute1", "value1");
+		element.setAttribute(new QualifiedName("http://namespace/uri/1", "attribute2"), "value2");
+		element.setAttribute(new QualifiedName("http://namespace/uri/2", "attribute3"), "value3");
+		
+		assertEquals("attribute1", element.getAttribute("attribute1").getPrefixedName());
+		assertEquals("attribute2", element.getAttribute(new QualifiedName("http://namespace/uri/1", "attribute2")).getPrefixedName());
+		assertEquals("ns2:attribute3", element.getAttribute(new QualifiedName("http://namespace/uri/2", "attribute3")).getPrefixedName());
+	}
 }
