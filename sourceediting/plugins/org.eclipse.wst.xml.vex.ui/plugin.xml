@@ -44,6 +44,9 @@
             class="org.eclipse.wst.xml.vex.ui.internal.wizards.NewDocumentWizard"
             id="org.eclipse.wst.xml.vex.ui.NewDocumentWizard">
          <description>%NewDocumentWizard.desc</description>
+         <keywordReference
+               id="org.eclipse.wst.xml.vex.ui.KeywordVex">
+         </keywordReference>
       </wizard>
    </extension>
    <extension
@@ -482,6 +485,9 @@
             project="true"
             id="org.eclipse.wst.xml.vex.ui.config.NewPluginProjectWizard">
          <description>%NewPluginProjectWizard.desc</description>
+         <keywordReference
+               id="org.eclipse.wst.xml.vex.ui.KeywordVex">
+         </keywordReference>
       </wizard>
    </extension>
    <extension
@@ -837,6 +843,13 @@
                visible="true">
          </separator>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="org.eclipse.wst.xml.vex.ui.KeywordVex"
+            label="%Keyword.Vex">
+      </keyword>
    </extension>
 
 </plugin>
