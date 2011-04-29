@@ -198,6 +198,7 @@ public class DocumentWriter {
 				pw.print(element.getPrefixedName());
 
 				final TextWrapper wrapper = new TextWrapper();
+				wrapper.addNoSplit(getNamespaceDeclarationsString(element));
 				wrapper.addNoSplit(getAttributeString(element));
 				final int outdent = indent.length() + 1 + element.getPrefixedName().length();
 				final String[] lines = wrapper.wrap(wrapColumn - outdent);
@@ -243,6 +244,7 @@ public class DocumentWriter {
 
 			pw.print("<");
 			pw.print(element.getPrefixedName());
+			pw.print(getNamespaceDeclarationsString(element));
 			pw.print(getAttributeString(element));
 			pw.print(">");
 
@@ -253,6 +255,21 @@ public class DocumentWriter {
 			pw.print(element.getPrefixedName());
 			pw.print(">");
 		}
+	}
+	
+	private String getNamespaceDeclarationsString(final Element element) {
+		final StringBuilder result = new StringBuilder();
+		final String declaredNamespaceURI = element.getDeclaredDefaultNamespaceURI();
+		if (declaredNamespaceURI != null)
+			result.append(" xmlns=\"").append(declaredNamespaceURI).append("\"");
+		for (final String prefix : element.getDeclaredNamespacePrefixes()) {
+			result.append(" xmlns:")
+			.append(prefix)
+			.append("=\"")
+			.append(element.getNamespaceURI(prefix))
+			.append("\"");
+		}
+		return result.toString();
 	}
 
 	private String attrToString(final Attribute attribute) {
@@ -282,6 +299,7 @@ public class DocumentWriter {
 				final Validator validator = element.getDocument().getValidator();
 				final StringBuffer stringBuffer = new StringBuffer();
 				stringBuffer.append("<" + element.getPrefixedName());
+				stringBuffer.append(getNamespaceDeclarationsString(element));
 				for (final Attribute attribute : attributes) {
 					if (!attrHasDefaultValue(validator, attribute))
 						stringBuffer.append(attrToString(attribute));

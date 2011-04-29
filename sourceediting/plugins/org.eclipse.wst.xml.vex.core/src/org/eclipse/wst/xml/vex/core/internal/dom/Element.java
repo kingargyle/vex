@@ -318,10 +318,16 @@ public class Element extends Node implements Cloneable {
 	public String getDefaultNamespaceURI() {
 		return getNamespaceURI(null);
 	}
+	
+	public String getDeclaredDefaultNamespaceURI() {
+		return namespaceDeclarations.get(null);
+	}
 
 	public String getNamespacePrefix(final String namespaceURI) {
+		if (namespaceURI == null)
+			return null;
 		for (Entry<String, String> entry: namespaceDeclarations.entrySet())
-			if (namespaceURI.equals(entry.getValue()))
+			if (entry.getValue().equals(namespaceURI))
 				return entry.getKey();
 		if (parent != null) {
 			final String parentPrefix = parent.getNamespacePrefix(namespaceURI);
@@ -329,6 +335,16 @@ public class Element extends Node implements Cloneable {
 				return parentPrefix;
 		}
 		return null;
+	}
+	
+	public Collection<String> getDeclaredNamespacePrefixes() {
+		final ArrayList<String> result = new ArrayList<String>();
+		for (final String prefix : namespaceDeclarations.keySet()) {
+			if (prefix != null)
+				result.add(prefix);
+		}
+		Collections.sort(result);
+		return result;
 	}
 	
 	public void declareNamespace(final String namespacePrefix, final String namespaceURI) {

@@ -12,6 +12,7 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -121,6 +122,45 @@ public class NamespaceTest {
 		assertNull(element.getDefaultNamespaceURI());
 		element.declareDefaultNamespace("http://namespace/uri");
 		assertEquals("http://namespace/uri", element.getDefaultNamespaceURI());
+	}
+	
+	@Test
+	public void getDeclaredDefaultNamespaceURI() throws Exception {
+		final Element element = new Element("element");
+		final Element child = new Element("child");
+		element.addChild(child);
+		
+		assertNull(element.getDeclaredDefaultNamespaceURI());
+		element.declareDefaultNamespace("http://namespace/default/element");
+		assertEquals("http://namespace/default/element", element.getDeclaredDefaultNamespaceURI());
+		
+		assertNull(child.getDeclaredDefaultNamespaceURI());
+		child.declareDefaultNamespace("http://namespace/default/child");
+		assertEquals("http://namespace/default/child", child.getDeclaredDefaultNamespaceURI());
+	}
+	
+	@Test
+	public void getDeclaredNamespacePrefixes() throws Exception {
+		final Element element = new Element("element");
+		final Element child = new Element("child");
+		element.addChild(child);
+		
+		assertTrue(element.getDeclaredNamespacePrefixes().isEmpty());
+		element.declareDefaultNamespace("http://namespace/default/element");
+		assertTrue(element.getDeclaredNamespacePrefixes().isEmpty());
+		
+		element.declareNamespace("ns1", "http://namespace/uri/1");
+		assertEquals(1, element.getDeclaredNamespacePrefixes().size());
+		assertTrue(element.getDeclaredNamespacePrefixes().contains("ns1"));
+		element.declareNamespace("ns2", "http://namespace/uri/2");
+		assertEquals(2, element.getDeclaredNamespacePrefixes().size());
+		assertTrue(element.getDeclaredNamespacePrefixes().contains("ns1"));
+		assertTrue(element.getDeclaredNamespacePrefixes().contains("ns2"));
+		
+		assertTrue(child.getDeclaredNamespacePrefixes().isEmpty());
+		child.declareNamespace("ns3", "http://namespace/uri/3");
+		assertEquals(1, child.getDeclaredNamespacePrefixes().size());
+		assertTrue(child.getDeclaredNamespacePrefixes().contains("ns3"));
 	}
 
 	@Test
@@ -259,5 +299,21 @@ public class NamespaceTest {
 		final Element secondNestedElement = rootElement.getChildElements().get(1);
 		assertTrue(secondNestedElement.getAttributeNames().contains(new QualifiedName("http://namespace/uri/1", "attr5")));
 		assertTrue(secondNestedElement.getAttributeNames().contains(new QualifiedName("http://namespace/default", "attr6")));
+	}
+	
+	@Test
+	public void readWriteCycle() throws Exception {
+		final String inputContent = "<?xml version='1.0'?> <ns1:a xmlns=\"http://namespace/default\" xmlns:ns1=\"http://namespace/uri/1\" attr1=\"value1\"> "
+		+ "<ns2:b xmlns:ns2=\"http://namespace/uri/2\" ns1:attr2=\"value2\" attr3=\"value3\"/> " 
+		+ "<c attr4=\"value4\" ns1:attr5=\"value5\"/>" 
+		+ "</ns1:a> ";
+		final Document document = readDocumentFromString(inputContent);
+		
+		final DocumentWriter documentWriter = new DocumentWriter();
+		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		documentWriter.write(document, buffer);
+		final String outputContent = new String(buffer.toByteArray()).replaceAll("\\s+", " ");
+		
+		assertEquals(inputContent, outputContent);
 	}
 }
