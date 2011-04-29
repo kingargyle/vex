@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -60,8 +61,7 @@ public class DocumentReader {
 	 * @param url
 	 *            URL from which to load the document.
 	 */
-	public Document read(URL url) throws IOException,
-			ParserConfigurationException, SAXException {
+	public Document read(final URL url) throws IOException, ParserConfigurationException, SAXException {
 
 		return read(new InputSource(url.toString()));
 	}
@@ -73,10 +73,9 @@ public class DocumentReader {
 	 * @param s
 	 *            String containing the document to be read.
 	 */
-	public Document read(String s) throws IOException,
-			ParserConfigurationException, SAXException {
+	public Document read(final String s) throws IOException, ParserConfigurationException, SAXException {
 
-		Reader reader = new CharArrayReader(s.toCharArray());
+		final Reader reader = new CharArrayReader(s.toCharArray());
 		return this.read(new InputSource(reader));
 	}
 
@@ -86,45 +85,41 @@ public class DocumentReader {
 	 * @param is
 	 *            SAX InputSource from which to load the document.
 	 */
-	public Document read(InputSource is) throws IOException,
-			ParserConfigurationException, SAXException {
+	public Document read(final InputSource is) throws IOException, ParserConfigurationException, SAXException {
 
-		SAXParserFactory factory = SAXParserFactory.newInstance();
+		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false); // TODO: experimental--SWT implementation
-		XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+		factory.setNamespaceAware(true);
+		final XMLReader xmlReader = factory.newSAXParser().getXMLReader();
 		// xmlReader.setFeature("http://xml.org/sax/features/validation",
 		// false);
 		final org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder builder = new org.eclipse.wst.xml.vex.core.internal.dom.DocumentBuilder(
-				this.getWhitespacePolicyFactory());
+				getWhitespacePolicyFactory());
 
 		ContentHandler contentHandler = builder;
 		LexicalHandler lexicalHandler = builder;
 
-		if (this.isDebugging()) {
-			Object proxy = Proxy.newProxyInstance(this.getClass()
-					.getClassLoader(), new Class[] { ContentHandler.class,
-					LexicalHandler.class }, new InvocationHandler() {
-				public Object invoke(Object proxy, Method method, Object[] args)
-						throws Throwable {
-					try {
-						return method.invoke(builder, args);
-					} catch (InvocationTargetException ex) {
-						ex.getCause().printStackTrace();
-						throw ex.getCause();
-					}
-				}
-			});
+		if (isDebugging()) {
+			final Object proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { ContentHandler.class, LexicalHandler.class },
+					new InvocationHandler() {
+						public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+							try {
+								return method.invoke(builder, args);
+							} catch (final InvocationTargetException ex) {
+								ex.getCause().printStackTrace();
+								throw ex.getCause();
+							}
+						}
+					});
 
 			contentHandler = (ContentHandler) proxy;
 			lexicalHandler = (LexicalHandler) proxy;
 		}
 
 		xmlReader.setContentHandler(contentHandler);
-		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler",
-				lexicalHandler);
-		if (this.getEntityResolver() != null) {
-			xmlReader.setEntityResolver(this.getEntityResolver());
-		}
+		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", lexicalHandler);
+		if (getEntityResolver() != null)
+			xmlReader.setEntityResolver(getEntityResolver());
 		xmlReader.parse(is);
 		final Document result = builder.getDocument();
 		if (result != null)
@@ -138,7 +133,7 @@ public class DocumentReader {
 	 * @param debugging
 	 *            true if the component should log debugging info to stdout.
 	 */
-	public void setDebugging(boolean debugging) {
+	public void setDebugging(final boolean debugging) {
 		this.debugging = debugging;
 	}
 
@@ -148,7 +143,7 @@ public class DocumentReader {
 	 * @param entityResolver
 	 *            The entityResolver to set.
 	 */
-	public void setEntityResolver(EntityResolver entityResolver) {
+	public void setEntityResolver(final EntityResolver entityResolver) {
 		this.entityResolver = entityResolver;
 	}
 
@@ -160,8 +155,7 @@ public class DocumentReader {
 	 * @param whitespacePolicyFactory
 	 *            The whitespacePolicyFactory to set.
 	 */
-	public void setWhitespacePolicyFactory(
-			IWhitespacePolicyFactory whitespacePolicyFactory) {
+	public void setWhitespacePolicyFactory(final IWhitespacePolicyFactory whitespacePolicyFactory) {
 		this.whitespacePolicyFactory = whitespacePolicyFactory;
 	}
 

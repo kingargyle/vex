@@ -16,6 +16,18 @@ package org.eclipse.wst.xml.vex.core.internal.core;
  */
 public abstract class DisplayDevice {
 
+	public static final DisplayDevice NULL = new DisplayDevice() {
+		@Override
+		public int getHorizontalPPI() {
+			return 0;
+		}
+
+		@Override
+		public int getVerticalPPI() {
+			return 0;
+		}
+	};
+	
 	/**
 	 * Class constructor.
 	 */
@@ -52,5 +64,5 @@ public abstract class DisplayDevice {
 
 	// ======================================================= PRIVATE
 
-	private static DisplayDevice current;
+	private static DisplayDevice current = NULL;
 }

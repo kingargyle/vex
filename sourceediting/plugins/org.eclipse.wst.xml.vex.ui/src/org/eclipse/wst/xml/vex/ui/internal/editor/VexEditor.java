@@ -28,7 +28,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -67,13 +66,9 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetPage;
-import org.eclipse.wst.sse.core.StructuredModelManager;
-import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.vex.core.internal.core.ListenerList;
-import org.eclipse.wst.xml.vex.core.internal.dom.DOMDocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
+import org.eclipse.wst.xml.vex.core.internal.dom.DocumentReader;
 import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriter;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.IWhitespacePolicy;
@@ -297,13 +292,13 @@ public class VexEditor extends EditorPart {
 				return;
 			}
 
-			final DOMDocumentReader reader = new DOMDocumentReader();
+			final DocumentReader reader = new DocumentReader();
 			reader.setDebugging(debugging);
 			reader.setEntityResolver(entityResolver);
 			reader.setWhitespacePolicyFactory(wsFactory);
 			doctype = null; // must be null to set it to a new value via
 							// entityResolveras by following read():
-			doc = reader.read(getDOMDocument(file));
+			doc = reader.read(file.getLocationURI().toURL());
 
 			if (debugging) {
 				final long end = System.currentTimeMillis();
@@ -388,19 +383,6 @@ public class VexEditor extends EditorPart {
 
 			showLabel(msg);
 		}
-	}
-
-	private IDOMDocument getDOMDocument(final IFile file) throws IOException, CoreException {
-		final IStructuredModel model = StructuredModelManager.getModelManager().getModelForRead(file);
-		IDOMDocument modelDocument = null;
-		try {
-			if (model instanceof IDOMModel)
-				modelDocument = ((IDOMModel) model).getDocument();
-		} finally {
-			if (model != null)
-				model.releaseFromRead();
-		}
-		return modelDocument;
 	}
 
 	@Override
