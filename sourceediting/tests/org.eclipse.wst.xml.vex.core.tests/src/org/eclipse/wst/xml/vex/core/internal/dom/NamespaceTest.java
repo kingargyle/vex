@@ -223,6 +223,18 @@ public class NamespaceTest {
 	}
 
 	@Test
+	public void cloneElementsNamespaceDeclarations() throws Exception {
+		final Element element = new Element("element");
+		element.declareDefaultNamespace("http://namespace/uri/default");
+		element.declareNamespace("ns1", "http://namespace/uri/1");
+		element.declareNamespace("ns2", "http://namespace/uri/2");
+		
+		final Element clone = (Element) element.clone();
+		assertEquals("http://namespace/uri/default", clone.getDeclaredDefaultNamespaceURI());
+		
+	}
+	
+	@Test
 	public void readNamespaceDeclarations() throws Exception {
 		final Document document = readDocumentFromString("<ns1:a xmlns=\"http://namespace/default\" xmlns:ns1=\"http://namespace/uri/1\"/>");
 		final Element rootElement = document.getRootElement();

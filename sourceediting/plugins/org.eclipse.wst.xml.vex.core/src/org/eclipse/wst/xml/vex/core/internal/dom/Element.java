@@ -60,6 +60,12 @@ public class Element extends Node implements Cloneable {
 			//add the attributes to the element instance to be cloned
 			for (Map.Entry<QualifiedName, Attribute> attr : this.attributes.entrySet())
 				element.setAttribute(attr.getKey(), attr.getValue().getValue());
+			for (Map.Entry<String, String> namespaceDeclaration : this.namespaceDeclarations.entrySet()) {
+				if (namespaceDeclaration.getKey() == null)
+					element.declareDefaultNamespace(namespaceDeclaration.getValue());
+				else
+					element.declareNamespace(namespaceDeclaration.getKey(), namespaceDeclaration.getValue());
+			}
 			return element;
 		} catch (DocumentValidationException ex) {
 			ex.printStackTrace();
