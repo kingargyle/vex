@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
+import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -61,6 +65,22 @@ public class ProjectPlanTest {
 		assertEquals("div", introductionDivElement.getLocalName());
 		assertEquals("html:div", introductionDivElement.getPrefixedName());
 		assertEquals(new QualifiedName("http://www.w3.org/1999/xhtml", "div"), introductionDivElement.getQualifiedName());
+	}
+	
+	@Test
+	public void getCMDocumentsByLogicalName() throws Exception {
+		final URIResolver uriResolver = URIResolverPlugin.createResolver();
+		final ContentModelManager modelManager = ContentModelManager.getInstance();
+		
+		final String schemaLocation = uriResolver.resolve(null, "http://www.w3.org/2001/XMLSchema", null);
+		assertNotNull(schemaLocation);
+		final CMDocument schema = modelManager.createCMDocument(schemaLocation, null);
+		assertNotNull(schema);
+		
+		final String dtdLocation = uriResolver.resolve(null, "-//W3C//DTD XHTML 1.1//EN", null);
+		assertNotNull(dtdLocation);
+		final CMDocument dtd = modelManager.createCMDocument(dtdLocation, null);
+		assertNotNull(dtd);
 	}
 
 }
