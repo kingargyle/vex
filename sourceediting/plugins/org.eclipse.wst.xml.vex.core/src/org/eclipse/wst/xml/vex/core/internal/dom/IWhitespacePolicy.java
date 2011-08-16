@@ -18,6 +18,19 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
 public interface IWhitespacePolicy {
 
 	/**
+	 * A NULL object of this type. No blocks and no pre elements.
+	 */
+	IWhitespacePolicy NULL = new IWhitespacePolicy() {
+		public boolean isBlock(Element element) {
+			return false;
+		}
+
+		public boolean isPre(Element element) {
+			return false;
+		}
+	};
+
+	/**
 	 * Returns true if the given element is normally block-formatted.
 	 * 
 	 * @param element

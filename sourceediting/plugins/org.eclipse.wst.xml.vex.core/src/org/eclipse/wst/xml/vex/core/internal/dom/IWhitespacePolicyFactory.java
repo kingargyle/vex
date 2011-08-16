@@ -17,6 +17,15 @@ package org.eclipse.wst.xml.vex.core.internal.dom;
  * WhitespacePolicy we need before we begin parsing the document.
  */
 public interface IWhitespacePolicyFactory {
+	
+	/**
+	 * A factory that always returns the NULL whitespace policy.
+	 */
+	IWhitespacePolicyFactory NULL = new IWhitespacePolicyFactory() {
+		public IWhitespacePolicy getPolicy(String publicId) {
+			return IWhitespacePolicy.NULL;
+		}
+	};
 
 	/**
 	 * Return a WhitespacePolicy for documents with the given public ID.
@@ -24,5 +33,5 @@ public interface IWhitespacePolicyFactory {
 	 * @param publicId
 	 *            Public ID of the document type associated with the document.
 	 */
-	public IWhitespacePolicy getPolicy(String publicId);
+	IWhitespacePolicy getPolicy(String publicId);
 }
