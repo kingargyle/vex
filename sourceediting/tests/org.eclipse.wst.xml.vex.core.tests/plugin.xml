@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.wst.xml.core.catalogContributions">
+      <catalogContribution
+            id="testSchemas">
+         <uri
+               name="http://www.eclipse.org/vex/test/structure"
+               uri="projectFiles/structure.xsd">
+         </uri>
+         <uri
+               name="http://www.eclipse.org/vex/test/content"
+               uri="projectFiles/content.xsd">
+         </uri>
+         <public
+               publicId="-//Eclipse Foundation//DTD Vex Test//EN"
+               uri="projectFiles/test1.dtd">
+         </public>
+      </catalogContribution>
+   </extension>
+
+</plugin>

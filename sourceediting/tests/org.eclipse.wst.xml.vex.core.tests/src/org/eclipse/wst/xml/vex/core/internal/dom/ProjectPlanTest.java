@@ -72,12 +72,12 @@ public class ProjectPlanTest {
 		final URIResolver uriResolver = URIResolverPlugin.createResolver();
 		final ContentModelManager modelManager = ContentModelManager.getInstance();
 		
-		final String schemaLocation = uriResolver.resolve(null, "http://www.w3.org/2001/XMLSchema", null);
+		final String schemaLocation = uriResolver.resolve(null, "http://www.eclipse.org/vex/test/structure", null);
 		assertNotNull(schemaLocation);
 		final CMDocument schema = modelManager.createCMDocument(schemaLocation, null);
 		assertNotNull(schema);
 		
-		final String dtdLocation = uriResolver.resolve(null, "-//W3C//DTD XHTML 1.1//EN", null);
+		final String dtdLocation = uriResolver.resolve(null, "-//Eclipse Foundation//DTD Vex Test//EN", null);
 		assertNotNull(dtdLocation);
 		final CMDocument dtd = modelManager.createCMDocument(dtdLocation, null);
 		assertNotNull(dtd);

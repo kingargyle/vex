@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2011 Florian Thienel and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ 
+ Contributors:
+ 		Florian Thienel - initial creation 
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eclipse.org/vex/test/structure" xmlns="http://www.eclipse.org/vex/test/structure" elementFormDefault="qualified">
+
+	<xs:complexType name="ChapterType">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:choice>
+				<xs:element name="chapter" type="ChapterType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:any namespace="http://www.eclipse.org/vex/test/content" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="chapter" type="ChapterType"/>
+	
+</xs:schema>
