@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://www.eclipse.org/vex/test/structure" xmlns:c="http://www.eclipse.org/vex/test/content">
+	<title>Title</title>
+	<chapter>
+		<title>1.1</title>
+		<c:p>The <c:i>first</c:i> <c:b>paragraph</c:b>.</c:p>
+	</chapter>
+	<chapter>
+		<title>1.2</title>
+		<c:p>The <c:b>second</c:b> <c:i>paragraph</c:i>.</c:p>
+	</chapter>
+</chapter>

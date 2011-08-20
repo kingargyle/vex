@@ -11,21 +11,15 @@
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eclipse.org/vex/test/content" xmlns="http://www.eclipse.org/vex/test/content" elementFormDefault="qualified">
 
-	<xs:complexType name="ParagraphType">
-		<xs:complexContent>
-			<xs:restriction base="ContentType"/>
-		</xs:complexContent>
-	</xs:complexType>
-	
-	<xs:complexType name="ContentType">
-		<xs:complexContent>
-			<xs:extension base="xs:string">
+	<xs:complexType name="ContentType" mixed="true">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:choice>
 				<xs:element name="b" type="ContentType"/>
 				<xs:element name="i" type="ContentType"/>
-			</xs:extension>
-		</xs:complexContent>
+			</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
 
-	<xs:element name="p" type="ParagraphType"/>
+	<xs:element name="p" type="ContentType"/>
 	
 </xs:schema>

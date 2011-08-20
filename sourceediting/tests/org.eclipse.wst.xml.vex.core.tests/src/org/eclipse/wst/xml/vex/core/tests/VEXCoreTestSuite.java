@@ -25,7 +25,7 @@ import org.eclipse.wst.xml.vex.core.internal.dom.DocumentWriterTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.GapContentTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.NamespaceStackTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.NamespaceTest;
-import org.eclipse.wst.xml.vex.core.internal.dom.ProjectPlanTest;
+import org.eclipse.wst.xml.vex.core.internal.dom.SchemaValidationTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.SpaceNormalizerTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.TextWrapperTest;
 import org.eclipse.wst.xml.vex.core.internal.layout.ImageBoxTest;
@@ -45,7 +45,7 @@ public class VEXCoreTestSuite extends TestSuite {
 		super("Vex Core Tests");
 		addTest(new JUnit4TestAdapter(NamespaceStackTest.class));
 		addTest(new JUnit4TestAdapter(NamespaceTest.class));
-		addTest(new JUnit4TestAdapter(ProjectPlanTest.class));
+		addTest(new JUnit4TestAdapter(SchemaValidationTest.class));
 		addTestSuite(CssTest.class);
 		addTestSuite(PropertyTest.class);
 		addTestSuite(RuleTest.class);

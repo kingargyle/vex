@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,44 +28,44 @@ import org.xml.sax.SAXException;
 /**
  * @author Florian Thienel
  */
-public class ProjectPlanTest {
+public class SchemaValidationTest {
 	
 	@Test
-	public void readProjectPlan() throws Exception {
+	public void readDocumentWithTwoSchemas() throws Exception {
 		final EntityResolver entityResolver = new EntityResolver() {
 			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 				return null;
 			}
 		};
 		
-		final InputStream projectPlanStream = getClass().getResourceAsStream("projectplan.xml");
-		final InputSource projectPlanInputSource = new InputSource(projectPlanStream);
+		final InputStream documentStream = getClass().getResourceAsStream("document.xml");
+		final InputSource documentInputSource = new InputSource(documentStream);
 		
 		final DocumentReader reader = new DocumentReader();
 		reader.setDebugging(true);
 		reader.setEntityResolver(entityResolver);
 		reader.setWhitespacePolicyFactory(IWhitespacePolicyFactory.NULL);
-		final Document projectPlan = reader.read(projectPlanInputSource);
-		assertNotNull(projectPlan);
+		final Document document = reader.read(documentInputSource);
+		assertNotNull(document);
 		
-		final Element rootElement = projectPlan.getRootElement();
+		final Element rootElement = document.getRootElement();
 		assertNotNull(rootElement);
-		assertEquals("plan", rootElement.getLocalName());
-		assertEquals("plan", rootElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.eclipse.org/project/plan", "plan"), rootElement.getQualifiedName());
-		assertEquals("http://www.eclipse.org/project/plan", rootElement.getDefaultNamespaceURI());
-		assertEquals("http://www.w3.org/1999/xhtml", rootElement.getNamespaceURI("html"));
+		assertEquals("chapter", rootElement.getLocalName());
+		assertEquals("chapter", rootElement.getPrefixedName());
+		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/structure", "chapter"), rootElement.getQualifiedName());
+		assertEquals("http://www.eclipse.org/vex/test/structure", rootElement.getDefaultNamespaceURI());
+		assertEquals("http://www.eclipse.org/vex/test/content", rootElement.getNamespaceURI("c"));
 		
-		final Element introductionElement = rootElement.getChildElements().get(1);
-		assertEquals("introduction", introductionElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.eclipse.org/project/plan", "introduction"), introductionElement.getQualifiedName());
+		final Element subChapterElement = rootElement.getChildElements().get(1);
+		assertEquals("chapter", subChapterElement.getPrefixedName());
+		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/structure", "chapter"), subChapterElement.getQualifiedName());
 		
-		final Element introductionDivElement = introductionElement.getChildElements().get(0);
-		assertEquals("div", introductionDivElement.getLocalName());
-		assertEquals("html:div", introductionDivElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.w3.org/1999/xhtml", "div"), introductionDivElement.getQualifiedName());
+		final Element paragraphElement = subChapterElement.getChildElements().get(1);
+		assertEquals("p", paragraphElement.getLocalName());
+		assertEquals("c:p", paragraphElement.getPrefixedName());
+		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/content", "p"), paragraphElement.getQualifiedName());
 	}
-	
+
 	@Test
 	public void getCMDocumentsByLogicalName() throws Exception {
 		final URIResolver uriResolver = URIResolverPlugin.createResolver();
@@ -82,5 +81,5 @@ public class ProjectPlanTest {
 		final CMDocument dtd = modelManager.createCMDocument(dtdLocation, null);
 		assertNotNull(dtd);
 	}
-
+	
 }

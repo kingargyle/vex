@@ -16,7 +16,7 @@
 			<xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
 			<xs:choice>
 				<xs:element name="chapter" type="ChapterType" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:any namespace="http://www.eclipse.org/vex/test/content" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:any namespace="http://www.eclipse.org/vex/test/content" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
