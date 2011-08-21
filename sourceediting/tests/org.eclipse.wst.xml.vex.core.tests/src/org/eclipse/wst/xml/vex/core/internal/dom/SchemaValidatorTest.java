@@ -19,7 +19,10 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
+import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -28,7 +31,7 @@ import org.xml.sax.SAXException;
 /**
  * @author Florian Thienel
  */
-public class SchemaValidationTest {
+public class SchemaValidatorTest {
 	
 	@Test
 	public void readDocumentWithTwoSchemas() throws Exception {
@@ -80,6 +83,22 @@ public class SchemaValidationTest {
 		assertNotNull(dtdLocation);
 		final CMDocument dtd = modelManager.createCMDocument(dtdLocation, null);
 		assertNotNull(dtd);
+	}
+	
+	@Test
+	public void useCMDocument() throws Exception {
+		final URIResolver uriResolver = URIResolverPlugin.createResolver();
+		final ContentModelManager modelManager = ContentModelManager.getInstance();
+		
+		final String structureSchemaLocation = uriResolver.resolve(null, "http://www.eclipse.org/vex/test/structure", null);
+		final CMDocument structureSchema = modelManager.createCMDocument(structureSchemaLocation, null);
+		
+		assertEquals(1, structureSchema.getElements().getLength());
+		
+		final CMElementDeclaration chapterElement = (CMElementDeclaration) structureSchema.getElements().item(0);
+		assertEquals("chapter", chapterElement.getNodeName());
+		
+		assertEquals(2, chapterElement.getLocalElements().getLength());
 	}
 	
 }
