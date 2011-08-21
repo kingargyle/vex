@@ -42,8 +42,6 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 @SuppressWarnings("restriction")
 public class WTPVEXValidator implements Validator {
 
-	private static final long serialVersionUID = -7632029717211069257L;
-
 	private static final ElementContentComparator ELEMENT_CONTENT_COMPARATOR = new StringElementContentComparator() {
 		@Override
 		public boolean isPCData(final Object o) {
@@ -52,9 +50,9 @@ public class WTPVEXValidator implements Validator {
 	};
 
 	/** The XML schema (= content model), e.g. DTD or XSD */
-	private transient CMDocument schema;
+	private CMDocument schema;
 
-	private final transient CMValidator validator;
+	private final CMValidator validator;
 
 	private final URL url;
 

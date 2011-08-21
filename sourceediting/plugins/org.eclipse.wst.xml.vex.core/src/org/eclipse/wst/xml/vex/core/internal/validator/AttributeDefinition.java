@@ -12,7 +12,6 @@
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
 import java.io.ObjectStreamException;
-import java.io.Serializable;
 
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 
@@ -21,12 +20,8 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
  * 
  */
 @SuppressWarnings("restriction")
-public class AttributeDefinition implements Comparable<AttributeDefinition>, Serializable {
+public class AttributeDefinition implements Comparable<AttributeDefinition> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2598982623825032645L;
 	private String name;
 	private Type type;
 	private String defaultValue;
@@ -38,12 +33,7 @@ public class AttributeDefinition implements Comparable<AttributeDefinition>, Ser
 	 * Enumeration of attribute types.
 	 * 
 	 */
-	public static final class Type implements Serializable {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -8619544824795066006L;
+	public static final class Type {
 
 		private String s;
 

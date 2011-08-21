@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,16 +43,6 @@ public class DTDValidatorTest extends TestCase {
 	public void testAttributeDefinition() throws Exception {
 		QualifiedName sectionName = new QualifiedName(null, "section");
 		final AttributeDefinition.Type adType = validator.getAttributeDefinitions(sectionName).get(0).getType();
-
-		// Test serialization while we're at it
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		final ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(validator);
-
-		final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		final ObjectInputStream ois = new ObjectInputStream(bais);
-		validator = (Validator) ois.readObject();
-
 		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions(sectionName).get(0).getType();
 
 		assertSame(adType, adType2);

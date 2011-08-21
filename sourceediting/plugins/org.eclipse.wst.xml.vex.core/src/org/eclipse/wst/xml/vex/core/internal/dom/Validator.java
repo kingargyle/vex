@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
  * Validators must be serializable.
  * @model
  */
-public interface Validator extends Serializable {
+public interface Validator {
 
 	/**
 	 * QualifiedName indicating that character data is allowed at the given point in
