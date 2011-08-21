@@ -39,7 +39,6 @@ import org.eclipse.wst.xml.vex.core.internal.dom.Attribute;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 
-@SuppressWarnings("restriction")
 public class WTPVEXValidator implements Validator {
 
 	private static final ElementContentComparator ELEMENT_CONTENT_COMPARATOR = new StringElementContentComparator() {
@@ -97,7 +96,7 @@ public class WTPVEXValidator implements Validator {
 		return createUnknownAttributeDefinition(attributeName);
 	}
 
-	private AttributeDefinition createUnknownAttributeDefinition(String attributeName) {
+	private static AttributeDefinition createUnknownAttributeDefinition(String attributeName) {
 		return new AttributeDefinition(attributeName, Type.CDATA, /* default value */"", /* values */new String[0], /* required */false, /* fixed */true);
 	}
 

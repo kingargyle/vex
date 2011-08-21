@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 
-@SuppressWarnings("restriction")
 public class DTDValidatorTest extends TestCase {
 
 	private Validator validator = null;
@@ -41,7 +40,7 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	public void testAttributeDefinition() throws Exception {
-		QualifiedName sectionName = new QualifiedName(null, "section");
+		final QualifiedName sectionName = new QualifiedName(null, "section");
 		final AttributeDefinition.Type adType = validator.getAttributeDefinitions(sectionName).get(0).getType();
 		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions(sectionName).get(0).getType();
 

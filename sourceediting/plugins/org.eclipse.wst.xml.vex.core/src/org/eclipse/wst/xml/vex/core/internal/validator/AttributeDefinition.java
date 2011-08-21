@@ -17,9 +17,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 
 /**
  * <code>AttributeDefinition</code> represents an attribute definition in a Grammar.
- * 
  */
-@SuppressWarnings("restriction")
 public class AttributeDefinition implements Comparable<AttributeDefinition> {
 
 	private String name;
