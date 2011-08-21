@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Standard for Technology in Automotive Retail  and others.
+ * Copyright (c) 2008, 2011 Standard for Technology in Automotive Retail  and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,9 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.validator;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
+import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
@@ -48,29 +52,47 @@ public class WTPVEXValidator implements Validator {
 		};
 	};
 
-	/** The XML schema (= content model), e.g. DTD or XSD */
-	private CMDocument schema;
+	private static final URIResolver URI_RESOLVER = URIResolverPlugin.createResolver();
+	
+	private CMDocument mainSchema;
 
-	private final CMValidator validator;
+	private final CMValidator validator = new CMValidator();
 
-	private final URL url;
+	private final URL mainSchemaUrl;
 
-	private WTPVEXValidator(final URL url) {
-		this.url = url;
-		validator = new CMValidator();
+
+	public WTPVEXValidator(final URL mainSchemaUrl) {
+		this.mainSchemaUrl = mainSchemaUrl;
 	}
 
-	private CMDocument getSchema() {
-		if (schema == null) {
-			final ContentModelManager modelManager = ContentModelManager.getInstance();
-			final String resolved = url.toString();
-			schema = modelManager.createCMDocument(resolved, null);
+	public WTPVEXValidator(final String mainSchemaIdentifier) {
+		this(resolveSchemaIdentifier(mainSchemaIdentifier));
+	}
+	
+	private static URL resolveSchemaIdentifier(final String schemaIdentifier) {
+		final String schemaLocation = URI_RESOLVER.resolve(null, schemaIdentifier, null);
+		if (schemaLocation == null)
+			/*
+			 * TODO this is a common case that should be handled somehow
+			 *  - a hint should be shown: the schema is not available, the schema should be added to the catalog by the user
+			 *  - an inferred schema should be used, to allow to at least display the document in the editor
+			 *  - this is not the right place to either check or handle this
+			 */
+			throw new AssertionError("Cannot resolve schema '" + schemaIdentifier + "'.");
+		try {
+			return new URL(schemaLocation);
+		} catch (MalformedURLException e) {
+			throw new AssertionError(MessageFormat.format("Resolution of schema ''{0}'' resulted in a malformed URL: ''{1}''. {2}", schemaIdentifier, schemaLocation, e.getMessage()));
 		}
-		return schema;
 	}
-
-	public static WTPVEXValidator create(final URL url) {
-		return new WTPVEXValidator(url);
+	
+	private CMDocument getSchema() {
+		if (mainSchema == null) {
+			final ContentModelManager modelManager = ContentModelManager.getInstance();
+			final String resolved = mainSchemaUrl.toString();
+			mainSchema = modelManager.createCMDocument(resolved, null);
+		}
+		return mainSchema;
 	}
 
 	public AttributeDefinition getAttributeDefinition(final Attribute attribute) {

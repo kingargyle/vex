@@ -33,7 +33,7 @@ public class DTDValidatorTest extends TestCase {
 	protected void setUp() {
 		try {
 			final URL url = DTDValidatorTest.class.getResource("test1.dtd");
-			validator = WTPVEXValidator.create(url);
+			validator = new WTPVEXValidator(url);
 		} catch (final Exception ex) {
 			fail("Failed to load test1.dtd");
 		}

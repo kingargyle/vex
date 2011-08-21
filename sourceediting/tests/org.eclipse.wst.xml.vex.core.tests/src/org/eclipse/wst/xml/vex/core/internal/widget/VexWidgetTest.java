@@ -36,7 +36,7 @@ public class VexWidgetTest extends TestCase {
 	
 	private Document createDocument(final String rootElementName) {
 		final URL url = DTDValidatorTest.class.getResource("test1.dtd");
-		final Validator validator = WTPVEXValidator.create(url);
+		final Validator validator = new WTPVEXValidator(url);
 		final Document document = new Document(new RootElement(rootElementName));
 		document.setValidator(validator);
 		return document;

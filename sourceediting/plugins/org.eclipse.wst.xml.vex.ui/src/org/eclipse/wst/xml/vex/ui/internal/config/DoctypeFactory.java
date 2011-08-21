@@ -82,7 +82,7 @@ public class DoctypeFactory implements IConfigItemFactory {
 
 	public Object parseResource(final URL baseUrl, final String resourcePath, final IBuildProblemHandler problemHandler) throws IOException {
 		try {
-			return WTPVEXValidator.create(new URL(baseUrl, resourcePath));
+			return new WTPVEXValidator(new URL(baseUrl, resourcePath));
 		} catch (final IOException ex) {
 			if (problemHandler != null) {
 				final BuildProblem problem = new BuildProblem();

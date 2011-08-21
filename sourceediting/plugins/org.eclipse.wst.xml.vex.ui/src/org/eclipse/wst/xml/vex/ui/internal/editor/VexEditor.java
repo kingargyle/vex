@@ -317,7 +317,7 @@ public class VexEditor extends EditorPart {
 			// Otherwise, a PartInitException would have been thrown by now
 
 			//IValidator validator = this.doctype.getValidator(); 
-			final Validator validator = WTPVEXValidator.create(doctype.getResourceUrl());
+			final Validator validator = new WTPVEXValidator(doctype.getResourceUrl());
 			if (validator != null) {
 				doc.setValidator(validator);
 				if (debugging) {

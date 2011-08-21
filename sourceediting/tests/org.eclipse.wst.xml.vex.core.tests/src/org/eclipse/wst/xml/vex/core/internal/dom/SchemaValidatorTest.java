@@ -20,9 +20,8 @@ import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
-import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator;
+import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -99,6 +98,18 @@ public class SchemaValidatorTest {
 		assertEquals("chapter", chapterElement.getNodeName());
 		
 		assertEquals(2, chapterElement.getLocalElements().getLength());
+	}
+	
+	@Test
+	public void createValidatorWithNamespaceUri() throws Exception {
+		final Validator validator = new WTPVEXValidator("http://www.eclipse.org/vex/test/content");
+		assertEquals(1, validator.getValidRootElements().size());
+	}
+	
+	@Test
+	public void createValidatorWithDTDPublicId() throws Exception {
+		final Validator validator = new WTPVEXValidator("-//Eclipse Foundation//DTD Vex Test//EN");
+		assertEquals(10, validator.getValidRootElements().size());
 	}
 	
 }
