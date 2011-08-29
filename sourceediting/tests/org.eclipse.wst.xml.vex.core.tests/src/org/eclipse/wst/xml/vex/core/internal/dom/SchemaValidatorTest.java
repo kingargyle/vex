@@ -10,10 +10,16 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
-import static org.junit.Assert.*;
+import static org.eclipse.wst.xml.vex.core.internal.dom.Validator.PCDATA;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
@@ -31,6 +37,15 @@ import org.xml.sax.SAXException;
  * @author Florian Thienel
  */
 public class SchemaValidatorTest {
+	
+	private static final String STRUCTURE_NS = "http://www.eclipse.org/vex/test/structure";
+	private static final QualifiedName CHAPTER = new QualifiedName(STRUCTURE_NS, "chapter");
+	private static final QualifiedName TITLE = new QualifiedName(STRUCTURE_NS, "title");
+	
+	private static final String CONTENT_NS = "http://www.eclipse.org/vex/test/content";
+	private static final QualifiedName P = new QualifiedName(CONTENT_NS, "p");
+	private static final QualifiedName B = new QualifiedName(CONTENT_NS, "b");
+	private static final QualifiedName I = new QualifiedName(CONTENT_NS, "i");
 	
 	@Test
 	public void readDocumentWithTwoSchemas() throws Exception {
@@ -54,18 +69,18 @@ public class SchemaValidatorTest {
 		assertNotNull(rootElement);
 		assertEquals("chapter", rootElement.getLocalName());
 		assertEquals("chapter", rootElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/structure", "chapter"), rootElement.getQualifiedName());
-		assertEquals("http://www.eclipse.org/vex/test/structure", rootElement.getDefaultNamespaceURI());
-		assertEquals("http://www.eclipse.org/vex/test/content", rootElement.getNamespaceURI("c"));
+		assertEquals(CHAPTER, rootElement.getQualifiedName());
+		assertEquals(STRUCTURE_NS, rootElement.getDefaultNamespaceURI());
+		assertEquals(CONTENT_NS, rootElement.getNamespaceURI("c"));
 		
 		final Element subChapterElement = rootElement.getChildElements().get(1);
 		assertEquals("chapter", subChapterElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/structure", "chapter"), subChapterElement.getQualifiedName());
+		assertEquals(CHAPTER, subChapterElement.getQualifiedName());
 		
 		final Element paragraphElement = subChapterElement.getChildElements().get(1);
 		assertEquals("p", paragraphElement.getLocalName());
 		assertEquals("c:p", paragraphElement.getPrefixedName());
-		assertEquals(new QualifiedName("http://www.eclipse.org/vex/test/content", "p"), paragraphElement.getQualifiedName());
+		assertEquals(P, paragraphElement.getQualifiedName());
 	}
 
 	@Test
@@ -73,7 +88,7 @@ public class SchemaValidatorTest {
 		final URIResolver uriResolver = URIResolverPlugin.createResolver();
 		final ContentModelManager modelManager = ContentModelManager.getInstance();
 		
-		final String schemaLocation = uriResolver.resolve(null, "http://www.eclipse.org/vex/test/structure", null);
+		final String schemaLocation = uriResolver.resolve(null, STRUCTURE_NS, null);
 		assertNotNull(schemaLocation);
 		final CMDocument schema = modelManager.createCMDocument(schemaLocation, null);
 		assertNotNull(schema);
@@ -89,7 +104,7 @@ public class SchemaValidatorTest {
 		final URIResolver uriResolver = URIResolverPlugin.createResolver();
 		final ContentModelManager modelManager = ContentModelManager.getInstance();
 		
-		final String structureSchemaLocation = uriResolver.resolve(null, "http://www.eclipse.org/vex/test/structure", null);
+		final String structureSchemaLocation = uriResolver.resolve(null, STRUCTURE_NS, null);
 		final CMDocument structureSchema = modelManager.createCMDocument(structureSchemaLocation, null);
 		
 		assertEquals(1, structureSchema.getElements().getLength());
@@ -102,14 +117,45 @@ public class SchemaValidatorTest {
 	
 	@Test
 	public void createValidatorWithNamespaceUri() throws Exception {
-		final Validator validator = new WTPVEXValidator("http://www.eclipse.org/vex/test/content");
+		final WTPVEXValidator validator = new WTPVEXValidator(CONTENT_NS);
 		assertEquals(1, validator.getValidRootElements().size());
+		assertTrue(validator.getValidRootElements().contains(P));
 	}
 	
 	@Test
 	public void createValidatorWithDTDPublicId() throws Exception {
 		final Validator validator = new WTPVEXValidator("-//Eclipse Foundation//DTD Vex Test//EN");
 		assertEquals(10, validator.getValidRootElements().size());
+	}
+	
+	@Test
+	public void validateSimpleSchema() throws Exception {
+		final Validator validator = new WTPVEXValidator("http://www.eclipse.org/vex/test/content");
+		assertIsValidSequence(validator, P, PCDATA);
+	}
+	
+	private void assertIsValidSequence(final Validator validator, final QualifiedName parentElement, final QualifiedName... sequence) {
+		for (int i = 0; i < sequence.length; i++) {
+			final List<QualifiedName> prefix = createPrefix(i, sequence);
+			final List<QualifiedName> toInsert = Collections.singletonList(sequence[i]);
+			final List<QualifiedName> suffix = createSuffix(i, sequence);
+
+			assertTrue(validator.isValidSequence(parentElement, prefix, toInsert, suffix, false));
+		}
+	}
+
+	private static List<QualifiedName> createPrefix(final int index, final QualifiedName... sequence) {
+		final List<QualifiedName> prefix = new ArrayList<QualifiedName>();
+		for (int i = 0; i < index; i++)
+			prefix.add(sequence[i]);
+		return prefix;
+	}
+
+	private static List<QualifiedName> createSuffix(final int index, final QualifiedName... sequence) {
+		final List<QualifiedName> suffix = new ArrayList<QualifiedName>();
+		for (int i = index + 1; i < sequence.length; i++)
+			suffix.add(sequence[i]);
+		return suffix;
 	}
 	
 }

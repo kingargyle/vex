@@ -32,6 +32,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMNamespace;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
@@ -53,13 +54,12 @@ public class WTPVEXValidator implements Validator {
 	};
 
 	private static final URIResolver URI_RESOLVER = URIResolverPlugin.createResolver();
-	
+
 	private CMDocument mainSchema;
 
 	private final CMValidator validator = new CMValidator();
 
 	private final URL mainSchemaUrl;
-
 
 	public WTPVEXValidator(final URL mainSchemaUrl) {
 		this.mainSchemaUrl = mainSchemaUrl;
@@ -68,24 +68,27 @@ public class WTPVEXValidator implements Validator {
 	public WTPVEXValidator(final String mainSchemaIdentifier) {
 		this(resolveSchemaIdentifier(mainSchemaIdentifier));
 	}
-	
+
 	private static URL resolveSchemaIdentifier(final String schemaIdentifier) {
 		final String schemaLocation = URI_RESOLVER.resolve(null, schemaIdentifier, null);
 		if (schemaLocation == null)
 			/*
 			 * TODO this is a common case that should be handled somehow
-			 *  - a hint should be shown: the schema is not available, the schema should be added to the catalog by the user
-			 *  - an inferred schema should be used, to allow to at least display the document in the editor
-			 *  - this is not the right place to either check or handle this
+			 * - a hint should be shown: the schema is not available, the schema
+			 * should be added to the catalog by the user
+			 * - an inferred schema should be used, to allow to at least display
+			 * the document in the editor
+			 * - this is not the right place to either check or handle this
 			 */
 			throw new AssertionError("Cannot resolve schema '" + schemaIdentifier + "'.");
 		try {
 			return new URL(schemaLocation);
 		} catch (MalformedURLException e) {
-			throw new AssertionError(MessageFormat.format("Resolution of schema ''{0}'' resulted in a malformed URL: ''{1}''. {2}", schemaIdentifier, schemaLocation, e.getMessage()));
+			throw new AssertionError(MessageFormat.format("Resolution of schema ''{0}'' resulted in a malformed URL: ''{1}''. {2}", schemaIdentifier,
+					schemaLocation, e.getMessage()));
 		}
 	}
-	
+
 	private CMDocument getSchema() {
 		if (mainSchema == null) {
 			final ContentModelManager modelManager = ContentModelManager.getInstance();
@@ -106,7 +109,7 @@ public class WTPVEXValidator implements Validator {
 		 */
 		if (cmElement == null)
 			return createUnknownAttributeDefinition(attributeName);
-		
+
 		final CMAttributeDeclaration cmAttribute = (CMAttributeDeclaration) cmElement.getAttributes().getNamedItem(attributeName);
 		if (cmAttribute != null)
 			return createAttributeDefinition(cmAttribute);
@@ -184,7 +187,11 @@ public class WTPVEXValidator implements Validator {
 	}
 
 	private static QualifiedName createQualifiedElementName(final CMElementDeclaration elementDeclaration) {
-		return new QualifiedName(null, elementDeclaration.getElementName());
+		final CMDocument cmDocument = (CMDocument) elementDeclaration.getProperty("CMDocument");
+		if (cmDocument == null)
+			return new QualifiedName(null, elementDeclaration.getElementName());
+		final String namespaceUri = (String) cmDocument.getProperty("http://org.eclipse.wst/cm/properties/targetNamespaceURI");
+		return new QualifiedName(namespaceUri, elementDeclaration.getElementName());
 	}
 
 	/**
@@ -257,7 +264,8 @@ public class WTPVEXValidator implements Validator {
 		return count;
 	}
 
-	public boolean isValidSequence(final QualifiedName element, final List<QualifiedName> seq1, final List<QualifiedName> seq2, final List<QualifiedName> seq3, final boolean partial) {
+	public boolean isValidSequence(final QualifiedName element, final List<QualifiedName> seq1, final List<QualifiedName> seq2, final List<QualifiedName> seq3,
+			final boolean partial) {
 		final List<QualifiedName> joinedSequence = new ArrayList<QualifiedName>();
 		if (seq1 != null)
 			joinedSequence.addAll(seq1);
