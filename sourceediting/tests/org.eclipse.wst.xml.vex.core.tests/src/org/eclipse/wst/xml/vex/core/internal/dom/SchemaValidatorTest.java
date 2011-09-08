@@ -160,6 +160,43 @@ public class SchemaValidatorTest {
 		assertValidItemsAt(doc, 7, B, I);
 	}
 	
+	@Test
+	public void validateComplexSchema() throws Exception {
+		final Validator validator = new WTPVEXValidator(STRUCTURE_NS);
+		assertIsValidSequence(validator, CHAPTER, TITLE, P);
+		assertIsValidSequence(validator, CHAPTER, P);
+		assertIsValidSequence(validator, P, PCDATA, B, I);
+	}
+	
+	@Test
+	public void proposeElementsFromComplexSchema() throws Exception {
+		final Validator validator = new WTPVEXValidator(STRUCTURE_NS);
+		final Document doc = new Document(new RootElement(CHAPTER));
+		doc.setValidator(validator);
+		doc.insertElement(1, new Element(TITLE));
+		doc.insertText(2, "ab");
+		doc.insertElement(5, new Element(CHAPTER));
+		doc.insertElement(6, new Element(TITLE));
+		doc.insertText(7, "cd");
+		doc.insertElement(10, new Element(P));
+		doc.insertElement(11, new Element(B));
+		
+		assertValidItemsAt(doc, 1, TITLE, CHAPTER, P);
+		assertValidItemsAt(doc, 2);
+		assertValidItemsAt(doc, 3);
+		assertValidItemsAt(doc, 4);
+		assertValidItemsAt(doc, 5, TITLE, CHAPTER, P);
+		assertValidItemsAt(doc, 6, TITLE, CHAPTER, P);
+		assertValidItemsAt(doc, 7);
+		assertValidItemsAt(doc, 8);
+		assertValidItemsAt(doc, 9);
+		assertValidItemsAt(doc, 10, TITLE, CHAPTER, P);
+		assertValidItemsAt(doc, 11, B, I);
+		assertValidItemsAt(doc, 12, B, I);
+		assertValidItemsAt(doc, 13, B, I);
+		assertValidItemsAt(doc, 14, TITLE, CHAPTER, P);
+	}
+	
 	private void assertIsValidSequence(final Validator validator, final QualifiedName parentElement, final QualifiedName... sequence) {
 		for (int i = 0; i < sequence.length; i++) {
 			final List<QualifiedName> prefix = createPrefix(i, sequence);

@@ -26,6 +26,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
+import org.eclipse.wst.xml.core.internal.contentmodel.CMAnyElement;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMAttributeDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMContent;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
@@ -89,6 +90,14 @@ public class WTPVEXValidator implements Validator {
 		}
 	}
 
+	private CMDocument getSchema(final String schemaIdentifier) {
+		if (schemaIdentifier == null)
+			return getSchema();
+		final URL resolved = resolveSchemaIdentifier(schemaIdentifier);
+		final ContentModelManager modelManager = ContentModelManager.getInstance();
+		return modelManager.createCMDocument(resolved.toString(), null);
+	}
+	
 	private CMDocument getSchema() {
 		if (mainSchema == null) {
 			final ContentModelManager modelManager = ContentModelManager.getInstance();
@@ -97,7 +106,7 @@ public class WTPVEXValidator implements Validator {
 		}
 		return mainSchema;
 	}
-
+	
 	public AttributeDefinition getAttributeDefinition(final Attribute attribute) {
 		final String attributeName = attribute.getLocalName();
 		final CMElementDeclaration cmElement = getElementDeclaration(attribute.getParent());
@@ -148,7 +157,7 @@ public class WTPVEXValidator implements Validator {
 		if (element == null)
 			return null;
 		final String localName = element.getLocalName();
-		final CMElementDeclaration declarationFromRoot = (CMElementDeclaration) getSchema().getElements().getNamedItem(localName);
+		final CMElementDeclaration declarationFromRoot = (CMElementDeclaration) getSchema(element.getQualifiedName().getQualifier()).getElements().getNamedItem(localName);
 		if (declarationFromRoot != null)
 			return declarationFromRoot;
 		final CMElementDeclaration parentDeclaration = getElementDeclaration(element.getParent());
@@ -233,23 +242,32 @@ public class WTPVEXValidator implements Validator {
 				list.add(node);
 			else if (node instanceof CMGroup)
 				list.addAll(getAllChildren((CMGroup) node));
+			else if (node instanceof CMAnyElement) 
+				list.addAll(getValidRootElements(((CMAnyElement)node).getNamespaceURI()));
 		}
 		return list;
 	}
-
-	public Set<QualifiedName> getValidRootElements() {
-		final HashSet<QualifiedName> result = new HashSet<QualifiedName>();
-		final Iterator<?> iter = getSchema().getElements().iterator();
+	
+	private Set<CMElementDeclaration> getValidRootElements(final String schemaIdentifier) {
+		final HashSet<CMElementDeclaration> result = new HashSet<CMElementDeclaration>();
+		final Iterator<?> iter = getSchema(schemaIdentifier).getElements().iterator();
 		while (iter.hasNext()) {
 			final CMElementDeclaration element = (CMElementDeclaration) iter.next();
-			result.add(createQualifiedElementName(element));
+			result.add(element);
 		}
 
 		return result;
 	}
 
+	public Set<QualifiedName> getValidRootElements() {
+		final HashSet<QualifiedName> result = new HashSet<QualifiedName>();
+		for (CMElementDeclaration element : getValidRootElements(null))
+			result.add(createQualifiedElementName(element));
+		return result;
+	}
+
 	public boolean isValidSequence(final QualifiedName element, final List<QualifiedName> nodes, final boolean partial) {
-		final CMNode parent = getSchema().getElements().getNamedItem(element.getLocalName());
+		final CMNode parent = getSchema(element.getQualifier()).getElements().getNamedItem(element.getLocalName());
 		if (!(parent instanceof CMElementDeclaration))
 			return true;
 
