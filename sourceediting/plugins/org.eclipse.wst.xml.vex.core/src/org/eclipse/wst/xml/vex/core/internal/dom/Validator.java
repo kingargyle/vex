@@ -46,10 +46,10 @@ public interface Validator {
 	 * Returns the attribute definitions that apply to the given element.
 	 * 
 	 * @param element
-	 *            Name of the element to check.
+	 *            the element to check.
 	 * @model
 	 */
-	public List<AttributeDefinition> getAttributeDefinitions(QualifiedName element);
+	public List<AttributeDefinition> getAttributeDefinitions(Element element);
 
 	/**
 	 * Returns a set of QualifiedNames representing valid root elements for the given
@@ -64,10 +64,10 @@ public interface Validator {
 	 * or Validator.PCDATA.
 	 * 
 	 * @param element
-	 *            Name of the parent element.
+	 *            the parent element.
 	 * @model 
 	 */
-	public Set<QualifiedName> getValidItems(QualifiedName element);
+	public Set<QualifiedName> getValidItems(final Element element);
 
 	/**
 	 * Returns true if the given sequence is valid for the given element.

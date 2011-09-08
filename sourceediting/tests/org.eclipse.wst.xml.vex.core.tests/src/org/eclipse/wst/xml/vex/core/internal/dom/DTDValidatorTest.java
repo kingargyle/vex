@@ -40,12 +40,13 @@ public class DTDValidatorTest extends TestCase {
 	}
 
 	public void testAttributeDefinition() throws Exception {
-		final QualifiedName sectionName = new QualifiedName(null, "section");
-		final AttributeDefinition.Type adType = validator.getAttributeDefinitions(sectionName).get(0).getType();
-		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions(sectionName).get(0).getType();
+		final Document doc = new Document(new RootElement("section"));
+		doc.setValidator(validator);
+		final Element sectionElement = doc.getRootElement();
+		final AttributeDefinition.Type adType = validator.getAttributeDefinitions(sectionElement).get(0).getType();
+		final AttributeDefinition.Type adType2 = validator.getAttributeDefinitions(sectionElement).get(0).getType();
 
 		assertSame(adType, adType2);
-
 	}
 
 	// public void testEmptyDTD() throws Exception {
@@ -104,8 +105,7 @@ public class DTDValidatorTest extends TestCase {
 		for (final String expectedItem : expectedItems)
 			expected.add(new QualifiedName(null, expectedItem));
 
-		final QualifiedName elementName = doc.getElementAt(offset).getQualifiedName();
-		final Set<QualifiedName> validItems = doc.getValidator().getValidItems(elementName);
+		final Set<QualifiedName> validItems = doc.getValidator().getValidItems(doc.getElementAt(offset));
 		assertEquals(expected, validItems);
 	}
 

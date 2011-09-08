@@ -11,15 +11,15 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import static org.eclipse.wst.xml.vex.core.internal.dom.Validator.PCDATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
@@ -117,7 +117,7 @@ public class SchemaValidatorTest {
 	
 	@Test
 	public void createValidatorWithNamespaceUri() throws Exception {
-		final WTPVEXValidator validator = new WTPVEXValidator(CONTENT_NS);
+		final Validator validator = new WTPVEXValidator(CONTENT_NS);
 		assertEquals(1, validator.getValidRootElements().size());
 		assertTrue(validator.getValidRootElements().contains(P));
 	}
@@ -130,8 +130,34 @@ public class SchemaValidatorTest {
 	
 	@Test
 	public void validateSimpleSchema() throws Exception {
-		final Validator validator = new WTPVEXValidator("http://www.eclipse.org/vex/test/content");
+		final Validator validator = new WTPVEXValidator(CONTENT_NS);
 		assertIsValidSequence(validator, P, PCDATA);
+		assertIsValidSequence(validator, P, B, I);
+		assertIsValidSequence(validator, B, B, I);
+		assertIsValidSequence(validator, B, I, B);
+		assertIsValidSequence(validator, B, PCDATA, I, B);
+		assertIsValidSequence(validator, I, B, I);
+		assertIsValidSequence(validator, I, I, B);
+		assertIsValidSequence(validator, I, PCDATA, I, B);
+	}
+	
+	@Test
+	public void proposeElementsFromSimpleSchema() throws Exception {
+		final Validator validator = new WTPVEXValidator(CONTENT_NS);
+		final Document doc = new Document(new RootElement(P));
+		doc.setValidator(validator);
+		doc.insertElement(1, new Element(B));
+		doc.insertText(2, "ab");
+		doc.insertElement(5, new Element(I));
+		assertEquals(8, doc.getLength());
+		
+		assertValidItemsAt(doc, 1, B, I);
+		assertValidItemsAt(doc, 2, B, I);
+		assertValidItemsAt(doc, 3, B, I);
+		assertValidItemsAt(doc, 4, B, I);
+		assertValidItemsAt(doc, 5, B, I);
+		assertValidItemsAt(doc, 6, B, I);
+		assertValidItemsAt(doc, 7, B, I);
 	}
 	
 	private void assertIsValidSequence(final Validator validator, final QualifiedName parentElement, final QualifiedName... sequence) {
@@ -158,4 +184,13 @@ public class SchemaValidatorTest {
 		return suffix;
 	}
 	
+	private static void assertValidItemsAt(final Document doc, final int offset, final QualifiedName... expectedItems) {
+		final Set<QualifiedName> expected = new HashSet<QualifiedName>(expectedItems.length);
+		for (final QualifiedName expectedItem : expectedItems)
+			expected.add(expectedItem);
+
+		final Set<QualifiedName> validItems = doc.getValidator().getValidItems(doc.getElementAt(offset));
+		assertEquals(expected, validItems);
+	}
+
 }

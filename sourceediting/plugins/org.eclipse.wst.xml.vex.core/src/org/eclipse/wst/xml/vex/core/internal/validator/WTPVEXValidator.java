@@ -32,7 +32,6 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDataType;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMGroup;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMNamespace;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNode;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMNodeList;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
@@ -41,6 +40,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.ElementPathRecordingResult;
 import org.eclipse.wst.xml.core.internal.contentmodel.internal.util.CMValidator.StringElementContentComparator;
 import org.eclipse.wst.xml.vex.core.internal.dom.Attribute;
+import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition.Type;
 
@@ -99,9 +99,8 @@ public class WTPVEXValidator implements Validator {
 	}
 
 	public AttributeDefinition getAttributeDefinition(final Attribute attribute) {
-		final QualifiedName elementName = attribute.getParent().getQualifiedName();
 		final String attributeName = attribute.getLocalName();
-		final CMElementDeclaration cmElement = getElementDeclaration(elementName);
+		final CMElementDeclaration cmElement = getElementDeclaration(attribute.getParent());
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
 		 * But we are benevolent here since we do not want to loose data at this
@@ -125,17 +124,17 @@ public class WTPVEXValidator implements Validator {
 		return new AttributeDefinition(attributeName, Type.CDATA, /* default value */"", /* values */new String[0], /* required */false, /* fixed */true);
 	}
 
-	public List<AttributeDefinition> getAttributeDefinitions(final QualifiedName elementName) {
-		final CMElementDeclaration cmelement = getElementDeclaration(elementName);
+	public List<AttributeDefinition> getAttributeDefinitions(final Element element) {
+		final CMElementDeclaration cmElement = getElementDeclaration(element);
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
 		 * But we are benevolent here since we do not want to loose data at this
 		 * point.
 		 */
-		if (cmelement == null)
+		if (cmElement == null)
 			return Collections.emptyList();
-		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmelement.getAttributes().getLength());
-		final Iterator<?> iter = cmelement.getAttributes().iterator();
+		final List<AttributeDefinition> attributeList = new ArrayList<AttributeDefinition>(cmElement.getAttributes().getLength());
+		final Iterator<?> iter = cmElement.getAttributes().iterator();
 		while (iter.hasNext()) {
 			final CMAttributeDeclaration attribute = (CMAttributeDeclaration) iter.next();
 			final AttributeDefinition vexAttr = createAttributeDefinition(attribute);
@@ -145,10 +144,19 @@ public class WTPVEXValidator implements Validator {
 		return attributeList;
 	}
 
-	private CMElementDeclaration getElementDeclaration(final QualifiedName elementName) {
-		return (CMElementDeclaration) getSchema().getElements().getNamedItem(elementName.getLocalName());
+	private CMElementDeclaration getElementDeclaration(final Element element) {
+		if (element == null)
+			return null;
+		final String localName = element.getLocalName();
+		final CMElementDeclaration declarationFromRoot = (CMElementDeclaration) getSchema().getElements().getNamedItem(localName);
+		if (declarationFromRoot != null)
+			return declarationFromRoot;
+		final CMElementDeclaration parentDeclaration = getElementDeclaration(element.getParent());
+		if (parentDeclaration == null)
+			return null;
+		return (CMElementDeclaration) parentDeclaration.getLocalElements().getNamedItem(localName);
 	}
-
+	
 	private AttributeDefinition createAttributeDefinition(final CMAttributeDeclaration attribute) {
 		@SuppressWarnings("deprecation")
 		final String defaultValue = attribute.getDefaultValue();
@@ -168,8 +176,11 @@ public class WTPVEXValidator implements Validator {
 		return vexAttr;
 	}
 
-	public Set<QualifiedName> getValidItems(final QualifiedName element) {
-		final CMElementDeclaration elementDeclaration = getElementDeclaration(element);
+	public Set<QualifiedName> getValidItems(final Element element) {
+		return getValidItems(getElementDeclaration(element));
+	}
+	
+	private Set<QualifiedName> getValidItems(final CMElementDeclaration elementDeclaration) {
 		/*
 		 * #342320: If we do not find the element, it is acutally not valid.
 		 * But we are benevolent here since we do not want to loose data at this

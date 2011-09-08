@@ -54,7 +54,7 @@ public class ElementPropertySource implements IPropertySource2 {
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		// note that elements from DocumentFragments don't have access
 		// to their original document, so we get it from the VexWidget
-		final List<AttributeDefinition> attrDefs = validator.getAttributeDefinitions(element.getQualifiedName());
+		final List<AttributeDefinition> attrDefs = validator.getAttributeDefinitions(element);
 		final IPropertyDescriptor[] pds = new IPropertyDescriptor[attrDefs.size()];
 		for (int i = 0; i < attrDefs.size(); i++) {
 			final AttributeDefinition def = attrDefs.get(i);

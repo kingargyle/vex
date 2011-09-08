@@ -549,7 +549,7 @@ public class VexWidgetImpl implements IVexWidget {
 	}
 
 	private static List<QualifiedName> createCandidatesList(final Validator validator, final Element parent, final QualifiedName... exceptions) {
-		final Set<QualifiedName> validItems = validator.getValidItems(parent.getQualifiedName());
+		final Set<QualifiedName> validItems = validator.getValidItems(parent);
 		final List<QualifiedName> exceptionItems = Arrays.asList(exceptions);
 		final List<QualifiedName> result = new ArrayList<QualifiedName>();
 		for (final QualifiedName validItem : validItems)
