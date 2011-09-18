@@ -29,6 +29,7 @@ import org.eclipse.wst.xml.vex.core.internal.css.MockDisplayDevice;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheetReader;
 import org.eclipse.wst.xml.vex.core.internal.widget.CssWhitespacePolicy;
+import org.eclipse.wst.xml.vex.core.tests.TestResources;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -42,9 +43,9 @@ public class DocumentWriterTest extends TestCase {
 	public void testWriteDocument() throws Exception {
 		DisplayDevice.setCurrent(new MockDisplayDevice(90, 90));
 		final StyleSheetReader reader = new StyleSheetReader();
-		final StyleSheet ss = reader.read(this.getClass().getResource("test.css"));
+		final StyleSheet ss = reader.read(TestResources.get("test.css"));
 
-		final URL docUrl = this.getClass().getResource("DocumentWriterTest1.xml");
+		final URL docUrl = TestResources.get("DocumentWriterTest1.xml");
 
 		final Document docOrig = readDocument(new InputSource(docUrl.toString()), ss);
 

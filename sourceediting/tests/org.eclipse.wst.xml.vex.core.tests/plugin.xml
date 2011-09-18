@@ -7,15 +7,15 @@
             id="testSchemas">
          <uri
                name="http://www.eclipse.org/vex/test/structure"
-               uri="projectFiles/structure.xsd">
+               uri="testResources/structure.xsd">
          </uri>
          <uri
                name="http://www.eclipse.org/vex/test/content"
-               uri="projectFiles/content.xsd">
+               uri="testResources/content.xsd">
          </uri>
          <public
                publicId="-//Eclipse Foundation//DTD Vex Test//EN"
-               uri="projectFiles/test1.dtd">
+               uri="testResources/test1.dtd">
          </public>
       </catalogContribution>
    </extension>

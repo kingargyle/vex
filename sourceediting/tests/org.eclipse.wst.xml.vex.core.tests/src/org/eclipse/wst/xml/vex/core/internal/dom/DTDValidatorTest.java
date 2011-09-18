@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.wst.xml.vex.core.internal.validator.AttributeDefinition;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
+import org.eclipse.wst.xml.vex.core.tests.TestResources;
 
 public class DTDValidatorTest extends TestCase {
 
@@ -32,7 +33,7 @@ public class DTDValidatorTest extends TestCase {
 	@Override
 	protected void setUp() {
 		try {
-			final URL url = DTDValidatorTest.class.getResource("test1.dtd");
+			final URL url = TestResources.get("test1.dtd");
 			validator = new WTPVEXValidator(url);
 		} catch (final Exception ex) {
 			fail("Failed to load test1.dtd");

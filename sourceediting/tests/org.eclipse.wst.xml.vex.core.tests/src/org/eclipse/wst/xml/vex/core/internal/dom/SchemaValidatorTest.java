@@ -28,6 +28,7 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
+import org.eclipse.wst.xml.vex.core.tests.TestResources;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -55,7 +56,7 @@ public class SchemaValidatorTest {
 			}
 		};
 		
-		final InputStream documentStream = getClass().getResourceAsStream("document.xml");
+		final InputStream documentStream = TestResources.getAsStream("document.xml");
 		final InputSource documentInputSource = new InputSource(documentStream);
 		
 		final DocumentReader reader = new DocumentReader();

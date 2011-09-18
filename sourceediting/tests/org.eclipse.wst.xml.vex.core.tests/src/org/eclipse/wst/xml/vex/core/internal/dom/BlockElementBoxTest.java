@@ -24,6 +24,7 @@ import org.eclipse.wst.xml.vex.core.internal.layout.CssBoxFactory;
 import org.eclipse.wst.xml.vex.core.internal.layout.FakeGraphics;
 import org.eclipse.wst.xml.vex.core.internal.layout.LayoutContext;
 import org.eclipse.wst.xml.vex.core.internal.layout.RootBox;
+import org.eclipse.wst.xml.vex.core.tests.TestResources;
 
 import junit.framework.TestCase;
 
@@ -35,7 +36,7 @@ public class BlockElementBoxTest extends TestCase {
 	public BlockElementBoxTest() throws Exception {
 
 		StyleSheetReader ssReader = new StyleSheetReader();
-		StyleSheet ss = ssReader.read(this.getClass().getResource("test.css"));
+		StyleSheet ss = ssReader.read(TestResources.get("test.css"));
 
 		this.g = new FakeGraphics();
 

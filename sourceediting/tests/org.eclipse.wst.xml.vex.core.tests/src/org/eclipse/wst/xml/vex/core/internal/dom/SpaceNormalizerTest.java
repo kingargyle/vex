@@ -53,7 +53,7 @@ public class SpaceNormalizerTest extends TestCase {
 	protected static IProject fTestProject;
 	private static boolean fTestProjectInitialized;
 	private static final String TEST_PROJECT_NAME = "testproject";
-	private static final String PROJECT_FILES_FOLDER_NAME = "projectFiles";
+	private static final String PROJECT_FILES_FOLDER_NAME = "testResources";
 
 	@Override
 	protected void setUp() throws Exception {
