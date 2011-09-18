@@ -11,6 +11,7 @@
 package org.eclipse.wst.xml.vex.core.internal.dom;
 
 import static org.eclipse.wst.xml.vex.core.internal.dom.Validator.PCDATA;
+import static org.eclipse.wst.xml.vex.core.tests.TestResources.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -28,7 +29,6 @@ import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.contentmodel.ContentModelManager;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
-import org.eclipse.wst.xml.vex.core.tests.TestResources;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -39,11 +39,9 @@ import org.xml.sax.SAXException;
  */
 public class SchemaValidatorTest {
 	
-	private static final String STRUCTURE_NS = "http://www.eclipse.org/vex/test/structure";
 	private static final QualifiedName CHAPTER = new QualifiedName(STRUCTURE_NS, "chapter");
 	private static final QualifiedName TITLE = new QualifiedName(STRUCTURE_NS, "title");
 	
-	private static final String CONTENT_NS = "http://www.eclipse.org/vex/test/content";
 	private static final QualifiedName P = new QualifiedName(CONTENT_NS, "p");
 	private static final QualifiedName B = new QualifiedName(CONTENT_NS, "b");
 	private static final QualifiedName I = new QualifiedName(CONTENT_NS, "i");
@@ -56,7 +54,7 @@ public class SchemaValidatorTest {
 			}
 		};
 		
-		final InputStream documentStream = TestResources.getAsStream("document.xml");
+		final InputStream documentStream = getAsStream("document.xml");
 		final InputSource documentInputSource = new InputSource(documentStream);
 		
 		final DocumentReader reader = new DocumentReader();
@@ -94,7 +92,7 @@ public class SchemaValidatorTest {
 		final CMDocument schema = modelManager.createCMDocument(schemaLocation, null);
 		assertNotNull(schema);
 		
-		final String dtdLocation = uriResolver.resolve(null, "-//Eclipse Foundation//DTD Vex Test//EN", null);
+		final String dtdLocation = uriResolver.resolve(null, TEST_DTD, null);
 		assertNotNull(dtdLocation);
 		final CMDocument dtd = modelManager.createCMDocument(dtdLocation, null);
 		assertNotNull(dtd);

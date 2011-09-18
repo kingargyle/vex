@@ -21,6 +21,10 @@ import java.net.URL;
  */
 public class TestResources {
 	
+	public static final String STRUCTURE_NS = "http://www.eclipse.org/vex/test/structure";
+	public static final String CONTENT_NS = "http://www.eclipse.org/vex/test/content";
+	public static final String TEST_DTD = "-//Eclipse Foundation//DTD Vex Test//EN";
+
 	private static final String ROOT_DIRECTORY = "/testResources/";
 	
 	public static URL get(final String name) {
