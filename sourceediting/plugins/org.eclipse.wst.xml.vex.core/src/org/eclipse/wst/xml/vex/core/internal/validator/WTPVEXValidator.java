@@ -56,18 +56,18 @@ public class WTPVEXValidator implements Validator {
 
 	private static final URIResolver URI_RESOLVER = URIResolverPlugin.createResolver();
 
-	private CMDocument mainSchema;
+	private CMDocument rootSchema;
 
 	private final CMValidator validator = new CMValidator();
 
-	private final URL mainSchemaUrl;
+	private final URL rootSchemaUrl;
 
-	public WTPVEXValidator(final URL mainSchemaUrl) {
-		this.mainSchemaUrl = mainSchemaUrl;
+	public WTPVEXValidator(final URL rootSchemaUrl) {
+		this.rootSchemaUrl = rootSchemaUrl;
 	}
 
-	public WTPVEXValidator(final String mainSchemaIdentifier) {
-		this(resolveSchemaIdentifier(mainSchemaIdentifier));
+	public WTPVEXValidator(final String rootSchemaIdentifier) {
+		this(resolveSchemaIdentifier(rootSchemaIdentifier));
 	}
 
 	private static URL resolveSchemaIdentifier(final String schemaIdentifier) {
@@ -99,12 +99,12 @@ public class WTPVEXValidator implements Validator {
 	}
 	
 	private CMDocument getSchema() {
-		if (mainSchema == null) {
+		if (rootSchema == null) {
 			final ContentModelManager modelManager = ContentModelManager.getInstance();
-			final String resolved = mainSchemaUrl.toString();
-			mainSchema = modelManager.createCMDocument(resolved, null);
+			final String resolved = rootSchemaUrl.toString();
+			rootSchema = modelManager.createCMDocument(resolved, null);
 		}
-		return mainSchema;
+		return rootSchema;
 	}
 	
 	public AttributeDefinition getAttributeDefinition(final Attribute attribute) {

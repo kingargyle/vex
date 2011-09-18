@@ -62,6 +62,6 @@ public class VEXCoreTestSuite extends TestSuite {
 		addTestSuite(TestStaticTextBox.class);
 		addTestSuite(TableLayoutTest.class);
 		addTestSuite(ListenerListTest.class);
-		addTestSuite(VexWidgetTest.class);
+		addTest(new JUnit4TestAdapter(VexWidgetTest.class));
 	}
 }

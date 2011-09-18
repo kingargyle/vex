@@ -10,51 +10,42 @@
  *******************************************************************************/
 package org.eclipse.wst.xml.vex.core.internal.widget;
 
-import java.net.URL;
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
-import java.util.Collections;
 
-import junit.framework.TestCase;
-
-import org.eclipse.wst.xml.vex.core.internal.css.Rule;
 import org.eclipse.wst.xml.vex.core.internal.css.StyleSheet;
-import org.eclipse.wst.xml.vex.core.internal.dom.DTDValidatorTest;
 import org.eclipse.wst.xml.vex.core.internal.dom.Document;
 import org.eclipse.wst.xml.vex.core.internal.dom.Element;
 import org.eclipse.wst.xml.vex.core.internal.dom.RootElement;
 import org.eclipse.wst.xml.vex.core.internal.dom.Validator;
 import org.eclipse.wst.xml.vex.core.internal.validator.WTPVEXValidator;
+import org.junit.Test;
 
-public class VexWidgetTest extends TestCase {
+public class VexWidgetTest {
 
-	private VexWidgetImpl widget;
-
-	@Override
-	protected void setUp() throws Exception {
-		widget = new VexWidgetImpl(new MockHostComponent());
-	}
-	
-	private Document createDocument(final String rootElementName) {
-		final URL url = DTDValidatorTest.class.getResource("test1.dtd");
-		final Validator validator = new WTPVEXValidator(url);
+	private static Document createDocument(final String rootSchemaIdentifier, final String rootElementName) {
+		final Validator validator = new WTPVEXValidator(rootSchemaIdentifier);
 		final Document document = new Document(new RootElement(rootElementName));
 		document.setValidator(validator);
 		return document;
 	}
 
+	@Test
 	public void testProvideOnlyAllowedElements() throws Exception {
-		widget.setDocument(createDocument("section"), new StyleSheet(Collections.<Rule> emptyList()));
-		assertCanInsertOnly("title", "para");
+		final VexWidgetImpl widget = new VexWidgetImpl(new MockHostComponent());
+		widget.setDocument(createDocument("-//Eclipse Foundation//DTD Vex Test//EN", "section"), StyleSheet.NULL);
+		assertCanInsertOnly(widget, "title", "para");
 		widget.insertElement(new Element("title"));
-		assertCanInsertOnly();
+		assertCanInsertOnly(widget);
 		widget.moveBy(1);
-		assertCanInsertOnly("para");
+		assertCanInsertOnly(widget, "para");
 		widget.insertElement(new Element("para"));
 		widget.moveBy(1);
-		assertCanInsertOnly("para");
+		assertCanInsertOnly(widget, "para");
 	}
 	
-	private void assertCanInsertOnly(final String... elementNames) {
+	private static void assertCanInsertOnly(IVexWidget widget, final String... elementNames) {
 		assertTrue(Arrays.equals(sortedCopyOf(elementNames), sortedCopyOf(widget.getValidInsertElements())));
 	}
 	

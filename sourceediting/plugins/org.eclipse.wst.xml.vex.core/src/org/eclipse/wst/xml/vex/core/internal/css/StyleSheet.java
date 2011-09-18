@@ -35,6 +35,9 @@ import org.w3c.css.sac.LexicalUnit;
  * Represents a CSS style sheet.
  */
 public class StyleSheet {
+	
+	public static final StyleSheet NULL = new StyleSheet(Collections.<Rule> emptyList());
+	
 	private static final Comparator<PropertyDecl> PROPERTY_CASCADE_ORDERING =
 		new Comparator<PropertyDecl>() {
 		public int compare(PropertyDecl propertyDecl1,
