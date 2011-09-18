@@ -411,11 +411,6 @@ public class VexWidget extends Canvas implements IVexWidget, ISelectionProvider 
 		this.impl.setDocument(doc, styleSheet);
 	}
 
-	public void setDocument(URL docUrl, URL ssURL) throws IOException,
-			ParserConfigurationException, SAXException {
-		this.impl.setDocument(docUrl, ssURL);
-	}
-
 	public void setLayoutWidth(int width) {
 		this.impl.setLayoutWidth(width);
 	}

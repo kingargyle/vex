@@ -506,17 +506,6 @@ public interface IVexWidget {
 	public void setDocument(Document document, StyleSheet styleSheet);
 
 	/**
-	 * Sets a new document for this control.
-	 * 
-	 * @param docURL
-	 *            URL of the document to display.
-	 * @param ssURL
-	 *            URL of the stylesheet to use for formatting.
-	 */
-	public void setDocument(URL docURL, URL ssURL) throws IOException,
-			ParserConfigurationException, SAXException;
-
-	/**
 	 * Sets the width to which the document should be layed out. The actual
 	 * resulting width may be different due to overflowing boxes.
 	 */

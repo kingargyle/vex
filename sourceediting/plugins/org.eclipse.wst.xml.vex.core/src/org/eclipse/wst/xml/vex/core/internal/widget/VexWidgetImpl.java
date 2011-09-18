@@ -1053,23 +1053,6 @@ public class VexWidgetImpl implements IVexWidget {
 		this.document.addDocumentListener(documentListener);
 	}
 
-	public void setDocument(final URL docUrl, final URL ssURL) throws IOException, ParserConfigurationException, SAXException {
-
-		final StyleSheetReader ssReader = new StyleSheetReader();
-		final StyleSheet ss = ssReader.read(ssURL);
-
-		final DocumentReader reader = new DocumentReader();
-
-		reader.setWhitespacePolicyFactory(new IWhitespacePolicyFactory() {
-			public IWhitespacePolicy getPolicy(final String publicId) {
-				return new CssWhitespacePolicy(ss);
-			}
-		});
-
-		final Document doc = reader.read(docUrl);
-		this.setDocument(doc, ss);
-	}
-
 	/**
 	 * Called by the host component when it gains or loses focus.
 	 * 
